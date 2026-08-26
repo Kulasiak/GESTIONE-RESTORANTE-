@@ -1812,7 +1812,7 @@ VIEWS.dash = function(){
       '<div style="display:flex;align-items:stretch;gap:8px;height:150px">' +
       week.map(w=>{
         const v = revenueOn(w);
-        const h = clamp((v/maxRev)*100, 3, 100);
+        const h = clamp((v/maxRev)*100, 3, 86);
         return '<div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px">' +
           '<div style="font-size:10.5px;color:var(--txt-2);font-weight:600" class="num">' + (v ? Math.round(v) : "") + '</div>' +
           '<div style="width:100%;flex:none;height:' + h + '%;border-radius:6px 6px 0 0;background:' + (w===d ? 'var(--brand)' : 'var(--fill-2)') + '"></div>' +
@@ -4733,7 +4733,7 @@ VIEWS.report = function(){
     '</div>' +
 
     card("Andamento", '<div style="display:flex;align-items:stretch;gap:5px;height:170px">' +
-      days.map(w=>{ const v = revenueOn(w); const h = clamp((v/maxRev)*100, 2, 100);
+      days.map(w=>{ const v = revenueOn(w); const h = clamp((v/maxRev)*100, 2, 88);
         return '<div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;min-width:0">' +
           '<div style="font-size:10px;color:var(--txt-2);font-weight:600" class="num">' + (v ? Math.round(v) : "") + '</div>' +
           '<div style="width:100%;flex:none;height:' + h + '%;border-radius:5px 5px 0 0;background:' + (w===d?'var(--brand)':'var(--fill-2)') + '"></div>' +
@@ -4773,14 +4773,40 @@ VIEWS.report = function(){
   };
 };
 
-function downloadCSV(rows, name){
-  const csv = rows.map(r=> r.map(c=> '"' + String(c==null?"":c).replace(/"/g,'""') + '"').join(";")).join("\n");
-  const blob = new Blob(["﻿" + csv], {type:"text/csv;charset=utf-8"});
+/* Quando la pagina gira dentro un visualizzatore, i link di download sono inerti:
+   il file va consegnato all'ospite tramite la capability "downloads". Fuori da li
+   (file locale, Vercel, telefono) resta il link normale di sempre. */
+let DL = null;
+if(window.claude && typeof window.claude.use === "function"){
+  window.claude.use("downloads").then(d=>{ DL = d; }).catch(()=>{});
+}
+function linkSave(filename, data, mime){
+  const blob = new Blob([data], {type:mime || "application/octet-stream"});
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob); a.download = name;
+  a.href = URL.createObjectURL(blob); a.download = filename;
   document.body.appendChild(a); a.click();
   setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 400);
-  toast(T("c_export"), "ok");
+}
+async function saveFile(filename, data, mime, okMsg){
+  if(!DL){ linkSave(filename, data, mime); toast(okMsg, "ok"); return; }
+  let name = filename;
+  for(let tries = 0; tries < 2; tries++){
+    try{ await DL.save({filename:name, data:data}); toast(okMsg, "ok"); return; }
+    catch(e){
+      const code = e && e.code;
+      /* il csv non e sempre ammesso: si ripiega sul testo, che Excel apre lo stesso */
+      if(code === "extension_not_enabled" && /\.csv$/i.test(name)){ name = name.replace(/\.csv$/i, ".txt"); continue; }
+      if(code === "declined") return;
+      toast(code === "too_large" ? "File troppo grande per il salvataggio"
+          : code === "rate_limited" ? "Aspetta un attimo e riprova"
+          : "Salvataggio non riuscito", code === "rate_limited" ? "warn" : "err");
+      return;
+    }
+  }
+}
+function downloadCSV(rows, name){
+  const csv = rows.map(r=> r.map(c=> '"' + String(c==null?"":c).replace(/"/g,'""') + '"').join(";")).join("\n");
+  saveFile(name, "﻿" + csv, "text/csv;charset=utf-8", T("c_export"));
 }
 </script>
 <script>
@@ -4865,15 +4891,9 @@ VIEWS.settings = function(){
       $$("[data-sttheme]").forEach(x=> x.onclick = ()=>{
         DB.meta.theme = x.getAttribute("data-sttheme"); applyTheme(); save(); refresh();
       });
-      $("[data-stexp]").onclick = ()=>{
-        const blob = new Blob([JSON.stringify(DB, null, 1)], {type:"application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "backup_ristorante_" + today() + ".json";
-        document.body.appendChild(a); a.click();
-        setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 400);
-        toast(T("st_backup"), "ok");
-      };
+      $("[data-stexp]").onclick = ()=> saveFile(
+        "backup_ristorante_" + today() + ".json",
+        JSON.stringify(DB, null, 1), "application/json", T("st_backup"));
       $("[data-stimp]").onclick = ()=>{
         const inp = document.createElement("input");
         inp.type = "file"; inp.accept = "application/json,.json";
@@ -4924,10 +4944,14 @@ function normalize(d){
   return d;
 }
 
+/* Tema imposto dall'esterno, se la pagina e incorporata da qualche parte. */
+const HOST_THEME = document.documentElement.getAttribute("data-theme");
 function applyTheme(){
   const r = document.documentElement;
   const th = DB.meta.theme || "auto";
-  if(th === "auto") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", th);
+  if(th === "auto"){
+    if(HOST_THEME) r.setAttribute("data-theme", HOST_THEME); else r.removeAttribute("data-theme");
+  }else r.setAttribute("data-theme", th);
   r.setAttribute("data-skin", DB.meta.skin || "classico");
   const meta = $('meta[name="theme-color"]');
   if(meta) meta.setAttribute("content", th === "dark" ? "#12100E" : "#FBF7F2");
@@ -4972,5 +4996,6 @@ function boot(){
 
   go("dash");
 }
-document.addEventListener("DOMContentLoaded", boot);
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+else boot();
 </script>
