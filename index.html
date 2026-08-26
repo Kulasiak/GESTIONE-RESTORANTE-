@@ -442,6 +442,7 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .sheet h4{font-family:var(--serif);font-size:17px;margin:20px 0 8px;letter-spacing:.06em;text-transform:uppercase;opacity:.78}
 .sheet .dish .nm p{color:rgba(26,21,18,.6)}
 .sheet .dish{border-bottom-color:rgba(26,21,18,.14)}
+.sheet .mph{width:66px;height:66px;flex:none;border-radius:8px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(26,21,18,.12)}
 
 /* ---------- 13. FLYER ---------- */
 .flyer{
@@ -454,6 +455,7 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .flyer .fk{font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;opacity:.8}
 .flyer h2{font-family:var(--serif);font-size:34px;line-height:1.08;margin-top:12px;letter-spacing:-.01em}
 .flyer .fb{font-size:14px;line-height:1.55;margin-top:12px;opacity:.92}
+.flyer .fimg{margin-top:15px;width:100%;aspect-ratio:4/3;border-radius:10px;background-size:cover;background-position:center;box-shadow:0 8px 26px rgba(0,0,0,.24)}
 .flyer .fc{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.28);font-size:12.5px;line-height:1.6}
 .flyer.light .fc{border-top-color:rgba(26,21,18,.2)}
 .flyer .cta{display:inline-block;margin-top:14px;padding:9px 18px;border-radius:var(--r-pill);background:#fff;color:var(--brand);font-weight:750;font-size:13.5px}
@@ -516,6 +518,21 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
   .card-b{padding:13px}
   .sheet{padding:22px 18px}
 }
+
+/* foto a tutto schermo dietro al testo, piu il taglio grande del piatto */
+.led-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.62}
+.led[data-mood="light"] .led-img{opacity:.42}
+.led-scrim{position:absolute;inset:0;background:linear-gradient(175deg,rgba(10,7,4,.34),rgba(10,7,4,.80))}
+.led[data-mood="light"] .led-scrim{background:linear-gradient(175deg,rgba(251,247,242,.58),rgba(251,247,242,.90))}
+.led-hero{display:flex;align-items:center;gap:5.5vmin;text-align:start}
+.led-hero .ph{
+  width:40vmin;height:40vmin;flex:none;border-radius:2.6vmin;
+  background-size:cover;background-position:center;box-shadow:0 3vmin 9vmin rgba(0,0,0,.5);
+}
+.led-hero .tx{min-width:0}
+.led-hero .led-t{font-size:clamp(30px,5.2vw,86px)}
+.led-list li .ph{width:8.5vmin;height:8.5vmin;flex:none;border-radius:1.3vmin;background-size:cover;background-position:center}
+@media (max-width:760px){ .led-hero{flex-direction:column;text-align:center} .led-hero .ph{width:52vmin;height:40vmin} }
 
 /* ---------- 17. STAMPA ---------- */
 @media print{
@@ -1259,16 +1276,16 @@ const SEED_HOTELS = [
 /* --- slogan multilingua --- */
 const SEED_SLOGANS = [
   m6(["Oggi si mangia come a casa, ma senza lavare i piatti","Today you eat like at home, without the washing up","Aujourd'hui on mange comme a la maison, sans la vaisselle","Hoy se come como en casa, sin fregar","Heute isst man wie zu Hause, ohne Abwasch","اليوم تأكل كما في البيت بدون غسيل الصحون"]),
-  m6(["La pasta e fresca, il sorriso pure","Fresh pasta, fresh smiles","Les pates sont fraiches, le sourire aussi","La pasta es fresca, la sonrisa tambien","Frische Pasta, frisches Lacheln","المعكرونة طازجة والابتسامة كذلك"]),
+  m6(["La pasta è fresca, il sorriso pure","Fresh pasta, fresh smiles","Les pates sont fraiches, le sourire aussi","La pasta es fresca, la sonrisa tambien","Frische Pasta, frisches Lacheln","المعكرونة طازجة والابتسامة كذلك"]),
   m6(["Pomeriggio lento, cocktail giusto","Slow afternoon, right cocktail","Apres-midi tranquille, bon cocktail","Tarde tranquila, coctel perfecto","Ruhiger Nachmittag, richtiger Cocktail","بعد ظهيرة هادئة وكوكتيل مثالي"]),
   m6(["Il pesce arriva la mattina, il gusto resta la sera","The fish arrives in the morning, the taste stays all evening","Le poisson arrive le matin, le gout reste le soir","El pescado llega por la manana, el sabor se queda","Der Fisch kommt morgens, der Geschmack bleibt","السمك يصل صباحا والطعم يبقى مساء"]),
   m6(["Chi si siede qui non ha fretta","Whoever sits here is in no hurry","Qui s'assoit ici n'est pas presse","Quien se sienta aqui no tiene prisa","Wer hier sitzt, hat keine Eile","من يجلس هنا لا يستعجل"]),
   m6(["Aperitivo dalle 17, problemi rimandati a domani","Aperitivo from 5pm, problems postponed","Aperitif des 17h, soucis reportes","Aperitivo desde las 17, problemas para manana","Aperitif ab 17 Uhr, Sorgen auf morgen","أبيريتيف من الخامسة والمشاكل غدا"]),
   m6(["Cucina aperta, cuore pure","Open kitchen, open heart","Cuisine ouverte, coeur ouvert","Cocina abierta, corazon abierto","Offene Kuche, offenes Herz","مطبخ مفتوح وقلب مفتوح"]),
-  m6(["Il dolce non e un extra, e una promessa","Dessert is not an extra, it is a promise","Le dessert n'est pas un extra, c'est une promesse","El postre no es un extra, es una promesa","Dessert ist kein Extra, es ist ein Versprechen","الحلوى ليست إضافة بل وعد"]),
+  m6(["Il dolce non è un extra, è una promessa","Dessert is not an extra, it is a promise","Le dessert n'est pas un extra, c'est une promesse","El postre no es un extra, es una promesa","Dessert ist kein Extra, es ist ein Versprechen","الحلوى ليست إضافة بل وعد"]),
   m6(["Colazione da noi, giornata migliore","Breakfast with us, better day","Petit-dejeuner chez nous, meilleure journee","Desayuno con nosotros, mejor dia","Fruhstuck bei uns, besserer Tag","إفطار عندنا ويوم أفضل"]),
   m6(["Ingredienti veri, conti onesti","Real ingredients, honest bills","Vrais produits, addition honnete","Ingredientes reales, cuentas honestas","Echte Zutaten, ehrliche Rechnung","مكونات حقيقية وحساب عادل"]),
-  m6(["Ogni tavolo e un ospite, non un numero","Every table is a guest, not a number","Chaque table est un hote, pas un numero","Cada mesa es un huesped, no un numero","Jeder Tisch ist ein Gast, keine Nummer","كل طاولة ضيف وليست رقما"]),
+  m6(["Ogni tavolo è un ospite, non un numero","Every table is a guest, not a number","Chaque table est un hote, pas un numero","Cada mesa es un huesped, no un numero","Jeder Tisch ist ein Gast, keine Nummer","كل طاولة ضيف وليست رقما"]),
   m6(["Si mangia bene, si torna presto","Eat well, come back soon","On mange bien, on revient vite","Se come bien, se vuelve pronto","Gut essen, bald wiederkommen","تأكل جيدا وتعود قريبا"])
 ];
 </script>
@@ -1635,6 +1652,148 @@ const soldOut  = ()=> DB.items.filter(i=> !i.available);
 </script>
 <script>
 /* ============================================================
+   PARTE 6b — FOTO DEI PIATTI
+   Le foto stanno in IndexedDB, non in localStorage: quattro scatti da
+   telefono riempirebbero subito i 5 MB scarsi che localStorage concede,
+   e il gestionale smetterebbe di salvare tutto il resto.
+   In memoria ne teniamo una copia (PHOTOS) per poterle disegnare subito.
+   ============================================================ */
+const PH_DB = "ristorante_foto", PH_STORE = "foto";
+let PHOTOS = {};
+
+function phOpen(){
+  return new Promise((res, rej)=>{
+    if(!window.indexedDB){ rej(new Error("senza IndexedDB")); return; }
+    const r = indexedDB.open(PH_DB, 1);
+    r.onupgradeneeded = ()=>{
+      const d = r.result;
+      if(!d.objectStoreNames.contains(PH_STORE)) d.createObjectStore(PH_STORE);
+    };
+    r.onsuccess = ()=> res(r.result);
+    r.onerror = ()=> rej(r.error);
+  });
+}
+function phLoadAll(){
+  return phOpen().then(d=> new Promise((res)=>{
+    const out = {};
+    const cur = d.transaction(PH_STORE, "readonly").objectStore(PH_STORE).openCursor();
+    cur.onsuccess = ()=>{ const c = cur.result; if(c){ out[c.key] = c.value; c.continue(); } else res(out); };
+    cur.onerror = ()=> res(out);
+  })).catch(()=> ({}));
+}
+function phPut(id, dataURL){
+  PHOTOS[id] = dataURL;
+  return phOpen().then(d=> new Promise((res, rej)=>{
+    const tx = d.transaction(PH_STORE, "readwrite");
+    tx.objectStore(PH_STORE).put(dataURL, id);
+    tx.oncomplete = ()=> res(id);
+    tx.onerror = ()=> rej(tx.error);
+  })).catch(e=>{ toast("Foto non salvata: memoria piena", "err"); throw e; });
+}
+function phDel(id){
+  delete PHOTOS[id];
+  return phOpen().then(d=> new Promise((res)=>{
+    const tx = d.transaction(PH_STORE, "readwrite");
+    tx.objectStore(PH_STORE).delete(id);
+    tx.oncomplete = res; tx.onerror = res;
+  })).catch(()=>{});
+}
+/** Foto non piu agganciata a niente: si butta, altrimenti resta li a occupare spazio. */
+function phGarbage(){
+  const used = {};
+  DB.items.forEach(i=>{ if(i.photo) used[i.photo] = 1; });
+  DB.slogans.forEach(x=>{ if(x.photo) used[x.photo] = 1; });
+  DB.flyers.forEach(f=>{ if(f.photo) used[f.photo] = 1; });
+  (DB.led.slides || []).forEach(x=>{ if(x.photo) used[x.photo] = 1; });
+  Object.keys(PHOTOS).forEach(id=>{ if(!used[id]) phDel(id); });
+}
+
+/** Una foto da telefono pesa 4 MB: qui ne bastano 150 KB per riempire uno schermo. */
+function shrink(file, maxW, quality){
+  return new Promise((res, rej)=>{
+    const fr = new FileReader();
+    fr.onerror = ()=> rej(new Error("lettura"));
+    fr.onload = ()=>{
+      const img = new Image();
+      img.onerror = ()=> rej(new Error("immagine"));
+      img.onload = ()=>{
+        const sc = Math.min(1, (maxW || 1100) / img.width);
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(img.width * sc));
+        c.height = Math.max(1, Math.round(img.height * sc));
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        try{ res(c.toDataURL("image/jpeg", quality || 0.72)); }
+        catch(e){ rej(e); }
+      };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+/** Apre la fotocamera o la galleria, rimpicciolisce e salva. Ritorna l'id. */
+function pickPhoto(onDone){
+  /* l'input sta nel documento, non staccato: certi browser non aprono il
+     selettore su un elemento che non e in pagina */
+  const inp = document.createElement("input");
+  inp.type = "file"; inp.accept = "image/*";
+  inp.style.cssText = "position:fixed;left:-9999px;width:1px;height:1px;opacity:0";
+  inp.onchange = ()=>{
+    const f = inp.files && inp.files[0];
+    inp.remove();
+    if(!f) return;
+    toast("Sto preparando la foto...");
+    shrink(f, 1100, 0.72)
+      .then(url=>{ const id = uid("ph"); return phPut(id, url).then(()=> onDone(id)); })
+      .catch(()=> toast("Non riesco a leggere questa immagine", "err"));
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+
+/* --- pezzi di interfaccia --- */
+function photoURL(id){ return id && PHOTOS[id] ? PHOTOS[id] : null; }
+function thumb(id, size, radius){
+  const u = photoURL(id), sz = size || 44;
+  return '<span style="width:' + sz + 'px;height:' + sz + 'px;flex:none;border-radius:' + (radius || 9) + 'px;' +
+    'display:block;background:' + (u ? 'url(' + u + ') center/cover' : 'var(--fill-1)') + ';' +
+    'box-shadow:inset 0 0 0 1px var(--sep)"></span>';
+}
+/** Riquadro con anteprima e i due pulsanti, da mettere dentro una scheda. */
+function photoField(label, id){
+  const u = photoURL(id);
+  return '<div class="field"><label>' + esc(label) + '</label>' +
+    '<div class="row" data-photo="' + (id || "") + '">' +
+      '<span class="ph-prev" style="width:88px;height:66px;flex:none;border-radius:var(--r-s);display:grid;place-items:center;' +
+        'background:' + (u ? 'url(' + u + ') center/cover' : 'var(--fill-1)') + ';box-shadow:inset 0 0 0 1px var(--sep);' +
+        'color:var(--txt-3);font-size:11px">' + (u ? '' : esc("nessuna")) + '</span>' +
+      '<button type="button" class="btn sm ghost" data-phpick>' + icon("menu",13) + esc(u ? "Cambia foto" : "Scegli foto") + '</button>' +
+      '<button type="button" class="btn sm dang" data-phclear' + (u ? '' : ' hidden') + '>' + icon("trash",13) + esc("Togli") + '</button>' +
+    '</div>' +
+    '<p style="font-size:12px;color:var(--txt-3);margin-top:6px">' +
+      esc("Scatta col telefono il piatto vero, con la luce del locale. La foto viene rimpicciolita da sola e resta su questo dispositivo.") + '</p></div>';
+}
+/** Collega i pulsanti del riquadro. Ritorna una funzione che legge l'id scelto. */
+function wirePhoto(root){
+  const box = $("[data-photo]", root);
+  if(!box) return ()=> null;
+  const draw = ()=>{
+    const u = photoURL(box.dataset.photo);
+    const prev = $(".ph-prev", box);
+    prev.style.background = u ? 'url(' + u + ') center/cover' : 'var(--fill-1)';
+    prev.textContent = u ? "" : "nessuna";
+    $("[data-phpick]", box).innerHTML = icon("menu",13) + esc(u ? "Cambia foto" : "Scegli foto");
+    $("[data-phclear]", box).hidden = !u;
+  };
+  $("[data-phpick]", box).onclick = ()=> pickPhoto(id=>{ box.dataset.photo = id; draw(); });
+  $("[data-phclear]", box).onclick = ()=>{ box.dataset.photo = ""; draw(); };
+  return ()=> box.dataset.photo || null;
+}
+</script>
+<script>
+/* ============================================================
    PARTE 7 — NAVIGAZIONE E ROUTER
    ============================================================ */
 const NAV = [
@@ -1799,11 +1958,18 @@ VIEWS.dash = function(){
 
   '<div class="grid g2 mt">' +
     card(T("br_specials") + " e " + T("mk_slogan"),
-      (sl ? '<div style="padding:14px 16px;border-radius:var(--r-m);background:var(--brand-soft);color:var(--brand);font-family:var(--serif);font-size:19px;line-height:1.35">' + esc(L(sl.text)) + '</div>'
-          : '<div style="color:var(--txt-3);font-size:13.5px">' + esc("Nessuno slogan per oggi") + '</div>') +
+      (sl
+        ? (photoURL(sl.photo)
+            ? '<div style="position:relative;border-radius:var(--r-m);overflow:hidden;min-height:132px;display:flex;align-items:flex-end;' +
+              'background:url(' + photoURL(sl.photo) + ') center/cover">' +
+              '<div style="width:100%;padding:14px 16px;background:linear-gradient(180deg,rgba(10,7,4,0),rgba(10,7,4,.82));' +
+              'color:#fff;font-family:var(--serif);font-size:19px;line-height:1.3">' + esc(L(sl.text)) + '</div></div>'
+            : '<div style="padding:14px 16px;border-radius:var(--r-m);background:var(--brand-soft);color:var(--brand);font-family:var(--serif);font-size:19px;line-height:1.35">' + esc(L(sl.text)) + '</div>')
+        : '<div style="color:var(--txt-3);font-size:13.5px">' + esc("Nessuno slogan per oggi") + '</div>') +
       '<div class="mt">' +
       (sp.length ? sp.map(i=>
-        '<div class="dish"><div class="nm"><b>' + esc(L(i.name)) + '</b><p>' + esc(L(i.desc)) + '</p></div><div class="pr">' + eur(i.price) + '</div></div>'
+        '<div class="dish">' + thumb(i.photo, 52, 10) +
+        '<div class="nm"><b>' + esc(L(i.name)) + '</b><p>' + esc(L(i.desc)) + '</p></div><div class="pr">' + eur(i.price) + '</div></div>'
       ).join("") : '<div style="color:var(--txt-3);font-size:13.5px">' + esc("Nessun piatto del giorno") + '</div>') +
       '</div>',
       '<button class="btn sm ghost" data-go="slogan">' + esc(T("c_edit")) + '</button>') +
@@ -2893,7 +3059,8 @@ VIEWS.menu = function(){
         '<th class="c">' + esc(T("m_avail")) + '</th><th class="c">' + esc("Lingue") + '</th><th></th></tr></thead><tbody>' +
       items.map(i=>{
         const nLang = LKEYS.filter(k=> i.name && i.name[k]).length;
-        return '<tr><td><b>' + esc(L(i.name)) + '</b><div style="font-size:12px;color:var(--txt-2)">' + esc(L(i.desc)) + '</div></td>' +
+        return '<tr><td><div class="row tight" style="flex-wrap:nowrap;align-items:flex-start">' + thumb(i.photo, 38, 8) +
+        '<div><b>' + esc(L(i.name)) + '</b><div style="font-size:12px;color:var(--txt-2)">' + esc(L(i.desc)) + '</div></div></div></td>' +
         '<td>' + (i.allerg.length ? '<span class="alg">' + i.allerg.map(a=> '<span>' + esc(a) + '</span>').join("") + '</span>' : '<span style="color:var(--txt-3)">-</span>') + '</td>' +
         '<td class="r num">' + eur(i.price) + '</td>' +
         '<td class="c"><button class="btn ico sm ' + (i.special ? "warn" : "ghost") + '" data-msp="' + i.id + '">' + (i.special ? icon("check",12) : icon("plus",12)) + '</button></td>' +
@@ -2920,9 +3087,11 @@ VIEWS.menu = function(){
 
 function itemSheet(id){
   const i = id ? itemById(id) : null;
+  let getPhoto = ()=> (i ? i.photo : null) || null;
   const body =
     mlFields("name", i ? i.name : null, T("c_name")) +
     mlFields("desc", i ? i.desc : null, T("c_desc"), true) +
+    photoField("Foto del piatto", i ? i.photo : null) +
     '<div class="f3">' +
       '<div class="field"><label>' + esc(T("c_category")) + '</label><select class="inp" name="cat">' +
         DB.cats.slice().sort((a,b)=>a.order-b.order).map(c=> '<option value="' + c.id + '"' + (i && i.cat === c.id ? " selected":"") + '>' + esc(L(c.name)) + '</option>').join("") + '</select></div>' +
@@ -2946,12 +3115,13 @@ function itemSheet(id){
     if(!name.it){ toast(T("c_name"), "err"); return false; }
     const allerg = ALLERGENS.filter(a=> f["al_" + a.replace(/ /g,"_")]);
     const patch = {name:name, desc:desc, cat:f.cat, price:Number(f.price)||0, station:f.station,
-      allerg:allerg, available:!!f.available, special:!!f.special};
+      allerg:allerg, available:!!f.available, special:!!f.special, photo:getPhoto()};
     if(i) Object.assign(i, patch);
     else DB.items.push(Object.assign({id:uid("it"), cost:0, sold:0}, patch));
-    save(); refresh(); toast(T("c_save"), "ok");
+    save(); phGarbage(); refresh(); toast(T("c_save"), "ok");
   }});
-  modal({title:i ? L(i.name) : T("c_new") + " " + T("nav_menu").toLowerCase(), size:"wide", body:body, actions:acts});
+  modal({title:i ? L(i.name) : T("c_new") + " " + T("nav_menu").toLowerCase(), size:"wide", body:body,
+    actions:acts, onOpen:(w)=>{ getPhoto = wirePhoto(w); }});
 }
 </script>
 <script>
@@ -2969,7 +3139,9 @@ function menuHTML(lk, opts){
       const items = DB.items.filter(i=> i.cat === c.id && i.available && (!o.onlyKitchen || c.kind === "cucina"));
       if(!items.length) return "";
       return '<h4>' + esc(L(c.name)) + '</h4>' + items.map(i=>
-        '<div class="dish"><div class="nm"><b>' + esc(L(i.name)) + (i.special ? ' &#9733;' : '') + '</b>' +
+        '<div class="dish">' +
+        (o.photos && photoURL(i.photo) ? '<span class="mph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
+        '<div class="nm"><b>' + esc(L(i.name)) + (i.special ? ' &#9733;' : '') + '</b>' +
         (L(i.desc) ? '<p>' + esc(L(i.desc)) + '</p>' : '') +
         (i.allerg.length ? '<span class="alg">' + i.allerg.map(a=> '<span>' + esc(a) + '</span>').join("") + '</span>' : '') +
         '</div><div class="pr">' + eur(i.price) + '</div></div>').join("");
@@ -2995,23 +3167,26 @@ function printMenuSheet(){
       LKEYS.map(lk=> '<button class="btn ' + (lk === cur ? "pri" : "ghost") + ' sm" data-ml="' + lk + '">' +
         flag(lk,12) + '<span style="margin-inline-start:6px">' + esc(LANGS[lk].native) + '</span></button>').join("") +
     '</div>' +
+    '<label class="check" style="margin-bottom:10px"><input type="checkbox" id="mp-ph">' +
+      '<span>' + esc("Con le foto dei piatti") + '</span></label>' +
     '<div id="mp-prev" style="max-height:52vh;overflow:auto;background:var(--bg-3);padding:14px;border-radius:var(--r-m)">' + menuHTML(cur) + '</div>';
   modal({title:T("m_printmenu"), size:"wide", body:body, actions:[
     {label:T("c_close"), cls:"ghost"},
-    {label:T("c_print") + " (" + T("c_all") + " 6)", cls:"ghost", run:()=>{ printMenus(LKEYS); return false; }},
-    {label:T("c_print"), cls:"pri", run:(w)=>{ printMenus([w.dataset.ml || cur]); return false; }}
+    {label:T("c_print") + " (" + T("c_all") + " 6)", cls:"ghost", run:(w)=>{ printMenus(LKEYS, {photos:$("#mp-ph", w).checked}); return false; }},
+    {label:T("c_print"), cls:"pri", run:(w)=>{ printMenus([w.dataset.ml || cur], {photos:$("#mp-ph", w).checked}); return false; }}
   ], onOpen:(w)=>{
     w.dataset.ml = cur;
+    const draw = ()=> $("#mp-prev", w).innerHTML = menuHTML(w.dataset.ml, {photos:$("#mp-ph", w).checked});
     $$("[data-ml]", w).forEach(b=> b.onclick = ()=>{
-      const lk = b.getAttribute("data-ml");
-      w.dataset.ml = lk;
+      w.dataset.ml = b.getAttribute("data-ml");
       $$("[data-ml]", w).forEach(x=> x.className = "btn " + (x === b ? "pri" : "ghost") + " sm");
-      $("#mp-prev", w).innerHTML = menuHTML(lk);
+      draw();
     });
+    $("#mp-ph", w).onchange = draw;
   }});
 }
 
-function printMenus(langs){
+function printMenus(langs, opts){
   const w = window.open("", "_blank", "width=820,height=1000");
   if(!w){ toast("Consenti le finestre popup per stampare","err"); return; }
   const css = Array.from(document.styleSheets).map(ss=>{
@@ -3022,7 +3197,7 @@ function printMenus(langs){
     '<style>' + css + '\nbody{background:#fff;padding:0;margin:0}' +
     '.sheet{box-shadow:none;margin:0 auto;padding:24mm 20mm;max-width:210mm;break-after:page}' +
     '@page{size:A4;margin:0}</style>' +
-    langs.map(lk=> menuHTML(lk)).join(""));
+    langs.map(lk=> menuHTML(lk, opts)).join(""));
   w.document.close();
   setTimeout(()=> w.print(), 700);
 }
@@ -4210,11 +4385,11 @@ const SL_A = [
   m6(["Questo pomeriggio","This afternoon","Cet apres-midi","Esta tarde","Heute Nachmittag","بعد الظهر"])
 ];
 const SL_B = [
-  m6(["la pasta e fatta a mano","the pasta is handmade","les pates sont faites main","la pasta es artesanal","die Pasta ist handgemacht","المعكرونة مصنوعة يدويا"]),
+  m6(["la pasta è fatta a mano","the pasta is handmade","les pates sont faites main","la pasta es artesanal","die Pasta ist handgemacht","المعكرونة مصنوعة يدويا"]),
   m6(["il pesce arriva dal porto","the fish comes from the harbour","le poisson vient du port","el pescado viene del puerto","der Fisch kommt vom Hafen","السمك يأتي من الميناء"]),
-  m6(["il forno e sempre acceso","the oven is always on","le four est toujours allume","el horno siempre encendido","der Ofen ist immer an","الفرن دائما مشتعل"]),
+  m6(["il forno è sempre acceso","the oven is always on","le four est toujours allume","el horno siempre encendido","der Ofen ist immer an","الفرن دائما مشتعل"]),
   m6(["il cocktail lo fa il barman","the barman makes your cocktail","le barman prepare votre cocktail","el barman hace tu coctel","der Barmann mixt deinen Cocktail","الساقي يحضر كوكتيلك"]),
-  m6(["il dolce e fatto stamattina","the dessert was made this morning","le dessert est fait ce matin","el postre es de esta manana","das Dessert ist von heute Morgen","الحلوى محضرة هذا الصباح"]),
+  m6(["il dolce è fatto stamattina","the dessert was made this morning","le dessert est fait ce matin","el postre es de esta manana","das Dessert ist von heute Morgen","الحلوى محضرة هذا الصباح"]),
   m6(["il pane esce caldo dal forno","the bread comes out warm","le pain sort chaud du four","el pan sale caliente","das Brot kommt warm heraus","الخبز يخرج ساخنا"])
 ];
 const SL_C = [
@@ -4242,8 +4417,13 @@ VIEWS.slogan = function(){
   const last7 = Array.from({length:7},(_,i)=> addDays(today(),-6+i));
 
   const html =
-    '<div class="card" style="background:linear-gradient(150deg,var(--brand),var(--brand-2));border:0;color:var(--on-brand)">' +
-      '<div class="card-b" style="padding:26px 24px;text-align:center">' +
+    '<div class="card" style="position:relative;overflow:hidden;border:0;color:#fff;' +
+      (photoURL(cur && cur.photo)
+        ? 'background:url(' + photoURL(cur.photo) + ') center/cover'
+        : 'background:linear-gradient(150deg,var(--brand),var(--brand-2))') + '">' +
+      (photoURL(cur && cur.photo)
+        ? '<div style="position:absolute;inset:0;background:linear-gradient(165deg,rgba(10,7,4,.45),rgba(10,7,4,.78))"></div>' : '') +
+      '<div class="card-b" style="position:relative;padding:30px 24px;text-align:center">' +
         '<div style="font-size:11.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.8">' + esc(T("nav_slogan")) + '</div>' +
         '<div style="font-family:var(--serif);font-size:31px;margin-top:12px;line-height:1.25;text-wrap:balance">' +
           esc(cur ? L(cur.text) : "-") + '</div>' +
@@ -4269,7 +4449,8 @@ VIEWS.slogan = function(){
 
     card("Archivio slogan (" + DB.slogans.length + ")",
       '<div class="list">' + DB.slogans.slice().reverse().map(s=>
-        '<div class="li" style="padding-inline:0"><div class="tx"><b style="font-weight:500;white-space:normal">' + esc(L(s.text)) + '</b>' +
+        '<div class="li" style="padding-inline:0">' + thumb(s.photo, 38, 8) +
+        '<div class="tx"><b style="font-weight:500;white-space:normal">' + esc(L(s.text)) + '</b>' +
         '<span>' + (s.used||[]).length + ' ' + esc("volte usato") + '</span></div>' +
         '<div class="end"><button class="btn sm ' + (cur && cur.id === s.id ? "ok" : "ghost") + '" data-sluse="' + s.id + '">' +
           esc(cur && cur.id === s.id ? T("c_today") : T("mk_use")) + '</button>' +
@@ -4311,16 +4492,19 @@ VIEWS.slogan = function(){
 
 function sloganSheet(id){
   const s = id ? byId(DB.slogans, id) : null;
+  let getPhoto = ()=> (s ? s.photo : null) || null;
   modal({title:s ? T("c_edit") : T("c_new") + " " + T("mk_slogan").toLowerCase(), size:"wide",
-    body:mlFields("text", s ? s.text : null, T("mk_slogan"), true), actions:[
+    body:mlFields("text", s ? s.text : null, T("mk_slogan"), true) +
+         photoField("Immagine dello slogan", s ? s.photo : null), actions:[
     {label:T("c_cancel"), cls:"ghost"},
     {label:T("c_save"), cls:"pri", run:(w)=>{
       const text = readML(w, "text");
       if(!text.it){ toast(T("mk_slogan"),"err"); return false; }
-      if(s) s.text = text; else DB.slogans.push({id:uid("sl"), text:text, used:[]});
-      save(); refresh(); toast(T("c_save"),"ok");
+      if(s){ s.text = text; s.photo = getPhoto(); }
+      else DB.slogans.push({id:uid("sl"), text:text, used:[], photo:getPhoto()});
+      save(); phGarbage(); refresh(); toast(T("c_save"),"ok");
     }}
-  ]});
+  ], onOpen:(w)=>{ getPhoto = wirePhoto(w); }});
 }
 </script>
 <script>
@@ -4365,6 +4549,7 @@ function flyerCard(f, lk){
   const html = '<div class="flyer ' + (f.style || "") + '" dir="' + LANGS[lk].dir + '">' +
     '<div class="fk">' + esc(L(f.kicker)) + '</div>' +
     '<h2>' + esc(L(f.title)) + '</h2>' +
+    (photoURL(f.photo) ? '<div class="fimg" style="background-image:url(' + photoURL(f.photo) + ')"></div>' : '') +
     '<div class="fb">' + esc(L(f.body)) + '</div>' +
     (f.price ? '<div style="font-size:30px;font-weight:800;margin-top:14px">' + esc(f.price) + '</div>' : '') +
     '<div class="cta">' + esc(L(f.cta)) + '</div>' +
@@ -4433,6 +4618,7 @@ function flyerSheet(id, tpl){
         mlFields("title", f.title, "Titolo grande") +
         mlFields("body", f.body, "Testo", true) +
         mlFields("cta", f.cta, "Invito all'azione") +
+        photoField("Foto del volantino", f.photo) +
         '<div class="f3">' +
           '<div class="field"><label>Prezzo in evidenza</label><input class="inp" name="price" value="' + esc(f.price||"") + '" placeholder="15 euro"></div>' +
           '<div class="field"><label>' + esc(T("mk_period")) + '</label><input class="inp" name="period" value="' + esc(f.period||"") + '" placeholder="dal 1 al 30 giugno"></div>' +
@@ -4443,10 +4629,11 @@ function flyerSheet(id, tpl){
       '</div>' +
       '<div><div class="lbl">Anteprima ' + esc(LANGS[lk].code) + '</div><div id="fly-prev">' + flyerCard(f, lk) + '</div></div>' +
     '</div>';
+  let getPhoto = ()=> f.photo || null;
   const collect = (w)=>{
     const g = readForm(w);
     return {kicker:readML(w,"kicker"), title:readML(w,"title"), body:readML(w,"body"), cta:readML(w,"cta"),
-      price:g.price||"", period:g.period||"", style:g.style||""};
+      price:g.price||"", period:g.period||"", style:g.style||"", photo:getPhoto()};
   };
   const acts = [{label:T("c_cancel"), cls:"ghost"},
     {label:"Anteprima", cls:"ghost", run:(w)=>{ $("#fly-prev", w).innerHTML = flyerCard(collect(w), lk); return false; }},
@@ -4454,9 +4641,10 @@ function flyerSheet(id, tpl){
       const data = collect(w);
       if(!data.title.it && !data.title[lk]){ toast("Serve il titolo","err"); return false; }
       if(id) Object.assign(f, data); else DB.flyers.push(Object.assign({id:uid("fy")}, data));
-      save(); refresh(); toast(T("c_save"),"ok");
+      save(); phGarbage(); refresh(); toast(T("c_save"),"ok");
     }}];
-  modal({title:T("mk_flyer"), size:"xwide", body:body, actions:acts});
+  modal({title:T("mk_flyer"), size:"xwide", body:body, actions:acts,
+    onOpen:(w)=>{ getPhoto = wirePhoto(w); }});
 }
 
 function printFlyer(f, lk){
@@ -4577,16 +4765,19 @@ function ledPreviewText(s){
 }
 function ledTextSheet(id){
   const s = id ? DB.led.slides.find(x=> x.id === id) : null;
-  const body = mlFields("title", s ? s.title : null, "Titolo") + mlFields("sub", s ? s.sub : null, "Sottotitolo", true);
+  let getPhoto = ()=> (s ? s.photo : null) || null;
+  const body = mlFields("title", s ? s.title : null, "Titolo") + mlFields("sub", s ? s.sub : null, "Sottotitolo", true) +
+    photoField("Immagine di sfondo", s ? s.photo : null);
   const acts = [{label:T("c_cancel"), cls:"ghost"}];
   if(s) acts.push({label:T("c_del"), cls:"dang", run:()=>{ DB.led.slides = DB.led.slides.filter(x=>x.id!==id); save(); refresh(); }});
   acts.push({label:T("c_save"), cls:"pri", run:(w)=>{
     const title = readML(w,"title"), sub = readML(w,"sub");
-    if(s) Object.assign(s, {title:title, sub:sub});
-    else DB.led.slides.push({id:uid("ld"), type:"text", on:true, title:title, sub:sub});
+    if(s) Object.assign(s, {title:title, sub:sub, photo:getPhoto()});
+    else DB.led.slides.push({id:uid("ld"), type:"text", on:true, title:title, sub:sub, photo:getPhoto()});
     save(); refresh(); toast(T("c_save"),"ok");
   }});
-  modal({title:"Schermata di testo", size:"wide", body:body, actions:acts});
+  modal({title:"Schermata di testo", size:"wide", body:body, actions:acts,
+    onOpen:(w)=>{ getPhoto = wirePhoto(w); }});
 }
 </script>
 <script>
@@ -4596,45 +4787,66 @@ function ledSlides(){ return DB.led.slides.filter(s=> s.on); }
 function ledContent(s, lk){
   const prev = LANG; LANG = lk;
   const b = DB.meta.biz;
-  let out = "";
+  let out = "", bg = null;
   const K = (t)=> '<div class="led-k">' + esc(t) + '</div>';
   const H = (t)=> '<div class="led-t">' + esc(t) + '</div>';
   const S = (t)=> t ? '<div class="led-s">' + esc(t) + '</div>' : "";
+  const pick = (a)=> a.length ? a[Math.floor(Math.random()*a.length)] : null;
+  const withPhoto = (a)=> a.filter(x=> photoURL(x.photo));
 
   if(s.type === "welcome"){
     out = K(L(b.tagline)) + H(b.name) + S(b.openLunch + "  /  " + b.openDinner);
+    bg = (pick(withPhoto(DB.items.filter(i=> i.available))) || {}).photo || null;
   }else if(s.type === "slogan"){
     const sl = todaySlogan() || DB.slogans[0];
+    /* la foto dello slogan, se c'e; altrimenti un piatto del giorno fotografato */
+    bg = (sl && photoURL(sl.photo)) ? sl.photo : (pick(withPhoto(specials())) || {}).photo || null;
     out = K(T("nav_slogan")) + H(sl ? L(sl.text) : b.name);
   }else if(s.type === "special"){
     const sp = specials();
-    out = K(T("br_specials")) +
-      (sp.length ? '<ul class="led-list">' + sp.map(i=>
-        '<li><b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>'
+    const hero = pick(withPhoto(sp));
+    if(hero){
+      /* a ogni giro tocca a un piatto diverso, cosi lo schermo non si ripete */
+      out = '<div class="led-hero"><span class="ph" style="background-image:url(' + photoURL(hero.photo) + ')"></span>' +
+        '<div class="tx">' + K(T("m_special")) + H(L(hero.name)) + S(L(hero.desc)) +
+        '<div class="led-p">' + eur(hero.price) + '</div></div></div>';
+    }else{
+      out = K(T("br_specials")) + (sp.length
+        ? '<ul class="led-list">' + sp.map(i=> '<li><b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>'
         : H(L(b.tagline)));
+    }
   }else if(s.type === "cocktail"){
     const cks = DB.cocktails.filter(c=> itemById(c.itemId));
-    const c = cks[Math.floor(Math.random()*cks.length)];
+    const c = pick(cks);
     const i = c ? itemById(c.itemId) : null;
-    out = K(T("nav_cocktail")) + (i ? H(L(i.name)) + S(c.build.join("  -  ")) + '<div class="led-p">' + eur(i.price) + '</div>' : H(b.name));
+    if(i && photoURL(i.photo)){
+      out = '<div class="led-hero"><span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' +
+        '<div class="tx">' + K(T("nav_cocktail")) + H(L(i.name)) + S(c.build.join("  -  ")) +
+        '<div class="led-p">' + eur(i.price) + '</div></div></div>';
+    }else{
+      out = K(T("nav_cocktail")) + (i ? H(L(i.name)) + S(c.build.join("  -  ")) + '<div class="led-p">' + eur(i.price) + '</div>' : H(b.name));
+    }
   }else if(s.type === "aperitivo"){
     out = K(T("b_apero")) + H(b.aperitivo) + S({it:"Tutti i giorni al banco e in terrazza", en:"Every day at the bar and on the terrace",
       fr:"Tous les jours au comptoir et en terrasse", es:"Todos los dias en la barra y la terraza",
       de:"Jeden Tag an der Bar und auf der Terrasse", ar:"كل يوم عند البار وعلى التراس"}[lk]);
+    const cks = DB.cocktails.map(c=> itemById(c.itemId)).filter(Boolean);
+    bg = (pick(withPhoto(cks)) || {}).photo || null;
   }else if(s.type === "menu"){
     const cat = catById(s.catId) || DB.cats[1];
     const items = DB.items.filter(i=> i.cat === cat.id && i.available).slice(0,6);
     out = K(L(cat.name)) + '<ul class="led-list">' + items.map(i=>
-      '<li><b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
+      '<li>' + (photoURL(i.photo) ? '<span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
+      '<b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
   }else if(s.type === "clock"){
     out = K(fmtDate(today(),{weekday:"long",day:"numeric",month:"long"})) + '<div class="led-clock">' + nowHM() + '</div>';
   }else{
     out = H(L(s.title)) + S(L(s.sub));
+    bg = s.photo || null;
   }
   LANG = prev;
-  return out;
+  return {html:out, bg:bg};
 }
-
 function drawLed(){
   const root = $("#led-root .led"); if(!root) return;
   const slides = ledSlides();
@@ -4644,9 +4856,14 @@ function drawLed(){
   const langs = (DB.led.cycleLangs ? (DB.led.langs && DB.led.langs.length ? DB.led.langs : LKEYS) : [LANG]);
   const lk = langs[LEDLANGIX % langs.length];
   const inner = $(".led-in", root);
+  const c = ledContent(s, lk);
   inner.dir = LANGS[lk].dir;
   inner.className = "led-in fadein";
-  inner.innerHTML = ledContent(s, lk);
+  inner.innerHTML = c.html;
+  const u = photoURL(c.bg);
+  const img = $(".led-img", root), scrim = $(".led-scrim", root);
+  if(img){ img.style.backgroundImage = u ? 'url(' + u + ')' : "none"; img.hidden = !u; }
+  if(scrim) scrim.hidden = !u;
   void inner.offsetWidth;
   $(".led-foot", root).textContent = DB.meta.biz.name + "  -  " + DB.meta.biz.phone;
   const barEl = $(".led-bar", root);
@@ -4661,7 +4878,7 @@ function startLed(){
   const root = document.createElement("div");
   root.className = "led";
   root.setAttribute("data-mood", DB.led.mood || "brand");
-  root.innerHTML = '<div class="led-bg"></div>' +
+  root.innerHTML = '<div class="led-bg"></div><div class="led-img" hidden></div><div class="led-scrim" hidden></div>' +
     '<button class="led-x" title="' + esc(T("c_close")) + '">' + icon("x",18) + '</button>' +
     '<div class="led-in"></div><div class="led-foot"></div><div class="led-bar"></div>';
   $("#led-root").appendChild(root);
@@ -4893,19 +5110,30 @@ VIEWS.settings = function(){
       });
       $("[data-stexp]").onclick = ()=> saveFile(
         "backup_ristorante_" + today() + ".json",
-        JSON.stringify(DB, null, 1), "application/json", T("st_backup"));
+        JSON.stringify(Object.assign({}, DB, {_foto:PHOTOS}), null, 1),
+        "application/json", T("st_backup"));
       $("[data-stimp]").onclick = ()=>{
         const inp = document.createElement("input");
         inp.type = "file"; inp.accept = "application/json,.json";
+        inp.style.cssText = "position:fixed;left:-9999px;width:1px;height:1px;opacity:0";
+        document.body.appendChild(inp);
         inp.onchange = ()=>{
-          const file = inp.files[0]; if(!file) return;
+          const file = inp.files[0];
+          inp.remove();
+          if(!file) return;
           const rd = new FileReader();
           rd.onload = ()=>{
             try{
               const d = JSON.parse(rd.result);
               if(!d || !d.meta || !d.tables) throw new Error("formato");
-              DB = normalize(d); save(); applyLang(DB.meta.lang); applyTheme(); go("dash");
-              toast(T("st_restore"), "ok");
+              const foto = d._foto || {}; delete d._foto;
+              DB = normalize(d); save();
+              PHOTOS = {};
+              const ids = Object.keys(foto);
+              Promise.all(ids.map(k=> phPut(k, foto[k]).catch(()=>{}))).then(()=>{
+                applyLang(DB.meta.lang); applyTheme(); go("dash");
+                toast(T("st_restore") + (ids.length ? " (" + ids.length + " foto)" : ""), "ok");
+              });
             }catch(e){ toast("File di backup non valido", "err"); }
           };
           rd.readAsText(file);
@@ -4995,6 +5223,12 @@ function boot(){
   setInterval(()=>{ if(VIEW === "tables" || VIEW === "dash") refresh(); }, 60000);
 
   go("dash");
+
+  /* IndexedDB e asincrono: si disegna subito e si ridisegna quando le foto ci sono */
+  phLoadAll().then(ph=>{
+    PHOTOS = ph;
+    if(Object.keys(ph).length && !LEDON) refresh();
+  });
 }
 if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
 else boot();

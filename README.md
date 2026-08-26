@@ -41,9 +41,10 @@ listino bar completo con food cost e disponibilità.
 
 ### Menu
 **Gestione menu** — ogni piatto ha nome e descrizione in sei lingue, prezzo,
-allergeni, postazione di cucina, disponibilità e flag *piatto del giorno*. Una
-colonna mostra a colpo d'occhio in quante lingue è tradotto. La **carta si stampa**
-in una lingua sola o in tutte e sei, già impaginata in A4.
+allergeni, postazione di cucina, disponibilità, flag *piatto del giorno* e **foto**.
+Una colonna mostra a colpo d'occhio in quante lingue è tradotto. La **carta si
+stampa** in una lingua sola o in tutte e sei, già impaginata in A4, con o senza le
+foto dei piatti.
 
 ### Magazzino
 | Sezione | Cosa fa |
@@ -68,9 +69,9 @@ in una lingua sola o in tutte e sei, già impaginata in A4.
 ### Marketing
 | Sezione | Cosa fa |
 | --- | --- |
-| **Slogan del giorno** | Un generatore compone lo slogan in tutte e sei le lingue insieme. Si sceglie quello del giorno, si vede l'archivio e cosa si è usato negli ultimi sette giorni. |
-| **Volantini** | Guida in dieci punti su **come si fa un volantino** e come va distribuito. Quattro modelli pronti (aperitivo, colazione hotel, menu del giorno, serata a tema) da modificare in sei lingue, con anteprima e stampa in A4 a colori. |
-| **Schermo LED** | Sequenza a tutto schermo per lo schermo del locale: benvenuto, slogan, piatti del giorno, cocktail, aperitivo, orologio e testi liberi. Ruota le lingue a ogni schermata, così l'ospite straniero legge nella sua. |
+| **Slogan del giorno** | Un generatore compone lo slogan in tutte e sei le lingue insieme. Si sceglie quello del giorno, gli si può attaccare **un'immagine**, e si vede l'archivio con cosa si è usato negli ultimi sette giorni. |
+| **Volantini** | Guida in dieci punti su **come si fa un volantino** e come va distribuito. Quattro modelli pronti (aperitivo, colazione hotel, menu del giorno, serata a tema) da modificare in sei lingue, con foto, anteprima e stampa in A4 a colori. |
+| **Schermo LED** | Sequenza a tutto schermo per lo schermo del locale: benvenuto, slogan, piatti del giorno, cocktail, aperitivo, orologio e testi liberi. **Le foto dei piatti riempiono lo schermo**: il piatto del giorno esce grande accanto al nome e al prezzo, lo slogan gira su una foto a tutto campo. Ruota le lingue a ogni schermata, così l'ospite straniero legge nella sua. |
 
 ### Qualità e direzione
 - **Se qualcosa non va** — registro delle segnalazioni con tipo, gravità, tavolo, chi segnala e azione correttiva. Non si chiude una segnalazione senza aver scritto l'azione.
@@ -126,9 +127,35 @@ cifre latine perché in sala li leggano tutti.
 
 ---
 
+## Le foto dei piatti
+
+Ogni piatto, ogni slogan e ogni volantino può avere la sua foto: si scatta col
+telefono, si sceglie dal riquadro **Scegli foto** e basta. La foto viene
+rimpicciolita e compressa da sola — una da 4 MB diventa un centinaio di KB — e
+resta su questo dispositivo, come tutto il resto.
+
+Dove si vedono:
+
+- **Schermo LED** — il piatto del giorno esce grande accanto a nome, descrizione e prezzo; a ogni giro tocca a un piatto diverso, così lo schermo non si ripete. Lo slogan gira su una foto a tutto campo con una velatura scura sotto, perché il testo resti leggibile da lontano.
+- **Cruscotto** — miniatura accanto a ogni piatto del giorno, e lo slogan sopra la sua immagine.
+- **Gestione menu** — miniatura in tabella, per capire al volo quali piatti sono ancora senza foto.
+- **Carta stampata** — casella *Con le foto dei piatti* al momento della stampa.
+- **Volantini** — la foto entra nel modello e va in stampa a colori.
+
+Le foto stanno in IndexedDB, non in `localStorage`: quattro scatti riempirebbero i
+5 MB scarsi che `localStorage` concede, e il gestionale smetterebbe di salvare tutto
+il resto. Il backup se le porta dietro, quindi un file di backup con le foto pesa
+qualche MB invece di qualche decina di KB. Una foto che non è più agganciata a
+niente viene buttata da sola.
+
+Vale il consiglio scritto nella guida ai volantini: **foto vera del piatto, scattata
+nel locale con la sua luce**. Le immagini scaricate da internet si riconoscono, e
+oltretutto quasi sempre non si possono usare.
+
 ## Dati e backup
 
-Tutto è salvato in `localStorage`, sotto la chiave `ristorante_sistema_v1`. I dati
+Tutto è salvato in `localStorage`, sotto la chiave `ristorante_sistema_v1`, e le
+foto in IndexedDB sotto `ristorante_foto`. I dati
 non escono mai dal dispositivo e non vengono inviati a nessun server. Sono legati a
 quel browser: conviene esportare un backup con regolarità da **Impostazioni →
 Esporta**, che produce un file JSON. **Ripristina** lo rilegge, adattando anche i
