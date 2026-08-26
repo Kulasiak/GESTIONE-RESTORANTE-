@@ -24,12 +24,14 @@ la cassa e le schermate del LED.
 | --- | --- |
 | **Cruscotto** | Incasso e coperti del giorno, tavoli occupati, prenotazioni, comande aperte. Il riquadro *Da sistemare adesso* elenca quello che manca: briefing non fatto, slogan non scelto, tavoli da rifare, scorte sotto minimo, ordini hotel da preparare. |
 | **Briefing** | Il briefing di inizio turno: slogan del giorno, piatti del giorno, esauriti, prenotazioni con note (allergie, compleanni, gruppi), obiettivo del turno e chi era presente. Si stampa su A4 da appendere in cucina. |
+| **Monitor cameriere** | Il monitor che sta in sala. Chi arriva **entra col proprio codice** di quattro cifre, prende le comande a nome suo, e quando **stacca** esce: il monitor si richiude e resta pronto per il turno dopo. L'entrata e l'uscita finiscono da sole nelle timbrature. |
 | **Cassa** | Presa ordine al banco toccando le foto: si sceglie il reparto, si tocca il piatto, si incassa in contanti o carta. **Non è un registratore fiscale** e non emette scontrini validi — lo scontrino lo batte il registratore telematico, questo è il promemoria dell'ordine. Gli incassi finiscono comunque nei report. |
 | **Checklist** | Apertura, mise en place e chiusura. Ogni voce si spunta con il nome di chi l'ha fatta e l'ora. |
 
 ### Sala
 | Sezione | Cosa fa |
 | --- | --- |
+| **Monitor cameriere** | Vedi sopra: si entra col codice, si esce staccando. |
 | **Tavoli** | Piantina delle quattro sale (sala interna, veranda, dehors, bancone). Sei stati a colori — libero, prenotato, occupato, al conto, da pulire, fuori servizio — con il cronometro dei minuti da quando l'ospite si è seduto. I tavoli si spostano trascinandoli. La sigla **MEP** segnala i tavoli ancora da apparecchiare. |
 | **Prenotazioni** | Giorno per giorno, divise fra pranzo e cena, con note sempre in vista (allergie, seggiolone, sedia a rotelle). Da qui si fa accomodare l'ospite e si apre la comanda in un colpo solo. |
 | **Comande** | Presa comanda per portate (antipasto, primo, secondo, contorno, dolce, bevande), note per la cucina riga per riga, invio in cucina, conto con coperto, sconto, conto diviso e scontrino stampabile. |
@@ -47,12 +49,54 @@ la cassa e le schermate del LED.
 gradazione. In testa la fascia dell'**aperitivo di ogni pomeriggio**. Sotto,
 listino bar completo con food cost e disponibilità.
 
+### Codici, permessi e chi tocca cosa
+
+Ogni persona in organico ha il **suo codice di quattro cifre**, e un livello:
+
+| Livello | Chi | Cosa può fare |
+| --- | --- | --- |
+| **Operatore** | camerieri, cuochi, barman, lavapiatti | prendere comande, aggiungere piatti, incassare senza sconto |
+| **Responsabile** | direzione, maître, chef | **tutto**, senza che nessuno gli chieda niente |
+
+**Il codice del responsabile serve sempre** per modificare qualcosa che è già in
+movimento:
+
+- togliere o ridurre un piatto **già mandato in cucina**;
+- cambiare le modifiche a un piatto già in lavorazione;
+- fare uno **sconto** sul conto;
+- aprire la scheda di una persona, dove stanno codici e livelli.
+
+Aggiungere un piatto, prendere una comanda nuova o incassare senza sconto **non**
+chiedono niente: il lavoro normale non si ferma mai. Ogni autorizzazione lascia
+traccia — cosa è stato modificato, chi l'ha chiesto e chi l'ha concesso.
+
+I codici si assegnano dalla scheda della persona, in **Anagrafica**. Due persone non
+possono avere lo stesso codice: il sistema lo rifiuta.
+
+> Il codice mette ordine nel lavoro, **non è una difesa informatica**. I dati stanno
+> in chiaro nel browser: chi ha in mano il dispositivo può leggerli. Serve a sapere
+> chi ha fatto cosa e a fermare la modifica distratta, non a proteggere da chi vuole
+> davvero entrare.
+
 ### Menu
 **Gestione menu** — ogni piatto ha nome e descrizione in sei lingue, prezzo,
 allergeni, postazione di cucina, disponibilità, flag *piatto del giorno* e **foto**.
 Una colonna mostra a colpo d'occhio in quante lingue è tradotto. La **carta si
 stampa** in una lingua sola o in tutte e sei, già impaginata in A4, con o senza le
 foto dei piatti.
+
+**Modifiche al piatto** — il listino di tutto quello che l'ospite chiede davvero,
+diviso in cinque gruppi: **allergie e diete** (celiaco, intolleranze, allergie,
+vegetariano, vegano), **cottura** (al sangue, media, ben cotta, al dente),
+**senza** (cipolla, aglio, glutine, lattosio, maiale, alcol, ghiaccio…),
+**aggiungi** (parmigiano, mozzarella, patatine — con il loro prezzo) e **servizio**
+(salsa a parte, ben caldo, da dividere in due, porzione bambino, per primo).
+
+Nella comanda, accanto a ogni piatto, c'è il tasto delle modifiche: **il cameriere
+tocca, non scrive**. Così in cucina arriva sempre la stessa parola, e non
+*senza cipola* scritto in tre modi diversi. Le modifiche di allergia **escono in
+rosso** sul monitor della cucina. Una modifica che costa si somma da sola al prezzo
+della riga. Il listino si allunga e si accorcia da questa stessa pagina.
 
 ### Magazzino
 | Sezione | Cosa fa |

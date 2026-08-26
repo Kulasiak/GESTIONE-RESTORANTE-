@@ -10,7 +10,10 @@
 <title>Ristorante — Sistema di Gestione</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
+<!-- I font arrivano per conto loro: se la connessione manca il gestionale parte lo stesso,
+     con i caratteri di sistema, invece di restare fermo ad aspettarli. -->
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
 <style>
 /* ============================================================
    RISTORANTE — Sistema di gestione completo
@@ -380,6 +383,7 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .tik li.done{opacity:.45;text-decoration:line-through}
 .tik li .q{font-weight:750;min-width:20px;color:var(--brand)}
 .tik li em{display:block;font-style:normal;font-size:11.5px;color:var(--amber);font-weight:600;margin-top:1px}
+.tik li em.alert{color:var(--red);font-weight:800;letter-spacing:.02em;font-size:12px}
 .tik-f{padding:8px 10px;border-top:1px solid var(--sep);display:flex;gap:6px}
 .course{padding:3px 12px;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--txt-3);background:var(--fill-3)}
 
@@ -497,6 +501,53 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .catile.off{opacity:.4}
 .catile .so{position:absolute;top:7px;inset-inline-end:7px;background:var(--red);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:var(--r-pill)}
 
+/* ---------- 13d. TASTIERINO DEL CODICE ---------- */
+.pin-dots{display:flex;gap:13px;justify-content:center;margin:6px 0 4px}
+.pin-dots i{width:15px;height:15px;border-radius:50%;background:var(--fill-2);transition:background .14s,transform .14s}
+.pin-dots i.on{background:var(--brand);transform:scale(1.12)}
+.pin-dots.shake{animation:shake .4s}
+@keyframes shake{10%,90%{transform:translateX(-3px)}30%,70%{transform:translateX(5px)}50%{transform:translateX(-5px)}}
+.pin-msg{text-align:center;font-size:12.5px;font-weight:600;color:var(--red);min-height:19px;margin-bottom:8px}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:280px;margin:0 auto}
+.pin-k{
+  height:58px;border-radius:var(--r-m);background:var(--fill-1);font-size:22px;font-weight:600;
+  display:grid;place-items:center;transition:background .12s,transform .1s;font-variant-numeric:tabular-nums;
+}
+.pin-k:hover{background:var(--fill-2)}
+.pin-k:active{transform:scale(.94)}
+.pin-k.ok{background:var(--green);color:#fff}
+.pin-k.c{background:transparent;border:1px solid var(--sep-2);font-size:19px}
+
+/* ---------- 13e. MONITOR DEL CAMERIERE ---------- */
+.lockscreen{display:grid;place-items:center;min-height:62vh;padding:20px}
+.lk-card{
+  background:var(--bg-2);border:1px solid var(--sep);border-radius:22px;box-shadow:var(--sh-2);
+  padding:34px 30px;text-align:center;max-width:380px;width:100%;
+}
+.lk-logo{
+  width:60px;height:60px;margin:0 auto 16px;border-radius:17px;display:grid;place-items:center;
+  background:linear-gradient(150deg,var(--brand),var(--brand-2));color:#fff;
+  font-family:var(--serif);font-size:28px;font-weight:700;box-shadow:var(--sh-1);
+}
+.lk-card h2{font-family:var(--serif);font-size:24px;letter-spacing:-.01em}
+.lk-card p{font-size:13.5px;color:var(--txt-2);margin-top:6px;line-height:1.5}
+.lk-team{margin-top:22px;padding-top:16px;border-top:1px solid var(--sep);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3)}
+.tmtile{
+  position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+  padding:12px 13px;border-radius:var(--r-m);background:var(--bg-2);border:2px solid var(--sep-2);
+  box-shadow:var(--sh-1);transition:transform .1s var(--ease),box-shadow .16s;text-align:start;
+}
+.tmtile:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.tmtile:active{transform:scale(.97)}
+.tmtile .n{font-size:20px;font-weight:750;letter-spacing:-.02em;line-height:1}
+.tmtile .s{font-size:11px;font-weight:650;color:var(--txt-2)}
+.tmtile .v{font-size:12.5px;font-weight:700;margin-top:3px}
+.tmtile .t{position:absolute;top:8px;inset-inline-end:9px;font-size:11px;font-weight:700;color:var(--txt-3)}
+.tmtile[data-st="occupato"]{border-color:var(--red);background:var(--red-soft)}
+.tmtile[data-st="prenotato"]{border-color:var(--blue);background:var(--blue-soft)}
+.tmtile[data-st="conto"]{border-color:var(--amber);background:var(--amber-soft)}
+.tmtile[data-st="pulire"]{border-color:var(--violet);background:var(--violet-soft);border-style:dashed}
+
 /* ---------- 14. SCHERMO LED ---------- */
 .led{
   position:fixed;inset:0;z-index:500;background:#08060420;display:flex;
@@ -609,9 +660,12 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
       </div>
     </div>
     <nav class="nav" id="nav"></nav>
-    <div class="sidefoot">
+    <div class="sidefoot" style="flex-direction:column;gap:7px">
+      <button class="btn sm ghost block" id="btn-user" style="justify-content:flex-start"></button>
+      <div class="row tight" style="width:100%">
       <button class="btn sm ghost" style="flex:1" id="btn-led"></button>
       <button class="btn sm ghost btn-ico" id="btn-lang" style="width:auto;padding:5px 10px"></button>
+      </div>
     </div>
   </aside>
   <div class="main">
@@ -759,6 +813,26 @@ c_export:["Esporta","Export","Exporter","Exportar","Exportieren","تصدير"],
 c_language:["Lingua","Language","Langue","Idioma","Sprache","اللغة"],
 c_of:["di","of","de","de","von","من"],
 a_area:["Reparto","Area","Secteur","Area","Bereich","القسم"],
+au_pin:["Codice","Code","Code","Codigo","Code","الرمز"],
+au_login:["Entra","Sign in","Entrer","Entrar","Anmelden","دخول"],
+au_who:["Chi sei","Who are you","Qui es-tu","Quien eres","Wer bist du","من أنت"],
+au_wrong:["Codice sbagliato","Wrong code","Code incorrect","Codigo incorrecto","Falscher Code","رمز خاطئ"],
+au_need:["Serve il codice del responsabile","Manager code required","Code du responsable requis","Codigo del responsable","Leitercode erforderlich","مطلوب رمز المسؤول"],
+au_off:["Stacca","Clock off","Fin de service","Fichar salida","Feierabend","إنهاء الدوام"],
+au_offq:["Fine turno: esci dal monitor?","End of shift: sign out?","Fin de service, sortir ?","Fin de turno, salir?","Schicht beenden, abmelden?","نهاية المناوبة، هل تخرج؟"],
+au_mgr:["Responsabile","Manager","Responsable","Responsable","Leitung","المسؤول"],
+au_staff:["Operatore","Operator","Operateur","Operador","Mitarbeiter","المشغل"],
+au_locked:["Monitor bloccato","Screen locked","Ecran verrouille","Pantalla bloqueada","Bildschirm gesperrt","الشاشة مقفلة"],
+nav_term:["Monitor cameriere","Waiter terminal","Terminal serveur","Terminal camarero","Kellner-Terminal","شاشة النادل"],
+nav_mods:["Modifiche al piatto","Dish changes","Modifications","Modificaciones","Anderungen","تعديلات الطبق"],
+md_add:["Modifiche","Changes","Modifications","Cambios","Anderungen","التعديلات"],
+md_none:["Nessuna modifica","No changes","Aucune modification","Sin cambios","Keine Anderung","لا تعديلات"],
+md_cook:["Cottura","Cooking","Cuisson","Coccion","Garstufe","درجة الطهي"],
+md_without:["Senza","Without","Sans","Sin","Ohne","بدون"],
+md_extra:["Aggiungi","Add","Ajouter","Anadir","Dazu","إضافة"],
+md_serve:["Servizio","Service","Service","Servicio","Service","التقديم"],
+md_alert:["Allergie e diete","Allergies and diets","Allergies et regimes","Alergias y dietas","Allergien und Diaten","الحساسية والحميات"],
+md_free:["Nota libera","Free note","Note libre","Nota libre","Freie Notiz","ملاحظة حرة"],
 a_gastro:["Gastronomia","Deli counter","Traiteur","Gastronomia","Feinkost","المأكولات الجاهزة"],
 a_resto:["Ristorante","Restaurant","Restaurant","Restaurante","Restaurant","المطعم"],
 a_counter:["Al banco","At the counter","Au comptoir","En la barra","Am Tresen","عند الطاولة"],
@@ -1515,6 +1589,74 @@ SEED_ITEMS.push(
 </script>
 <script>
 /* ============================================================
+   PARTE 5c — LE MODIFICHE AL PIATTO
+   Tutto quello che un ospite chiede davvero in sala. Il cameriere tocca,
+   non scrive: cosi in cucina arriva sempre la stessa parola e non
+   "senza cipola" scritto in tre modi diversi.
+   Il prezzo si somma alla riga quando la modifica costa.
+   ============================================================ */
+const SEED_MODS = [
+  /* cottura */
+  ["md_bleu","cottura",0, ["Al sangue","Rare","Saignant","Poco hecho","Blutig","نيء قليلا"]],
+  ["md_med","cottura",0,  ["Media","Medium","A point","Al punto","Medium","متوسط"]],
+  ["md_ben","cottura",0,  ["Ben cotta","Well done","Bien cuit","Muy hecho","Durch","ناضج جيدا"]],
+  ["md_croc","cottura",0, ["Ben croccante","Extra crispy","Bien croustillant","Muy crujiente","Extra knusprig","مقرمش جدا"]],
+  ["md_alden","cottura",0,["Al dente","Al dente","Al dente","Al dente","Al dente","ال دينتي"]],
+  ["md_morb","cottura",0, ["Piu morbida","Softer","Plus moelleux","Mas blando","Weicher","أطرى"]],
+  /* senza */
+  ["md_scip","senza",0,   ["Senza cipolla","No onion","Sans oignon","Sin cebolla","Ohne Zwiebel","بدون بصل"]],
+  ["md_sagl","senza",0,   ["Senza aglio","No garlic","Sans ail","Sin ajo","Ohne Knoblauch","بدون ثوم"]],
+  ["md_ssal","senza",0,   ["Poco sale","Light on salt","Peu sale","Poca sal","Wenig Salz","ملح قليل"]],
+  ["md_spic","senza",0,   ["Non piccante","Not spicy","Pas epice","No picante","Nicht scharf","غير حار"]],
+  ["md_sfor","senza",0,   ["Senza formaggio","No cheese","Sans fromage","Sin queso","Ohne Kase","بدون جبن"]],
+  ["md_spom","senza",0,   ["Senza pomodoro","No tomato","Sans tomate","Sin tomate","Ohne Tomate","بدون طماطم"]],
+  ["md_suov","senza",0,   ["Senza uovo","No egg","Sans oeuf","Sin huevo","Ohne Ei","بدون بيض"]],
+  ["md_sbur","senza",0,   ["Senza burro","No butter","Sans beurre","Sin mantequilla","Ohne Butter","بدون زبدة"]],
+  ["md_span","senza",0,   ["Senza panna","No cream","Sans creme","Sin nata","Ohne Sahne","بدون كريمة"]],
+  ["md_sghi","senza",0,   ["Senza ghiaccio","No ice","Sans glacons","Sin hielo","Ohne Eis","بدون ثلج"]],
+  ["md_salc","senza",0,   ["Senza alcol","No alcohol","Sans alcool","Sin alcohol","Ohne Alkohol","بدون كحول"]],
+  ["md_smai","senza",0,   ["Senza maiale","No pork","Sans porc","Sin cerdo","Ohne Schwein","بدون لحم خنزير"]],
+  /* aggiunte a pagamento */
+  ["md_apar","extra",1.50,["Aggiungi parmigiano","Add parmesan","Ajouter parmesan","Anadir parmesano","Parmesan dazu","إضافة بارميزان"]],
+  ["md_amoz","extra",1.50,["Aggiungi mozzarella","Add mozzarella","Ajouter mozzarella","Anadir mozzarella","Mozzarella dazu","إضافة موزاريلا"]],
+  ["md_apan","extra",1.00,["Pane in piu","Extra bread","Pain en plus","Mas pan","Mehr Brot","خبز إضافي"]],
+  ["md_apat","extra",3.00,["Aggiungi patatine","Add fries","Ajouter frites","Anadir patatas","Pommes dazu","إضافة بطاطا مقلية"]],
+  ["md_adop","extra",0,   ["Doppia porzione","Double portion","Double portion","Racion doble","Doppelte Portion","حصة مضاعفة"]],
+  /* servizio */
+  ["md_apart","servizio",0,["Salsa a parte","Sauce on the side","Sauce a part","Salsa aparte","Sauce separat","الصلصة جانبا"]],
+  ["md_cald","servizio",0, ["Ben caldo","Very hot","Bien chaud","Bien caliente","Sehr heiss","ساخن جدا"]],
+  ["md_tiep","servizio",0, ["Tiepido","Warm, not hot","Tiede","Templado","Lauwarm","فاتر"]],
+  ["md_prima","servizio",0,["Servire per primo","Serve first","Servir en premier","Servir primero","Zuerst servieren","يقدم أولا"]],
+  ["md_dopo","servizio",0, ["Servire dopo","Serve later","Servir apres","Servir despues","Spater servieren","يقدم لاحقا"]],
+  ["md_div","servizio",0,  ["Da dividere in due","To share, two plates","A partager","Para compartir","Zum Teilen","للمشاركة"]],
+  ["md_bimb","servizio",0, ["Porzione bambino","Child portion","Portion enfant","Racion infantil","Kinderportion","حصة أطفال"]],
+  ["md_via","servizio",0,  ["Da portare via","To take away","A emporter","Para llevar","Zum Mitnehmen","للأخذ"]],
+  /* allergie e diete: vanno gridate in cucina */
+  ["md_celi","allerta",0, ["CELIACO - senza glutine","COELIAC - gluten free","COELIAQUE - sans gluten","CELIACO - sin gluten","ZOELIAKIE - glutenfrei","حساسية القمح"]],
+  ["md_latt","allerta",0, ["Intollerante al lattosio","Lactose intolerant","Intolerant au lactose","Intolerante a lactosa","Laktoseintoleranz","حساسية اللاكتوز"]],
+  ["md_cros","allerta",0, ["ALLERGIA crostacei","ALLERGY shellfish","ALLERGIE crustaces","ALERGIA mariscos","ALLERGIE Krustentiere","حساسية القشريات"]],
+  ["md_frut","allerta",0, ["ALLERGIA frutta a guscio","ALLERGY nuts","ALLERGIE fruits a coque","ALERGIA frutos secos","ALLERGIE Nusse","حساسية المكسرات"]],
+  ["md_vege","allerta",0, ["Vegetariano","Vegetarian","Vegetarien","Vegetariano","Vegetarisch","نباتي"]],
+  ["md_vega","allerta",0, ["Vegano","Vegan","Vegan","Vegano","Vegan","نباتي صرف"]]
+];
+const MOD_GROUPS = [
+  {k:"allerta",  t:"md_alert",   cls:"r"},
+  {k:"cottura",  t:"md_cook",    cls:"a"},
+  {k:"senza",    t:"md_without", cls:"b"},
+  {k:"extra",    t:"md_extra",   cls:"g"},
+  {k:"servizio", t:"md_serve",   cls:"v"}
+];
+
+/* --- codici del personale: quattro cifre, uno a testa --- */
+const MANAGER_ROLES = ["direzione","maitre","chef"];
+const SEED_PINS = {
+  st_nat:"1111", st_gio:"2222", st_sam:"2323", st_luc:"2424", st_mar:"2525",
+  st_ele:"2626", st_pao:"3333", st_chi:"3434", st_and:"3535", st_fat:"3636",
+  st_dav:"3737", st_sof:"4444", st_kar:"4545", st_ann:"5555", st_ric:"5656"
+};
+</script>
+<script>
+/* ============================================================
    PARTE 6 — MODELLO DATI E PERSISTENZA
    ============================================================ */
 const KEY = "ristorante_sistema_v1";
@@ -1553,7 +1695,8 @@ function buildSeed(){
     suppliers:SEED_SUPP.slice(),
     staff:SEED_STAFF.map(a=>({
       id:a[0], name:a[1], role:a[2], contract:a[3], hweek:a[4], rate:a[5], phone:a[6],
-      langs:a[7].split(","), active:true, hired:"2023-04-01", notes:""
+      langs:a[7].split(","), active:true, hired:"2023-04-01", notes:"",
+      pin:SEED_PINS[a[0]] || "", level:MANAGER_ROLES.includes(a[2]) ? "responsabile" : "operatore"
     })),
     shifts:[], clock:[],
     briefings:[], issues:[],
@@ -1577,10 +1720,11 @@ function buildSeed(){
       ]
     },
     cocktails:SEED_COCKTAILS.slice(),
+    mods:SEED_MODS.map(a=>({id:a[0], group:a[1], price:a[2], name:m6(a[3]), on:true})),
     haccp:SEED_HACCP.slice(), haccpLog:[],
     checklists:{}, prep:[],
     recipes:[],
-    cashups:[]
+    cashups:[], changes:[]
   };
 
   /* turni della settimana corrente */
@@ -1696,7 +1840,11 @@ const openOrders = ()=> DB.orders.filter(o=> o.status !== "chiuso" && o.status !
 const orderOf = (tableId)=> openOrders().find(o=> o.tableId === tableId) || null;
 
 /* --- calcoli comanda --- */
-function lineTotal(l){ return (Number(l.price)||0) * (Number(l.qty)||0); }
+function modById(id){ return (DB.mods || []).find(m=> m.id === id) || null; }
+/** Quanto costano in piu le modifiche scelte su una riga. */
+function modsPrice(l){ return sum((l.mods || []).map(id=>{ const m = modById(id); return m ? (Number(m.price)||0) : 0; })); }
+function modsText(l){ return (l.mods || []).map(id=>{ const m = modById(id); return m ? L(m.name) : ""; }).filter(Boolean); }
+function lineTotal(l){ return ((Number(l.price)||0) + modsPrice(l)) * (Number(l.qty)||0); }
 function orderSubtotal(o){ return sum((o.lines||[]).map(lineTotal)); }
 function orderTotal(o){
   const sub = orderSubtotal(o);
@@ -1908,6 +2056,123 @@ function wirePhoto(root){
 </script>
 <script>
 /* ============================================================
+   PARTE 6c — CHI È AL MONITOR, E CHI PUO MODIFICARE
+   Ogni persona ha il suo codice di quattro cifre. Il cameriere entra col
+   suo e prende le comande a nome suo. Qualsiasi modifica a una comanda
+   gia mandata in cucina, o allo sconto, chiede il codice del responsabile:
+   il responsabile arriva dappertutto.
+
+   Nota onesta: il codice serve a mettere ordine nel lavoro, non è una
+   difesa informatica. I dati stanno in chiaro nel browser e chi ha in mano
+   il dispositivo puo leggerli.
+   ============================================================ */
+let SESSION = null;      /* {staffId, since} */
+
+function isManager(st){ return !!st && (st.level === "responsabile" || MANAGER_ROLES.includes(st.role)); }
+function me(){ return SESSION ? staffById(SESSION.staffId) : null; }
+function meIsManager(){ return isManager(me()); }
+function staffByPin(pin){ return DB.staff.find(st=> st.active && st.pin && st.pin === pin) || null; }
+
+/** Tastierino numerico. accept(staff) decide chi passa. */
+function askPin(o){
+  let pin = "";
+  const keys = ["1","2","3","4","5","6","7","8","9","c","0","ok"];
+  const body =
+    (o.hint ? '<p style="font-size:13.5px;color:var(--txt-2);text-align:center;margin-bottom:14px;line-height:1.55">' + esc(o.hint) + '</p>' : '') +
+    '<div class="pin-dots" id="pin-dots"></div>' +
+    '<div class="pin-msg" id="pin-msg"></div>' +
+    '<div class="pin-pad">' + keys.map(k=>
+      '<button class="pin-k' + (k === "ok" ? " ok" : k === "c" ? " c" : "") + '" data-k="' + k + '">' +
+      (k === "c" ? "&#9003;" : k === "ok" ? icon("check",20) : k) + '</button>').join("") + '</div>';
+
+  modal({title:o.title || T("au_pin"), size:"slim", body:body,
+    actions:[{label:T("c_cancel"), cls:"ghost", run:()=> o.onCancel && o.onCancel()}],
+    onOpen:(w)=>{
+      const dots = $("#pin-dots", w), msg = $("#pin-msg", w);
+      const draw = ()=> dots.innerHTML = [0,1,2,3].map(i=>
+        '<i class="' + (i < pin.length ? "on" : "") + '"></i>').join("");
+      const wrong = ()=>{
+        msg.textContent = T("au_wrong");
+        dots.classList.add("shake");
+        setTimeout(()=> dots.classList.remove("shake"), 420);
+        pin = ""; draw();
+      };
+      const submit = ()=>{
+        const st = staffByPin(pin);
+        if(st && (!o.accept || o.accept(st))){ closeModal(); o.onOk(st); }
+        else wrong();
+      };
+      const press = (k)=>{
+        msg.textContent = "";
+        if(k === "c") pin = pin.slice(0, -1);
+        else if(k === "ok") return submit();
+        else if(pin.length < 4) pin += k;
+        draw();
+        if(pin.length === 4) setTimeout(submit, 120);
+      };
+      $$("[data-k]", w).forEach(b=> b.onclick = ()=> press(b.getAttribute("data-k")));
+      w.tabIndex = -1; w.focus();
+      w.addEventListener("keydown", (e)=>{
+        if(/^[0-9]$/.test(e.key)) press(e.key);
+        else if(e.key === "Backspace") press("c");
+        else if(e.key === "Enter") press("ok");
+      });
+      draw();
+    }});
+}
+
+/** Tiene traccia di chi ha autorizzato una modifica, e su cosa. */
+function logChange(order, line, what, mgr){
+  DB.changes = DB.changes || [];
+  const it = line ? itemById(line.itemId) : null;
+  DB.changes.unshift({
+    id:uid("ch"), at:new Date().toISOString(),
+    by:(me() || {}).id || null, mgr:mgr ? mgr.id : null,
+    what:what, where:order ? orderLabel(order) : "", item:it ? L(it.name) : ""
+  });
+  if(DB.changes.length > 400) DB.changes.length = 400;
+  save();
+}
+
+/** Chiede il codice del responsabile, se chi e al monitor non lo e gia. */
+function requireManager(reason, onOk){
+  if(meIsManager()){ onOk(me()); return; }
+  askPin({title:T("au_need"), hint:reason, accept:isManager, onOk:(st)=>{
+    toast(T("au_mgr") + ": " + st.name, "ok");
+    onOk(st);
+  }});
+}
+
+/** Entra al monitor. */
+function signIn(after){
+  askPin({title:T("au_who"), hint:"Il tuo codice personale di quattro cifre",
+    accept:(st)=> st.active,
+    onOk:(st)=>{
+      SESSION = {staffId:st.id, since:new Date().toISOString()};
+      /* la timbratura di entrata, se non c'e gia */
+      const d = today();
+      if(!DB.clock.some(c=> c.date === d && c.staffId === st.id && !c.out)){
+        DB.clock.push({id:uid("cl"), staffId:st.id, date:d, in:nowHM(), out:null});
+        save();
+      }
+      toast(esc(st.name) + (isManager(st) ? " - " + T("au_mgr") : ""), "ok");
+      if(after) after(st); else refresh();
+    }});
+}
+
+/** Stacca: chiude la timbratura e libera il monitor. */
+function signOut(){
+  const st = me(); if(!st) return;
+  confirmBox(T("au_offq"), ()=>{
+    const c = DB.clock.find(x=> x.date === today() && x.staffId === st.id && !x.out);
+    if(c) c.out = nowHM();
+    SESSION = null; save(); refresh();
+    toast(T("au_off") + " " + (c ? c.out : nowHM()), "ok");
+  });
+}
+</script>
+<script>
+/* ============================================================
    PARTE 7 — NAVIGAZIONE E ROUTER
    ============================================================ */
 const NAV = [
@@ -1918,6 +2183,7 @@ const NAV = [
     {id:"check",    t:"nav_check",   ic:"check"}
   ]},
   {grp:"nav_room", items:[
+    {id:"terminale", t:"nav_term", ic:"team"},
     {id:"tables", t:"nav_tables", ic:"table"},
     {id:"book",   t:"nav_book",   ic:"book"},
     {id:"orders", t:"nav_orders", ic:"order"}
@@ -1933,6 +2199,7 @@ const NAV = [
   ]},
   {grp:"nav_menu", items:[
     {id:"menu",   t:"nav_menuman", ic:"menu"},
+    {id:"mods",   t:"nav_mods",    ic:"edit"},
     {id:"photos", t:"nav_photos",  ic:"flyer"}
   ]},
   {grp:"nav_stock", items:[
@@ -2016,6 +2283,12 @@ function renderChrome(){
   $("#bizsub").textContent = L(b.tagline);
   $("#logo").textContent = (b.name || "R").trim()[0].toUpperCase();
   $("#btn-led").innerHTML = icon("led",14) + '<span>' + esc(T("nav_led")) + '</span>';
+  const st = me();
+  $("#btn-user").innerHTML = st
+    ? '<span class="avat sm" style="width:22px;height:22px;font-size:9.5px">' + esc(initials(st.name)) + '</span>' +
+      '<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(st.name) + '</span>' +
+      (isManager(st) ? '<span class="badge brand" style="margin-inline-start:auto;font-size:9.5px">' + esc(T("au_mgr")) + '</span>' : '')
+    : icon("team",14) + '<span>' + esc(T("au_login")) + '</span>';
   $("#btn-lang").innerHTML = flag(LANG,13) + '<span style="margin-inline-start:6px;font-size:12px;font-weight:700">' + LANGS[LANG].code + '</span>';
 }
 
@@ -2374,13 +2647,102 @@ function enableDrag(){
 </script>
 <script>
 /* ============================================================
+   PARTE 9b — MONITOR DEL CAMERIERE
+   Il monitor sta in sala. Chi arriva entra col suo codice, prende le
+   comande a nome suo, e quando stacca esce: il monitor si richiude e
+   resta pronto per il turno dopo.
+   ============================================================ */
+VIEWS.terminale = function(){
+  const st = me();
+
+  if(!st){
+    const inTurno = shiftsOf(today()).map(x=> staffById(x.staffId)).filter(Boolean);
+    return {
+      title:T("nav_term"), sub:T("au_locked"),
+      actions:"",
+      html:'<div class="lockscreen">' +
+        '<div class="lk-card">' +
+          '<div class="lk-logo">' + esc((DB.meta.biz.name || "R").trim()[0].toUpperCase()) + '</div>' +
+          '<h2>' + esc(DB.meta.biz.name) + '</h2>' +
+          '<p>' + esc("Entra col tuo codice per prendere le comande") + '</p>' +
+          '<button class="btn pri lg block mt" data-in>' + icon("team",17) + esc(T("au_login")) + '</button>' +
+          (inTurno.length
+            ? '<div class="lk-team">' + esc("In turno oggi") + '<div class="row tight" style="justify-content:center;margin-top:8px">' +
+              inTurno.map(x=> '<span class="avat sm" title="' + esc(x.name) + '">' + esc(initials(x.name)) + '</span>').join("") + '</div></div>'
+            : '') +
+        '</div></div>',
+      after:()=>{ $("[data-in]").onclick = ()=> signIn(); }
+    };
+  }
+
+  const mine = DB.tables.filter(t=> t.status !== "fuori");
+  const mieTavoli = mine.filter(t=> t.waiter === st.id);
+  const openMine = openOrders().filter(o=> o.waiter === st.id);
+  const since = SESSION ? Math.floor((Date.now() - new Date(SESSION.since).getTime())/60000) : 0;
+
+  const grid = (arr)=> '<div class="grid gauto-s" style="gap:9px">' + arr.map(t=>{
+    const o = orderOf(t.id);
+    const mins = t.since ? minutesSince(t.since) : 0;
+    return '<button class="tmtile" data-tt="' + t.id + '" data-st="' + t.status + '">' +
+      '<span class="n">' + esc(t.n) + '</span>' +
+      '<span class="s">' + esc(T(TSTATES.find(x=> x.k === t.status).t)) + '</span>' +
+      (o ? '<span class="v">' + eur(orderTotal(o)) + '</span>' : '<span class="v">' + t.seats + ' ' + esc(T("t_seats").toLowerCase()) + '</span>') +
+      ((t.status === "occupato" || t.status === "conto") ? '<span class="t">' + mins + "'" + '</span>' : '') +
+    '</button>';
+  }).join("") + '</div>';
+
+  const html =
+    '<div class="card" style="margin-bottom:14px;background:linear-gradient(150deg,var(--brand),var(--brand-2));border:0;color:var(--on-brand)">' +
+      '<div class="card-b" style="display:flex;align-items:center;gap:13px;padding:14px 16px">' +
+        '<span class="avat lg" style="background:rgba(255,255,255,.22);color:#fff">' + esc(initials(st.name)) + '</span>' +
+        '<div style="min-width:0"><b style="font-size:17px;display:block">' + esc(st.name) + '</b>' +
+          '<span style="font-size:12.5px;opacity:.85">' + esc(st.role) + ' &middot; ' +
+          esc(isManager(st) ? T("au_mgr") : T("au_staff")) + ' &middot; ' + esc("al monitor da") + ' ' + since + ' min</span></div>' +
+        '<button class="btn sm" style="margin-inline-start:auto;background:rgba(255,255,255,.2);color:#fff" data-off>' +
+          icon("clock",13) + esc(T("au_off")) + '</button>' +
+      '</div></div>' +
+
+    '<div class="grid g3" style="margin-bottom:14px">' +
+      stat("I miei tavoli", mieTavoli.length, mieTavoli.map(t=> t.n).join(" ") || "-") +
+      stat("Comande aperte", openMine.length, eur(sum(openMine.map(orderTotal)))) +
+      stat(T("c_covers"), sum(mieTavoli.map(t=> t.covers)), "seduti adesso") +
+    '</div>' +
+
+    (mieTavoli.length ? '<div class="lbl">' + esc("I miei tavoli") + '</div>' + grid(mieTavoli) + '<div class="mt-l"></div>' : '') +
+    DB.rooms.map(r=>{
+      const ts = mine.filter(t=> t.room === r.id && t.waiter !== st.id);
+      if(!ts.length) return "";
+      return '<div class="lbl mt">' + esc(L(r.name)) + '</div>' + grid(ts);
+    }).join("");
+
+  return {
+    title:T("nav_term"), sub:st.name + " &middot; " + (isManager(st) ? T("au_mgr") : T("au_staff")),
+    actions:'<button class="btn ghost" data-go="kds">' + icon("kds",15) + esc(T("nav_kds")) + '</button>' +
+            '<button class="btn ghost" data-off2>' + icon("clock",15) + esc(T("au_off")) + '</button>',
+    html:html,
+    after:()=>{
+      $("[data-off]").onclick = signOut;
+      $("[data-off2]").onclick = signOut;
+      $$("[data-tt]").forEach(b=> b.onclick = ()=>{
+        const id = b.getAttribute("data-tt");
+        const t = tableById(id);
+        if(t.status === "libero" || t.status === "prenotato") setTable(id, {waiter:st.id});
+        openOrderFor(id);
+      });
+    }
+  };
+};
+</script>
+<script>
+/* ============================================================
    PARTE 10 — COMANDE
    ============================================================ */
 function openOrderFor(tableId){
   const t = tableById(tableId); if(!t) return;
   let o = orderOf(tableId);
   if(!o){
-    o = {id:uid("or"), tableId:tableId, type:"sala", covers:t.covers || t.seats, waiter:t.waiter || "",
+    o = {id:uid("or"), tableId:tableId, type:"sala", covers:t.covers || t.seats,
+         waiter:(me() || {}).id || t.waiter || "",
          status:"aperto", opened:new Date().toISOString(), closed:null, date:today(),
          lines:[], pay:null, disc:0, total:null, note:""};
     DB.orders.push(o);
@@ -2451,10 +2813,10 @@ function orderSheet(orderId){
             '<b class="num" style="min-width:20px;text-align:center">' + l.qty + '</b>' +
             '<button class="btn ico sm" data-mq="' + l.id + '" data-d="1">+</button>' +
           '</div>' +
-          '<div class="tx"><b>' + esc(it ? L(it.name) : "?") + '</b>' +
-          (l.note ? '<span style="color:var(--amber)">' + icon("warn",11) + ' ' + esc(l.note) + '</span>' : '') + '</div>' +
+          '<div class="tx"><b>' + esc(it ? L(it.name) : "?") + '</b>' + modChips(l) + '</div>' +
           '<div class="end"><span class="badge ' + (l.status==="servito"?"g":l.status==="pronto"?"a":l.status==="lavorazione"?"b":"n") + '">' + esc(T(l.status==="nuovo"?"k_new":l.status==="lavorazione"?"k_wip":l.status==="pronto"?"k_ready":"k_served")) + '</span>' +
           '<b class="num">' + eur(lineTotal(l)) + '</b>' +
+          '<button class="btn ico sm ghost" data-md-line="' + l.id + '" title="' + esc(T("md_add")) + '">' + icon("edit",12) + '</button>' +
           '<button class="btn ico sm dang" data-rm="' + l.id + '">' + icon("trash",12) + '</button></div></div>';
       }).join("")
     ).join("") : empty("Aggiungi i piatti dal listino qui sotto","order");
@@ -2483,18 +2845,43 @@ function orderSheet(orderId){
       const it = itemById(itemId); if(!it) return;
       const ex = o.lines.find(l=> l.itemId === itemId && !l.note && l.status === "nuovo");
       if(ex) ex.qty++;
-      else o.lines.push({id:uid("ln"), itemId:itemId, qty:1, price:it.price, course:defaultCourse(it), note:"", status:"nuovo"});
+      else o.lines.push({id:uid("ln"), itemId:itemId, qty:1, price:it.price, course:defaultCourse(it), note:"", mods:[], status:"nuovo"});
       save(); refreshBody(w);
     });
+    /* togliere o ridurre qualcosa che la cucina sta gia facendo passa dal responsabile */
+    const guarded = (l, what, act)=>{
+      if(l.status === "nuovo"){ act(); return; }
+      requireManager(what, (mgr)=>{ act(); logChange(o, l, what, mgr); });
+    };
     $$("[data-mq]", w).forEach(b=> b.onclick = ()=>{
       const l = o.lines.find(x=> x.id === b.getAttribute("data-mq")); if(!l) return;
-      l.qty += Number(b.getAttribute("data-d"));
-      if(l.qty <= 0) o.lines = o.lines.filter(x=> x.id !== l.id);
-      save(); refreshBody(w);
+      const d = Number(b.getAttribute("data-d"));
+      const run = ()=>{
+        l.qty += d;
+        if(l.qty <= 0) o.lines = o.lines.filter(x=> x.id !== l.id);
+        save(); refreshBody(w);
+      };
+      if(d < 0){ const it = itemById(l.itemId);
+        guarded(l, "Togliere una porzione di " + (it ? L(it.name) : "?"), run);
+      }else run();
     });
     $$("[data-rm]", w).forEach(b=> b.onclick = ()=>{
-      o.lines = o.lines.filter(x=> x.id !== b.getAttribute("data-rm"));
-      save(); refreshBody(w);
+      const l = o.lines.find(x=> x.id === b.getAttribute("data-rm")); if(!l) return;
+      const it = itemById(l.itemId);
+      guarded(l, "Cancellare " + (it ? L(it.name) : "?") + " dalla comanda", ()=>{
+        o.lines = o.lines.filter(x=> x.id !== l.id);
+        save(); refreshBody(w);
+      });
+    });
+    $$("[data-md-line]", w).forEach(b=> b.onclick = ()=>{
+      const l = o.lines.find(x=> x.id === b.getAttribute("data-md-line")); if(!l) return;
+      const it = itemById(l.itemId);
+      const apply = ()=> modsSheet(l, L(it ? it.name : ""), (res)=>{
+        if(res){ l.mods = res.mods; l.note = res.note; save(); }
+        orderSheet(orderId);
+      });
+      if(l.status === "nuovo") apply();
+      else requireManager("Cambiare le modifiche su un piatto già in cucina", apply);
     });
   };
 
@@ -2512,6 +2899,52 @@ function orderSheet(orderId){
 }
 </script>
 <script>
+/* --- le modifiche di una riga: si tocca, non si scrive --- */
+function modsSheet(line, title, onSave){
+  const sel = (line.mods || []).slice();
+  const body = MOD_GROUPS.map(g=>{
+    const ms = (DB.mods || []).filter(m=> m.group === g.k && m.on !== false);
+    if(!ms.length) return "";
+    return '<div class="lbl" style="margin-top:12px">' + esc(T(g.t)) + '</div>' +
+      '<div class="row tight">' + ms.map(m=>
+        '<button type="button" class="btn sm ' + (sel.includes(m.id) ? "pri" : "ghost") + '" data-md="' + m.id + '">' +
+        esc(L(m.name)) + (m.price ? ' <span style="opacity:.75">+' + eur(m.price) + '</span>' : '') + '</button>').join("") + '</div>';
+  }).join("") +
+  '<div class="field mt-l"><label>' + esc(T("md_free")) + '</label>' +
+    '<input class="inp" name="note" value="' + esc(line.note || "") + '" placeholder="' + esc("solo se non basta quello che c'è sopra") + '"></div>';
+
+  /* si chiude prima di richiamare chi ci ha aperti: cosi, se quello riapre
+     la comanda, non gliela si richiude subito sotto il naso */
+  const done = (res)=>{ closeModal(); onSave(res); return false; };
+  modal({title:title || T("md_add"), size:"wide", body:body, actions:[
+    {label:T("c_cancel"), cls:"ghost", run:()=> done(null)},
+    {label:T("c_save"), cls:"pri", run:(w)=>{
+      const f = readForm(w);
+      return done({mods:sel.slice(), note:(f.note || "").trim()});
+    }}
+  ], onOpen:(w)=>{
+    $$("[data-md]", w).forEach(b=> b.onclick = ()=>{
+      const id = b.getAttribute("data-md");
+      const i = sel.indexOf(id);
+      if(i >= 0) sel.splice(i, 1); else sel.push(id);
+      b.className = "btn sm " + (sel.includes(id) ? "pri" : "ghost");
+    });
+  }});
+}
+
+/** Le modifiche come le vede la sala: pastiglie colorate sotto al nome. */
+function modChips(l, small){
+  const out = (l.mods || []).map(id=>{
+    const m = modById(id); if(!m) return "";
+    const g = MOD_GROUPS.find(x=> x.k === m.group) || {cls:"n"};
+    return '<span class="badge ' + g.cls + '" style="font-size:' + (small ? "10" : "10.5") + 'px;padding:2px 7px">' +
+      esc(L(m.name)) + (m.price ? " +" + eur(m.price) : "") + '</span>';
+  }).join("");
+  const note = l.note ? '<span class="badge a" style="font-size:' + (small ? "10" : "10.5") + 'px;padding:2px 7px">' +
+    icon("warn",9) + " " + esc(l.note) + '</span>' : "";
+  return (out || note) ? '<span class="row tight" style="gap:4px;margin-top:3px">' + out + note + '</span>' : "";
+}
+
 /* --- note e portata riga per riga --- */
 function lineNoteSheet(orderId){
   const o = byId(DB.orders, orderId); if(!o || !o.lines.length){ toast("Comanda vuota","warn"); return; }
@@ -2563,20 +2996,23 @@ function payOrder(orderId){
     {label:T("c_print"), cls:"ghost", run:(w)=>{ printBill(o); return false; }},
     {label:T("c_confirm"), cls:"ok", run:(w)=>{
       const f = readForm(w);
-      o.disc = Number(f.disc) || 0;
-      o.pay = w.dataset.pay || "contanti";
+      const disc = Number(f.disc) || 0;
+      /* lo sconto tocca l'incasso: lo autorizza il responsabile */
+      if(disc > 0 && !meIsManager()){
+        requireManager("Sconto di " + eur(disc) + " su " + orderLabel(o), (mgr)=>{
+          logChange(o, null, "Sconto " + eur(disc), mgr);
+          $$("[data-pay]", w).forEach(x=>{});
+          closePay(w, disc);
+        });
+        return false;
+      }
+      o.disc = disc;
       o.note = f.note || "";
-      o.total = orderTotal(o);
-      o.status = "chiuso";
-      o.closed = new Date().toISOString();
-      o.date = today();
-      o.lines.forEach(l=>{ l.status = "servito"; const it = itemById(l.itemId); if(it) it.sold = (it.sold||0) + l.qty; });
-      if(o.tableId) freeTable(o.tableId);
-      save(); refresh();
-      toast(T("o_pay") + " " + eur(o.total), "ok");
+      closePay(w, disc);
     }}
   ], onOpen:(w)=>{
     w.dataset.pay = "contanti";
+    w.dataset.orderId = o.id;
     $$("[data-pay]", w).forEach(b=> b.onclick = ()=>{
       w.dataset.pay = b.getAttribute("data-pay");
       $$("[data-pay]", w).forEach(x=> x.classList.toggle("on", x === b));
@@ -2591,6 +3027,23 @@ function payOrder(orderId){
     $$("input", w).forEach(i=> i.oninput = upd);
     upd();
   }});
+}
+
+/** Chiude il conto e libera il tavolo. */
+function closePay(w, disc){
+  const o = byId(DB.orders, w.dataset.orderId);
+  if(!o) return;
+  o.disc = disc || 0;
+  o.pay = w.dataset.pay || "contanti";
+  o.total = orderTotal(o);
+  o.status = "chiuso";
+  o.closed = new Date().toISOString();
+  o.date = today();
+  o.waiter = o.waiter || (me() || {}).id || "";
+  o.lines.forEach(l=>{ l.status = "servito"; const it = itemById(l.itemId); if(it) it.sold = (it.sold||0) + l.qty; });
+  if(o.tableId) freeTable(o.tableId);
+  save(); closeModal(); refresh();
+  toast(T("o_pay") + " " + eur(o.total), "ok");
 }
 
 function printBill(o){
@@ -2798,8 +3251,12 @@ VIEWS.kds = function(){
           if(!ls.length) return "";
           return '<li class="course" style="padding:2px 12px;cursor:default">' + esc(T(c.t)) + '</li>' +
             ls.map(l=>{ const it = itemById(l.itemId);
+              const mods = (l.mods || []).map(id=>{ const m = modById(id); if(!m) return "";
+                return '<em class="' + (m.group === "allerta" ? "alert" : "") + '">' +
+                  (m.group === "allerta" ? icon("warn",10) + " " : "") + esc(L(m.name)) + '</em>';
+              }).join("");
               return '<li data-kl="' + l.id + '" data-ko="' + t.o.id + '" class="' + (l.status === "pronto" ? "done" : "") + '">' +
-                '<span class="q">' + l.qty + '</span><span>' + esc(it ? L(it.name) : "?") +
+                '<span class="q">' + l.qty + '</span><span>' + esc(it ? L(it.name) : "?") + mods +
                 (l.note ? '<em>' + icon("warn",10) + ' ' + esc(l.note) + '</em>' : '') + '</span></li>';
             }).join("");
         }).join("") + '</ul>' +
@@ -3347,6 +3804,84 @@ function printMenus(langs, opts){
 </script>
 <script>
 /* ============================================================
+   PARTE 16b — IL LISTINO DELLE MODIFICHE
+   Tutto quello che l'ospite chiede davvero. Il cameriere tocca invece di
+   scrivere, cosi in cucina arriva sempre la stessa parola.
+   ============================================================ */
+VIEWS.mods = function(){
+  const all = DB.mods || [];
+  const html =
+    '<div class="grid g3">' +
+      stat("Modifiche in listino", all.filter(m=> m.on !== false).length, all.length + " in tutto") +
+      stat("Allergie e diete", all.filter(m=> m.group === "allerta" && m.on !== false).length, "escono in rosso in cucina") +
+      stat("A pagamento", all.filter(m=> m.price > 0).length, "si sommano alla riga") +
+    '</div>' +
+
+    '<div class="card mt" style="background:var(--brand-soft);border-color:transparent"><div class="card-b">' +
+      '<b style="font-size:13.5px;color:var(--brand)">' + icon("edit",14) + ' ' + esc("Come funziona") + '</b>' +
+      '<p style="font-size:13.5px;color:var(--txt-2);margin-top:6px;line-height:1.65">' +
+      esc("Nella comanda, accanto a ogni piatto, c'è il tasto delle modifiche: si toccano quelle che servono e basta. In cucina arrivano scritte uguali ogni volta, e quelle di allergia escono in rosso. Una modifica che costa si somma da sola al prezzo della riga. Le modifiche a un piatto già mandato in cucina chiedono il codice del responsabile.") +
+      '</p></div></div>' +
+
+    MOD_GROUPS.map(g=>{
+      const ms = all.filter(m=> m.group === g.k);
+      return '<div class="lbl mt-l">' + esc(T(g.t)) + ' &middot; ' + ms.length + '</div>' +
+        '<div class="card"><div class="card-b flush"><div class="list">' +
+        (ms.length ? ms.map(m=>
+          '<div class="li' + (m.on === false ? " done" : "") + '">' +
+          '<span class="badge ' + g.cls + '">' + icon(g.k === "allerta" ? "warn" : "edit", 11) + '</span>' +
+          '<div class="tx"><b>' + esc(L(m.name)) + '</b>' +
+          '<span>' + LKEYS.filter(k=> m.name && m.name[k]).length + '/6 lingue' +
+          (m.price ? ' &middot; +' + eur(m.price) : '') + '</span></div>' +
+          '<div class="end">' +
+            '<button class="btn sm ' + (m.on === false ? "ghost" : "ok") + '" data-mon="' + m.id + '">' +
+              esc(m.on === false ? "spenta" : "attiva") + '</button>' +
+            '<button class="btn ico sm ghost" data-med="' + m.id + '">' + icon("edit",12) + '</button>' +
+          '</div></div>').join("")
+          : '<div class="li"><div class="tx" style="color:var(--txt-3);font-size:13px">' + esc(T("c_none_yet")) + '</div></div>') +
+        '</div></div></div>';
+    }).join("");
+
+  return {
+    title:T("nav_mods"), sub:all.filter(m=> m.on !== false).length + " " + esc("voci in listino"),
+    actions:'<button class="btn pri" data-mnw>' + icon("plus",15) + esc(T("c_new")) + '</button>',
+    html:html,
+    after:()=>{
+      $$("[data-mon]").forEach(b=> b.onclick = ()=>{
+        const m = modById(b.getAttribute("data-mon"));
+        m.on = m.on === false; save(); refresh();
+      });
+      $$("[data-med]").forEach(b=> b.onclick = ()=> modSheet(b.getAttribute("data-med")));
+      $("[data-mnw]").onclick = ()=> modSheet(null);
+    }
+  };
+};
+
+function modSheet(id){
+  const m = id ? modById(id) : null;
+  const body =
+    mlFields("name", m ? m.name : null, T("c_name")) +
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc("Gruppo") + '</label><select class="inp" name="group">' +
+        MOD_GROUPS.map(g=> '<option value="' + g.k + '"' + (m && m.group === g.k ? " selected":"") + '>' + esc(T(g.t)) + '</option>').join("") + '</select></div>' +
+      '<div class="field"><label>' + esc("Costo in piu") + '</label><input class="inp" type="number" step="0.5" min="0" name="price" value="' + (m ? m.price : 0) + '"></div>' +
+    '</div>';
+  const acts = [{label:T("c_cancel"), cls:"ghost"}];
+  if(m) acts.push({label:T("c_del"), cls:"dang", run:()=> requireManager("Eliminare una modifica dal listino", ()=>{
+    DB.mods = DB.mods.filter(x=> x.id !== id); save(); refresh(); })});
+  acts.push({label:T("c_save"), cls:"pri", run:(w)=>{
+    const f = readForm(w), name = readML(w, "name");
+    if(!name.it){ toast(T("c_name"), "err"); return false; }
+    const patch = {name:name, group:f.group, price:Number(f.price) || 0};
+    if(m) Object.assign(m, patch);
+    else DB.mods.push(Object.assign({id:uid("md"), on:true}, patch));
+    save(); refresh(); toast(T("c_save"), "ok");
+  }});
+  modal({title:m ? L(m.name) : T("c_new") + " " + T("nav_mods").toLowerCase(), size:"wide", body:body, actions:acts});
+}
+</script>
+<script>
+/* ============================================================
    PARTE 17 — MAGAZZINO
    ============================================================ */
 let STOCKTAB = "giacenze", STOCKZONE = "tutte";
@@ -3652,6 +4187,12 @@ VIEWS.team = function(){
 };
 
 function staffSheet(id){
+  /* i codici e i livelli li tocca solo chi ne ha titolo */
+  if(!meIsManager()){
+    requireManager("Aprire la scheda di una persona: ci sono il codice e il livello di accesso",
+      ()=> staffSheet(id));
+    return;
+  }
   const s = id ? staffById(id) : null;
   const body =
     '<div class="f2">' +
@@ -3669,6 +4210,14 @@ function staffSheet(id){
       '<div class="field"><label>' + esc(T("c_phone")) + '</label><input class="inp" name="phone" value="' + esc(s ? s.phone : "") + '"></div>' +
       '<div class="field"><label>' + esc("Assunto il") + '</label><input class="inp" type="date" name="hired" value="' + (s ? s.hired : today()) + '"></div>' +
     '</div>' +
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc(T("au_pin")) + ' ' + esc("(quattro cifre)") + '</label>' +
+        '<input class="inp num" name="pin" inputmode="numeric" maxlength="4" value="' + esc(s ? s.pin : "") + '" placeholder="0000"></div>' +
+      '<div class="field"><label>' + esc("Livello") + '</label><select class="inp" name="level">' +
+        '<option value="operatore"' + (s && s.level === "operatore" ? " selected":"") + '>' + esc(T("au_staff")) + '</option>' +
+        '<option value="responsabile"' + (s && s.level === "responsabile" ? " selected":"") + '>' + esc(T("au_mgr")) + ' - ' + esc("accede a tutto") + '</option>' +
+      '</select></div>' +
+    '</div>' +
     '<div class="field"><label>' + esc("Lingue parlate") + '</label><div class="row tight">' +
       LKEYS.map(lk=> '<label class="check" style="padding:3px 0;margin-inline-end:12px"><input type="checkbox" name="lg_' + lk + '"' +
         (s && (s.langs||[]).includes(lk) ? " checked":"") + '><span style="display:flex;align-items:center;gap:5px;font-size:12.5px">' +
@@ -3684,8 +4233,13 @@ function staffSheet(id){
     const f = readForm(w);
     if(!f.name){ toast(T("c_name"),"err"); return false; }
     const langs = LKEYS.filter(lk=> f["lg_" + lk]);
+    const pin = String(f.pin || "").replace(/\D/g, "").slice(0, 4);
+    if(pin && DB.staff.some(x=> x.pin === pin && (!s || x.id !== s.id))){
+      toast("Questo codice è già di un'altra persona", "err"); return false;
+    }
     const patch = {name:f.name, role:f.role, contract:f.contract, hweek:Number(f.hweek)||0,
-      rate:Number(f.rate)||0, phone:f.phone, hired:f.hired, notes:f.notes, langs:langs, active:!!f.active};
+      rate:Number(f.rate)||0, phone:f.phone, hired:f.hired, notes:f.notes, langs:langs, active:!!f.active,
+      pin:pin, level:f.level || "operatore"};
     if(s) Object.assign(s, patch); else DB.staff.push(Object.assign({id:uid("st")}, patch));
     save(); refresh(); toast(T("c_save"),"ok");
   }});
@@ -4654,18 +5208,18 @@ function sloganSheet(id){
 /* ============================================================
    PARTE 27b — CASSA AL BANCO
    Serve a prendere l'ordine in fretta toccando le foto: colazione al
-   mattino, gastronomia a mezzogiorno. NON e un registratore fiscale e non
+   mattino, gastronomia a mezzogiorno. NON è un registratore fiscale e non
    emette scontrini validi: il documento commerciale lo fa il registratore
    telematico, questo e solo il promemoria dell'ordine.
    ============================================================ */
 let CASSA = {lines:[], area:"colazione", cat:null};
 
-function cassaTotal(){ return sum(CASSA.lines.map(l=> l.price * l.qty)); }
+function cassaTotal(){ return sum(CASSA.lines.map(lineTotal)); }
 function cassaAdd(itemId){
   const it = itemById(itemId); if(!it || !it.available) return;
   const ex = CASSA.lines.find(l=> l.itemId === itemId);
   if(ex) ex.qty++;
-  else CASSA.lines.push({id:uid("ln"), itemId:itemId, qty:1, price:it.price, course:"", note:"", status:"servito"});
+  else CASSA.lines.push({id:uid("ln"), itemId:itemId, qty:1, price:it.price, course:"", note:"", mods:[], status:"servito"});
   refresh();
 }
 
@@ -4696,8 +5250,9 @@ VIEWS.cassa = function(){
             '<b class="num" style="min-width:18px;text-align:center">' + l.qty + '</b>' +
             '<button class="btn ico sm" data-caq="' + l.id + '" data-d="1">+</button>' +
           '</div>' +
-          '<div class="tx"><b>' + esc(it ? L(it.name) : "?") + '</b><span>' + eur(l.price) + '</span></div>' +
-          '<div class="end"><b class="num">' + eur(l.price * l.qty) + '</b></div></div>';
+          '<div class="tx"><b>' + esc(it ? L(it.name) : "?") + '</b><span>' + eur(l.price + modsPrice(l)) + '</span>' + modChips(l, true) + '</div>' +
+          '<div class="end"><b class="num">' + eur(lineTotal(l)) + '</b>' +
+          '<button class="btn ico sm ghost" data-camd="' + l.id + '" title="' + esc(T("md_add")) + '">' + icon("edit",12) + '</button></div></div>';
       }).join("") + '</div>'
     : empty(T("ca_empty"), "order");
 
@@ -4756,6 +5311,11 @@ VIEWS.cassa = function(){
         l.qty += Number(b.getAttribute("data-d"));
         if(l.qty <= 0) CASSA.lines = CASSA.lines.filter(x=> x.id !== l.id);
         refresh();
+      });
+      $$("[data-camd]").forEach(b=> b.onclick = ()=>{
+        const l = CASSA.lines.find(x=> x.id === b.getAttribute("data-camd")); if(!l) return;
+        const it = itemById(l.itemId);
+        modsSheet(l, L(it ? it.name : ""), (res)=>{ if(res){ l.mods = res.mods; l.note = res.note; } refresh(); });
       });
       const x = $("[data-cax]"); if(x) x.onclick = ()=>{ CASSA.lines = []; refresh(); };
       $$("[data-cap]").forEach(b=> b.onclick = ()=> cassaClose(b.getAttribute("data-cap")));
@@ -5606,7 +6166,7 @@ function normalize(d){
   d.meta.biz = Object.assign({}, s.meta.biz, d.meta.biz || {});
   ["rooms","tables","cats","items","orders","reservations","inv","moves","suppliers","staff",
    "shifts","clock","briefings","issues","hotels","hotelOrders","slogans","flyers","cocktails",
-   "haccp","haccpLog","prep","recipes","cashups","pos"].forEach(k=>{
+   "haccp","haccpLog","prep","recipes","cashups","pos","mods","changes"].forEach(k=>{
     if(!Array.isArray(d[k])) d[k] = s[k] || [];
   });
   d.checklists = d.checklists || {};
@@ -5625,6 +6185,14 @@ function normalize(d){
 
   /* chi aveva gia i dati salvati prima del banco gastronomia se lo ritrova, senza
      perdere quello che aveva gia messo dentro */
+  /* codice e livello: chi non ce l'ha se lo ritrova assegnato */
+  d.staff.forEach(st=>{
+    if(!st.pin) st.pin = SEED_PINS[st.id] || String(1000 + Math.floor(Math.random()*8999));
+    if(!st.level) st.level = MANAGER_ROLES.includes(st.role) ? "responsabile" : "operatore";
+  });
+  if(!d.mods.length) d.mods = s.mods;
+  else s.mods.forEach(m=>{ if(!d.mods.some(x=> x.id === m.id)) d.mods.push(m); });
+
   if((Number(d.meta.version) || 1) < 2){
     s.cats.forEach(c=>{ if(!d.cats.some(x=> x.id === c.id)) d.cats.push(c); });
     s.items.forEach(i=>{ if(!d.items.some(x=> x.id === i.id)) d.items.push(i); });
@@ -5659,6 +6227,7 @@ function boot(){
        !e.target.closest(".side") && !e.target.closest("#burger")) document.body.classList.remove("menu-open");
   });
   $("#btn-led").onclick = startLed;
+  $("#btn-user").onclick = ()=>{ if(me()) signOut(); else signIn(); };
   $("#btn-lang").onclick = ()=>{
     modal({title:T("c_language"), size:"slim",
       body:'<div class="grid g2" style="gap:8px">' + LKEYS.map(lk=>
