@@ -461,6 +461,42 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .flyer .cta{display:inline-block;margin-top:14px;padding:9px 18px;border-radius:var(--r-pill);background:#fff;color:var(--brand);font-weight:750;font-size:13.5px}
 .flyer.inv .cta,.flyer.light .cta{background:var(--brand);color:#fff}
 
+/* ---------- 13b. GRIGLIA DELLE FOTO ---------- */
+.phgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:11px}
+.phcard{
+  display:flex;flex-direction:column;gap:2px;text-align:start;padding:0;border-radius:var(--r-m);
+  background:var(--bg-2);border:1px solid var(--sep);overflow:hidden;box-shadow:var(--sh-1);
+  transition:transform .12s var(--ease),box-shadow .16s,border-color .16s;
+}
+.phcard:hover{transform:translateY(-2px);box-shadow:var(--sh-2);border-color:var(--brand)}
+.phcard .im{
+  width:100%;aspect-ratio:4/3;background:var(--fill-1) center/cover;display:grid;place-items:center;
+  color:var(--txt-3);border-bottom:1px solid var(--sep);
+}
+.phcard.has .im{border-bottom-color:transparent}
+.phcard:not(.has) .im{border:1px dashed var(--sep-2);border-radius:var(--r-m) var(--r-m) 0 0}
+.phcard .nm{padding:8px 10px 0;font-size:13px;font-weight:650;line-height:1.3}
+.phcard .pr{padding:0 10px 9px;font-size:11.5px;color:var(--txt-2)}
+
+/* ---------- 13c. PIASTRELLE DELLA CASSA ---------- */
+.cagrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:10px}
+.catile{
+  position:relative;display:flex;flex-direction:column;text-align:start;padding:0;overflow:hidden;
+  border-radius:var(--r-m);background:var(--bg-2);border:1px solid var(--sep);box-shadow:var(--sh-1);
+  transition:transform .1s var(--ease),box-shadow .16s,border-color .16s;
+}
+.catile:hover{transform:translateY(-2px);box-shadow:var(--sh-2);border-color:var(--brand)}
+.catile:active{transform:scale(.97)}
+.catile .im{
+  width:100%;aspect-ratio:1/1;background:linear-gradient(150deg,var(--fill-1),var(--fill-2)) center/cover;
+  display:grid;place-items:center;padding:9px;
+}
+.catile .ph-txt{font-family:var(--serif);font-size:15px;line-height:1.2;color:var(--txt-2);text-align:center}
+.catile .nm{padding:7px 9px 0;font-size:12.5px;font-weight:650;line-height:1.25}
+.catile .pr{padding:1px 9px 8px;font-size:13px;font-weight:750;color:var(--brand);font-variant-numeric:tabular-nums}
+.catile.off{opacity:.4}
+.catile .so{position:absolute;top:7px;inset-inline-end:7px;background:var(--red);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:var(--r-pill)}
+
 /* ---------- 14. SCHERMO LED ---------- */
 .led{
   position:fixed;inset:0;z-index:500;background:#08060420;display:flex;
@@ -480,6 +516,16 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .led-list li{display:flex;gap:2vmin;align-items:baseline;font-size:clamp(15px,2.5vw,40px)}
 .led-list li b{font-weight:650}
 .led-list li i{flex:1;border-bottom:2px dotted currentColor;opacity:.3;margin-bottom:.5vmin}
+.led-in.wide{max-width:none;width:100%;padding:0}
+.led-in.wide ~ .led-foot{display:none}
+.led-wall{display:grid;width:100vw;height:100dvh;gap:2px}
+.led-wall .w{position:relative;background-size:cover;background-position:center;display:block;overflow:hidden}
+.led-wall .w em{
+  position:absolute;inset-inline:0;bottom:0;padding:1.8vmin 2vmin 2.6vmin;font-style:normal;color:#fff;
+  background:linear-gradient(180deg,rgba(8,6,4,0),rgba(8,6,4,.88));display:flex;align-items:baseline;gap:1.4vmin;
+}
+.led-wall .w b{font-size:clamp(12px,1.6vw,26px);font-weight:650;line-height:1.22;text-align:start}
+.led-wall .w i{margin-inline-start:auto;font-style:normal;font-weight:800;font-variant-numeric:tabular-nums;font-size:clamp(12px,1.5vw,24px)}
 .led-x{position:absolute;top:18px;inset-inline-end:18px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;z-index:3}
 .led-bar{position:absolute;bottom:0;inset-inline-start:0;height:5px;background:rgba(255,255,255,.85);transition:width .3s linear}
 .led-foot{position:absolute;bottom:3vmin;inset-inline-start:0;inset-inline-end:0;text-align:center;font-size:clamp(11px,1.4vw,20px);letter-spacing:.24em;text-transform:uppercase;opacity:.55;color:#fff}
@@ -712,6 +758,21 @@ c_pending:["In sospeso","Pending","En attente","Pendiente","Offen","معلق"],
 c_export:["Esporta","Export","Exporter","Exportar","Exportieren","تصدير"],
 c_language:["Lingua","Language","Langue","Idioma","Sprache","اللغة"],
 c_of:["di","of","de","de","von","من"],
+a_area:["Reparto","Area","Secteur","Area","Bereich","القسم"],
+a_gastro:["Gastronomia","Deli counter","Traiteur","Gastronomia","Feinkost","المأكولات الجاهزة"],
+a_resto:["Ristorante","Restaurant","Restaurant","Restaurante","Restaurant","المطعم"],
+a_counter:["Al banco","At the counter","Au comptoir","En la barra","Am Tresen","عند الطاولة"],
+nav_cassa:["Cassa","Till","Caisse","Caja","Kasse","الصندوق"],
+nav_photos:["Foto dei piatti","Dish photos","Photos des plats","Fotos de platos","Gerichtfotos","صور الأطباق"],
+ph_missing:["Senza foto","No photo","Sans photo","Sin foto","Ohne Foto","بدون صورة"],
+ph_add:["Scegli foto","Choose photo","Choisir photo","Elegir foto","Foto wahlen","اختر صورة"],
+ph_done:["Con foto","With photo","Avec photo","Con foto","Mit Foto","مع صورة"],
+ca_nofisc:["Non fiscale","Not a fiscal till","Non fiscal","No fiscal","Nicht fiskalisch","غير ضريبي"],
+ca_cart:["Ordine","Order","Commande","Pedido","Bestellung","الطلب"],
+ca_empty:["Tocca una foto per aggiungere","Tap a photo to add","Touchez une photo","Toca una foto","Foto antippen","المس صورة للإضافة"],
+ca_clear:["Svuota","Clear","Vider","Vaciar","Leeren","إفراغ"],
+led_wall:["Muro di foto","Photo wall","Mur de photos","Muro de fotos","Fotowand","جدار الصور"],
+led_allph:["Solo schermate con foto","Only screens with photos","Ecrans avec photos","Solo con fotos","Nur mit Fotos","الشاشات المصورة فقط"],
 });
 </script>
 <script>
@@ -1405,6 +1466,55 @@ const SEED_COCKTAILS = [
 </script>
 <script>
 /* ============================================================
+   PARTE 5b — REPARTI DI SERVIZIO
+   Il locale lavora su quattro fronti: la colazione, il banco della
+   gastronomia da asporto, il ristorante e il bar. Ogni categoria del
+   menu appartiene a uno di questi, e da li si organizzano le foto,
+   la cassa e le schermate del LED.
+   ============================================================ */
+const AREAS = [
+  {k:"colazione",   t:"nav_break", ic:"coffee"},
+  {k:"gastronomia", t:"a_gastro",  ic:"bag"},
+  {k:"ristorante",  t:"a_resto",   ic:"table"},
+  {k:"bar",         t:"nav_bar",   ic:"bar"}
+];
+const AREA_OF_CAT = {
+  cat_col:"colazione",
+  cat_gteg:"gastronomia", cat_gsec:"gastronomia", cat_gban:"gastronomia",
+  cat_ant:"ristorante", cat_pri:"ristorante", cat_sec:"ristorante",
+  cat_con:"ristorante", cat_piz:"ristorante", cat_dol:"ristorante",
+  cat_bev:"bar", cat_vin:"bar", cat_coc:"bar"
+};
+SEED_CATS.forEach(c=>{ c.area = AREA_OF_CAT[c.id] || (c.kind === "bar" ? "bar" : "ristorante"); });
+
+/* --- il banco della gastronomia --- */
+SEED_CATS.push(
+  {id:"cat_gteg", kind:"cucina", station:"gastronomia", area:"gastronomia", order:2.1,
+   name:m6(["Teglie e primi da asporto","Trays and pasta to go","Plats a emporter","Bandejas para llevar","Auflaufe zum Mitnehmen","صواني للأخذ"])},
+  {id:"cat_gsec", kind:"cucina", station:"gastronomia", area:"gastronomia", order:2.2,
+   name:m6(["Secondi e contorni pronti","Ready mains and sides","Plats et garnitures prets","Segundos y guarniciones","Fertige Hauptgerichte","أطباق جاهزة"])},
+  {id:"cat_gban", kind:"cucina", station:"freddo", area:"gastronomia", order:2.3,
+   name:m6(["Banco salumi e formaggi","Deli counter","Charcuterie et fromages","Embutidos y quesos","Wurst und Kase","اللحوم والأجبان"])}
+);
+
+SEED_ITEMS.push(
+ ["it_glas","cat_gteg",4.50,1.10,"glutine,uova,latte", ["Lasagna al forno, porzione","Baked lasagna, portion","Lasagne, portion","Lasana, racion","Lasagne, Portion","لازانيا بالفرن"], ["Al pezzo o al chilo","By piece or by kilo","A la piece ou au kilo","Por pieza o kilo","Pro Stuck oder Kilo","بالقطعة أو بالكيلو"]],
+ ["it_gmel","cat_gteg",4.00,0.95,"latte", ["Parmigiana di melanzane","Aubergine parmigiana","Parmigiana d'aubergines","Berenjenas a la parmesana","Auberginen-Parmigiana","بارميجانا الباذنجان"], ["Teglia del giorno","Tray of the day","Plat du jour","Bandeja del dia","Tagesauflauf","صينية اليوم"]],
+ ["it_gcan","cat_gteg",4.80,1.20,"glutine,uova,latte", ["Cannelloni ricotta e spinaci","Ricotta and spinach cannelloni","Cannelloni ricotta epinards","Canelones de ricota","Cannelloni Ricotta Spinat","كانيلوني بالريكوتا"], ["Da scaldare a casa","Reheat at home","A rechauffer","Para calentar","Zum Aufwarmen","للتسخين في البيت"]],
+ ["it_gpol","cat_gsec",8.50,2.40,"", ["Pollo arrosto, mezzo","Roast chicken, half","Demi-poulet roti","Medio pollo asado","Halbes Brathahnchen","نصف دجاجة مشوية"], ["Con patate al forno","With roast potatoes","Avec pommes de terre","Con patatas","Mit Ofenkartoffeln","مع بطاطا بالفرن"]],
+ ["it_gpol2","cat_gsec",5.50,1.40,"", ["Polpette al sugo","Meatballs in tomato","Boulettes sauce tomate","Albondigas en salsa","Fleischballchen","كرات لحم بالصلصة"], ["Sei pezzi","Six pieces","Six pieces","Seis piezas","Sechs Stuck","ست قطع"]],
+ ["it_gver","cat_gsec",3.80,0.85,"", ["Verdure grigliate, vaschetta","Grilled vegetables, tub","Legumes grilles","Verduras a la plancha","Gegrilltes Gemuse","خضار مشوية"], ["Zucchine, melanzane, peperoni","Courgette, aubergine, pepper","Courgette, aubergine, poivron","Calabacin, berenjena, pimiento","Zucchini, Aubergine, Paprika","كوسا وباذنجان وفلفل"]],
+ ["it_gpro","cat_gban",4.20,1.60,"", ["Prosciutto crudo, etto","Cured ham, 100 g","Jambon cru, 100 g","Jamon serrano, 100 g","Rohschinken, 100 g","لحم مجفف"], ["Stagionato 18 mesi","Aged 18 months","Affine 18 mois","Curado 18 meses","18 Monate gereift","معتق 18 شهرا"]],
+ ["it_gmor","cat_gban",2.60,0.90,"pistacchio", ["Mortadella, etto","Mortadella, 100 g","Mortadelle, 100 g","Mortadela, 100 g","Mortadella, 100 g","مورتاديلا"], ["Con pistacchio","With pistachio","Avec pistache","Con pistacho","Mit Pistazie","مع الفستق"]],
+ ["it_gpec","cat_gban",3.40,1.30,"latte", ["Pecorino stagionato, etto","Aged pecorino, 100 g","Pecorino affine, 100 g","Pecorino curado, 100 g","Gereifter Pecorino, 100 g","جبن بيكورينو"], ["Da tavola o da grattugia","Table or grating","De table ou a raper","De mesa o rallar","Tafel oder Reibe","للمائدة أو للبشر"]],
+ ["it_cpai","cat_col",1.60,0.40,"glutine,latte,uova", ["Pain au chocolat","Pain au chocolat","Pain au chocolat","Pain au chocolat","Pain au chocolat","بان أو شوكولا"], ["Cioccolato fondente","Dark chocolate","Chocolat noir","Chocolate negro","Zartbitterschokolade","شوكولاتة داكنة"]],
+ ["it_cmar","cat_col",2.20,0.55,"glutine,latte,uova", ["Maritozzo con la panna","Maritozzo with cream","Brioche a la creme","Bollo con nata","Sahnebrotchen","ماريتوتسو بالكريمة"], ["Panna montata a mano","Hand-whipped cream","Creme fouettee main","Nata montada a mano","Handgeschlagene Sahne","كريمة مخفوقة يدويا"]],
+ ["it_ctoa","cat_col",3.50,0.90,"glutine,latte", ["Toast prosciutto e formaggio","Ham and cheese toastie","Croque-monsieur","Tostada mixta","Schinken-Kase-Toast","توست بالجبن واللحم"], ["Servito caldo","Served hot","Servi chaud","Servido caliente","Warm serviert","يقدم ساخنا"]],
+ ["it_ccio","cat_col",2.80,0.70,"latte", ["Cioccolata calda","Hot chocolate","Chocolat chaud","Chocolate caliente","Heisse Schokolade","شوكولاتة ساخنة"], ["Densa, con panna a parte","Thick, cream on the side","Epais, creme a part","Espeso, con nata aparte","Dick, Sahne dazu","كثيفة مع كريمة"]]
+);
+</script>
+<script>
+/* ============================================================
    PARTE 6 — MODELLO DATI E PERSISTENZA
    ============================================================ */
 const KEY = "ristorante_sistema_v1";
@@ -1414,7 +1524,7 @@ function buildSeed(){
   const d = today();
   const db = {
     meta:{
-      version:1, lang:"it", theme:"auto", skin:"classico", createdAt:new Date().toISOString(),
+      version:2, lang:"it", theme:"auto", skin:"classico", createdAt:new Date().toISOString(),
       biz:{
         name:"Ristorante Da Natalia",
         tagline:m6(["Cucina italiana e bar","Italian kitchen and bar","Cuisine italienne et bar","Cocina italiana y bar","Italienische Kuche und Bar","مطبخ إيطالي وبار"]),
@@ -1460,7 +1570,10 @@ function buildSeed(){
         {id:"ld_4", type:"cocktail",on:true},
         {id:"ld_5", type:"aperitivo",on:true},
         {id:"ld_6", type:"clock",   on:true},
-        {id:"ld_7", type:"text",    on:false, title:ml("Buon appetito"), sub:ml("")}
+        {id:"ld_7", type:"text",    on:false, title:ml("Buon appetito"), sub:ml("")},
+        {id:"ld_8", type:"wall",    on:true,  area:null},
+        {id:"ld_9", type:"area",    on:false, area:"colazione"},
+        {id:"ld_10",type:"area",    on:false, area:"gastronomia"}
       ]
     },
     cocktails:SEED_COCKTAILS.slice(),
@@ -1593,6 +1706,7 @@ function orderTotal(o){
   return Math.max(0, sub + cov + svc - disc);
 }
 function orderLabel(o){
+  if(o.type === "banco") return T("nav_cassa") + " " + T("a_counter").toLowerCase();
   if(o.type === "sala"){ const t = tableById(o.tableId); return T("c_table") + " " + (t ? t.n : "?"); }
   if(o.type === "hotel"){ const h = hotelById(o.hotelId); return "Hotel " + (h ? h.name : ""); }
   return T("nav_away");
@@ -1799,6 +1913,7 @@ function wirePhoto(root){
 const NAV = [
   {grp:"nav_today", items:[
     {id:"dash",     t:"nav_dash",    ic:"dash"},
+    {id:"cassa",    t:"nav_cassa",   ic:"order"},
     {id:"briefing", t:"nav_briefing",ic:"brief"},
     {id:"check",    t:"nav_check",   ic:"check"}
   ]},
@@ -1817,7 +1932,8 @@ const NAV = [
     {id:"cocktail", t:"nav_cocktail", ic:"bar"}
   ]},
   {grp:"nav_menu", items:[
-    {id:"menu", t:"nav_menuman", ic:"menu"}
+    {id:"menu",   t:"nav_menuman", ic:"menu"},
+    {id:"photos", t:"nav_photos",  ic:"flyer"}
   ]},
   {grp:"nav_stock", items:[
     {id:"stock", t:"nav_stock", ic:"stock"},
@@ -1856,6 +1972,7 @@ function navBadge(id){
   if(id === "kds")     return sum(openOrders().map(o=> (o.lines||[]).filter(l=> l.status === "nuovo" || l.status === "lavorazione").length));
   if(id === "stock")   return lowStock().length;
   if(id === "issues")  return DB.issues.filter(i=> i.status === "aperta").length;
+  if(id === "cassa")   return sum(CASSA.lines.map(l=> l.qty));
   if(id === "book")    return DB.reservations.filter(r=> r.date === today() && r.status !== "annullata").length;
   if(id === "break")   return DB.hotelOrders.filter(h=> h.date === today() && h.type === "colazione" && h.status !== "consegnato").length;
   return 0;
@@ -1956,6 +2073,28 @@ VIEWS.dash = function(){
     '<div class="end"><button class="btn sm" data-go="' + a.go + '">' + esc(a.cta) + '</button></div></div>'
   ).join("") + '</div></div></div>' : '') +
 
+  (()=>{ const nb = DB.orders.filter(o=> o.type === "banco" && o.date === d);
+    const senza = DB.items.filter(i=> !photoURL(i.photo)).length;
+    return '<div class="grid g2 mt">' +
+      '<button class="card" style="text-align:start;display:block;padding:0;cursor:pointer" data-go="cassa">' +
+        '<div class="card-b" style="display:flex;align-items:center;gap:13px">' +
+          '<span class="ic" style="width:44px;height:44px;flex:none;border-radius:12px;display:grid;place-items:center;background:var(--brand);color:var(--on-brand)">' + icon("order",21) + '</span>' +
+          '<div style="min-width:0"><b style="font-size:15px;display:block">' + esc(T("nav_cassa")) + ' &middot; ' + esc(T("a_counter").toLowerCase()) + '</b>' +
+          '<span style="font-size:12.5px;color:var(--txt-2)">' + nb.length + ' ' + esc("ordini oggi") + ' &middot; ' +
+          eur(sum(nb.map(o=> o.total||0))) + ' &middot; ' + esc(T("ca_nofisc").toLowerCase()) + '</span></div>' +
+          '<span style="margin-inline-start:auto;color:var(--txt-3);font-size:20px">&rsaquo;</span>' +
+        '</div></button>' +
+      '<button class="card" style="text-align:start;display:block;padding:0;cursor:pointer" data-go="photos">' +
+        '<div class="card-b" style="display:flex;align-items:center;gap:13px">' +
+          '<span class="ic" style="width:44px;height:44px;flex:none;border-radius:12px;display:grid;place-items:center;background:' +
+            (senza ? 'var(--amber-soft);color:var(--amber)' : 'var(--green-soft);color:var(--green)') + '">' + icon("flyer",21) + '</span>' +
+          '<div style="min-width:0"><b style="font-size:15px;display:block">' + esc(T("nav_photos")) + '</b>' +
+          '<span style="font-size:12.5px;color:var(--txt-2)">' +
+          (senza ? plur(senza, "piatto ancora senza foto", "piatti ancora senza foto") : esc("tutti i piatti fotografati")) + '</span></div>' +
+          '<span style="margin-inline-start:auto;color:var(--txt-3);font-size:20px">&rsaquo;</span>' +
+        '</div></button>' +
+    '</div>'; })() +
+
   '<div class="grid g2 mt">' +
     card(T("br_specials") + " e " + T("mk_slogan"),
       (sl
@@ -2010,7 +2149,8 @@ VIEWS.dash = function(){
     title: T("nav_dash"),
     sub: fmtDate(d,{weekday:"long",day:"numeric",month:"long",year:"numeric"}) + ' &middot; ' + esc(DB.meta.biz.openLunch) + ' / ' + esc(DB.meta.biz.openDinner),
     actions: '<button class="btn ghost" data-go="briefing">' + icon("brief",15) + esc(T("nav_briefing")) + '</button>' +
-             '<button class="btn pri" data-led>' + icon("led",15) + esc(T("mk_led_play")) + '</button>',
+             '<button class="btn ghost" data-led>' + icon("led",15) + esc(T("mk_led_play")) + '</button>' +
+             '<button class="btn pri" data-go="cassa">' + icon("order",15) + esc(T("nav_cassa")) + '</button>',
     html: html,
     after: ()=>{ const b = $("[data-led]"); if(b) b.onclick = startLed; }
   };
@@ -2617,7 +2757,7 @@ function bookSheet(id, day){
 /* ============================================================
    PARTE 12 — MONITOR CUCINA
    ============================================================ */
-const STATIONS = ["tutte","freddo","primi","caldo","pizza","pasticceria","bar"];
+const STATIONS = ["tutte","freddo","primi","caldo","pizza","gastronomia","pasticceria","bar"];
 let KSTATION = "tutte", KTIMER = null;
 
 VIEWS.kds = function(){
@@ -3094,7 +3234,10 @@ function itemSheet(id){
     photoField("Foto del piatto", i ? i.photo : null) +
     '<div class="f3">' +
       '<div class="field"><label>' + esc(T("c_category")) + '</label><select class="inp" name="cat">' +
-        DB.cats.slice().sort((a,b)=>a.order-b.order).map(c=> '<option value="' + c.id + '"' + (i && i.cat === c.id ? " selected":"") + '>' + esc(L(c.name)) + '</option>').join("") + '</select></div>' +
+        AREAS.map(a=> '<optgroup label="' + esc(T(a.t)) + '">' +
+          DB.cats.filter(c=> c.area === a.k).sort((x,y)=>x.order-y.order).map(c=>
+            '<option value="' + c.id + '"' + (i && i.cat === c.id ? " selected":"") + '>' + esc(L(c.name)) + '</option>').join("") +
+          '</optgroup>').join("") + '</select></div>' +
       '<div class="field"><label>' + esc(T("c_price")) + '</label><input class="inp" type="number" step="0.5" min="0" name="price" value="' + (i ? i.price : 0) + '"></div>' +
       '<div class="field"><label>' + esc(T("k_station")) + '</label><select class="inp" name="station">' +
         STATIONS.filter(s=>s!=="tutte").map(s=> '<option' + (i && i.station === s ? " selected":"") + '>' + esc(s) + '</option>').join("") + '</select></div>' +
@@ -4509,6 +4652,231 @@ function sloganSheet(id){
 </script>
 <script>
 /* ============================================================
+   PARTE 27b — CASSA AL BANCO
+   Serve a prendere l'ordine in fretta toccando le foto: colazione al
+   mattino, gastronomia a mezzogiorno. NON e un registratore fiscale e non
+   emette scontrini validi: il documento commerciale lo fa il registratore
+   telematico, questo e solo il promemoria dell'ordine.
+   ============================================================ */
+let CASSA = {lines:[], area:"colazione", cat:null};
+
+function cassaTotal(){ return sum(CASSA.lines.map(l=> l.price * l.qty)); }
+function cassaAdd(itemId){
+  const it = itemById(itemId); if(!it || !it.available) return;
+  const ex = CASSA.lines.find(l=> l.itemId === itemId);
+  if(ex) ex.qty++;
+  else CASSA.lines.push({id:uid("ln"), itemId:itemId, qty:1, price:it.price, course:"", note:"", status:"servito"});
+  refresh();
+}
+
+VIEWS.cassa = function(){
+  const cats = DB.cats.filter(c=> c.area === CASSA.area).sort((a,b)=> a.order - b.order);
+  if(!cats.some(c=> c.id === CASSA.cat)) CASSA.cat = cats.length ? cats[0].id : null;
+  const items = DB.items.filter(i=> i.cat === CASSA.cat);
+  const tot = cassaTotal();
+  const nToday = DB.orders.filter(o=> o.type === "banco" && o.date === today()).length;
+  const revToday = sum(DB.orders.filter(o=> o.type === "banco" && o.date === today()).map(o=> o.total || 0));
+
+  const tile = (i)=>{
+    const u = photoURL(i.photo);
+    return '<button class="catile' + (i.available ? "" : " off") + '" data-cai="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
+      '<span class="im"' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' +
+        (u ? '' : '<span class="ph-txt">' + esc(L(i.name)) + '</span>') + '</span>' +
+      '<span class="nm">' + esc(L(i.name)) + '</span>' +
+      '<span class="pr">' + eur(i.price) + '</span>' +
+      (i.available ? '' : '<span class="so">' + esc(T("k_sold")) + '</span>') +
+    '</button>';
+  };
+
+  const cart = CASSA.lines.length
+    ? '<div class="list">' + CASSA.lines.map(l=>{ const it = itemById(l.itemId);
+        return '<div class="li" style="padding:7px 12px">' +
+          '<div class="row tight" style="flex-wrap:nowrap">' +
+            '<button class="btn ico sm" data-caq="' + l.id + '" data-d="-1">-</button>' +
+            '<b class="num" style="min-width:18px;text-align:center">' + l.qty + '</b>' +
+            '<button class="btn ico sm" data-caq="' + l.id + '" data-d="1">+</button>' +
+          '</div>' +
+          '<div class="tx"><b>' + esc(it ? L(it.name) : "?") + '</b><span>' + eur(l.price) + '</span></div>' +
+          '<div class="end"><b class="num">' + eur(l.price * l.qty) + '</b></div></div>';
+      }).join("") + '</div>'
+    : empty(T("ca_empty"), "order");
+
+  const html =
+    '<div class="card" style="background:var(--amber-soft);border-color:transparent;margin-bottom:14px">' +
+      '<div class="card-b" style="padding:11px 14px;display:flex;gap:9px;align-items:flex-start">' +
+        '<span style="color:var(--amber);flex:none">' + icon("warn",16) + '</span>' +
+        '<div style="font-size:13px;line-height:1.55"><b style="color:var(--amber)">' + esc(T("ca_nofisc")) + '.</b> ' +
+        esc("Questa cassa serve solo a prendere l'ordine e a sapere quanto fa. Lo scontrino valido lo batte il registratore telematico: il foglio che stampa da qui e un promemoria interno.") +
+        '</div></div></div>' +
+
+    '<div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px;align-items:start">' +
+      '<div>' +
+        '<div class="seg" style="margin-bottom:10px">' + AREAS.map(a=>
+          '<button class="' + (CASSA.area === a.k ? "on":"") + '" data-caa="' + a.k + '">' + esc(T(a.t)) + '</button>').join("") + '</div>' +
+        '<div class="tabs" style="margin-bottom:12px">' + cats.map(c=>
+          '<button class="' + (CASSA.cat === c.id ? "on":"") + '" data-cac="' + c.id + '">' + esc(L(c.name)) + '</button>').join("") + '</div>' +
+        (items.length ? '<div class="cagrid">' + items.map(tile).join("") + '</div>' : empty("Nessun piatto in questa categoria","menu")) +
+      '</div>' +
+
+      '<div class="card" style="position:sticky;top:0">' +
+        '<div class="card-h" style="padding:11px 14px"><h3>' + esc(T("ca_cart")) + '</h3>' +
+          '<div class="sp"><span class="badge">' + sum(CASSA.lines.map(l=>l.qty)) + '</span>' +
+          (CASSA.lines.length ? '<button class="btn sm ghost" data-cax>' + esc(T("ca_clear")) + '</button>' : '') + '</div></div>' +
+        '<div class="card-b flush" style="max-height:340px;overflow:auto">' + cart + '</div>' +
+        '<div class="card-b" style="border-top:1px solid var(--sep)">' +
+          '<div class="row" style="justify-content:space-between;font-size:21px;margin-bottom:11px">' +
+            '<b>' + esc(T("c_total")) + '</b><b class="num">' + eur(tot) + '</b></div>' +
+          '<div class="row tight">' +
+            '<button class="btn ok" style="flex:1" data-cap="contanti"' + (tot ? "" : " disabled") + '>' + esc(T("o_cash")) + '</button>' +
+            '<button class="btn pri" style="flex:1" data-cap="carta"' + (tot ? "" : " disabled") + '>' + esc(T("o_card")) + '</button>' +
+          '</div>' +
+          '<button class="btn ghost block mt-s" data-capr' + (tot ? "" : " disabled") + '>' + icon("print",14) + esc(T("c_print")) + '</button>' +
+        '</div></div>' +
+    '</div>' +
+
+    '<div class="grid g3 mt-l">' +
+      stat("Ordini al banco oggi", nToday, fmtDate(today())) +
+      stat("Incasso al banco", eur(revToday), "non fiscale") +
+      stat("Piatti con foto", DB.items.filter(i=> photoURL(i.photo)).length + "/" + DB.items.length,
+        '<button class="btn sm ghost mt-s" data-go="photos">' + esc(T("nav_photos")) + '</button>') +
+    '</div>';
+
+  return {
+    title:T("nav_cassa"),
+    sub:esc(T("ca_nofisc")) + ' &middot; ' + esc(T(AREAS.find(a=>a.k===CASSA.area).t)),
+    actions:'<button class="btn ghost" data-go="photos">' + icon("menu",15) + esc(T("nav_photos")) + '</button>' +
+            '<button class="btn ghost" data-go="orders">' + icon("order",15) + esc(T("nav_orders")) + '</button>',
+    html:html,
+    after:()=>{
+      $$("[data-caa]").forEach(b=> b.onclick = ()=>{ CASSA.area = b.getAttribute("data-caa"); CASSA.cat = null; refresh(); });
+      $$("[data-cac]").forEach(b=> b.onclick = ()=>{ CASSA.cat = b.getAttribute("data-cac"); refresh(); });
+      $$("[data-cai]").forEach(b=> b.onclick = ()=> cassaAdd(b.getAttribute("data-cai")));
+      $$("[data-caq]").forEach(b=> b.onclick = ()=>{
+        const l = CASSA.lines.find(x=> x.id === b.getAttribute("data-caq"));
+        l.qty += Number(b.getAttribute("data-d"));
+        if(l.qty <= 0) CASSA.lines = CASSA.lines.filter(x=> x.id !== l.id);
+        refresh();
+      });
+      const x = $("[data-cax]"); if(x) x.onclick = ()=>{ CASSA.lines = []; refresh(); };
+      $$("[data-cap]").forEach(b=> b.onclick = ()=> cassaClose(b.getAttribute("data-cap")));
+      $("[data-capr]").onclick = ()=> printBill(cassaDraft());
+    }
+  };
+};
+
+function cassaDraft(){
+  return {id:"cassa", tableId:null, type:"banco", covers:0, waiter:"", status:"aperto",
+    opened:new Date().toISOString(), closed:null, date:today(),
+    lines:CASSA.lines, pay:null, disc:0, total:cassaTotal(), note:""};
+}
+function cassaClose(pay){
+  if(!CASSA.lines.length) return;
+  const o = cassaDraft();
+  o.id = uid("or"); o.status = "chiuso"; o.pay = pay; o.closed = new Date().toISOString();
+  o.lines = CASSA.lines.map(l=> Object.assign({}, l));
+  o.total = cassaTotal();
+  o.lines.forEach(l=>{ const it = itemById(l.itemId); if(it) it.sold = (it.sold||0) + l.qty; });
+  DB.orders.push(o);
+  CASSA.lines = [];
+  save(); refresh();
+  toast(T("o_pay") + " " + eur(o.total), "ok");
+}
+</script>
+<script>
+/* ============================================================
+   PARTE 28b — FOTO DEI PIATTI, REPARTO PER REPARTO
+   Qui si carica tutto: colazione, gastronomia, ristorante e bar.
+   Una griglia sola, cosi si vede al volo cosa manca ancora.
+   ============================================================ */
+let PHAREA = "colazione", PHONLY = false;
+
+VIEWS.photos = function(){
+  const cats = DB.cats.filter(c=> c.area === PHAREA).sort((a,b)=> a.order - b.order);
+  const areaItems = (k)=> DB.items.filter(i=> { const c = catById(i.cat); return c && c.area === k; });
+  const mine = areaItems(PHAREA);
+  const shown = PHONLY ? mine.filter(i=> !photoURL(i.photo)) : mine;
+
+  const card2 = (i)=>{
+    const u = photoURL(i.photo);
+    return '<button class="phcard' + (u ? " has" : "") + '" data-phi="' + i.id + '">' +
+      '<span class="im"' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' +
+        (u ? '' : icon("menu", 22)) + '</span>' +
+      '<span class="nm">' + esc(L(i.name)) + '</span>' +
+      '<span class="pr">' + eur(i.price) + (i.special ? ' &middot; ' + esc(T("m_special")) : '') + '</span>' +
+    '</button>';
+  };
+
+  const html =
+    '<div class="row" style="margin-bottom:14px">' +
+      '<div class="seg">' + AREAS.map(a=>{
+        const tot = areaItems(a.k).length, ok = areaItems(a.k).filter(i=> photoURL(i.photo)).length;
+        return '<button class="' + (PHAREA === a.k ? "on":"") + '" data-pha="' + a.k + '">' +
+          esc(T(a.t)) + ' <span style="opacity:.6">' + ok + '/' + tot + '</span></button>';
+      }).join("") + '</div>' +
+      '<div class="spacer"></div>' +
+      '<label class="check" style="padding:0"><input type="checkbox" id="ph-only"' + (PHONLY ? " checked":"") + '>' +
+      '<span>' + esc(T("ph_missing")) + '</span></label>' +
+    '</div>' +
+
+    '<div class="grid g3" style="margin-bottom:16px">' +
+      stat(T("ph_done"), mine.filter(i=> photoURL(i.photo)).length + "/" + mine.length,
+        esc(T(AREAS.find(a=>a.k===PHAREA).t))) +
+      stat(T("ph_missing"), mine.filter(i=> !photoURL(i.photo)).length, "da fotografare") +
+      stat("In tutto il locale", DB.items.filter(i=> photoURL(i.photo)).length + "/" + DB.items.length, "piatti con foto") +
+    '</div>' +
+
+    (shown.length
+      ? cats.map(c=>{
+          const its = shown.filter(i=> i.cat === c.id);
+          if(!its.length) return "";
+          return '<div class="course" style="margin:14px 0 9px;background:none;padding:0">' + esc(L(c.name)) + '</div>' +
+            '<div class="phgrid">' + its.map(card2).join("") + '</div>';
+        }).join("")
+      : empty(PHONLY ? "Tutto fotografato in questo reparto" : "Nessun piatto in questo reparto", "menu")) +
+
+    '<div class="card mt-l" style="background:var(--brand-soft);border-color:transparent"><div class="card-b">' +
+      '<b style="font-size:13.5px;color:var(--brand)">' + icon("flyer",14) + ' ' + esc("Come si fotografa un piatto") + '</b>' +
+      '<ul style="font-size:13.5px;color:var(--txt-2);margin-top:7px;line-height:1.75">' +
+      ['Luce del locale, mai flash: il flash appiattisce e ingiallisce.',
+       "Dall'alto per teglie e piatti piani, di tre quarti per i piatti alti.",
+       'Fondo pulito: il tavolo apparecchiato, non il piano di lavoro.',
+       'Il piatto come esce davvero dalla cucina, non una versione finta.',
+       'Rifai la foto quando cambi la presentazione: una foto vecchia fa peggio di nessuna foto.'
+      ].map(t=> '<li style="display:flex;gap:8px;padding:2px 0"><span style="color:var(--brand)">&middot;</span><span>' + esc(t) + '</span></li>').join("") +
+      '</ul></div></div>';
+
+  return {
+    title:T("nav_photos"),
+    sub:DB.items.filter(i=> photoURL(i.photo)).length + " " + esc("piatti fotografati su") + " " + DB.items.length,
+    actions:'<button class="btn ghost" data-go="menu">' + icon("menu",15) + esc(T("nav_menuman")) + '</button>' +
+            '<button class="btn pri" data-go="led">' + icon("led",15) + esc(T("nav_led")) + '</button>',
+    html:html,
+    after:()=>{
+      $$("[data-pha]").forEach(b=> b.onclick = ()=>{ PHAREA = b.getAttribute("data-pha"); refresh(); });
+      $("#ph-only").onchange = (e)=>{ PHONLY = e.target.checked; refresh(); };
+      $$("[data-phi]").forEach(b=> b.onclick = ()=>{
+        const i = itemById(b.getAttribute("data-phi"));
+        if(photoURL(i.photo)) photoActions(i.id);
+        else pickPhoto(id=>{ i.photo = id; save(); refresh(); toast(L(i.name), "ok"); });
+      });
+    }
+  };
+};
+
+/** Su un piatto gia fotografato si sceglie: cambiare, togliere o aprire la scheda. */
+function photoActions(itemId){
+  const i = itemById(itemId);
+  modal({title:L(i.name), size:"slim",
+    body:'<div style="width:100%;aspect-ratio:4/3;border-radius:var(--r-m);background:url(' + photoURL(i.photo) + ') center/cover;box-shadow:inset 0 0 0 1px var(--sep)"></div>',
+    actions:[
+      {label:T("c_close"), cls:"ghost"},
+      {label:T("c_del"), cls:"dang", run:()=>{ const old = i.photo; i.photo = null; save(); phDel(old); refresh(); }},
+      {label:"Cambia", cls:"pri", run:()=>{ pickPhoto(id=>{ const old = i.photo; i.photo = id; save(); phDel(old); refresh(); }); }}
+    ]});
+}
+</script>
+<script>
+/* ============================================================
    PARTE 29 — VOLANTINI
    ============================================================ */
 const FLY_TEMPLATES = [
@@ -4676,7 +5044,9 @@ const LED_TYPES = {
   aperitivo:{t:"Aperitivo", ic:"clock"},
   menu:     {t:"Una categoria del menu", ic:"menu"},
   clock:    {t:"Orologio", ic:"clock"},
-  text:     {t:"Testo libero", ic:"flyer"}
+  text:     {t:"Testo libero", ic:"flyer"},
+  wall:     {t:"Muro di foto", ic:"flyer"},
+  area:     {t:"Un reparto intero", ic:"bag"}
 };
 let LEDON = false, LEDIX = 0, LEDTIMER = null, LEDTICK = null, LEDLANGIX = 0;
 
@@ -4697,12 +5067,17 @@ VIEWS.led = function(){
           '<div class="ic">' + icon(LED_TYPES[s.type] ? LED_TYPES[s.type].ic : "led") + '</div>' +
           '<div class="tx"><b>' + esc(LED_TYPES[s.type] ? LED_TYPES[s.type].t : s.type) + '</b>' +
           '<span>' + esc(s.type === "text" ? L(s.title) : ledPreviewText(s)) + '</span></div>' +
+          (slideHasPhoto(s) ? '<span class="badge g" title="' + esc(T("ph_done")) + '">' + icon("flyer",11) + '</span>' : '') +
           '<div class="end">' +
             '<button class="btn ico sm ghost" data-lup="' + i + '"' + (i === 0 ? " disabled":"") + '>&#8593;</button>' +
             '<button class="btn ico sm ghost" data-ldn="' + i + '"' + (i === cfg.slides.length-1 ? " disabled":"") + '>&#8595;</button>' +
             (s.type === "text" ? '<button class="btn ico sm ghost" data-led2="' + s.id + '">' + icon("edit",12) + '</button>' : '') +
           '</div></div>').join("") + '</div>' +
-        '<button class="btn ghost block mt" data-lnew>' + icon("plus",14) + esc("Aggiungi schermata di testo") + '</button>', '', "flush") +
+        '<div class="row tight mt">' +
+          '<button class="btn ghost sm" style="flex:1" data-lwall>' + icon("plus",13) + esc(T("led_wall")) + '</button>' +
+          '<button class="btn ghost sm" style="flex:1" data-larea>' + icon("plus",13) + esc(T("a_area")) + '</button>' +
+          '<button class="btn ghost sm" style="flex:1" data-lnew>' + icon("plus",13) + esc("Testo") + '</button>' +
+        '</div>', '', "flush") +
 
       card("Impostazioni",
         '<div class="field"><label>' + esc(T("mk_dur")) + '</label>' +
@@ -4712,6 +5087,9 @@ VIEWS.led = function(){
             '<button type="button" style="flex:1" class="' + (cfg.mood === m[0] ? "on":"") + '" data-lm="' + m[0] + '">' + esc(m[1]) + '</button>').join("") + '</div></div>' +
         '<label class="check"><input type="checkbox" id="ld-cyc"' + (cfg.cycleLangs ? " checked":"") + '>' +
           '<span>' + esc("Ruota le lingue a ogni schermata") + '</span></label>' +
+        '<label class="check"><input type="checkbox" id="ld-onlyph"' + (cfg.onlyPhotos ? " checked":"") + '>' +
+          '<span>' + esc(T("led_allph")) + '<br><small style="color:var(--txt-3)">' +
+          esc("Salta le schermate senza immagine, cosi lo schermo va tutto a foto") + '</small></span></label>' +
         '<div class="field mt-s"><label>' + esc("Lingue da mostrare") + '</label><div class="row tight">' +
           LKEYS.map(lk=> '<button type="button" class="btn sm ' + ((cfg.langs||LKEYS).includes(lk) ? "pri":"ghost") + '" data-ll="' + lk + '">' +
             flag(lk,12) + '<span style="margin-inline-start:5px">' + esc(LANGS[lk].code) + '</span></button>').join("") + '</div></div>' +
@@ -4746,6 +5124,9 @@ VIEWS.led = function(){
       });
       $("#ld-dur").onchange = (e)=>{ cfg.perSlide = clamp(Number(e.target.value)||9, 3, 60); save(); refresh(); };
       $("#ld-cyc").onchange = (e)=>{ cfg.cycleLangs = e.target.checked; save(); refresh(); };
+      $("#ld-onlyph").onchange = (e)=>{ cfg.onlyPhotos = e.target.checked; save(); refresh(); };
+      $("[data-lwall]").onclick = ()=> ledAreaSheet("wall");
+      $("[data-larea]").onclick = ()=> ledAreaSheet("area");
       $("[data-lgo]").onclick = startLed;
       $("[data-lgo2]").onclick = startLed;
       $("[data-lnew]").onclick = ()=> ledTextSheet(null);
@@ -4755,6 +5136,14 @@ VIEWS.led = function(){
 };
 
 function ledPreviewText(s){
+  if(s.type === "wall"){
+    const n = DB.items.filter(i=> photoURL(i.photo) && (!s.area || (catById(i.cat)||{}).area === s.area)).length;
+    return (s.area ? T(AREAS.find(a=>a.k===s.area).t) + " - " : "") + plur(n, "foto pronta", "foto pronte");
+  }
+  if(s.type === "area"){
+    const a = AREAS.find(x=> x.k === s.area) || AREAS[0];
+    return T(a.t) + " - " + inArea(a.k).filter(i=> i.available).length + " voci";
+  }
   if(s.type === "slogan"){ const sl = todaySlogan(); return sl ? L(sl.text) : "-"; }
   if(s.type === "special") return specials().map(i=> L(i.name)).join(", ") || "-";
   if(s.type === "cocktail") return DB.cocktails.map(c=>{ const i = itemById(c.itemId); return i ? L(i.name) : ""; }).filter(Boolean).join(", ");
@@ -4763,6 +5152,25 @@ function ledPreviewText(s){
   if(s.type === "clock") return nowHM();
   return "";
 }
+/** Aggiunge un muro di foto o la schermata di un reparto. */
+function ledAreaSheet(kind){
+  const body = '<div class="field"><label>' + esc(T("a_area")) + '</label><select class="inp" name="area">' +
+      (kind === "wall" ? '<option value="">' + esc("Tutto il locale") + '</option>' : '') +
+      AREAS.map(a=> '<option value="' + a.k + '">' + esc(T(a.t)) + '</option>').join("") + '</select></div>' +
+    '<p style="font-size:13px;color:var(--txt-2);line-height:1.6">' +
+      esc(kind === "wall"
+        ? "Riempie tutto lo schermo con le foto dei piatti, otto alla volta, cambiando a ogni giro. Servono almeno un paio di foto caricate."
+        : "Mostra i piatti del reparto con la miniatura accanto al nome e al prezzo.") + '</p>';
+  modal({title:kind === "wall" ? T("led_wall") : T("a_area"), size:"slim", body:body, actions:[
+    {label:T("c_cancel"), cls:"ghost"},
+    {label:T("c_add"), cls:"pri", run:(w)=>{
+      const f = readForm(w);
+      DB.led.slides.push({id:uid("ld"), type:kind, on:true, area:f.area || null});
+      save(); refresh(); toast(T("c_add"), "ok");
+    }}
+  ]});
+}
+
 function ledTextSheet(id){
   const s = id ? DB.led.slides.find(x=> x.id === id) : null;
   let getPhoto = ()=> (s ? s.photo : null) || null;
@@ -4782,7 +5190,28 @@ function ledTextSheet(id){
 </script>
 <script>
 /* --- riproduzione a tutto schermo --- */
-function ledSlides(){ return DB.led.slides.filter(s=> s.on); }
+function inArea(k){ return DB.items.filter(i=>{ const c = catById(i.cat); return c && c.area === k; }); }
+/** Vero se questa schermata ha davvero una foto da mostrare. */
+function slideHasPhoto(s){
+  const any = (arr)=> arr.some(i=> i && photoURL(i.photo));
+  if(s.type === "wall")     return any(DB.items.filter(i=> !s.area || (catById(i.cat)||{}).area === s.area));
+  if(s.type === "special")  return any(specials());
+  if(s.type === "slogan"){ const sl = todaySlogan() || DB.slogans[0]; return !!(sl && photoURL(sl.photo)) || any(specials()); }
+  if(s.type === "cocktail") return any(DB.cocktails.map(c=> itemById(c.itemId)));
+  if(s.type === "welcome" || s.type === "aperitivo") return any(DB.items);
+  if(s.type === "area")     return any(inArea(s.area));
+  if(s.type === "menu")     return any(DB.items.filter(i=> i.cat === s.catId));
+  if(s.type === "text")     return !!photoURL(s.photo);
+  return false;
+}
+function ledSlides(){
+  let a = DB.led.slides.filter(s=> s.on);
+  if(DB.led.onlyPhotos){
+    const b = a.filter(slideHasPhoto);
+    if(b.length) a = b;      /* se non c'e ancora nessuna foto lo schermo non resta vuoto */
+  }
+  return a;
+}
 
 function ledContent(s, lk){
   const prev = LANG; LANG = lk;
@@ -4838,6 +5267,25 @@ function ledContent(s, lk){
     out = K(L(cat.name)) + '<ul class="led-list">' + items.map(i=>
       '<li>' + (photoURL(i.photo) ? '<span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
       '<b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
+  }else if(s.type === "wall"){
+    const pool = DB.items.filter(i=> i.available && photoURL(i.photo) && (!s.area || (catById(i.cat)||{}).area === s.area));
+    /* si prendono 8, 6, 4, 3, 2 o 1 foto: numeri che riempiono la griglia
+       senza lasciare buchi in fondo */
+    const GRID = {8:[4,2], 6:[3,2], 4:[2,2], 3:[3,1], 2:[2,1], 1:[1,1]};
+    const n = [8,6,4,3,2,1].find(k=> k <= pool.length) || 0;
+    const shuffled = pool.slice().sort(()=> Math.random() - 0.5).slice(0, n);
+    const [cols, rows] = GRID[n] || [1,1];
+    out = '<div class="led-wall" style="grid-template-columns:repeat(' + cols + ',1fr);grid-template-rows:repeat(' + rows + ',1fr)">' +
+      shuffled.map(i=> '<span class="w" style="background-image:url(' + photoURL(i.photo) + ')">' +
+        '<em><b>' + esc(L(i.name)) + '</b><i>' + eur(i.price) + '</i></em></span>').join("") + '</div>';
+  }else if(s.type === "area"){
+    const a = AREAS.find(x=> x.k === s.area) || AREAS[0];
+    const its = inArea(a.k).filter(i=> i.available).slice(0, 6);
+    out = K(T(a.t)) + '<ul class="led-list">' + its.map(i=>
+      '<li>' + (photoURL(i.photo) ? '<span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
+      '<b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
+    const conFoto = inArea(a.k).filter(i=> photoURL(i.photo));
+    bg = conFoto.length ? conFoto[Math.floor(Math.random()*conFoto.length)].photo : null;
   }else if(s.type === "clock"){
     out = K(fmtDate(today(),{weekday:"long",day:"numeric",month:"long"})) + '<div class="led-clock">' + nowHM() + '</div>';
   }else{
@@ -4858,7 +5306,7 @@ function drawLed(){
   const inner = $(".led-in", root);
   const c = ledContent(s, lk);
   inner.dir = LANGS[lk].dir;
-  inner.className = "led-in fadein";
+  inner.className = "led-in fadein" + (s.type === "wall" ? " wide" : "");
   inner.innerHTML = c.html;
   const u = photoURL(c.bg);
   const img = $(".led-img", root), scrim = $(".led-scrim", root);
@@ -5166,9 +5614,22 @@ function normalize(d){
   if(!Array.isArray(d.led.slides) || !d.led.slides.length) d.led.slides = s.led.slides;
   if(!Array.isArray(d.led.langs) || !d.led.langs.length) d.led.langs = LKEYS.slice();
   if(typeof d.led.cycleLangs !== "boolean") d.led.cycleLangs = true;
+  if(typeof d.led.onlyPhotos !== "boolean") d.led.onlyPhotos = false;
+  s.led.slides.forEach(sl=>{ if(!d.led.slides.some(x=> x.id === sl.id)) d.led.slides.push(sl); });
   d.led.perSlide = clamp(Number(d.led.perSlide) || 9, 3, 60);
   d.tables.forEach(t=>{ if(typeof t.setupDone !== "boolean") t.setupDone = false; });
   d.items.forEach(i=>{ if(!Array.isArray(i.allerg)) i.allerg = []; if(typeof i.available !== "boolean") i.available = true; });
+
+  /* ogni categoria appartiene a un reparto: colazione, gastronomia, ristorante o bar */
+  d.cats.forEach(c=>{ if(!c.area) c.area = AREA_OF_CAT[c.id] || (c.kind === "bar" ? "bar" : "ristorante"); });
+
+  /* chi aveva gia i dati salvati prima del banco gastronomia se lo ritrova, senza
+     perdere quello che aveva gia messo dentro */
+  if((Number(d.meta.version) || 1) < 2){
+    s.cats.forEach(c=>{ if(!d.cats.some(x=> x.id === c.id)) d.cats.push(c); });
+    s.items.forEach(i=>{ if(!d.items.some(x=> x.id === i.id)) d.items.push(i); });
+    d.meta.version = 2;
+  }
   return d;
 }
 

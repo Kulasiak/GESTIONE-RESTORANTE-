@@ -12,11 +12,19 @@ Deutsch, العربية** (con scrittura da destra a sinistra).
 
 ## Cosa c'è dentro
 
+### I quattro reparti
+
+Il locale lavora su quattro fronti, e tutto il sistema è organizzato così:
+**colazione**, **gastronomia** (il banco da asporto), **ristorante** e **bar**.
+Ogni categoria del menu appartiene a un reparto, e da lì si organizzano le foto,
+la cassa e le schermate del LED.
+
 ### Ogni giorno
 | Sezione | Cosa fa |
 | --- | --- |
 | **Cruscotto** | Incasso e coperti del giorno, tavoli occupati, prenotazioni, comande aperte. Il riquadro *Da sistemare adesso* elenca quello che manca: briefing non fatto, slogan non scelto, tavoli da rifare, scorte sotto minimo, ordini hotel da preparare. |
 | **Briefing** | Il briefing di inizio turno: slogan del giorno, piatti del giorno, esauriti, prenotazioni con note (allergie, compleanni, gruppi), obiettivo del turno e chi era presente. Si stampa su A4 da appendere in cucina. |
+| **Cassa** | Presa ordine al banco toccando le foto: si sceglie il reparto, si tocca il piatto, si incassa in contanti o carta. **Non è un registratore fiscale** e non emette scontrini validi — lo scontrino lo batte il registratore telematico, questo è il promemoria dell'ordine. Gli incassi finiscono comunque nei report. |
 | **Checklist** | Apertura, mise en place e chiusura. Ogni voce si spunta con il nome di chi l'ha fatta e l'ora. |
 
 ### Sala
@@ -71,7 +79,7 @@ foto dei piatti.
 | --- | --- |
 | **Slogan del giorno** | Un generatore compone lo slogan in tutte e sei le lingue insieme. Si sceglie quello del giorno, gli si può attaccare **un'immagine**, e si vede l'archivio con cosa si è usato negli ultimi sette giorni. |
 | **Volantini** | Guida in dieci punti su **come si fa un volantino** e come va distribuito. Quattro modelli pronti (aperitivo, colazione hotel, menu del giorno, serata a tema) da modificare in sei lingue, con foto, anteprima e stampa in A4 a colori. |
-| **Schermo LED** | Sequenza a tutto schermo per lo schermo del locale: benvenuto, slogan, piatti del giorno, cocktail, aperitivo, orologio e testi liberi. **Le foto dei piatti riempiono lo schermo**: il piatto del giorno esce grande accanto al nome e al prezzo, lo slogan gira su una foto a tutto campo. Ruota le lingue a ogni schermata, così l'ospite straniero legge nella sua. |
+| **Schermo LED** | Sequenza a tutto schermo per lo schermo del locale: **muro di foto**, benvenuto, slogan, piatti del giorno, cocktail, aperitivo, **un reparto intero**, orologio e testi liberi. **Le foto dei piatti riempiono lo schermo**: il piatto del giorno esce grande accanto al nome e al prezzo, lo slogan gira su una foto a tutto campo. Ruota le lingue a ogni schermata, così l'ospite straniero legge nella sua. |
 
 ### Qualità e direzione
 - **Se qualcosa non va** — registro delle segnalazioni con tipo, gravità, tavolo, chi segnala e azione correttiva. Non si chiude una segnalazione senza aver scritto l'azione.
@@ -129,18 +137,31 @@ cifre latine perché in sala li leggano tutti.
 
 ## Le foto dei piatti
 
-Ogni piatto, ogni slogan e ogni volantino può avere la sua foto: si scatta col
-telefono, si sceglie dal riquadro **Scegli foto** e basta. La foto viene
-rimpicciolita e compressa da sola — una da 4 MB diventa un centinaio di KB — e
-resta su questo dispositivo, come tutto il resto.
+**Dove si caricano:** sezione **Foto dei piatti**, sotto Menu. È una griglia divisa
+nei quattro reparti — colazione, gastronomia, ristorante, bar — con il contatore su
+ogni linguetta (*Gastronomia 6/9*). Le caselle vuote hanno il bordo tratteggiato: si
+tocca e si sceglie la foto. La casella **Senza foto** lascia in vista solo quelle che
+mancano ancora, così si finisce il lavoro senza cercare.
+
+Si può anche caricare dalla singola scheda del piatto, dallo slogan e dal volantino.
+La foto viene rimpicciolita e compressa da sola — una da 4 MB diventa un centinaio di
+KB — e resta su questo dispositivo, come tutto il resto.
 
 Dove si vedono:
 
-- **Schermo LED** — il piatto del giorno esce grande accanto a nome, descrizione e prezzo; a ogni giro tocca a un piatto diverso, così lo schermo non si ripete. Lo slogan gira su una foto a tutto campo con una velatura scura sotto, perché il testo resti leggibile da lontano.
+- **Schermo LED — muro di foto** — riempie tutto lo schermo con le foto dei piatti, fino a otto alla volta, con nome e prezzo in basso. Cambia selezione a ogni giro. Si può limitare a un reparto solo: un muro di colazioni al mattino, uno di gastronomia a mezzogiorno.
+- **Schermo LED — piatto del giorno** — esce grande accanto a nome, descrizione e prezzo; a ogni giro tocca a un piatto diverso, così lo schermo non si ripete.
+- **Schermo LED — slogan** — gira su una foto a tutto campo con una velatura scura sotto, perché il testo resti leggibile da lontano.
+- **Schermo LED — reparto** — i piatti di un reparto con la miniatura accanto a nome e prezzo.
+- **Cassa** — le piastrelle sono le foto: si tocca e va nell'ordine. I piatti senza foto mostrano il nome, quindi la cassa funziona anche prima di aver fotografato tutto.
 - **Cruscotto** — miniatura accanto a ogni piatto del giorno, e lo slogan sopra la sua immagine.
 - **Gestione menu** — miniatura in tabella, per capire al volo quali piatti sono ancora senza foto.
 - **Carta stampata** — casella *Con le foto dei piatti* al momento della stampa.
 - **Volantini** — la foto entra nel modello e va in stampa a colori.
+
+Nelle impostazioni dello schermo LED c'è la casella **Solo schermate con foto**: le
+schermate senza immagine vengono saltate e lo schermo va tutto a foto. Se non hai
+ancora caricato niente lo schermo non resta vuoto — torna a mostrare tutto.
 
 Le foto stanno in IndexedDB, non in `localStorage`: quattro scatti riempirebbero i
 5 MB scarsi che `localStorage` concede, e il gestionale smetterebbe di salvare tutto
