@@ -49,14 +49,55 @@ la cassa e le schermate del LED.
 gradazione. In testa la fascia dell'**aperitivo di ogni pomeriggio**. Sotto,
 listino bar completo con food cost e disponibilità.
 
+### Aggiungere un prodotto
+
+Il pulsante **Nuovo prodotto** sta su **Cassa**, **Foto dei piatti**, **Gestione
+menu** e **Prodotti A–Z**. Si apre una scheda breve — nome, prezzo, misura,
+provenienza, dove finisce — e c'è *Aggiungi e continua* per infilarne dieci di
+fila senza richiuderla ogni volta. Il resto (traduzioni, allergeni, scarico di
+magazzino) si mette dopo dalla scheda completa.
+
+**Prodotti A–Z** è l'elenco alfabetico di tutto il locale, con ricerca, filtro per
+reparto ed esportazione. Serve quando cerchi una cosa e non ricordi in che
+categoria l'hai messa.
+
+### Contabilità
+
+Modulo a sé, diviso in quattro:
+
+- **Riepilogo** — conto economico del mese: ricavi da vendite, acquisti, costo del personale, altre entrate e uscite, margine. Ricavi divisi per reparto, acquisti per fornitore, costo per persona. Ogni riga con la sua incidenza percentuale.
+- **Prima nota** — quello che non passa dal magazzino: affitto, utenze, stipendi, manutenzioni, marketing, imposte.
+- **Chiusura di cassa** — atteso contro contato, con la differenza in verde, giallo o rosso.
+- **IVA** — lordo, imponibile e imposta divisi per aliquota. In Italia la somministrazione sta al 10%, gli alcolici venduti a sé stanti al 22: l'aliquota si imposta per categoria.
+
+Gli acquisti si leggono dai **carichi di magazzino** valorizzati al costo, il
+personale dalle **ore timbrate o pianificate**. Tutto esportabile in CSV per il
+commercialista.
+
+> Il prospetto IVA serve a te e al tuo commercialista. **Non è una liquidazione
+> IVA** e non sostituisce il registratore telematico.
+
+### Foglio presenze
+
+Griglia del mese, una riga per persona e una colonna per giorno, con le ore di
+ogni giornata. Le **assenze** hanno il loro colore: malattia, ferie, permesso,
+infortunio, maternità. I giorni di assenza non contano ore. Si stampa in
+orizzontale su A4 con lo spazio per le due firme, e si esporta in CSV.
+
 ### Codici, permessi e chi tocca cosa
 
 Ogni persona in organico ha il **suo codice di quattro cifre**, e un livello:
 
 | Livello | Chi | Cosa può fare |
 | --- | --- | --- |
-| **Operatore** | camerieri, cuochi, barman, lavapiatti | prendere comande, aggiungere piatti, incassare senza sconto |
-| **Responsabile** | direzione, maître, chef | **tutto**, senza che nessuno gli chieda niente |
+| **Operatore** | camerieri, runner, commis, cuochi, barman, lavapiatti | prendere comande, aggiungere piatti, incassare senza sconto |
+| **Responsabile** | direttore, supervisore, maître, chef, sous chef | **tutto**, senza che nessuno gli chieda niente |
+
+L'organico copre tutta la brigata, divisa per reparto: **direzione** (direttore,
+supervisore), **sala** (maître, chef de rang, cameriere, runner, commis,
+accoglienza, fattorino), **bar** (barman, barista, aiuto barman), **cucina**
+(chef, sous chef, capo partita, cuoco, aiuto cuoco, pizzaiolo, pasticcere,
+lavapiatti). Scegliendo la mansione, il livello del codice si propone da solo.
 
 **Il codice del responsabile serve sempre** per modificare qualcosa che è già in
 movimento:
@@ -78,6 +119,14 @@ possono avere lo stesso codice: il sistema lo rifiuta.
 > chi ha fatto cosa e a fermare la modifica distratta, non a proteggere da chi vuole
 > davvero entrare.
 
+### Sul touch screen
+
+Sui dispositivi senza mouse la **modalità tocco** si accende da sola: pulsanti,
+piastrelle, tastierino e caselle diventano più grandi, per battere col dito di
+fretta e senza sbagliare. Si forza o si spegne da Impostazioni. In cassa, ogni
+piastrella mostra **quanti pezzi hai già messo**, così non devi guardare il
+carrello.
+
 ### Menu
 **Gestione menu** — ogni piatto ha nome e descrizione in sei lingue, prezzo,
 allergeni, postazione di cucina, disponibilità, flag *piatto del giorno* e **foto**.
@@ -98,9 +147,31 @@ tocca, non scrive**. Così in cucina arriva sempre la stessa parola, e non
 rosso** sul monitor della cucina. Una modifica che costa si somma da sola al prezzo
 della riga. Il listino si allunga e si accorcia da questa stessa pagina.
 
+### La carta del bar
+
+Vini, birre, amari, distillati e acqua stanno divisi per famiglia, come su una
+carta vera, ognuno con la **misura** e la **provenienza**:
+
+| Famiglia | Cosa c'è |
+| --- | --- |
+| **Aperitivi e vermouth** | vermouth rosso e dry, Aperol, Campari, analcolico |
+| **Vini bianchi** | la Liguria per prima — Vermentino, Pigato, Cinque Terre, Bianchetta — poi Gavi, Soave, Sauvignon |
+| **Vini rossi** | Rossese di Dolceacqua, Ormeasco di Pornassio, Barbera, Montepulciano, Nero d'Avola, Malbec, Rioja |
+| **Bollicine e rosati** | Prosecco, Franciacorta, Champagne, Cava, rosato ligure |
+| **Birre nazionali** | spina 0,2 e 0,4, IPA, frumento, ambrata, 0,66, analcolica |
+| **Birre estere** | lager e weiss tedesche, pilsner ceca alla spina, IPA inglese, stout irlandese, blanche e trappista belghe |
+| **Amari e digestivi** | amaro della casa, alle erbe, limoncello, grappa bianca e barricata, sambuca, mirto |
+| **Distillati** | gin italiano e London Dry, whisky blended e single malt, rum bianco e invecchiato, vodka, tequila, cognac, brandy |
+| **Acqua** | naturale e frizzante in 0,5, 0,75 e 1 litro, più la caraffa microfiltrata |
+| **Salse e condimenti** | olio extravergine, balsamico, pesto, salsa verde, e le monoporzioni |
+
+I nomi propri — Vermentino, Rossese, Franciacorta — **non si traducono**: restano
+gli stessi in tutte e sei le lingue, com'è giusto.
+
 ### Magazzino
 | Sezione | Cosa fa |
 | --- | --- |
+| **Magazzino del bar** | Ogni voce della carta ha il suo articolo di magazzino con la **resa** giusta: una bottiglia di vino fa sei calici, un fusto da 30 litri fa 150 birre piccole, una bottiglia di gin regge 25 bicchierini da 4 cl. **Quando vendi, il magazzino si scarica da solo**: tre birre alla spina da 0,4 tolgono 1,2 litri dal fusto. |
 | **Magazzino** | Giacenze per reparto (frigo, freezer, dispensa, cantina, bar) con barra del livello rispetto alla scorta ideale, carichi, scarichi, sprechi e rettifiche. Il valore del magazzino è sempre in alto. |
 | **Fornitori** | Rubrica con giorni di consegna e orario limite per gli ordini. L'**ordine fornitore** si genera da solo con quello che manca, diviso per fornitore, e si stampa. |
 

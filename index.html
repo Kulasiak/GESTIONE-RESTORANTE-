@@ -589,6 +589,51 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 :root[dir="rtl"] .bar>i{float:right}
 :root[dir="rtl"] .tb .t{transform:scaleX(1)}
 
+/* ---------- 15b. MODALITA TOCCO ----------
+   Sul touch screen del banco si batte col dito, spesso di fretta e a volte
+   bagnato: i bersagli crescono e le griglie si allargano. Si accende da sola
+   sui dispositivi senza mouse, e si forza dalle impostazioni. */
+@media (pointer: coarse){
+  :root:not([data-touch="no"]){ --touch:1 }
+}
+:root[data-touch="si"]{ --touch:1 }
+
+@supports (color: rgb(0 0 0)){
+  :root[data-touch="si"] .btn,
+  :root[data-touch="si"] .catile,
+  :root[data-touch="si"] .tmtile,
+  :root[data-touch="si"] .phcard,
+  :root[data-touch="si"] .pin-k,
+  :root[data-touch="si"] .navbtn,
+  :root[data-touch="si"] .seg button,
+  :root[data-touch="si"] .tabs button,
+  :root[data-touch="si"] .inp{ touch-action:manipulation }
+}
+:root[data-touch="si"] .btn{padding:12px 18px;font-size:15px;border-radius:var(--r-m)}
+:root[data-touch="si"] .btn.sm{padding:9px 14px;font-size:14px}
+:root[data-touch="si"] .btn.ico{width:44px;height:44px;padding:11px}
+:root[data-touch="si"] .btn.ico.sm{width:38px;height:38px;padding:9px}
+:root[data-touch="si"] .navbtn{padding:12px 12px;font-size:15px}
+:root[data-touch="si"] .seg button,
+:root[data-touch="si"] .tabs button{padding:11px 18px;font-size:15px}
+:root[data-touch="si"] .inp{padding:12px 14px;font-size:16px}
+:root[data-touch="si"] .cagrid{grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:13px}
+:root[data-touch="si"] .catile .nm{font-size:14.5px;padding:9px 11px 0}
+:root[data-touch="si"] .catile .pr{font-size:15px;padding:2px 11px 11px}
+:root[data-touch="si"] .phgrid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+:root[data-touch="si"] .pin-k{height:70px;font-size:26px}
+:root[data-touch="si"] .pin-pad{max-width:330px;gap:12px}
+:root[data-touch="si"] .li{padding:15px 16px}
+:root[data-touch="si"] .check input{width:24px;height:24px}
+:root[data-touch="si"] .tbl td{padding:14px}
+
+/* quanti pezzi ho gia messo, direttamente sulla piastrella */
+.catile .qb{
+  position:absolute;top:7px;inset-inline-start:7px;min-width:26px;height:26px;padding:0 7px;
+  border-radius:var(--r-pill);background:var(--brand);color:var(--on-brand);
+  font-size:14px;font-weight:800;display:grid;place-items:center;box-shadow:var(--sh-2);
+}
+
 /* ---------- 16. RESPONSIVE ---------- */
 @media (max-width:1080px){ .g4{grid-template-columns:repeat(2,minmax(0,1fr))} .g3{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (max-width:920px){
@@ -824,6 +869,7 @@ au_mgr:["Responsabile","Manager","Responsable","Responsable","Leitung","المس
 au_staff:["Operatore","Operator","Operateur","Operador","Mitarbeiter","المشغل"],
 au_locked:["Monitor bloccato","Screen locked","Ecran verrouille","Pantalla bloqueada","Bildschirm gesperrt","الشاشة مقفلة"],
 nav_term:["Monitor cameriere","Waiter terminal","Terminal serveur","Terminal camarero","Kellner-Terminal","شاشة النادل"],
+nav_az:["Prodotti A-Z","Products A-Z","Produits A-Z","Productos A-Z","Produkte A-Z","المنتجات أ-ي"],
 nav_mods:["Modifiche al piatto","Dish changes","Modifications","Modificaciones","Anderungen","تعديلات الطبق"],
 md_add:["Modifiche","Changes","Modifications","Cambios","Anderungen","التعديلات"],
 md_none:["Nessuna modifica","No changes","Aucune modification","Sin cambios","Keine Anderung","لا تعديلات"],
@@ -833,6 +879,38 @@ md_extra:["Aggiungi","Add","Ajouter","Anadir","Dazu","إضافة"],
 md_serve:["Servizio","Service","Service","Servicio","Service","التقديم"],
 md_alert:["Allergie e diete","Allergies and diets","Allergies et regimes","Alergias y dietas","Allergien und Diaten","الحساسية والحميات"],
 md_free:["Nota libera","Free note","Note libre","Nota libre","Freie Notiz","ملاحظة حرة"],
+p_new:["Nuovo prodotto","New product","Nouveau produit","Nuevo producto","Neues Produkt","منتج جديد"],
+p_size:["Misura","Size","Format","Medida","Grosse","الحجم"],
+p_origin:["Provenienza","Origin","Origine","Origen","Herkunft","المنشأ"],
+p_nat:["Nazionale","Italian","National","Nacional","National","محلي"],
+p_est:["Estera","Imported","Etranger","Importado","Import","مستورد"],
+p_quick:["Aggiungi in fretta","Quick add","Ajout rapide","Anadir rapido","Schnell anlegen","إضافة سريعة"],
+p_where:["Dove finisce","Where it goes","Ou il va","Donde va","Wohin","أين يذهب"],
+nav_acc:["Contabilita","Accounting","Comptabilite","Contabilidad","Buchhaltung","المحاسبة"],
+nav_pres:["Foglio presenze","Timesheet","Feuille de presence","Hoja de presencia","Stundenzettel","كشف الحضور"],
+ab_abs:["Assenza","Absence","Absence","Ausencia","Abwesenheit","غياب"],
+ab_sick:["Malattia","Sick leave","Maladie","Enfermedad","Krankheit","إجازة مرضية"],
+ab_hol:["Ferie","Holiday","Conges","Vacaciones","Urlaub","إجازة"],
+ab_perm:["Permesso","Time off","Permission","Permiso","Freistellung","إذن"],
+ab_inj:["Infortunio","Injury","Accident","Accidente","Unfall","إصابة عمل"],
+ab_mat:["Maternita","Parental leave","Conge parental","Maternidad","Elternzeit","إجازة أمومة"],
+ab_from:["Dal","From","Du","Desde","Von","من"],
+ab_to:["Al","To","Au","Hasta","Bis","إلى"],
+ac_rev:["Ricavi","Revenue","Recettes","Ingresos","Erlose","الإيرادات"],
+ac_buy:["Acquisti","Purchases","Achats","Compras","Einkauf","المشتريات"],
+ac_lab:["Costo del personale","Staff cost","Cout du personnel","Coste de personal","Personalkosten","تكلفة الموظفين"],
+ac_marg:["Margine","Margin","Marge","Margen","Marge","الهامش"],
+ac_send:["Invia","Send","Envoyer","Enviar","Senden","إرسال"],
+ac_sum:["Riepilogo","Summary","Recapitulatif","Resumen","Ubersicht","الملخص"],
+ac_book:["Prima nota","Cash book","Livre de caisse","Libro de caja","Kassenbuch","دفتر النقدية"],
+ac_close:["Chiusura di cassa","Cash up","Cloture de caisse","Cierre de caja","Kassensturz","إغلاق الصندوق"],
+ac_vat:["IVA","VAT","TVA","IVA","MwSt","الضريبة"],
+ac_in:["Entrata","Money in","Entree","Entrada","Einnahme","دخل"],
+ac_out:["Uscita","Money out","Sortie","Salida","Ausgabe","مصروف"],
+ac_net:["Imponibile","Net","Hors taxe","Base","Netto","الصافي"],
+ac_exp:["Atteso in cassa","Expected in till","Attendu en caisse","Esperado en caja","Erwartet","المتوقع"],
+ac_cnt:["Contato","Counted","Compte","Contado","Gezahlt","المعدود"],
+ac_diff:["Differenza","Difference","Ecart","Diferencia","Differenz","الفرق"],
 a_gastro:["Gastronomia","Deli counter","Traiteur","Gastronomia","Feinkost","المأكولات الجاهزة"],
 a_resto:["Ristorante","Restaurant","Restaurant","Restaurante","Restaurant","المطعم"],
 a_counter:["Al banco","At the counter","Au comptoir","En la barra","Am Tresen","عند الطاولة"],
@@ -1326,7 +1404,9 @@ const SEED_SUPP = [
   {id:"su_pes", name:"Pescheria Del Molo",   cat:"Pesce",            phone:"+39 333 907 6611", email:"delmolo@pesce.it",     contact:"Rita",          days:"Mar, Gio, Sab", cutoff:"20:00"},
   {id:"su_car", name:"Macelleria Rossi",     cat:"Carne",            phone:"+39 328 445 1290", email:"rossi@macelleria.it",  contact:"Gianni Rossi",  days:"Lun, Gio",      cutoff:"17:00"},
   {id:"su_cas", name:"Caseificio La Fattoria",cat:"Latticini",       phone:"+39 346 220 8877", email:"info@lafattoria.it",   contact:"Marta",         days:"Mar, Ven",      cutoff:"16:00"},
-  {id:"su_bev", name:"Beverage Distribuzione",cat:"Bevande e vini",  phone:"+39 02 4455 6677", email:"ordini@beverage.it",   contact:"Ufficio ordini",days:"Mer",           cutoff:"12:00"},
+  {id:"su_bev", name:"Beverage Distribuzione",cat:"Bevande e vini",  phone:"+39 02 4455 6677", email:"ordini@beverage.it",   contact:"Ufficio ordini",days:"Mer",           cutoff:"12:00", area:"bar"},
+  {id:"su_caf", name:"Torrefazione Sant'Anna", cat:"Caffe e infusi", phone:"+39 010 55 66 77", email:"ordini@santanna.it",  contact:"Sig. Parodi",  days:"Lun, Gio",      cutoff:"14:00", area:"colazione"},
+  {id:"su_vin", name:"Enoteca Ligure",        cat:"Vini del territorio", phone:"+39 0183 22 33 44", email:"ordini@enotecaligure.it", contact:"Elisa", days:"Mar",       cutoff:"11:00", area:"bar"},
   {id:"su_sec", name:"Alimentari Secchi",    cat:"Secco e dispensa", phone:"+39 335 661 4433", email:"secchi@alimentari.it", contact:"Paolo",         days:"Lun",           cutoff:"15:00"}
 ];
 
@@ -1377,17 +1457,17 @@ const SEED_INV = [
 <script>
 /* --- personale: [id, nome, ruolo, contratto, ore settimana, costo orario, telefono, lingue] --- */
 const SEED_STAFF = [
-  ["st_nat","Natalia Conti","direzione","full",40,18.00,"+39 335 220 1144","it,en,fr"],
+  ["st_nat","Natalia Conti","direttore","full",40,18.00,"+39 335 220 1144","it,en,fr"],
   ["st_gio","Giovanni Pace","chef","full",40,17.50,"+39 340 771 2288","it,en"],
   ["st_sam","Samir Haddad","sous chef","full",40,14.00,"+39 351 664 9021","ar,fr,it"],
   ["st_luc","Luca Ferrari","cuoco","full",40,12.50,"+39 333 118 5544","it"],
   ["st_mar","Marta Bianchi","pizzaiolo","part",24,12.00,"+39 347 902 3311","it,es"],
-  ["st_ele","Elena Rossi","pasticceria","part",20,12.50,"+39 339 445 7788","it,en"],
+  ["st_ele","Elena Rossi","pasticcere","part",20,12.50,"+39 339 445 7788","it,en"],
   ["st_pao","Paolo Greco","maitre","full",40,15.00,"+39 348 226 9900","it,en,de"],
   ["st_chi","Chiara Moretti","cameriere","full",40,11.50,"+39 342 556 1122","it,en,fr"],
-  ["st_and","Andrea Lombardi","cameriere","part",24,11.00,"+39 331 774 2200","it,es"],
+  ["st_and","Andrea Lombardi","runner","part",24,11.00,"+39 331 774 2200","it,es"],
   ["st_fat","Fatima Zahra","cameriere","part",20,11.00,"+39 320 991 4477","ar,fr,it"],
-  ["st_dav","David Muller","cameriere","extra",12,11.50,"+39 366 220 3388","de,en,it"],
+  ["st_dav","David Muller","chef de rang","extra",12,11.50,"+39 366 220 3388","de,en,it"],
   ["st_sof","Sofia Ricci","barista","full",40,12.50,"+39 349 663 1177","it,en,es"],
   ["st_kar","Karim Belkacem","barman","part",24,12.50,"+39 327 445 8899","ar,fr,en"],
   ["st_ann","Anna Verdi","lavapiatti","part",20,10.50,"+39 338 112 6655","it"],
@@ -1560,6 +1640,9 @@ const AREA_OF_CAT = {
   cat_bev:"bar", cat_vin:"bar", cat_coc:"bar"
 };
 SEED_CATS.forEach(c=>{ c.area = AREA_OF_CAT[c.id] || (c.kind === "bar" ? "bar" : "ristorante"); });
+/* In Italia la somministrazione sta al 10%; gli alcolici venduti a se stanti al 22%. */
+const VAT_22 = ["cat_vin","cat_coc","cat_aper","cat_vbia","cat_vros","cat_vbol","cat_birn","cat_bire","cat_amar","cat_dist"];
+SEED_CATS.forEach(c=>{ if(c.vat == null) c.vat = VAT_22.includes(c.id) ? 22 : 10; });
 
 /* --- il banco della gastronomia --- */
 SEED_CATS.push(
@@ -1586,6 +1669,173 @@ SEED_ITEMS.push(
  ["it_ctoa","cat_col",3.50,0.90,"glutine,latte", ["Toast prosciutto e formaggio","Ham and cheese toastie","Croque-monsieur","Tostada mixta","Schinken-Kase-Toast","توست بالجبن واللحم"], ["Servito caldo","Served hot","Servi chaud","Servido caliente","Warm serviert","يقدم ساخنا"]],
  ["it_ccio","cat_col",2.80,0.70,"latte", ["Cioccolata calda","Hot chocolate","Chocolat chaud","Chocolate caliente","Heisse Schokolade","شوكولاتة ساخنة"], ["Densa, con panna a parte","Thick, cream on the side","Epais, creme a part","Espeso, con nata aparte","Dick, Sahne dazu","كثيفة مع كريمة"]]
 );
+</script>
+<script>
+/* ============================================================
+   PARTE 5b2 — LA CARTA DEL BAR
+   Vini, birre, amari, distillati e acqua come stanno davvero su una
+   carta: divisi per famiglia, con la misura e la provenienza.
+   I nomi propri (Vermentino, Rossese, Franciacorta) non si traducono:
+   restano com'e giusto che siano in ogni lingua.
+   ============================================================ */
+SEED_CATS.push(
+  {id:"cat_aper", kind:"bar", station:"bar", area:"bar", order:9.1, name:m6(["Aperitivi e vermouth","Aperitifs and vermouth","Aperitifs et vermouth","Aperitivos y vermut","Aperitifs und Wermut","المقبلات والفيرموث"])},
+  {id:"cat_vbia", kind:"bar", station:"bar", area:"bar", order:9.2, name:m6(["Vini bianchi","White wines","Vins blancs","Vinos blancos","Weissweine","النبيذ الأبيض"])},
+  {id:"cat_vros", kind:"bar", station:"bar", area:"bar", order:9.3, name:m6(["Vini rossi","Red wines","Vins rouges","Vinos tintos","Rotweine","النبيذ الأحمر"])},
+  {id:"cat_vbol", kind:"bar", station:"bar", area:"bar", order:9.4, name:m6(["Bollicine e rosati","Sparkling and rose","Bulles et roses","Espumosos y rosados","Schaumwein und Rose","الفوار والوردي"])},
+  {id:"cat_birn", kind:"bar", station:"bar", area:"bar", order:9.5, name:m6(["Birre nazionali","Italian beers","Bieres italiennes","Cervezas italianas","Italienische Biere","البيرة المحلية"])},
+  {id:"cat_bire", kind:"bar", station:"bar", area:"bar", order:9.6, name:m6(["Birre estere","Imported beers","Bieres importees","Cervezas importadas","Importbiere","البيرة المستوردة"])},
+  {id:"cat_amar", kind:"bar", station:"bar", area:"bar", order:9.7, name:m6(["Amari e digestivi","Bitters and digestifs","Amers et digestifs","Amargos y digestivos","Bitter und Digestifs","المشروبات المرة والهاضمة"])},
+  {id:"cat_dist", kind:"bar", station:"bar", area:"bar", order:9.8, name:m6(["Distillati e superalcolici","Spirits","Spiritueux","Destilados","Spirituosen","المشروبات الروحية"])},
+  {id:"cat_acq",  kind:"bar", station:"bar", area:"bar", order:9.9, name:m6(["Acqua","Water","Eau","Agua","Wasser","الماء"])}
+);
+/* la vecchia voce Vini diventa il servizio al calice */
+(function(){ const c = SEED_CATS.find(x=> x.id === "cat_vin");
+  if(c) c.name = m6(["Vini al calice","Wines by the glass","Vins au verre","Vinos por copa","Weine im Glas","النبيذ بالكأس"]); })();
+
+/* [id, categoria, prezzo, costo, nome, descrizione, misura, provenienza] */
+const SEED_DRINKS = [
+  /* aperitivi */
+  ["dr_verm","cat_aper",4.00,1.10,"Vermouth rosso","Servito con scorza d'arancia","4 cl","Italia"],
+  ["dr_verb","cat_aper",4.00,1.10,"Vermouth dry","Con oliva","4 cl","Italia"],
+  ["dr_apel","cat_aper",4.50,1.20,"Aperol","Liscio o con soda","4 cl","Italia"],
+  ["dr_camp","cat_aper",4.50,1.30,"Campari","Liscio o con soda","4 cl","Italia"],
+  ["dr_crod","cat_aper",3.50,0.90,"Aperitivo analcolico","Senza alcol","10 cl","Italia"],
+  /* vini bianchi: la Liguria per prima */
+  ["dr_verm_lig","cat_vbia",22.00,7.50,"Vermentino Riviera Ligure di Ponente DOC","Secco, sapido, di mare","Bottiglia 0,75","Liguria"],
+  ["dr_pigato","cat_vbia",24.00,8.20,"Pigato Riviera Ligure di Ponente DOC","Pieno, con nota di erbe","Bottiglia 0,75","Liguria"],
+  ["dr_cinque","cat_vbia",26.00,9.00,"Cinque Terre DOC","Dai terrazzamenti sul mare","Bottiglia 0,75","Liguria"],
+  ["dr_bianchetta","cat_vbia",20.00,6.80,"Bianchetta Genovese","Leggero, agrumato","Bottiglia 0,75","Liguria"],
+  ["dr_gavi","cat_vbia",24.00,8.00,"Gavi DOCG","Cortese in purezza","Bottiglia 0,75","Piemonte"],
+  ["dr_soave","cat_vbia",20.00,6.50,"Soave Classico DOC","Mandorla e fiori bianchi","Bottiglia 0,75","Veneto"],
+  ["dr_sauv","cat_vbia",28.00,10.00,"Sauvignon Blanc Marlborough","Molto aromatico","Bottiglia 0,75","Nuova Zelanda"],
+  /* vini rossi */
+  ["dr_rossese","cat_vros",26.00,9.00,"Rossese di Dolceacqua DOC","Il rosso ligure per eccellenza","Bottiglia 0,75","Liguria"],
+  ["dr_ormeasco","cat_vros",24.00,8.20,"Ormeasco di Pornassio DOC","Dolcetto dell'entroterra ligure","Bottiglia 0,75","Liguria"],
+  ["dr_barbera","cat_vros",24.00,8.00,"Barbera d'Alba DOC","Fresco, di buona acidita","Bottiglia 0,75","Piemonte"],
+  ["dr_monte","cat_vros",18.00,5.80,"Montepulciano d'Abruzzo DOC","Morbido, quotidiano","Bottiglia 0,75","Abruzzo"],
+  ["dr_nero","cat_vros",20.00,6.60,"Nero d'Avola DOC","Caldo, frutta matura","Bottiglia 0,75","Sicilia"],
+  ["dr_malbec","cat_vros",26.00,9.20,"Malbec Mendoza","Corposo, speziato","Bottiglia 0,75","Argentina"],
+  ["dr_rioja","cat_vros",25.00,8.80,"Rioja Crianza DOCa","Invecchiato in rovere","Bottiglia 0,75","Spagna"],
+  /* bollicine e rosati */
+  ["dr_prosecco","cat_vbol",18.00,5.50,"Prosecco DOC Brut","Fresco, per aprire la sera","Bottiglia 0,75","Veneto"],
+  ["dr_franciacorta","cat_vbol",38.00,15.00,"Franciacorta Brut DOCG","Metodo classico","Bottiglia 0,75","Lombardia"],
+  ["dr_champ","cat_vbol",65.00,32.00,"Champagne Brut","Per le occasioni","Bottiglia 0,75","Francia"],
+  ["dr_cava","cat_vbol",22.00,7.00,"Cava Brut","Metodo classico spagnolo","Bottiglia 0,75","Spagna"],
+  ["dr_rosaligure","cat_vbol",20.00,6.60,"Rosato di Liguria","Da uve rossese","Bottiglia 0,75","Liguria"],
+  /* birre nazionali */
+  ["dr_spina20","cat_birn",3.00,0.70,"Birra chiara alla spina","Lager leggera","Spina 0,2 l","Italia"],
+  ["dr_spina40","cat_birn",5.00,1.20,"Birra chiara alla spina","Lager leggera","Spina 0,4 l","Italia"],
+  ["dr_ipa_it","cat_birn",6.00,1.90,"Birra artigianale IPA","Luppolata, amara, agrumata","Bottiglia 0,33 l","Italia"],
+  ["dr_weiss_it","cat_birn",6.50,2.00,"Birra artigianale di frumento","Torbida, di grano","Bottiglia 0,5 l","Italia"],
+  ["dr_ambrata","cat_birn",6.00,1.90,"Birra ambrata artigianale","Maltata, tostata","Bottiglia 0,33 l","Italia"],
+  ["dr_bir066","cat_birn",6.00,1.60,"Birra chiara in bottiglia","Da dividere","Bottiglia 0,66 l","Italia"],
+  ["dr_analc","cat_birn",4.00,1.10,"Birra analcolica","Senza alcol","Bottiglia 0,33 l","Italia"],
+  /* birre estere */
+  ["dr_lager_de","cat_bire",6.00,1.80,"Lager tedesca","Helles, pulita","Bottiglia 0,5 l","Germania"],
+  ["dr_weiss_de","cat_bire",6.50,2.00,"Weissbier bavarese","Banana e chiodo di garofano","Bottiglia 0,5 l","Germania"],
+  ["dr_pils_cz","cat_bire",5.50,1.50,"Pilsner ceca alla spina","Secca, luppolo saaz","Spina 0,4 l","Repubblica Ceca"],
+  ["dr_ipa_uk","cat_bire",6.50,2.10,"IPA inglese","Amara, agrumata","Bottiglia 0,33 l","Regno Unito"],
+  ["dr_stout","cat_bire",6.00,1.80,"Stout irlandese","Scura, caffe e cioccolato","Spina 0,4 l","Irlanda"],
+  ["dr_blanche","cat_bire",6.00,1.90,"Blanche belga","Coriandolo e arancia","Bottiglia 0,33 l","Belgio"],
+  ["dr_trappista","cat_bire",8.00,3.00,"Trappista belga","Forte, da meditazione","Bottiglia 0,33 l","Belgio"],
+  /* amari e digestivi */
+  ["dr_amarocasa","cat_amar",4.00,0.90,"Amaro della casa","Ricetta nostra","4 cl","Italia"],
+  ["dr_amaroerbe","cat_amar",4.50,1.10,"Amaro alle erbe","Trentatre erbe","4 cl","Italia"],
+  ["dr_limon","cat_amar",4.00,0.85,"Limoncello","Ghiacciato","4 cl","Italia"],
+  ["dr_grappa","cat_amar",5.00,1.30,"Grappa bianca","Giovane, secca","4 cl","Italia"],
+  ["dr_grappab","cat_amar",7.00,2.40,"Grappa barricata","Invecchiata in legno","4 cl","Italia"],
+  ["dr_sambuca","cat_amar",4.00,0.90,"Sambuca","Con la mosca","4 cl","Italia"],
+  ["dr_mirto","cat_amar",4.50,1.20,"Mirto","Da bacche di mirto","4 cl","Sardegna"],
+  /* distillati */
+  ["dr_gin_it","cat_dist",6.00,1.60,"Gin italiano","Botaniche mediterranee","4 cl","Italia"],
+  ["dr_gin_uk","cat_dist",7.00,2.10,"London Dry Gin","Ginepro deciso","4 cl","Regno Unito"],
+  ["dr_whisky","cat_dist",7.00,2.20,"Whisky scozzese blended","Morbido","4 cl","Scozia"],
+  ["dr_malt","cat_dist",10.00,4.00,"Single Malt 12 anni","Torbato leggero","4 cl","Scozia"],
+  ["dr_rum_b","cat_dist",6.00,1.60,"Rum bianco","Per i cocktail e liscio","4 cl","Caraibi"],
+  ["dr_rum_i","cat_dist",8.00,2.80,"Rum invecchiato","Sette anni","4 cl","Caraibi"],
+  ["dr_vodka","cat_dist",6.00,1.60,"Vodka","Pulita, neutra","4 cl","Polonia"],
+  ["dr_tequila","cat_dist",7.00,2.20,"Tequila reposado","Da agave azul","4 cl","Messico"],
+  ["dr_cognac","cat_dist",9.00,3.40,"Cognac VSOP","Da fine pasto","4 cl","Francia"],
+  ["dr_brandy","cat_dist",6.00,1.70,"Brandy italiano","Morbido, vanigliato","4 cl","Italia"],
+  /* acqua */
+  ["dr_acq05","cat_acq",1.50,0.20,"Acqua naturale","Al banco","0,5 l","Italia"],
+  ["dr_acq075n","cat_acq",2.50,0.30,"Acqua naturale","Al tavolo","0,75 l","Italia"],
+  ["dr_acq075f","cat_acq",2.50,0.30,"Acqua frizzante","Al tavolo","0,75 l","Italia"],
+  ["dr_acq1","cat_acq",3.00,0.40,"Acqua naturale","Per il tavolo grande","1 l","Italia"],
+  ["dr_acqcar","cat_acq",1.00,0.05,"Acqua in caraffa","Microfiltrata della casa","1 l","Italia"]
+];
+</script>
+<script>
+/* --- salse e condimenti: il banco li vende, la sala li porta al tavolo --- */
+SEED_CATS.push(
+  {id:"cat_sals", kind:"cucina", station:"freddo", area:"gastronomia", order:2.4,
+   name:m6(["Salse e condimenti","Sauces and dressings","Sauces et condiments","Salsas y adere","Saucen und Dressings","الصلصات والتوابل"])}
+);
+SEED_DRINKS.push(
+  ["dr_olio","cat_sals",6.50,3.20,"Olio extravergine di oliva","Bottiglietta da portare a casa","0,25 l","Liguria"],
+  ["dr_balsa","dr_none",0,0,"","","",""]
+);
+SEED_DRINKS.pop();
+SEED_DRINKS.push(
+  ["dr_balsa","cat_sals",7.00,3.40,"Aceto balsamico","Invecchiato, denso","0,25 l","Modena"],
+  ["dr_pesto","cat_sals",5.50,1.90,"Pesto genovese","Vasetto, basilico DOP","180 g","Liguria"],
+  ["dr_salsaverde","cat_sals",4.00,1.20,"Salsa verde","Prezzemolo, capperi, acciuga","150 g","Liguria"],
+  ["dr_maio","cat_sals",1.00,0.25,"Maionese","Monoporzione","20 g","Italia"],
+  ["dr_ketch","cat_sals",1.00,0.20,"Ketchup","Monoporzione","20 g","Italia"],
+  ["dr_senape","cat_sals",1.00,0.25,"Senape","Monoporzione","20 g","Italia"],
+  ["dr_rosa","cat_sals",1.20,0.30,"Salsa rosa","Monoporzione","25 g","Italia"],
+  ["dr_yogurt","cat_sals",1.20,0.35,"Salsa allo yogurt","Con erba cipollina","25 g","Italia"],
+  ["dr_piccante","cat_sals",1.50,0.40,"Olio piccante","Peperoncino calabrese","0,1 l","Calabria"]
+);
+
+/* ============================================================
+   IL MAGAZZINO DEL BAR
+   Da ogni voce della carta nasce il suo articolo di magazzino, con la
+   resa giusta: una bottiglia di vino fa sei calici, un fusto da trenta
+   litri fa centocinquanta birre piccole, una bottiglia di gin regge
+   diciassette bicchierini da quattro centilitri.
+   ============================================================ */
+const DRINK_STOCK_RULE = {
+  cat_vbia:{unit:"bt", per:1,    min:4,  par:12, zone:"cantina"},
+  cat_vros:{unit:"bt", per:1,    min:4,  par:12, zone:"cantina"},
+  cat_vbol:{unit:"bt", per:1,    min:3,  par:8,  zone:"cantina"},
+  cat_aper:{unit:"l",  per:0.04, min:1,  par:3,  zone:"bar"},
+  cat_amar:{unit:"l",  per:0.04, min:1,  par:3,  zone:"bar"},
+  cat_dist:{unit:"l",  per:0.04, min:1,  par:3,  zone:"bar"},
+  cat_birn:{unit:"pz", per:1,    min:12, par:48, zone:"bar"},
+  cat_bire:{unit:"pz", per:1,    min:12, par:48, zone:"bar"},
+  cat_acq: {unit:"pz", per:1,    min:36, par:120,zone:"dispensa"},
+  cat_sals:{unit:"pz", per:1,    min:6,  par:24, zone:"dispensa"}
+};
+/* le birre alla spina pescano tutte dallo stesso fusto */
+const DRINK_SHARED = {
+  dr_spina20:["in_fusto_it", 0.2], dr_spina40:["in_fusto_it", 0.4],
+  dr_pils_cz:["in_fusto_cz", 0.4], dr_stout:["in_fusto_ie", 0.4]
+};
+const SHARED_KEGS = [
+  ["in_fusto_it","Fusto birra chiara italiana","l",30,10,60,2.20,"su_bev","bar"],
+  ["in_fusto_cz","Fusto pilsner ceca","l",30,10,60,2.60,"su_bev","bar"],
+  ["in_fusto_ie","Fusto stout irlandese","l",20,10,40,3.10,"su_bev","bar"]
+];
+/** Costruisce magazzino e collegamenti a partire dalla carta del bar. */
+function buildBarStock(drinks){
+  const inv = SHARED_KEGS.map(a=>({id:a[0], name:a[1], unit:a[2], qty:a[3], min:a[4], par:a[5],
+    cost:a[6], supp:a[7], zone:a[8], expiry:null}));
+  const link = {};
+  Object.keys(DRINK_SHARED).forEach(k=>{ link[k] = {invId:DRINK_SHARED[k][0], invQty:DRINK_SHARED[k][1]}; });
+  drinks.forEach(d=>{
+    if(link[d[0]]) return;                      /* gia agganciato a un fusto */
+    const r = DRINK_STOCK_RULE[d[1]]; if(!r) return;
+    const id = "in_" + d[0].replace(/^dr_/, "");
+    /* il costo dell'articolo e quello di una unita intera, non della porzione */
+    const cost = r.per < 1 ? +(d[3] / r.per).toFixed(2) : d[3];
+    inv.push({id:id, name:d[4] + (d[6] && r.per >= 1 ? " " + d[6] : ""), unit:r.unit,
+      qty:r.par, min:r.min, par:r.par, cost:cost, supp:"su_bev", zone:r.zone, expiry:null});
+    link[d[0]] = {invId:id, invQty:r.per};
+  });
+  return {inv:inv, link:link};
+}
 </script>
 <script>
 /* ============================================================
@@ -1648,7 +1898,7 @@ const MOD_GROUPS = [
 ];
 
 /* --- codici del personale: quattro cifre, uno a testa --- */
-const MANAGER_ROLES = ["direzione","maitre","chef"];
+const MANAGER_ROLES = ["direzione","direttore","supervisor","maitre","chef","sous chef"];
 const SEED_PINS = {
   st_nat:"1111", st_gio:"2222", st_sam:"2323", st_luc:"2424", st_mar:"2525",
   st_ele:"2626", st_pao:"3333", st_chi:"3434", st_and:"3535", st_fat:"3636",
@@ -1666,7 +1916,7 @@ function buildSeed(){
   const d = today();
   const db = {
     meta:{
-      version:2, lang:"it", theme:"auto", skin:"classico", createdAt:new Date().toISOString(),
+      version:3, lang:"it", theme:"auto", skin:"classico", touch:"auto", createdAt:new Date().toISOString(),
       biz:{
         name:"Ristorante Da Natalia",
         tagline:m6(["Cucina italiana e bar","Italian kitchen and bar","Cuisine italienne et bar","Cocina italiana y bar","Italienische Kuche und Bar","مطبخ إيطالي وبار"]),
@@ -1687,8 +1937,12 @@ function buildSeed(){
       allerg:a[4] ? a[4].split(",") : [],
       name:m6(a[5]), desc:m6(a[6]),
       available:true, special:false, station:(SEED_CATS.find(c=>c.id===a[1])||{}).station || "caldo",
-      sold:0
-    })),
+      sold:0, size:"", origin:"", invId:null, invQty:0
+    })).concat(SEED_DRINKS.map(d=>({
+      id:d[0], cat:d[1], price:d[2], cost:d[3], allerg:[],
+      name:d[4], desc:d[5], size:d[6], origin:d[7],
+      available:true, special:false, station:"bar", sold:0, invId:null, invQty:0
+    }))),
     orders:[], reservations:[],
     inv:SEED_INV.map(a=>({id:a[0], name:a[1], unit:a[2], qty:a[3], min:a[4], par:a[5], cost:a[6], supp:a[7], zone:a[8], expiry:null})),
     moves:[], pos:[],
@@ -1724,8 +1978,13 @@ function buildSeed(){
     haccp:SEED_HACCP.slice(), haccpLog:[],
     checklists:{}, prep:[],
     recipes:[],
-    cashups:[], changes:[]
+    cashups:[], changes:[], absences:[], ledger:[]
   };
+
+  /* magazzino del bar generato dalla carta, coi collegamenti alle voci */
+  const bar = buildBarStock(SEED_DRINKS);
+  db.inv = db.inv.concat(bar.inv);
+  db.items.forEach(i=>{ const l = bar.link[i.id]; if(l){ i.invId = l.invId; i.invQty = l.invQty; } });
 
   /* turni della settimana corrente */
   const ws = weekStart(d);
@@ -1786,6 +2045,42 @@ function buildSeed(){
 
   /* alcuni piatti del giorno */
   ["it_ris","it_bra","it_pan"].forEach(id=>{ const it = db.items.find(x=>x.id===id); if(it) it.special = true; });
+
+  /* consegne dei fornitori nelle ultime tre settimane, cosi la contabilita
+     ha acquisti veri da mostrare invece di una colonna a zero */
+  for(let k=21;k>=0;k--){
+    const day = addDays(d,-k);
+    const dow = new Date(day + "T12:00:00").getDay();
+    db.suppliers.forEach(su=>{
+      /* ogni fornitore consegna nei suoi giorni */
+      const giorni = {su_ort:[1,3,5], su_pes:[2,4,6], su_car:[1,4], su_cas:[2,5],
+                      su_bev:[3], su_caf:[1,4], su_vin:[2], su_sec:[1]}[su.id] || [3];
+      if(!giorni.includes(dow)) return;
+      db.inv.filter(a=> a.supp === su.id).forEach(a=>{
+        if(Math.random() > 0.55) return;
+        const q = Math.max(1, Math.round((a.par - a.min) * (0.3 + Math.random()*0.5)));
+        db.moves.push({id:uid("mv"), date:day + "T08:" + String(10+Math.floor(Math.random()*40)).padStart(2,"0") + ":00",
+          itemId:a.id, type:"carico", qty:q, note:"consegna " + su.name});
+      });
+    });
+  }
+  /* qualche spreco, come capita davvero */
+  for(let k=18;k>=1;k-=3){
+    const a = db.inv[Math.floor(Math.random()*db.inv.length)];
+    db.moves.push({id:uid("mv"), date:addDays(d,-k) + "T23:30:00", itemId:a.id,
+      type:"spreco", qty:Math.max(1, Math.round(a.min*0.2)), note:"scaduto"});
+  }
+  db.moves.sort((a,b)=> b.date.localeCompare(a.date));
+  if(db.moves.length > 600) db.moves.length = 600;
+
+  /* prima nota: i costi fissi che non passano dal magazzino */
+  const mese = d.slice(0,7);
+  db.ledger.push(
+    {id:uid("lg"), date:mese + "-01", kind:"uscita", cat:"affitto", amount:2400, pay:"bonifico", desc:"Canone del mese"},
+    {id:uid("lg"), date:mese + "-05", kind:"uscita", cat:"utenze", amount:860, pay:"rid", desc:"Luce e gas"},
+    {id:uid("lg"), date:mese + "-10", kind:"uscita", cat:"manutenzione", amount:180, pay:"contanti", desc:"Riparazione lavastoviglie"},
+    {id:uid("lg"), date:mese + "-15", kind:"uscita", cat:"marketing", amount:220, pay:"carta", desc:"Stampa volantini"}
+  );
 
   /* storico vendite per i report: 21 giorni */
   for(let k=21;k>=1;k--){
@@ -1876,6 +2171,25 @@ function stockMove(itemId, type, qty, note){
   DB.moves.unshift({id:uid("mv"), date:new Date().toISOString(), itemId:itemId, type:type, qty:q, note:note || ""});
   if(DB.moves.length > 600) DB.moves.length = 600;
   save();
+}
+/** Che cosa consuma una riga venduta: la scheda piatto, oppure il collegamento
+    diretto della bevanda al suo articolo di magazzino. */
+function lineStock(l){
+  const it = itemById(l.itemId); if(!it) return [];
+  const r = recipeOf(it.id);
+  if(r && r.lines.length) return r.lines.map(x=> ({invId:x.invId, qty:(Number(x.qty)||0) * l.qty}));
+  if(it.invId && it.invQty) return [{invId:it.invId, qty:it.invQty * l.qty}];
+  return [];
+}
+/** Scarica dal magazzino tutto quello che l'ordine ha venduto. */
+function consumeStock(o, what){
+  let n = 0;
+  (o.lines || []).forEach(l=> lineStock(l).forEach(x=>{
+    if(!invById(x.invId) || !x.qty) return;
+    stockMove(x.invId, "scarico", x.qty, what || "venduto");
+    n++;
+  }));
+  return n;
 }
 const lowStock = ()=> DB.inv.filter(i=> i.qty <= i.min);
 const stockValue = ()=> sum(DB.inv.map(i=> (i.qty||0) * (i.cost||0)));
@@ -2199,6 +2513,7 @@ const NAV = [
   ]},
   {grp:"nav_menu", items:[
     {id:"menu",   t:"nav_menuman", ic:"menu"},
+    {id:"az",     t:"nav_az",      ic:"recipe"},
     {id:"mods",   t:"nav_mods",    ic:"edit"},
     {id:"photos", t:"nav_photos",  ic:"flyer"}
   ]},
@@ -2225,6 +2540,8 @@ const NAV = [
     {id:"issues", t:"nav_issues", ic:"warn"}
   ]},
   {grp:"nav_admin", items:[
+    {id:"acc",      t:"nav_acc",    ic:"chart"},
+    {id:"presenze", t:"nav_pres",   ic:"clock"},
     {id:"report",   t:"nav_report", ic:"chart"},
     {id:"settings", t:"nav_set",    ic:"cog"}
   ]}
@@ -2412,7 +2729,7 @@ VIEWS.dash = function(){
       onShift.length ? '<div class="list">' + onShift.sort((a,b)=> a.start.localeCompare(b.start)).map(s=>{
         const st = staffById(s.staffId); if(!st) return "";
         return '<div class="li" style="padding-inline:0"><div class="avat">' + esc(initials(st.name)) + '</div>' +
-          '<div class="tx"><b>' + esc(st.name) + '</b><span>' + esc(st.role) + ' &middot; ' + esc(T(st.contract === "full" ? "p_full" : st.contract === "part" ? "p_part" : "p_extra")) + '</span></div>' +
+          '<div class="tx"><b>' + esc(st.name) + '</b><span>' + esc(roleName(st.role)) + ' &middot; ' + esc(T(st.contract === "full" ? "p_full" : st.contract === "part" ? "p_part" : "p_extra")) + '</span></div>' +
           '<div class="end"><span class="badge ' + (s.role === "cucina" ? "r" : s.role === "bar" ? "v" : s.role === "direzione" ? "a" : "b") + '">' + esc(s.start + " - " + s.end) + '</span></div></div>';
       }).join("") + '</div>' : empty("Nessun turno pianificato","clock"),
       '<button class="btn sm ghost" data-go="shifts">' + esc(T("nav_shifts")) + '</button>', "flush") +
@@ -2696,7 +3013,7 @@ VIEWS.terminale = function(){
       '<div class="card-b" style="display:flex;align-items:center;gap:13px;padding:14px 16px">' +
         '<span class="avat lg" style="background:rgba(255,255,255,.22);color:#fff">' + esc(initials(st.name)) + '</span>' +
         '<div style="min-width:0"><b style="font-size:17px;display:block">' + esc(st.name) + '</b>' +
-          '<span style="font-size:12.5px;opacity:.85">' + esc(st.role) + ' &middot; ' +
+          '<span style="font-size:12.5px;opacity:.85">' + esc(roleName(st.role)) + ' &middot; ' +
           esc(isManager(st) ? T("au_mgr") : T("au_staff")) + ' &middot; ' + esc("al monitor da") + ' ' + since + ' min</span></div>' +
         '<button class="btn sm" style="margin-inline-start:auto;background:rgba(255,255,255,.2);color:#fff" data-off>' +
           icon("clock",13) + esc(T("au_off")) + '</button>' +
@@ -2933,6 +3250,14 @@ function modsSheet(line, title, onSave){
 }
 
 /** Le modifiche come le vede la sala: pastiglie colorate sotto al nome. */
+/** Misura e provenienza, come si leggono su una carta. */
+function sizeBadge(i){
+  const out = [];
+  if(i.size) out.push('<span class="badge n" style="font-size:10px;padding:1px 6px">' + esc(i.size) + '</span>');
+  if(i.origin) out.push('<span class="badge b" style="font-size:10px;padding:1px 6px">' + esc(i.origin) + '</span>');
+  return out.length ? ' <span class="row tight" style="gap:4px;display:inline-flex;vertical-align:middle">' + out.join("") + '</span>' : "";
+}
+
 function modChips(l, small){
   const out = (l.mods || []).map(id=>{
     const m = modById(id); if(!m) return "";
@@ -3041,6 +3366,7 @@ function closePay(w, disc){
   o.date = today();
   o.waiter = o.waiter || (me() || {}).id || "";
   o.lines.forEach(l=>{ l.status = "servito"; const it = itemById(l.itemId); if(it) it.sold = (it.sold||0) + l.qty; });
+  consumeStock(o, "venduto " + orderLabel(o));
   if(o.tableId) freeTable(o.tableId);
   save(); closeModal(); refresh();
   toast(T("o_pay") + " " + eur(o.total), "ok");
@@ -3657,7 +3983,8 @@ VIEWS.menu = function(){
       items.map(i=>{
         const nLang = LKEYS.filter(k=> i.name && i.name[k]).length;
         return '<tr><td><div class="row tight" style="flex-wrap:nowrap;align-items:flex-start">' + thumb(i.photo, 38, 8) +
-        '<div><b>' + esc(L(i.name)) + '</b><div style="font-size:12px;color:var(--txt-2)">' + esc(L(i.desc)) + '</div></div></div></td>' +
+        '<div><b>' + esc(L(i.name)) + '</b>' + sizeBadge(i) +
+        '<div style="font-size:12px;color:var(--txt-2)">' + esc(L(i.desc)) + '</div></div></div></td>' +
         '<td>' + (i.allerg.length ? '<span class="alg">' + i.allerg.map(a=> '<span>' + esc(a) + '</span>').join("") + '</span>' : '<span style="color:var(--txt-3)">-</span>') + '</td>' +
         '<td class="r num">' + eur(i.price) + '</td>' +
         '<td class="c"><button class="btn ico sm ' + (i.special ? "warn" : "ghost") + '" data-msp="' + i.id + '">' + (i.special ? icon("check",12) : icon("plus",12)) + '</button></td>' +
@@ -3668,15 +3995,16 @@ VIEWS.menu = function(){
 
   return {
     title:T("nav_menuman"), sub:DB.items.length + " " + T("nav_menu").toLowerCase() + " &middot; " + cats.length + " " + T("c_category").toLowerCase(),
-    actions:'<button class="btn ghost" data-mprint>' + icon("print",15) + esc(T("m_printmenu")) + '</button>' +
-            '<button class="btn pri" data-mnew>' + icon("plus",15) + esc(T("c_new")) + '</button>',
+    actions:'<button class="btn ghost" data-go="az">' + icon("menu",15) + 'A-Z</button>' +
+            '<button class="btn ghost" data-mprint>' + icon("print",15) + esc(T("m_printmenu")) + '</button>' +
+            '<button class="btn pri" data-mquick>' + icon("plus",15) + esc(T("p_new")) + '</button>',
     html:html,
     after:()=>{
       $$("[data-mc]").forEach(b=> b.onclick = ()=>{ MENUCAT = b.getAttribute("data-mc"); refresh(); });
       $$("[data-me]").forEach(b=> b.onclick = ()=> itemSheet(b.getAttribute("data-me")));
       $$("[data-msp]").forEach(b=> b.onclick = ()=>{ const i = itemById(b.getAttribute("data-msp")); i.special = !i.special; save(); refresh(); });
       $$("[data-mav]").forEach(b=> b.onclick = ()=>{ const i = itemById(b.getAttribute("data-mav")); i.available = !i.available; save(); refresh(); });
-      $("[data-mnew]").onclick = ()=> itemSheet(null);
+      $("[data-mquick]").onclick = ()=> quickAdd(MENUCAT === "tutte" ? null : MENUCAT);
       $("[data-mprint]").onclick = printMenuSheet;
     }
   };
@@ -3699,6 +4027,17 @@ function itemSheet(id){
       '<div class="field"><label>' + esc(T("k_station")) + '</label><select class="inp" name="station">' +
         STATIONS.filter(s=>s!=="tutte").map(s=> '<option' + (i && i.station === s ? " selected":"") + '>' + esc(s) + '</option>').join("") + '</select></div>' +
     '</div>' +
+    '<div class="f3">' +
+      '<div class="field"><label>' + esc(T("p_size")) + '</label><input class="inp" name="size" value="' + esc(i ? (i.size||"") : "") + '" placeholder="0,4 l - 4 cl - bottiglia 0,75"></div>' +
+      '<div class="field"><label>' + esc(T("p_origin")) + '</label><input class="inp" name="origin" value="' + esc(i ? (i.origin||"") : "") + '" placeholder="Liguria - Italia - Belgio"></div>' +
+      '<div class="field"><label>' + esc("Scarico magazzino") + '</label><select class="inp" name="invId"><option value="">-</option>' +
+        DB.inv.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(a=>
+          '<option value="' + a.id + '"' + (i && i.invId === a.id ? " selected":"") + '>' + esc(a.name) + ' (' + esc(a.unit) + ')</option>').join("") + '</select></div>' +
+    '</div>' +
+    '<div class="field"><label>' + esc("Quanto consuma a pezzo venduto") + '</label>' +
+      '<input class="inp" type="number" step="0.001" min="0" name="invQty" value="' + (i ? (i.invQty||0) : 0) + '">' +
+      '<p style="font-size:12px;color:var(--txt-3);margin-top:5px">' +
+      esc("Una bottiglia intera vale 1. Un calice da una bottiglia da 0,75 vale circa 0,16. Un bicchierino da 4 cl da una bottiglia da un litro vale 0,04.") + '</p></div>' +
     '<div class="field"><label>' + esc(T("m_allerg")) + '</label><div class="row tight">' +
       ALLERGENS.map(a=> '<label class="check" style="padding:3px 0;margin-inline-end:10px"><input type="checkbox" name="al_' + a.replace(/ /g,"_") + '"' +
         (i && i.allerg.includes(a) ? " checked":"") + '><span style="font-size:12.5px">' + esc(a) + '</span></label>').join("") + '</div></div>' +
@@ -3715,7 +4054,8 @@ function itemSheet(id){
     if(!name.it){ toast(T("c_name"), "err"); return false; }
     const allerg = ALLERGENS.filter(a=> f["al_" + a.replace(/ /g,"_")]);
     const patch = {name:name, desc:desc, cat:f.cat, price:Number(f.price)||0, station:f.station,
-      allerg:allerg, available:!!f.available, special:!!f.special, photo:getPhoto()};
+      allerg:allerg, available:!!f.available, special:!!f.special, photo:getPhoto(),
+      size:f.size || "", origin:f.origin || "", invId:f.invId || null, invQty:Number(f.invQty) || 0};
     if(i) Object.assign(i, patch);
     else DB.items.push(Object.assign({id:uid("it"), cost:0, sold:0}, patch));
     save(); phGarbage(); refresh(); toast(T("c_save"), "ok");
@@ -3741,7 +4081,9 @@ function menuHTML(lk, opts){
       return '<h4>' + esc(L(c.name)) + '</h4>' + items.map(i=>
         '<div class="dish">' +
         (o.photos && photoURL(i.photo) ? '<span class="mph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
-        '<div class="nm"><b>' + esc(L(i.name)) + (i.special ? ' &#9733;' : '') + '</b>' +
+        '<div class="nm"><b>' + esc(L(i.name)) + (i.special ? ' &#9733;' : '') +
+        (i.size ? ' <span style="font-weight:400;opacity:.62">' + esc(i.size) + '</span>' : '') +
+        (i.origin ? ' <span style="font-weight:400;opacity:.5;font-size:12px">' + esc(i.origin) + '</span>' : '') + '</b>' +
         (L(i.desc) ? '<p>' + esc(L(i.desc)) + '</p>' : '') +
         (i.allerg.length ? '<span class="alg">' + i.allerg.map(a=> '<span>' + esc(a) + '</span>').join("") + '</span>' : '') +
         '</div><div class="pr">' + eur(i.price) + '</div></div>').join("");
@@ -3801,6 +4143,135 @@ function printMenus(langs, opts){
   w.document.close();
   setTimeout(()=> w.print(), 700);
 }
+</script>
+<script>
+/* ============================================================
+   PARTE 16a — AGGIUNGERE UN PRODOTTO, E VEDERLI TUTTI DALLA A ALLA Z
+   ============================================================ */
+
+/** Scheda breve: nome, prezzo, dove va. Il resto si mette dopo, se serve. */
+function quickAdd(catId, after){
+  const cats = DB.cats.slice().sort((a,b)=> a.order - b.order);
+  const body =
+    '<div class="field"><label>' + esc(T("c_name")) + '</label>' +
+      '<input class="inp lg" name="nome" placeholder="' + esc("Pigato, Birra IPA, Tortelli di zucca...") + '" style="font-size:17px;padding:12px 13px"></div>' +
+    '<div class="f3">' +
+      '<div class="field"><label>' + esc(T("c_price")) + '</label>' +
+        '<input class="inp" type="number" step="0.5" min="0" name="prezzo" value="0" inputmode="decimal"></div>' +
+      '<div class="field"><label>' + esc(T("p_size")) + '</label><input class="inp" name="size" placeholder="0,4 l"></div>' +
+      '<div class="field"><label>' + esc(T("p_origin")) + '</label><input class="inp" name="origin" placeholder="Liguria"></div>' +
+    '</div>' +
+    '<div class="field"><label>' + esc(T("p_where")) + '</label><select class="inp" name="cat">' +
+      AREAS.map(a=> '<optgroup label="' + esc(T(a.t)) + '">' +
+        cats.filter(c=> c.area === a.k).map(c=>
+          '<option value="' + c.id + '"' + (c.id === catId ? " selected":"") + '>' + esc(L(c.name)) + '</option>').join("") +
+        '</optgroup>').join("") + '</select></div>' +
+    photoField("Foto (si puo mettere dopo)", null) +
+    '<p style="font-size:12.5px;color:var(--txt-3)">' +
+      esc("Il nome resta com'e scritto in tutte le lingue. Per tradurlo, o per mettere allergeni e scarico di magazzino, apri la scheda completa da Gestione menu.") + '</p>';
+
+  let getPhoto = ()=> null;
+  modal({title:T("p_new"), size:"wide", body:body, actions:[
+    {label:T("c_cancel"), cls:"ghost"},
+    {label:T("c_add") + " e continua", cls:"ghost", run:(w)=>{ if(saveIt(w, true) === false) return false; return false; }},
+    {label:T("c_save"), cls:"pri", run:(w)=> saveIt(w, false)}
+  ], onOpen:(w)=>{ getPhoto = wirePhoto(w); }});
+
+  function saveIt(w, again){
+    const f = readForm(w);
+    const nome = (f.nome || "").trim();
+    if(!nome){ toast(T("c_name"), "err"); return false; }
+    const cat = catById(f.cat) || DB.cats[0];
+    DB.items.push({
+      id:uid("it"), cat:cat.id, price:Number(f.prezzo) || 0, cost:0, allerg:[],
+      name:nome, desc:"", size:f.size || "", origin:f.origin || "",
+      available:true, special:false, station:cat.station || "caldo",
+      sold:0, photo:getPhoto(), invId:null, invQty:0
+    });
+    save(); toast(nome + " " + T("c_add").toLowerCase(), "ok");
+    if(again){
+      $('[name="nome"]', w).value = ""; $('[name="prezzo"]', w).value = "0";
+      $('[name="nome"]', w).focus();
+      return true;
+    }
+    refresh();
+    if(after) after();
+  }
+}
+
+/* --- tutti i prodotti dalla A alla Z --- */
+let AZQ = "", AZAREA = "tutte";
+VIEWS.az = function(){
+  const q = AZQ.toLowerCase();
+  const list = DB.items.filter(i=>{
+    const c = catById(i.cat);
+    if(AZAREA !== "tutte" && (!c || c.area !== AZAREA)) return false;
+    if(!q) return true;
+    return (L(i.name) + " " + L(i.desc) + " " + (i.size||"") + " " + (i.origin||"") + " " +
+            (c ? L(c.name) : "")).toLowerCase().includes(q);
+  }).sort((a,b)=> L(a.name).localeCompare(L(b.name), "it", {sensitivity:"base"}));
+
+  /* raggruppati per lettera iniziale */
+  const byLetter = {};
+  list.forEach(i=>{ const k = (L(i.name)[0] || "#").toUpperCase(); (byLetter[k] = byLetter[k] || []).push(i); });
+  const letters = Object.keys(byLetter).sort();
+
+  const html =
+    '<div class="row" style="margin-bottom:14px">' +
+      '<div class="search">' + icon("search") +
+        '<input class="inp" id="az-search" value="' + esc(AZQ) + '" placeholder="' + esc(T("c_search")) + '"></div>' +
+      '<div class="seg"><button class="' + (AZAREA==="tutte"?"on":"") + '" data-aza="tutte">' + esc(T("c_all")) + '</button>' +
+        AREAS.map(a=> '<button class="' + (AZAREA===a.k?"on":"") + '" data-aza="' + a.k + '">' + esc(T(a.t)) + '</button>').join("") + '</div>' +
+    '</div>' +
+    '<div class="grid g4" style="margin-bottom:14px">' +
+      stat("Prodotti", list.length, AZAREA === "tutte" ? "in tutto il locale" : T(AREAS.find(a=>a.k===AZAREA).t)) +
+      stat("Con foto", list.filter(i=> photoURL(i.photo)).length, "su " + list.length) +
+      stat("Fuori carta", list.filter(i=> !i.available).length, "esauriti o sospesi") +
+      stat("Collegati al magazzino", list.filter(i=> i.invId).length, "scaricano da soli") +
+    '</div>' +
+    (letters.length ? '<div class="row tight" style="margin-bottom:12px">' + letters.map(k=>
+      '<a class="btn sm ghost" href="#az-' + k + '">' + esc(k) + '</a>').join("") + '</div>' : '') +
+    (list.length
+      ? letters.map(k=>
+          '<div class="lbl mt-l" id="az-' + k + '" style="font-size:15px;color:var(--brand)">' + esc(k) + '</div>' +
+          '<div class="card"><div class="card-b flush"><div class="list">' +
+          byLetter[k].map(i=>{
+            const c = catById(i.cat);
+            const inv = i.invId ? invById(i.invId) : null;
+            return '<div class="li">' + thumb(i.photo, 36, 8) +
+              '<div class="tx"><b>' + esc(L(i.name)) + '</b>' +
+              '<span>' + esc(c ? L(c.name) : "-") + (i.size ? ' &middot; ' + esc(i.size) : '') +
+                (i.origin ? ' &middot; ' + esc(i.origin) : '') +
+                (inv ? ' &middot; ' + esc("magazzino") + ' ' + num(inv.qty,1) + ' ' + esc(inv.unit) : '') + '</span></div>' +
+              '<div class="end">' +
+                (i.available ? '' : '<span class="badge r">' + esc(T("k_sold")) + '</span>') +
+                '<b class="num">' + eur(i.price) + '</b>' +
+                '<button class="btn ico sm ghost" data-aze="' + i.id + '">' + icon("edit",12) + '</button></div></div>';
+          }).join("") + '</div></div></div>').join("")
+      : empty("Nessun prodotto con questa ricerca", "menu"));
+
+  return {
+    title:"Prodotti A-Z", sub:list.length + " " + esc("voci in ordine alfabetico"),
+    actions:'<button class="btn ghost" data-azcsv>' + icon("down",15) + 'CSV</button>' +
+            '<button class="btn pri" data-aznew>' + icon("plus",15) + esc(T("p_new")) + '</button>',
+    html:html,
+    after:()=>{
+      const inp = $("#az-search");
+      inp.oninput = (e)=>{ AZQ = e.target.value; const p = e.target.selectionStart; refresh();
+        const n = $("#az-search"); if(n){ n.focus(); n.setSelectionRange(p, p); } };
+      $$("[data-aza]").forEach(b=> b.onclick = ()=>{ AZAREA = b.getAttribute("data-aza"); refresh(); });
+      $$("[data-aze]").forEach(b=> b.onclick = ()=> itemSheet(b.getAttribute("data-aze")));
+      $("[data-aznew]").onclick = ()=> quickAdd(null);
+      $("[data-azcsv]").onclick = ()=>{
+        const rows = [["nome","categoria","reparto","prezzo","misura","provenienza","disponibile","magazzino"]];
+        list.forEach(i=>{ const c = catById(i.cat), inv = i.invId ? invById(i.invId) : null;
+          rows.push([L(i.name), c ? L(c.name) : "", c ? c.area : "", i.price.toFixed(2),
+            i.size||"", i.origin||"", i.available ? "si" : "no", inv ? inv.name : ""]); });
+        downloadCSV(rows, "prodotti_" + today() + ".csv");
+      };
+    }
+  };
+};
 </script>
 <script>
 /* ============================================================
@@ -4032,6 +4503,7 @@ function poSheet(){
     const s = byId(DB.suppliers, sid) || {name:"?"};
     return '<div class="card" style="margin-bottom:12px"><div class="card-h" style="padding:10px 13px"><h3>' + esc(s.name) + '</h3>' +
       '<div class="sp"><span class="badge n">' + esc(s.days || "") + '</span>' +
+      '<button class="btn sm ghost" data-pomail="' + sid + '">' + icon("supp",12) + esc(T("ac_send")) + '</button>' +
       '<button class="btn sm ghost" data-posend="' + sid + '">' + icon("print",12) + esc(T("c_print")) + '</button></div></div>' +
       '<div class="card-b flush"><div class="list">' + bySupp[sid].map(i=>
         '<div class="li" style="padding:7px 13px"><div class="tx"><b>' + esc(i.name) + '</b>' +
@@ -4051,17 +4523,51 @@ function poSheet(){
       refresh(); toast(n + " articoli caricati", "ok");
     }} : {label:T("c_close"), cls:"pri"}
   ], onOpen:(w)=>{
+    const righe = (sid)=> bySupp[sid].map(i=>{
+      const inp = $('[data-poq="' + i.id + '"]', w);
+      return {name:i.name, qty:Number(inp.value)||0, unit:i.unit};
+    }).filter(l=> l.qty > 0);
     $$("[data-posend]", w).forEach(b=> b.onclick = ()=>{
       const sid = b.getAttribute("data-posend");
-      const s = byId(DB.suppliers, sid);
-      const lines = bySupp[sid].map(i=>{
-        const inp = $('[data-poq="' + i.id + '"]', w);
-        return {name:i.name, qty:Number(inp.value)||0, unit:i.unit};
-      }).filter(l=> l.qty > 0);
-      printPO(s, lines);
+      printPO(byId(DB.suppliers, sid), righe(sid));
+    });
+    $$("[data-pomail]", w).forEach(b=> b.onclick = ()=>{
+      const sid = b.getAttribute("data-pomail");
+      const su = byId(DB.suppliers, sid), ls = righe(sid);
+      if(!ls.length){ toast("Niente da ordinare", "warn"); return; }
+      sendPO(su, ls);
     });
   }});
 }
+/** Manda l'ordine per email, o su WhatsApp se il fornitore risponde li. */
+function sendPO(su, lines){
+  const b = DB.meta.biz;
+  const testo = [
+    "Ordine da " + b.name,
+    b.addr + ", " + b.city + " - " + b.phone,
+    "Data: " + fmtDate(today()) + (su.days ? "  Consegna: " + su.days : ""),
+    "",
+    ...lines.map(l=> "- " + l.name + ": " + num(l.qty,1) + " " + l.unit),
+    "",
+    "Grazie."
+  ].join("\n");
+  const oggetto = "Ordine " + b.name + " " + fmtDate(today(),{day:"2-digit",month:"2-digit",year:"numeric"});
+  modal({title:T("ac_send") + " - " + su.name, size:"slim",
+    body:'<div class="field"><label>' + esc("Il testo che parte") + '</label>' +
+      '<textarea class="inp" id="po-txt" style="min-height:200px;font-family:var(--mono);font-size:12.5px">' + esc(testo) + '</textarea></div>',
+    actions:[
+      {label:T("c_close"), cls:"ghost"},
+      {label:"WhatsApp", cls:"ghost", run:(w)=>{
+        const n = (su.phone || "").replace(/[^0-9]/g, "");
+        window.open("https://wa.me/" + n + "?text=" + encodeURIComponent($("#po-txt", w).value), "_blank");
+      }},
+      {label:"Email", cls:"pri", run:(w)=>{
+        window.location.href = "mailto:" + encodeURIComponent(su.email || "") +
+          "?subject=" + encodeURIComponent(oggetto) + "&body=" + encodeURIComponent($("#po-txt", w).value);
+      }}
+    ]});
+}
+
 function printPO(s, lines){
   const b = DB.meta.biz;
   const w = window.open("", "_blank", "width=680,height=860");
@@ -4092,7 +4598,8 @@ VIEWS.supp = function(){
       '<div class="sp">' + (lows.length ? '<span class="badge r">' + lows.length + ' ' + esc(T("s_reorder").toLowerCase()) + '</span>' : '<span class="badge g">ok</span>') + '</div></div>' +
       '<div class="card-b">' +
         '<div style="font-size:12.5px;color:var(--txt-2);line-height:1.8">' +
-          '<div><b style="color:var(--txt)">' + esc(s.cat) + '</b></div>' +
+          '<div><b style="color:var(--txt)">' + esc(s.cat) + '</b>' +
+            (s.area ? ' <span class="badge b" style="font-size:10px">' + esc(T((AREAS.find(a=>a.k===s.area)||{t:"c_all"}).t)) + '</span>' : '') + '</div>' +
           '<div>' + esc(s.contact) + ' &middot; ' + esc(s.phone) + '</div>' +
           '<div>' + esc(s.email) + '</div>' +
           '<div>' + esc("Consegne") + ': ' + esc(s.days) + ' &middot; ' + esc("ordini entro") + ' ' + esc(s.cutoff) + '</div>' +
@@ -4118,7 +4625,11 @@ function suppSheet(id){
   const body = F("name", T("c_name"), s&&s.name) + F("cat", T("c_category"), s&&s.cat) +
     '<div class="f2">' + F("contact","Referente", s&&s.contact) + F("phone", T("c_phone"), s&&s.phone, "tel") + '</div>' +
     F("email", T("c_email"), s&&s.email, "email") +
-    '<div class="f2">' + F("days","Giorni di consegna", s&&s.days) + F("cutoff","Ordini entro", s&&s.cutoff) + '</div>';
+    '<div class="f2">' + F("days","Giorni di consegna", s&&s.days) + F("cutoff","Ordini entro", s&&s.cutoff) + '</div>' +
+    '<div class="field"><label>' + esc(T("a_area")) + '</label><select class="inp" name="area">' +
+      '<option value="">' + esc(T("c_all")) + '</option>' +
+      AREAS.map(a=> '<option value="' + a.k + '"' + (s && s.area === a.k ? " selected":"") + '>' + esc(T(a.t)) + '</option>').join("") +
+    '</select></div>';
   const acts = [{label:T("c_cancel"), cls:"ghost"}];
   if(s) acts.push({label:T("c_del"), cls:"dang", run:()=>{ DB.suppliers = DB.suppliers.filter(x=>x.id!==id); save(); refresh(); }});
   acts.push({label:T("c_save"), cls:"pri", run:(w)=>{
@@ -4134,7 +4645,38 @@ function suppSheet(id){
 /* ============================================================
    PARTE 19 — ANAGRAFICA PERSONALE
    ============================================================ */
-const ROLES = ["direzione","maitre","cameriere","chef","sous chef","cuoco","pizzaiolo","pasticceria","barista","barman","lavapiatti","fattorino"];
+/* ============================================================
+   L'ORGANICO: tutte le mansioni, col reparto di appartenenza e chi
+   comanda. Il livello del codice si propone da qui, ma resta
+   modificabile persona per persona.
+   ============================================================ */
+const ROLES = [
+  {k:"direttore",    d:"direzione", mgr:true,  n:m6(["Direttore","Manager","Directeur","Director","Leiter","المدير"])},
+  {k:"supervisor",   d:"direzione", mgr:true,  n:m6(["Supervisore","Supervisor","Superviseur","Supervisor","Supervisor","المشرف"])},
+  {k:"maitre",       d:"sala",      mgr:true,  n:m6(["Maitre","Head waiter","Maitre d'hotel","Maitre","Restaurantleiter","رئيس الصالة"])},
+  {k:"chef de rang", d:"sala",      mgr:false, n:m6(["Chef de rang","Chef de rang","Chef de rang","Jefe de rango","Chef de Rang","رئيس قسم"])},
+  {k:"cameriere",    d:"sala",      mgr:false, n:m6(["Cameriere","Server","Serveur","Camarero","Kellner","نادل"])},
+  {k:"runner",       d:"sala",      mgr:false, n:m6(["Runner","Runner","Runner","Runner","Runner","حامل الأطباق"])},
+  {k:"commis sala",  d:"sala",      mgr:false, n:m6(["Commis di sala","Commis waiter","Commis de salle","Ayudante de sala","Commis","مساعد نادل"])},
+  {k:"hostess",      d:"sala",      mgr:false, n:m6(["Accoglienza","Host","Accueil","Recepcion","Empfang","الاستقبال"])},
+  {k:"barman",       d:"bar",       mgr:false, n:m6(["Barman","Bartender","Barman","Barman","Barkeeper","الساقي"])},
+  {k:"barista",      d:"bar",       mgr:false, n:m6(["Barista","Barista","Barista","Barista","Barista","الباريستا"])},
+  {k:"aiuto barman", d:"bar",       mgr:false, n:m6(["Aiuto barman","Bar back","Aide barman","Ayudante de barra","Barhilfe","مساعد ساقي"])},
+  {k:"chef",         d:"cucina",    mgr:true,  n:m6(["Chef","Head chef","Chef de cuisine","Chef","Kuchenchef","الشيف"])},
+  {k:"sous chef",    d:"cucina",    mgr:true,  n:m6(["Sous chef","Sous chef","Sous chef","Segundo de cocina","Sous-Chef","نائب الشيف"])},
+  {k:"capo partita", d:"cucina",    mgr:false, n:m6(["Capo partita","Chef de partie","Chef de partie","Jefe de partida","Chef de Partie","رئيس القسم"])},
+  {k:"cuoco",        d:"cucina",    mgr:false, n:m6(["Cuoco","Cook","Cuisinier","Cocinero","Koch","الطباخ"])},
+  {k:"aiuto cuoco",  d:"cucina",    mgr:false, n:m6(["Aiuto cuoco","Commis chef","Commis de cuisine","Ayudante de cocina","Beikoch","مساعد الطباخ"])},
+  {k:"pizzaiolo",    d:"cucina",    mgr:false, n:m6(["Pizzaiolo","Pizza chef","Pizzaiolo","Pizzero","Pizzabacker","صانع البيتزا"])},
+  {k:"pasticcere",   d:"cucina",    mgr:false, n:m6(["Pasticcere","Pastry chef","Patissier","Pastelero","Konditor","الحلواني"])},
+  {k:"lavapiatti",   d:"cucina",    mgr:false, n:m6(["Lavapiatti","Kitchen porter","Plongeur","Lavaplatos","Spuler","غاسل الصحون"])},
+  {k:"fattorino",    d:"sala",      mgr:false, n:m6(["Fattorino","Driver","Livreur","Repartidor","Fahrer","السائق"])}
+];
+function roleDef(k){ return ROLES.find(r=> r.k === k) || null; }
+function roleName(k){ const r = roleDef(k); return r ? L(r.n) : (k || ""); }
+function roleDept(k){ const r = roleDef(k); return r ? r.d : "sala"; }
+const ROLE_ALIAS = {direzione:"direttore", pasticceria:"pasticcere"};
+const ROLES_BY_DEPT = ["direzione","sala","bar","cucina"];
 const CONTRACTS = [["full","p_full"],["part","p_part"],["extra","p_extra"]];
 
 VIEWS.team = function(){
@@ -4164,7 +4706,7 @@ VIEWS.team = function(){
         const over = ph > s.hweek + 0.5;
         return '<tr' + (s.active ? '' : ' style="opacity:.45"') + '><td><div class="row tight" style="flex-wrap:nowrap">' +
           '<span class="avat sm">' + esc(initials(s.name)) + '</span><b>' + esc(s.name) + '</b></div></td>' +
-          '<td style="color:var(--txt-2)">' + esc(s.role) + '</td>' +
+          '<td style="color:var(--txt-2)">' + esc(roleName(s.role)) + '</td>' +
           '<td><span class="badge ' + (s.contract === "full" ? "b" : s.contract === "part" ? "v" : "n") + '">' +
             esc(T(s.contract === "full" ? "p_full" : s.contract === "part" ? "p_part" : "p_extra")) + '</span></td>' +
           '<td class="r num">' + s.hweek + ' h</td>' +
@@ -4198,7 +4740,10 @@ function staffSheet(id){
     '<div class="f2">' +
       '<div class="field"><label>' + esc(T("c_name")) + '</label><input class="inp" name="name" value="' + esc(s ? s.name : "") + '"></div>' +
       '<div class="field"><label>' + esc(T("c_role")) + '</label><select class="inp" name="role">' +
-        ROLES.map(r=> '<option' + (s && s.role === r ? " selected":"") + '>' + esc(r) + '</option>').join("") + '</select></div>' +
+        ROLES_BY_DEPT.map(d=> '<optgroup label="' + esc(d) + '">' +
+          ROLES.filter(r=> r.d === d).map(r=>
+            '<option value="' + r.k + '"' + (s && s.role === r.k ? " selected":"") + '>' + esc(L(r.n)) + '</option>').join("") +
+          '</optgroup>').join("") + '</select></div>' +
     '</div>' +
     '<div class="f3">' +
       '<div class="field"><label>' + esc(T("p_contract")) + '</label><select class="inp" name="contract">' +
@@ -4243,7 +4788,18 @@ function staffSheet(id){
     if(s) Object.assign(s, patch); else DB.staff.push(Object.assign({id:uid("st")}, patch));
     save(); refresh(); toast(T("c_save"),"ok");
   }});
-  modal({title:s ? s.name : T("c_new") + " " + T("nav_staff").toLowerCase(), size:"wide", body:body, actions:acts});
+  modal({title:s ? s.name : T("c_new") + " " + T("nav_staff").toLowerCase(), size:"wide", body:body, actions:acts,
+    onOpen:(w)=>{
+      /* cambiando mansione il livello si adegua da solo, finche non lo tocchi tu */
+      let toccato = false;
+      const lv = $('[name="level"]', w);
+      lv.onchange = ()=> toccato = true;
+      $('[name="role"]', w).onchange = (e)=>{
+        if(toccato) return;
+        const r = roleDef(e.target.value);
+        lv.value = (r && r.mgr) ? "responsabile" : "operatore";
+      };
+    }});
 }
 </script>
 <script>
@@ -4269,7 +4825,7 @@ VIEWS.shifts = function(){
         const over = h > s.hweek + 0.5;
         return '<tr><td><div class="row tight" style="flex-wrap:nowrap"><span class="avat sm">' + esc(initials(s.name)) + '</span>' +
           '<div style="min-width:0"><b style="font-size:12.5px;display:block;line-height:1.2">' + esc(s.name) + '</b>' +
-          '<span style="font-size:11px;color:var(--txt-2)">' + esc(s.role) + ' &middot; ' + esc(T(s.contract === "full" ? "p_full" : s.contract === "part" ? "p_part" : "p_extra")) + '</span></div></div></td>' +
+          '<span style="font-size:11px;color:var(--txt-2)">' + esc(roleName(s.role)) + ' &middot; ' + esc(T(s.contract === "full" ? "p_full" : s.contract === "part" ? "p_part" : "p_extra")) + '</span></div></div></td>' +
           days.map(dd=>{
             const sh = DB.shifts.filter(x=> x.staffId === s.id && x.date === dd);
             return '<td' + (dd === d ? ' class="oggi"' : '') + '>' +
@@ -4286,7 +4842,7 @@ VIEWS.shifts = function(){
     const inShift = shiftsOf(d).some(x=> x.staffId === s.id);
     if(!inShift && !c) return "";
     return '<div class="li" style="padding-inline:0"><span class="avat">' + esc(initials(s.name)) + '</span>' +
-      '<div class="tx"><b>' + esc(s.name) + '</b><span>' + esc(s.role) +
+      '<div class="tx"><b>' + esc(s.name) + '</b><span>' + esc(roleName(s.role)) +
       (c && c.in ? ' &middot; ' + esc(T("p_clockin")) + ' ' + esc(c.in) : '') +
       (c && c.out ? ' &middot; ' + esc(T("p_clockout")) + ' ' + esc(c.out) : '') +
       (c && c.in && c.out ? ' &middot; ' + num(shiftMinutes(c.in, c.out, 0)/60, 1) + ' h' : '') + '</span></div>' +
@@ -4368,7 +4924,10 @@ function shiftSheet(id, staffId, date){
       '<div class="field"><label>' + esc(T("p_break")) + ' (min)</label><input class="inp" type="number" name="brk" value="' + (s ? s.brk : 30) + '"></div>' +
     '</div>' +
     '<div class="field"><label>' + esc("Reparto") + '</label><select class="inp" name="role">' +
-      ["sala","cucina","bar","direzione","riposo"].map(r=> '<option' + (s && s.role === r ? " selected":"") + '>' + esc(r) + '</option>').join("") + '</select></div>' +
+      ["sala","cucina","bar","direzione","riposo"].map(r=>{
+        const dflt = s ? s.role : roleDept((staffById(staffId) || {}).role);
+        return '<option' + (dflt === r ? " selected":"") + '>' + esc(r) + '</option>';
+      }).join("") + '</select></div>' +
     '<div class="field"><label>' + esc(T("c_notes")) + '</label><input class="inp" name="note" value="' + esc(s ? s.note : "") + '"></div>';
   const acts = [{label:T("c_cancel"), cls:"ghost"}];
   if(s) acts.push({label:T("c_del"), cls:"dang", run:()=>{ DB.shifts = DB.shifts.filter(x=> x.id !== id); save(); refresh(); }});
@@ -4379,6 +4938,169 @@ function shiftSheet(id, staffId, date){
     save(); refresh(); toast(T("c_save"),"ok");
   }});
   modal({title:T("p_shift"), size:"slim", body:body, actions:acts});
+}
+</script>
+<script>
+/* ============================================================
+   PARTE 20b — FOGLIO PRESENZE E ASSENZE
+   Ore lavorate mese per mese, con malattia, ferie, permessi e
+   infortuni. Si stampa e si firma.
+   ============================================================ */
+const ABS_TYPES = [
+  {k:"malattia",   t:"ab_sick", cls:"r"},
+  {k:"ferie",      t:"ab_hol",  cls:"b"},
+  {k:"permesso",   t:"ab_perm", cls:"a"},
+  {k:"infortunio", t:"ab_inj",  cls:"r"},
+  {k:"maternita",  t:"ab_mat",  cls:"v"}
+];
+function absOn(staffId, d){
+  return (DB.absences || []).find(a=> a.staffId === staffId && d >= a.from && d <= a.to) || null;
+}
+function monthDays(ym){
+  const [y, m] = ym.split("-").map(Number);
+  const n = new Date(y, m, 0).getDate();
+  return Array.from({length:n}, (_,i)=> ym + "-" + String(i+1).padStart(2,"0"));
+}
+/** Ore effettivamente timbrate in un giorno; se non c'e timbratura, il turno pianificato. */
+function hoursOn(staffId, d){
+  const c = DB.clock.find(x=> x.staffId === staffId && x.date === d && x.in && x.out);
+  if(c) return shiftMinutes(c.in, c.out, 0) / 60;
+  return sum(DB.shifts.filter(x=> x.staffId === staffId && x.date === d).map(shiftHours));
+}
+
+let PRESM = null;
+VIEWS.presenze = function(){
+  const ym = PRESM || today().slice(0,7);
+  const days = monthDays(ym);
+  const staff = DB.staff.filter(s=> s.active);
+  const tot = (st)=> sum(days.map(d=> absOn(st.id, d) ? 0 : hoursOn(st.id, d)));
+  const absCount = (st, k)=> days.filter(d=>{ const a = absOn(st.id, d); return a && a.type === k; }).length;
+
+  const html =
+    '<div class="row" style="margin-bottom:14px">' +
+      '<button class="btn ico ghost" data-pm="-1">&#8249;</button>' +
+      '<input class="inp" type="month" id="pres-m" value="' + ym + '" style="width:auto">' +
+      '<button class="btn ico ghost" data-pm="1">&#8250;</button>' +
+      '<div class="spacer"></div>' +
+      '<button class="btn ghost sm" data-pabs>' + icon("plus",14) + esc(T("ab_abs")) + '</button>' +
+    '</div>' +
+    '<div class="grid g4" style="margin-bottom:14px">' +
+      stat(T("c_hours"), num(sum(staff.map(tot)),1) + " h", fmtDate(days[0],{month:"long",year:"numeric"})) +
+      stat(T("ab_sick"), sum(staff.map(st=> absCount(st,"malattia"))) + " gg", "in tutto il mese") +
+      stat(T("ab_hol"), sum(staff.map(st=> absCount(st,"ferie"))) + " gg", "godute") +
+      stat(T("p_labcost"), eur(sum(staff.map(st=> tot(st) * (st.rate||0)))), "lordo stimato") +
+    '</div>' +
+    '<div class="scrollx"><table class="plan" style="min-width:' + (260 + days.length*26) + 'px">' +
+      '<thead><tr><th>' + esc(T("nav_staff")) + '</th>' +
+      days.map(d=> '<th' + (d === today() ? ' class="oggi"' : '') + ' style="min-width:24px;padding:6px 2px">' +
+        d.slice(8) + '<br><span style="font-weight:500;opacity:.6">' + esc(fmtDate(d,{weekday:"narrow"})) + '</span></th>').join("") +
+      '<th class="r">' + esc(T("c_hours")) + '</th></tr></thead><tbody>' +
+      staff.map(st=>
+        '<tr><td><div class="row tight" style="flex-wrap:nowrap"><span class="avat sm">' + esc(initials(st.name)) + '</span>' +
+        '<div style="min-width:0"><b style="font-size:12.5px;display:block;line-height:1.2">' + esc(st.name) + '</b>' +
+        '<span style="font-size:11px;color:var(--txt-2)">' + esc(roleName(st.role)) + '</span></div></div></td>' +
+        days.map(d=>{
+          const a = absOn(st.id, d);
+          if(a){ const t = ABS_TYPES.find(x=> x.k === a.type) || ABS_TYPES[0];
+            return '<td class="c" style="padding:3px 1px"><span class="badge ' + t.cls +
+              '" style="font-size:9px;padding:2px 4px" title="' + esc(T(t.t)) + '">' + esc(T(t.t)[0]) + '</span></td>'; }
+          const h = hoursOn(st.id, d);
+          return '<td class="c" style="padding:3px 1px;font-size:11px;font-variant-numeric:tabular-nums;color:' +
+            (h ? "var(--txt)" : "var(--txt-3)") + '">' + (h ? num(h,1) : "-") + '</td>';
+        }).join("") +
+        '<td class="r"><b class="num">' + num(tot(st),1) + '</b></td></tr>').join("") +
+      '</tbody></table></div>' +
+    '<div class="legend mt">' + ABS_TYPES.map(t=>
+      '<span><i style="border-color:var(--' + (t.cls==="r"?"red":t.cls==="b"?"blue":t.cls==="a"?"amber":"violet") + ')"></i>' +
+      esc(T(t.t)) + '</span>').join("") + '</div>' +
+    ((DB.absences || []).filter(a=> a.from.slice(0,7) === ym || a.to.slice(0,7) === ym).length
+      ? card(T("ab_abs") + " " + fmtDate(days[0],{month:"long"}),
+        '<div class="list">' + DB.absences.filter(a=> a.from.slice(0,7) === ym || a.to.slice(0,7) === ym)
+          .sort((a,b)=> a.from.localeCompare(b.from)).map(a=>{
+          const t = ABS_TYPES.find(x=> x.k === a.type) || ABS_TYPES[0];
+          return '<div class="li" style="padding-inline:0"><span class="badge ' + t.cls + '">' + esc(T(t.t)) + '</span>' +
+            '<div class="tx"><b>' + esc(staffName(a.staffId)) + '</b><span>' + esc(T("ab_from")) + ' ' + esc(fmtDate(a.from)) +
+            ' ' + esc(T("ab_to").toLowerCase()) + ' ' + esc(fmtDate(a.to)) +
+            (a.note ? ' &middot; ' + esc(a.note) : '') + '</span></div>' +
+            '<div class="end"><button class="btn ico sm dang" data-adel="' + a.id + '">' + icon("trash",12) + '</button></div></div>';
+        }).join("") + '</div>', '', "mt flush") : '');
+
+  return {
+    title:T("nav_pres"), sub:fmtDate(days[0],{month:"long",year:"numeric"}) + " &middot; " + num(sum(staff.map(tot)),1) + " h",
+    actions:'<button class="btn ghost" data-pcsv>' + icon("down",15) + 'CSV</button>' +
+            '<button class="btn pri" data-pprint>' + icon("print",15) + esc(T("c_print")) + '</button>',
+    html:html,
+    after:()=>{
+      $("#pres-m").onchange = (e)=>{ PRESM = e.target.value; refresh(); };
+      $$("[data-pm]").forEach(b=> b.onclick = ()=>{
+        const [y,m] = ym.split("-").map(Number);
+        const d = new Date(y, m - 1 + Number(b.getAttribute("data-pm")), 1);
+        PRESM = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
+        refresh();
+      });
+      $("[data-pabs]").onclick = ()=> absSheet(null, ym);
+      $$("[data-adel]").forEach(b=> b.onclick = ()=> requireManager("Cancellare un'assenza dal foglio presenze", ()=>{
+        DB.absences = DB.absences.filter(x=> x.id !== b.getAttribute("data-adel")); save(); refresh(); }));
+      $("[data-pprint]").onclick = ()=> printPresenze(ym, days, staff, tot, absCount);
+      $("[data-pcsv]").onclick = ()=>{
+        const rows = [["persona","mansione"].concat(days.map(d=> d.slice(8))).concat(["ore totali"])];
+        staff.forEach(st=> rows.push([st.name, roleName(st.role)].concat(days.map(d=>{
+          const a = absOn(st.id, d); return a ? T((ABS_TYPES.find(x=>x.k===a.type)||ABS_TYPES[0]).t) : num(hoursOn(st.id,d),1);
+        })).concat([num(tot(st),1)])));
+        downloadCSV(rows, "presenze_" + ym + ".csv");
+      };
+    }
+  };
+};
+
+function absSheet(id, ym){
+  const a = id ? byId(DB.absences, id) : null;
+  const d0 = (ym || today().slice(0,7)) + "-01";
+  const body =
+    '<div class="field"><label>' + esc(T("nav_staff")) + '</label><select class="inp" name="staffId">' +
+      DB.staff.filter(x=> x.active).map(x=> '<option value="' + x.id + '"' + (a && a.staffId === x.id ? " selected":"") + '>' + esc(x.name) + '</option>').join("") + '</select></div>' +
+    '<div class="field"><label>' + esc("Motivo") + '</label><select class="inp" name="type">' +
+      ABS_TYPES.map(t=> '<option value="' + t.k + '"' + (a && a.type === t.k ? " selected":"") + '>' + esc(T(t.t)) + '</option>').join("") + '</select></div>' +
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc(T("ab_from")) + '</label><input class="inp" type="date" name="from" value="' + (a ? a.from : d0) + '"></div>' +
+      '<div class="field"><label>' + esc(T("ab_to")) + '</label><input class="inp" type="date" name="to" value="' + (a ? a.to : d0) + '"></div>' +
+    '</div>' +
+    '<div class="field"><label>' + esc(T("c_notes")) + '</label><input class="inp" name="note" value="' + esc(a ? a.note : "") + '" placeholder="' + esc("numero del certificato, protocollo INPS...") + '"></div>';
+  modal({title:T("ab_abs"), size:"slim", body:body, actions:[
+    {label:T("c_cancel"), cls:"ghost"},
+    {label:T("c_save"), cls:"pri", run:(w)=>{
+      const f = readForm(w);
+      if(f.to < f.from){ toast("La data di fine viene prima dell'inizio", "err"); return false; }
+      const patch = {staffId:f.staffId, type:f.type, from:f.from, to:f.to, note:f.note || ""};
+      if(a) Object.assign(a, patch); else DB.absences.push(Object.assign({id:uid("ab")}, patch));
+      PRESM = f.from.slice(0,7); save(); refresh(); toast(T("c_save"), "ok");
+    }}
+  ]});
+}
+
+function printPresenze(ym, days, staff, tot, absCount){
+  const w = window.open("", "_blank", "width=1100,height=800");
+  if(!w){ toast("Consenti le finestre popup per stampare","err"); return; }
+  w.document.write('<!doctype html><meta charset="utf-8"><title>Presenze ' + esc(ym) + '</title>' +
+    '<style>body{font-family:system-ui,sans-serif;padding:14mm;font-size:10px;color:#111}' +
+    'h1{font-size:17px;margin:0 0 2px}.g{color:#666;font-size:11px;margin-bottom:12px}' +
+    'table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:3px 2px;text-align:center}' +
+    'th:first-child,td:first-child{text-align:left;padding-inline:6px;min-width:120px}' +
+    'thead th{background:#f4f4f4;font-size:9px}tfoot td{font-weight:700}' +
+    '.f{margin-top:16px;font-size:10px;color:#555}@page{size:A4 landscape;margin:8mm}</style>' +
+    '<h1>' + esc(T("nav_pres")) + '</h1>' +
+    '<div class="g">' + esc(DB.meta.biz.name) + ' &middot; ' + esc(fmtDate(days[0],{month:"long",year:"numeric"})) + '</div>' +
+    '<table><thead><tr><th>Persona</th>' + days.map(d=> '<th>' + d.slice(8) + '</th>').join("") +
+    '<th>Ore</th><th>Mal.</th><th>Fer.</th></tr></thead><tbody>' +
+    staff.map(st=> '<tr><td>' + esc(st.name) + '<div style="color:#888;font-size:9px">' + esc(roleName(st.role)) + '</div></td>' +
+      days.map(d=>{ const a = absOn(st.id, d);
+        if(a) return '<td style="background:#f6ecec">' + esc(T((ABS_TYPES.find(x=>x.k===a.type)||ABS_TYPES[0]).t)[0]) + '</td>';
+        const h = hoursOn(st.id, d); return '<td>' + (h ? num(h,1) : "") + '</td>'; }).join("") +
+      '<td>' + num(tot(st),1) + '</td><td>' + absCount(st,"malattia") + '</td><td>' + absCount(st,"ferie") + '</td></tr>').join("") +
+    '</tbody></table>' +
+    '<div class="f">M = malattia, F = ferie, P = permesso, I = infortunio<br><br>' +
+    'Firma del dipendente: ____________________&nbsp;&nbsp;&nbsp;Firma del responsabile: ____________________</div>');
+  w.document.close(); setTimeout(()=> w.print(), 350);
 }
 </script>
 <script>
@@ -5233,12 +5955,15 @@ VIEWS.cassa = function(){
 
   const tile = (i)=>{
     const u = photoURL(i.photo);
+    /* quanti ne ho gia messi: si vede sulla piastrella, senza guardare il carrello */
+    const n = sum(CASSA.lines.filter(l=> l.itemId === i.id).map(l=> l.qty));
     return '<button class="catile' + (i.available ? "" : " off") + '" data-cai="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
       '<span class="im"' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' +
         (u ? '' : '<span class="ph-txt">' + esc(L(i.name)) + '</span>') + '</span>' +
       '<span class="nm">' + esc(L(i.name)) + '</span>' +
-      '<span class="pr">' + eur(i.price) + '</span>' +
+      '<span class="pr">' + eur(i.price) + (i.size ? ' <span style="color:var(--txt-3);font-weight:600">' + esc(i.size) + '</span>' : '') + '</span>' +
       (i.available ? '' : '<span class="so">' + esc(T("k_sold")) + '</span>') +
+      (n ? '<span class="qb">' + n + '</span>' : '') +
     '</button>';
   };
 
@@ -5299,10 +6024,11 @@ VIEWS.cassa = function(){
   return {
     title:T("nav_cassa"),
     sub:esc(T("ca_nofisc")) + ' &middot; ' + esc(T(AREAS.find(a=>a.k===CASSA.area).t)),
-    actions:'<button class="btn ghost" data-go="photos">' + icon("menu",15) + esc(T("nav_photos")) + '</button>' +
-            '<button class="btn ghost" data-go="orders">' + icon("order",15) + esc(T("nav_orders")) + '</button>',
+    actions:'<button class="btn ghost" data-go="az">' + icon("menu",15) + 'A-Z</button>' +
+            '<button class="btn pri" data-canew>' + icon("plus",15) + esc(T("p_new")) + '</button>',
     html:html,
     after:()=>{
+      $("[data-canew]").onclick = ()=> quickAdd(CASSA.cat);
       $$("[data-caa]").forEach(b=> b.onclick = ()=>{ CASSA.area = b.getAttribute("data-caa"); CASSA.cat = null; refresh(); });
       $$("[data-cac]").forEach(b=> b.onclick = ()=>{ CASSA.cat = b.getAttribute("data-cac"); refresh(); });
       $$("[data-cai]").forEach(b=> b.onclick = ()=> cassaAdd(b.getAttribute("data-cai")));
@@ -5336,6 +6062,7 @@ function cassaClose(pay){
   o.lines = CASSA.lines.map(l=> Object.assign({}, l));
   o.total = cassaTotal();
   o.lines.forEach(l=>{ const it = itemById(l.itemId); if(it) it.sold = (it.sold||0) + l.qty; });
+  consumeStock(o, "venduto al banco");
   DB.orders.push(o);
   CASSA.lines = [];
   save(); refresh();
@@ -5408,10 +6135,14 @@ VIEWS.photos = function(){
   return {
     title:T("nav_photos"),
     sub:DB.items.filter(i=> photoURL(i.photo)).length + " " + esc("piatti fotografati su") + " " + DB.items.length,
-    actions:'<button class="btn ghost" data-go="menu">' + icon("menu",15) + esc(T("nav_menuman")) + '</button>' +
+    actions:'<button class="btn ghost" data-phnew>' + icon("plus",15) + esc(T("p_new")) + '</button>' +
             '<button class="btn pri" data-go="led">' + icon("led",15) + esc(T("nav_led")) + '</button>',
     html:html,
     after:()=>{
+      $("[data-phnew]").onclick = ()=>{
+        const c = DB.cats.filter(x=> x.area === PHAREA).sort((a,b)=>a.order-b.order)[0];
+        quickAdd(c ? c.id : null);
+      };
       $$("[data-pha]").forEach(b=> b.onclick = ()=>{ PHAREA = b.getAttribute("data-pha"); refresh(); });
       $("#ph-only").onchange = (e)=>{ PHONLY = e.target.checked; refresh(); };
       $$("[data-phi]").forEach(b=> b.onclick = ()=>{
@@ -5910,6 +6641,326 @@ function stopLed(){
 </script>
 <script>
 /* ============================================================
+   PARTE 30b — CONTABILITA
+   Ricavi, acquisti, personale e margine. Gli acquisti si leggono dai
+   carichi di magazzino valorizzati al costo; il personale dalle ore
+   pianificate o timbrate; il resto (affitto, utenze, tasse) si mette a
+   mano in prima nota. L'IVA si divide per aliquota di categoria.
+   ============================================================ */
+const LEDGER_CATS = [
+  {k:"affitto",     n:"Affitto e spese condominiali", kind:"uscita"},
+  {k:"utenze",      n:"Utenze: luce, gas, acqua",     kind:"uscita"},
+  {k:"stipendi",    n:"Stipendi e contributi",        kind:"uscita"},
+  {k:"fornitori",   n:"Fatture fornitori",            kind:"uscita"},
+  {k:"manutenzione",n:"Manutenzioni e riparazioni",   kind:"uscita"},
+  {k:"marketing",   n:"Pubblicita e volantini",       kind:"uscita"},
+  {k:"tasse",       n:"Imposte e tributi",            kind:"uscita"},
+  {k:"varie_u",     n:"Altre uscite",                 kind:"uscita"},
+  {k:"incasso",     n:"Incasso del giorno",           kind:"entrata"},
+  {k:"eventi",      n:"Eventi e catering",            kind:"entrata"},
+  {k:"varie_e",     n:"Altre entrate",                kind:"entrata"}
+];
+let ACCTAB = "riepilogo", ACCM = null;
+
+function accPeriod(){
+  const ym = ACCM || today().slice(0,7);
+  return {ym:ym, days:monthDays(ym)};
+}
+/** Ricavi del periodo, divisi per reparto, incasso e aliquota. */
+function accRevenue(days){
+  const orders = days.flatMap(closedOn);
+  const perArea = {}, perPay = {}, perVat = {};
+  let tot = 0;
+  orders.forEach(o=>{
+    const t = o.total != null ? o.total : orderTotal(o);
+    tot += t;
+    perPay[o.pay || "contanti"] = (perPay[o.pay || "contanti"] || 0) + t;
+    (o.lines || []).forEach(l=>{
+      const it = itemById(l.itemId); if(!it) return;
+      const c = catById(it.cat) || {};
+      const v = lineTotal(l);
+      perArea[c.area || "ristorante"] = (perArea[c.area || "ristorante"] || 0) + v;
+      const al = c.vat == null ? 10 : c.vat;
+      perVat[al] = (perVat[al] || 0) + v;
+    });
+  });
+  return {tot:tot, n:orders.length, perArea:perArea, perPay:perPay, perVat:perVat};
+}
+/** Acquisti: i carichi di magazzino del periodo, al costo dell'articolo. */
+function accPurchases(days){
+  const per = {};
+  let tot = 0;
+  DB.moves.filter(m=> m.type === "carico" && days.includes(m.date.slice(0,10))).forEach(m=>{
+    const i = invById(m.itemId); if(!i) return;
+    const v = m.qty * (i.cost || 0);
+    tot += v;
+    const su = byId(DB.suppliers, i.supp);
+    const k = su ? su.name : "senza fornitore";
+    per[k] = (per[k] || 0) + v;
+  });
+  return {tot:tot, per:per};
+}
+/** Costo del personale: ore timbrate o pianificate, per il costo orario. */
+function accLabour(days){
+  const per = {};
+  let tot = 0;
+  DB.staff.forEach(st=>{
+    const h = sum(days.map(d=> absOn(st.id, d) ? 0 : hoursOn(st.id, d)));
+    if(!h) return;
+    const c = h * (st.rate || 0);
+    tot += c; per[st.name] = {h:h, c:c};
+  });
+  return {tot:tot, per:per};
+}
+function accWaste(days){
+  return sum(DB.moves.filter(m=> m.type === "spreco" && days.includes(m.date.slice(0,10)))
+    .map(m=>{ const i = invById(m.itemId); return i ? m.qty * (i.cost||0) : 0; }));
+}
+function accLedger(days){
+  return (DB.ledger || []).filter(x=> days.includes(x.date));
+}
+
+VIEWS.acc = function(){
+  const {ym, days} = accPeriod();
+  const rev = accRevenue(days), buy = accPurchases(days), lab = accLabour(days);
+  const waste = accWaste(days), led = accLedger(days);
+  const ledIn = sum(led.filter(x=> x.kind === "entrata").map(x=> x.amount));
+  const ledOut = sum(led.filter(x=> x.kind === "uscita").map(x=> x.amount));
+  const entrate = rev.tot + ledIn;
+  const uscite = buy.tot + lab.tot + ledOut;
+  const margine = entrate - uscite;
+  const pc = (v)=> entrate ? (v / entrate) * 100 : 0;
+
+  const riga = (etichetta, valore, nota, colore)=>
+    '<div class="li" style="padding-inline:0"><div class="tx"><b>' + esc(etichetta) + '</b>' +
+    (nota ? '<span>' + esc(nota) + '</span>' : '') + '</div>' +
+    '<div class="end"><b class="num"' + (colore ? ' style="color:var(--' + colore + ')"' : '') + '>' + eur(valore) + '</b>' +
+    '<span class="badge n" style="min-width:52px;justify-content:center">' + pct(pc(valore)) + '</span></div></div>';
+
+  const riepilogo =
+    '<div class="grid g4">' +
+      stat(T("ac_rev"), eur(entrate), rev.n + " conti", "acc") +
+      stat(T("ac_buy"), eur(buy.tot), pct(pc(buy.tot)) + " sui ricavi") +
+      stat(T("ac_lab"), eur(lab.tot), pct(pc(lab.tot)) + " sui ricavi") +
+      stat(T("ac_marg"), eur(margine), pct(pc(margine)) + " sui ricavi") +
+    '</div>' +
+    '<div class="grid g2 mt">' +
+      card("Conto economico del mese",
+        '<div class="list">' +
+          riga(T("ac_rev") + " da vendite", rev.tot, rev.n + " conti chiusi", "green") +
+          (ledIn ? riga("Altre entrate", ledIn, "da prima nota", "green") : "") +
+          riga(T("ac_buy") + " di magazzino", -buy.tot, "carichi valorizzati al costo", "red") +
+          riga(T("ac_lab"), -lab.tot, num(sum(Object.values(lab.per).map(x=>x.h)),1) + " ore", "red") +
+          (ledOut ? riga("Altre uscite", -ledOut, "da prima nota", "red") : "") +
+          (waste ? riga(T("s_waste"), -waste, "gia dentro gli acquisti", "amber") : "") +
+        '</div>' +
+        '<div class="row mt" style="justify-content:space-between;font-size:20px;padding-top:12px;border-top:2px solid var(--sep-2)">' +
+          '<b>' + esc(T("ac_marg")) + '</b><b class="num" style="color:var(--' + (margine >= 0 ? "green" : "red") + ')">' + eur(margine) + '</b></div>') +
+
+      card("Ricavi per reparto",
+        Object.keys(rev.perArea).length
+          ? AREAS.filter(a=> rev.perArea[a.k]).map(a=>{
+              const v = rev.perArea[a.k];
+              const max = Math.max(...Object.values(rev.perArea));
+              return '<div style="margin-bottom:11px"><div class="row" style="justify-content:space-between;font-size:13px;margin-bottom:4px">' +
+                '<b>' + esc(T(a.t)) + '</b><span class="num">' + eur(v) + ' &middot; ' + pct(rev.tot ? (v/rev.tot)*100 : 0) + '</span></div>' +
+                bar(v, max) + '</div>';
+            }).join("")
+          : empty("Nessun incasso nel periodo","chart")) +
+    '</div>' +
+    '<div class="grid g2 mt">' +
+      card(T("ac_buy") + " per fornitore",
+        Object.keys(buy.per).length
+          ? '<div class="list">' + Object.keys(buy.per).sort((a,b)=> buy.per[b]-buy.per[a]).map(k=>
+              '<div class="li" style="padding-inline:0"><div class="ic">' + icon("supp") + '</div>' +
+              '<div class="tx"><b>' + esc(k) + '</b></div>' +
+              '<div class="end"><b class="num">' + eur(buy.per[k]) + '</b></div></div>').join("") + '</div>'
+          : empty("Nessun carico nel periodo","supp"), '', "flush") +
+      card(T("ac_lab") + " per persona",
+        Object.keys(lab.per).length
+          ? '<div class="list">' + Object.keys(lab.per).sort((a,b)=> lab.per[b].c-lab.per[a].c).map(k=>
+              '<div class="li" style="padding-inline:0"><span class="avat sm">' + esc(initials(k)) + '</span>' +
+              '<div class="tx"><b>' + esc(k) + '</b><span>' + num(lab.per[k].h,1) + ' h</span></div>' +
+              '<div class="end"><b class="num">' + eur(lab.per[k].c) + '</b></div></div>').join("") + '</div>'
+          : empty("Nessuna ora nel periodo","clock"), '', "flush") +
+    '</div>';
+
+  const iva = (()=>{
+    const rows = Object.keys(rev.perVat).sort();
+    return card(T("ac_vat") + " sulle vendite",
+      rows.length
+        ? '<div class="scrollx"><table class="tbl"><thead><tr><th>Aliquota</th>' +
+          '<th class="r">Lordo</th><th class="r">' + esc(T("ac_net")) + '</th><th class="r">' + esc(T("ac_vat")) + '</th></tr></thead><tbody>' +
+          rows.map(al=>{
+            const lordo = rev.perVat[al];
+            const netto = lordo / (1 + Number(al)/100);
+            return '<tr><td><b>' + al + '%</b></td><td class="r num">' + eur(lordo) + '</td>' +
+              '<td class="r num">' + eur(netto) + '</td><td class="r num">' + eur(lordo - netto) + '</td></tr>';
+          }).join("") +
+          '<tr style="border-top:2px solid var(--sep-2)"><td><b>Totale</b></td>' +
+          '<td class="r num"><b>' + eur(sum(rows.map(a=> rev.perVat[a]))) + '</b></td>' +
+          '<td class="r num"><b>' + eur(sum(rows.map(a=> rev.perVat[a] / (1 + Number(a)/100)))) + '</b></td>' +
+          '<td class="r num"><b>' + eur(sum(rows.map(a=> rev.perVat[a] - rev.perVat[a] / (1 + Number(a)/100)))) + '</b></td></tr>' +
+          '</tbody></table></div>' +
+          '<p style="font-size:12.5px;color:var(--txt-2);margin-top:12px;line-height:1.6">' +
+          esc("La somministrazione sta al 10 per cento, gli alcolici venduti a se stanti al 22. L'aliquota si imposta per categoria del menu. Questo prospetto serve a te e al commercialista: non e una liquidazione IVA e non sostituisce il registratore telematico.") + '</p>'
+        : empty("Nessuna vendita nel periodo","chart"), '', "flush");
+  })();
+
+  const primaNota =
+    '<div class="row" style="margin-bottom:12px">' +
+      '<button class="btn pri" data-lnew>' + icon("plus",15) + esc("Registra movimento") + '</button>' +
+      '<div class="spacer"></div>' +
+      '<span class="badge g">' + esc(T("ac_in")) + ' ' + eur(ledIn) + '</span>' +
+      '<span class="badge r">' + esc(T("ac_out")) + ' ' + eur(ledOut) + '</span>' +
+    '</div>' +
+    card("", led.length
+      ? '<div class="scrollx"><table class="tbl"><thead><tr><th>' + esc(T("c_date")) + '</th><th>Voce</th>' +
+        '<th>' + esc(T("c_desc")) + '</th><th class="r">' + esc(T("ac_in")) + '</th><th class="r">' + esc(T("ac_out")) + '</th><th></th></tr></thead><tbody>' +
+        led.slice().sort((a,b)=> b.date.localeCompare(a.date)).map(x=>{
+          const c = LEDGER_CATS.find(y=> y.k === x.cat) || {n:x.cat};
+          return '<tr><td class="num">' + esc(fmtDate(x.date,{day:"2-digit",month:"2-digit"})) + '</td>' +
+            '<td><b>' + esc(c.n) + '</b></td><td style="color:var(--txt-2)">' + esc(x.desc || "") + '</td>' +
+            '<td class="r num" style="color:var(--green)">' + (x.kind === "entrata" ? eur(x.amount) : "") + '</td>' +
+            '<td class="r num" style="color:var(--red)">' + (x.kind === "uscita" ? eur(x.amount) : "") + '</td>' +
+            '<td class="r"><button class="btn ico sm ghost" data-led="' + x.id + '">' + icon("edit",12) + '</button></td></tr>';
+        }).join("") + '</tbody></table></div>'
+      : empty("Nessun movimento registrato in questo mese","chart"), '', "flush");
+
+  const chiusure = (()=>{
+    const cs = (DB.cashups || []).filter(c=> c.date.slice(0,7) === ym);
+    return '<div class="row" style="margin-bottom:12px">' +
+      '<button class="btn pri" data-cashnew>' + icon("plus",15) + esc(T("ac_close")) + '</button></div>' +
+      card("", cs.length
+        ? '<div class="list">' + cs.slice().sort((a,b)=> b.date.localeCompare(a.date)).map(c=>
+          '<div class="li"><div class="ic" style="background:var(--' + (Math.abs(c.diff) < 0.01 ? "green" : Math.abs(c.diff) < 5 ? "amber" : "red") + '-soft);color:var(--' +
+            (Math.abs(c.diff) < 0.01 ? "green" : Math.abs(c.diff) < 5 ? "amber" : "red") + ')">' + icon("check") + '</div>' +
+          '<div class="tx"><b>' + esc(fmtDate(c.date,{weekday:"long",day:"numeric",month:"long"})) + '</b>' +
+          '<span>' + esc(T("ac_exp")) + ' ' + eur(c.expected) + ' &middot; ' + esc(T("ac_cnt")) + ' ' + eur(c.counted) +
+          (c.by ? ' &middot; ' + esc(staffName(c.by)) : '') + (c.note ? ' &middot; ' + esc(c.note) : '') + '</span></div>' +
+          '<div class="end"><b class="num" style="color:var(--' + (c.diff >= 0 ? "green" : "red") + ')">' +
+            (c.diff >= 0 ? "+" : "") + eur(c.diff) + '</b></div></div>').join("") + '</div>'
+        : empty("Nessuna chiusura registrata in questo mese","chart"), '', "flush");
+  })();
+
+  const html =
+    '<div class="row" style="margin-bottom:14px">' +
+      '<button class="btn ico ghost" data-am="-1">&#8249;</button>' +
+      '<input class="inp" type="month" id="acc-m" value="' + ym + '" style="width:auto">' +
+      '<button class="btn ico ghost" data-am="1">&#8250;</button>' +
+    '</div>' +
+    '<div class="tabs" style="margin-bottom:14px">' +
+      [["riepilogo","ac_sum"],["primanota","ac_book"],["chiusure","ac_close"],["iva","ac_vat"]].map(t=>
+        '<button class="' + (ACCTAB===t[0]?"on":"") + '" data-at2="' + t[0] + '">' + esc(T(t[1])) + '</button>').join("") + '</div>' +
+    (ACCTAB === "riepilogo" ? riepilogo : ACCTAB === "primanota" ? primaNota : ACCTAB === "chiusure" ? chiusure : iva);
+
+  return {
+    title:T("nav_acc"), sub:fmtDate(days[0],{month:"long",year:"numeric"}) + " &middot; " + esc(T("ac_marg")) + " " + eur(margine),
+    actions:'<button class="btn ghost" data-acsv>' + icon("down",15) + 'CSV</button>' +
+            '<button class="btn ghost" onclick="window.print()">' + icon("print",15) + esc(T("c_print")) + '</button>',
+    html:html,
+    after:()=>{
+      $("#acc-m").onchange = (e)=>{ ACCM = e.target.value; refresh(); };
+      $$("[data-am]").forEach(b=> b.onclick = ()=>{
+        const [y,m] = ym.split("-").map(Number);
+        const d = new Date(y, m - 1 + Number(b.getAttribute("data-am")), 1);
+        ACCM = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0"); refresh();
+      });
+      $$("[data-at2]").forEach(b=> b.onclick = ()=>{ ACCTAB = b.getAttribute("data-at2"); refresh(); });
+      const ln = $("[data-lnew]"); if(ln) ln.onclick = ()=> ledgerSheet(null, ym);
+      $$("[data-led]").forEach(b=> b.onclick = ()=> ledgerSheet(b.getAttribute("data-led"), ym));
+      const cn = $("[data-cashnew]"); if(cn) cn.onclick = ()=> cashupSheet(ym);
+      $("[data-acsv]").onclick = ()=>{
+        const rows = [["voce","importo"],
+          ["Ricavi da vendite", rev.tot.toFixed(2)], ["Altre entrate", ledIn.toFixed(2)],
+          ["Acquisti", (-buy.tot).toFixed(2)], ["Costo del personale", (-lab.tot).toFixed(2)],
+          ["Altre uscite", (-ledOut).toFixed(2)], ["Margine", margine.toFixed(2)], []];
+        rows.push(["ricavi per reparto",""]);
+        AREAS.forEach(a=>{ if(rev.perArea[a.k]) rows.push([T(a.t), rev.perArea[a.k].toFixed(2)]); });
+        rows.push([]); rows.push(["acquisti per fornitore",""]);
+        Object.keys(buy.per).forEach(k=> rows.push([k, buy.per[k].toFixed(2)]));
+        rows.push([]); rows.push(["iva","lordo","imponibile","imposta"]);
+        Object.keys(rev.perVat).sort().forEach(al=>{
+          const lordo = rev.perVat[al], netto = lordo / (1 + Number(al)/100);
+          rows.push([al + "%", lordo.toFixed(2), netto.toFixed(2), (lordo-netto).toFixed(2)]);
+        });
+        downloadCSV(rows, "contabilita_" + ym + ".csv");
+      };
+    }
+  };
+};
+
+function ledgerSheet(id, ym){
+  const x = id ? byId(DB.ledger, id) : null;
+  const body =
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc(T("c_date")) + '</label><input class="inp" type="date" name="date" value="' + (x ? x.date : today()) + '"></div>' +
+      '<div class="field"><label>Tipo</label><select class="inp" name="kind">' +
+        '<option value="uscita"' + (x && x.kind === "uscita" ? " selected":"") + '>' + esc(T("ac_out")) + '</option>' +
+        '<option value="entrata"' + (x && x.kind === "entrata" ? " selected":"") + '>' + esc(T("ac_in")) + '</option>' +
+      '</select></div>' +
+    '</div>' +
+    '<div class="field"><label>Voce</label><select class="inp" name="cat">' +
+      LEDGER_CATS.map(c=> '<option value="' + c.k + '"' + (x && x.cat === c.k ? " selected":"") + '>' + esc(c.n) + '</option>').join("") + '</select></div>' +
+    '<div class="f2">' +
+      '<div class="field"><label>Importo</label><input class="inp" type="number" step="0.01" min="0" name="amount" value="' + (x ? x.amount : 0) + '"></div>' +
+      '<div class="field"><label>Pagato con</label><select class="inp" name="pay">' +
+        ["contanti","bonifico","carta","rid"].map(k=> '<option' + (x && x.pay === k ? " selected":"") + '>' + esc(k) + '</option>').join("") + '</select></div>' +
+    '</div>' +
+    '<div class="field"><label>' + esc(T("c_desc")) + '</label><input class="inp" name="desc" value="' + esc(x ? x.desc : "") + '" placeholder="' + esc("numero fattura, fornitore, periodo...") + '"></div>';
+  const acts = [{label:T("c_cancel"), cls:"ghost"}];
+  if(x) acts.push({label:T("c_del"), cls:"dang", run:()=> requireManager("Cancellare un movimento di prima nota", ()=>{
+    DB.ledger = DB.ledger.filter(y=> y.id !== id); save(); refresh(); })});
+  acts.push({label:T("c_save"), cls:"pri", run:(w)=>{
+    const f = readForm(w);
+    if(!Number(f.amount)){ toast("Manca l'importo", "err"); return false; }
+    const patch = {date:f.date, kind:f.kind, cat:f.cat, amount:Number(f.amount), pay:f.pay, desc:f.desc || ""};
+    if(x) Object.assign(x, patch); else DB.ledger.push(Object.assign({id:uid("lg")}, patch));
+    ACCM = f.date.slice(0,7); save(); refresh(); toast(T("c_save"), "ok");
+  }});
+  modal({title:T("ac_book"), size:"slim", body:body, actions:acts});
+}
+
+function cashupSheet(ym){
+  const d = today();
+  const atteso = sum(closedOn(d).filter(o=> o.pay === "contanti").map(o=> o.total || 0));
+  const body =
+    '<div class="field"><label>' + esc(T("c_date")) + '</label><input class="inp" type="date" name="date" value="' + d + '"></div>' +
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc(T("ac_exp")) + '</label><input class="inp num" name="expected" type="number" step="0.01" value="' + atteso.toFixed(2) + '"></div>' +
+      '<div class="field"><label>' + esc(T("ac_cnt")) + '</label><input class="inp num" name="counted" type="number" step="0.01" value="' + atteso.toFixed(2) + '"></div>' +
+    '</div>' +
+    '<div id="cash-diff" style="text-align:center;font-size:19px;font-weight:750;margin-bottom:12px"></div>' +
+    '<div class="field"><label>Chi conta</label><select class="inp" name="by">' +
+      DB.staff.filter(x=> x.active).map(x=> '<option value="' + x.id + '"' + ((me()||{}).id === x.id ? " selected":"") + '>' + esc(x.name) + '</option>').join("") + '</select></div>' +
+    '<div class="field"><label>' + esc(T("c_notes")) + '</label><input class="inp" name="note" placeholder="' + esc("mancano 5 euro, resto sbagliato al tavolo 4...") + '"></div>';
+  modal({title:T("ac_close"), size:"slim", body:body, actions:[
+    {label:T("c_cancel"), cls:"ghost"},
+    {label:T("c_save"), cls:"pri", run:(w)=>{
+      const f = readForm(w);
+      const diff = (Number(f.counted)||0) - (Number(f.expected)||0);
+      DB.cashups = DB.cashups || [];
+      DB.cashups = DB.cashups.filter(c=> c.date !== f.date);
+      DB.cashups.push({id:uid("cu"), date:f.date, expected:Number(f.expected)||0,
+        counted:Number(f.counted)||0, diff:diff, by:f.by, note:f.note || ""});
+      ACCM = f.date.slice(0,7); save(); refresh();
+      toast(T("ac_diff") + " " + eur(diff), Math.abs(diff) < 0.01 ? "ok" : "warn");
+    }}
+  ], onOpen:(w)=>{
+    const upd = ()=>{
+      const f = readForm(w);
+      const diff = (Number(f.counted)||0) - (Number(f.expected)||0);
+      const el = $("#cash-diff", w);
+      el.textContent = T("ac_diff") + ": " + (diff >= 0 ? "+" : "") + eur(diff);
+      el.style.color = Math.abs(diff) < 0.01 ? "var(--green)" : Math.abs(diff) < 5 ? "var(--amber)" : "var(--red)";
+    };
+    $$("input", w).forEach(i=> i.oninput = upd);
+    upd();
+  }});
+}
+</script>
+<script>
+/* ============================================================
    PARTE 31 — REPORT
    ============================================================ */
 let RANGE = 7;
@@ -6078,6 +7129,11 @@ VIEWS.settings = function(){
             '<button class="btn ' + (DB.meta.skin === s.k ? "pri" : "ghost") + '" data-stskin="' + s.k + '" style="flex-direction:column;gap:6px;padding:11px 6px;height:auto">' +
             '<span style="width:26px;height:26px;border-radius:50%;background:' + s.c + ';display:block;box-shadow:0 0 0 2px var(--bg-2) inset"></span>' +
             '<span style="font-size:11.5px">' + esc(s.n) + '</span></button>').join("") + '</div>' +
+          '<div class="lbl mt">' + esc("Tocco") + '</div>' +
+          '<div class="seg" style="display:flex">' + [["auto","st_auto"],["si","c_yes"],["no","c_no"]].map(t=>
+            '<button style="flex:1" class="' + ((DB.meta.touch || "auto") === t[0] ? "on":"") + '" data-sttouch="' + t[0] + '">' + esc(T(t[1])) + '</button>').join("") + '</div>' +
+          '<p style="font-size:12px;color:var(--txt-3);margin-top:6px">' +
+            esc("Bersagli piu grandi per battere col dito sul monitor del banco. Da sola si accende sui dispositivi senza mouse.") + '</p>' +
           '<div class="lbl mt">' + esc(T("st_theme")) + '</div>' +
           '<div class="seg" style="display:flex">' + [["auto","st_auto"],["light","st_light"],["dark","st_dark"]].map(t=>
             '<button style="flex:1" class="' + (DB.meta.theme === t[0] ? "on":"") + '" data-sttheme="' + t[0] + '">' + esc(T(t[1])) + '</button>').join("") + '</div>', '', "mt") +
@@ -6112,6 +7168,9 @@ VIEWS.settings = function(){
       });
       $$("[data-stskin]").forEach(x=> x.onclick = ()=>{
         DB.meta.skin = x.getAttribute("data-stskin"); applyTheme(); save(); refresh();
+      });
+      $$("[data-sttouch]").forEach(x=> x.onclick = ()=>{
+        DB.meta.touch = x.getAttribute("data-sttouch"); applyTheme(); save(); refresh();
       });
       $$("[data-sttheme]").forEach(x=> x.onclick = ()=>{
         DB.meta.theme = x.getAttribute("data-sttheme"); applyTheme(); save(); refresh();
@@ -6166,7 +7225,7 @@ function normalize(d){
   d.meta.biz = Object.assign({}, s.meta.biz, d.meta.biz || {});
   ["rooms","tables","cats","items","orders","reservations","inv","moves","suppliers","staff",
    "shifts","clock","briefings","issues","hotels","hotelOrders","slogans","flyers","cocktails",
-   "haccp","haccpLog","prep","recipes","cashups","pos","mods","changes"].forEach(k=>{
+   "haccp","haccpLog","prep","recipes","cashups","pos","mods","changes","absences","ledger"].forEach(k=>{
     if(!Array.isArray(d[k])) d[k] = s[k] || [];
   });
   d.checklists = d.checklists || {};
@@ -6181,22 +7240,35 @@ function normalize(d){
   d.items.forEach(i=>{ if(!Array.isArray(i.allerg)) i.allerg = []; if(typeof i.available !== "boolean") i.available = true; });
 
   /* ogni categoria appartiene a un reparto: colazione, gastronomia, ristorante o bar */
-  d.cats.forEach(c=>{ if(!c.area) c.area = AREA_OF_CAT[c.id] || (c.kind === "bar" ? "bar" : "ristorante"); });
+  d.cats.forEach(c=>{
+    if(!c.area) c.area = AREA_OF_CAT[c.id] || (c.kind === "bar" ? "bar" : "ristorante");
+    if(c.vat == null) c.vat = VAT_22.includes(c.id) ? 22 : 10;
+  });
 
   /* chi aveva gia i dati salvati prima del banco gastronomia se lo ritrova, senza
      perdere quello che aveva gia messo dentro */
   /* codice e livello: chi non ce l'ha se lo ritrova assegnato */
   d.staff.forEach(st=>{
+    if(ROLE_ALIAS[st.role]) st.role = ROLE_ALIAS[st.role];
     if(!st.pin) st.pin = SEED_PINS[st.id] || String(1000 + Math.floor(Math.random()*8999));
     if(!st.level) st.level = MANAGER_ROLES.includes(st.role) ? "responsabile" : "operatore";
   });
   if(!d.mods.length) d.mods = s.mods;
   else s.mods.forEach(m=>{ if(!d.mods.some(x=> x.id === m.id)) d.mods.push(m); });
 
-  if((Number(d.meta.version) || 1) < 2){
+  d.items.forEach(i=>{
+    if(i.size == null) i.size = "";
+    if(i.origin == null) i.origin = "";
+    if(i.invQty == null) i.invQty = 0;
+  });
+  if((Number(d.meta.version) || 1) < 3){
     s.cats.forEach(c=>{ if(!d.cats.some(x=> x.id === c.id)) d.cats.push(c); });
     s.items.forEach(i=>{ if(!d.items.some(x=> x.id === i.id)) d.items.push(i); });
-    d.meta.version = 2;
+    s.inv.forEach(a=>{ if(!d.inv.some(x=> x.id === a.id)) d.inv.push(a); });
+    /* i collegamenti fra bevanda e magazzino, per chi ancora non li ha */
+    const bar = buildBarStock(SEED_DRINKS);
+    d.items.forEach(i=>{ const l = bar.link[i.id]; if(l && !i.invId){ i.invId = l.invId; i.invQty = l.invQty; } });
+    d.meta.version = 3;
   }
   return d;
 }
@@ -6210,6 +7282,12 @@ function applyTheme(){
     if(HOST_THEME) r.setAttribute("data-theme", HOST_THEME); else r.removeAttribute("data-theme");
   }else r.setAttribute("data-theme", th);
   r.setAttribute("data-skin", DB.meta.skin || "classico");
+  const tc = DB.meta.touch || "auto";
+  if(tc === "auto"){
+    /* niente mouse: e un monitor da toccare */
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    r.setAttribute("data-touch", coarse ? "si" : "no");
+  }else r.setAttribute("data-touch", tc);
   const meta = $('meta[name="theme-color"]');
   if(meta) meta.setAttribute("content", th === "dark" ? "#12100E" : "#FBF7F2");
 }
