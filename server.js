@@ -152,7 +152,7 @@ function serveFile(req, res, urlPath){
    la prima volta con un esempio dentro.
    ============================================================ */
 const net = require("net");
-const PFILE = path.join(ROOT, "stampanti.json");
+const PFILE = process.env.STAMPANTI || path.join(ROOT, "stampanti.json");
 let STAMPANTI = [];
 
 const ESEMPIO_STAMPANTI = [
@@ -300,8 +300,9 @@ function componi(doc, st){
   return Buffer.from(b, "latin1");
 }
 
-/** Apre il filo con la stampante e manda i caratteri. */
-function stampa(st, dati){
+/** Apre il filo con la stampante e manda i caratteri.
+    Una volta sola: chi chiama passa da stampaConRitento. */
+function stampaUnaVolta(st, dati){
   return new Promise((ok)=>{
     const s = new net.Socket();
     let chiuso = false;
@@ -318,6 +319,23 @@ function stampa(st, dati){
     s.connect(Number(st.porta) || 9100, st.ip, ()=>{
       s.write(dati, ()=> setTimeout(()=> fine(true), 250));
     });
+  });
+}
+
+/** Sul wifi il filo ogni tanto cade per un attimo: si riprova una volta
+    sola, dopo mezzo secondo. Se la stampante e davvero spenta il secondo
+    tentativo fallisce subito e la sala non resta ferma ad aspettare.
+    Non si riprova mai dopo un timeout: li il foglio potrebbe essere gia
+    uscito, e due comande uguali in cucina fanno danno quanto nessuna. */
+function stampa(st, dati){
+  return stampaUnaVolta(st, dati).then(r=>{
+    if(r.ok || r.err === "non risponde") return r;
+    return new Promise(ok=> setTimeout(ok, 500)).then(()=>
+      stampaUnaVolta(st, dati).then(r2=>{
+        if(!r2.ok) log("stampa fallita su " + st.nome + " (" + st.ip + "): " + r2.err);
+        else log("stampa riuscita al secondo tentativo su " + st.nome);
+        return r2;
+      }));
   });
 }
 

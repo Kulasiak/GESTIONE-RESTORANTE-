@@ -898,6 +898,8 @@ pr_needserver:["Le stampanti si attaccano alla rete e il server del locale parla
 pr_which:["Che stampante serve","Which printer you need","Quelle imprimante il faut","Que impresora hace falta","Welcher Drucker","أي طابعة تحتاج"],
 pr_which_t:["Una stampante termica da scontrino con la presa di rete: Epson TM-T20, TM-m30, Star TSP100 o simili. Carta da 80 mm, taglio automatico. Si attacca al router con un cavo e le si dà un indirizzo fisso.","A thermal receipt printer with a network port: Epson TM-T20, TM-m30, Star TSP100 or similar. 80 mm paper, auto cutter. Wire it to the router and give it a fixed address.","Une imprimante thermique a ticket avec prise reseau: Epson TM-T20, TM-m30, Star TSP100 ou similaire. Papier 80 mm, coupe automatique. Reliez-la au routeur avec une adresse fixe.","Una impresora termica de tickets con puerto de red: Epson TM-T20, TM-m30, Star TSP100 o similar. Papel de 80 mm, corte automatico. Conectala al router con una direccion fija.","Ein Thermo-Bondrucker mit Netzwerkanschluss: Epson TM-T20, TM-m30, Star TSP100 oder ahnlich. 80-mm-Papier, Autocutter. Per Kabel an den Router, mit fester Adresse.","طابعة حرارية للإيصالات بمنفذ شبكة: إبسون TM-T20 أو TM-m30 أو ستار TSP100. ورق 80 مم مع قاطع تلقائي. تُوصل بالراوتر بعنوان ثابت."],
 pr_change:["Resto","Change","Rendu","Cambio","Ruckgeld","الباقي"],
+pr_again:["Ristampa","Reprint","Reimprimer","Reimprimir","Nachdruck","إعادة طباعة"],
+pr_nothing:["Niente da ristampare: e gia tutto servito","Nothing to reprint: it is all served","Rien a reimprimer","Nada que reimprimir","Nichts zum Nachdrucken","لا شيء لإعادة طباعته"],
 pr_nofisc:["Non e uno scontrino fiscale","Not a fiscal receipt","Ce n'est pas un ticket fiscal","No es un ticket fiscal","Kein Steuerbeleg","ليس إيصالًا ضريبيًا"],
 pr_sentkit:["Comanda stampata in cucina","Order printed in the kitchen","Commande imprimee en cuisine","Comanda impresa en cocina","Bon in der Kuche gedruckt","طُبع الطلب في المطبخ"],
 pr_norep2:["Nessuna stampante per:","No printer for:","Aucune imprimante pour:","Sin impresora para:","Kein Drucker fur:","لا توجد طابعة لـ:"],
@@ -3786,6 +3788,7 @@ VIEWS.kds = function(){
         '<div class="tik-f">' +
           '<button class="btn sm ok" style="flex:1" data-kr="' + t.o.id + '">' + icon("check",13) + esc(T("k_bump")) + '</button>' +
           '<button class="btn sm ghost" data-kv="' + t.o.id + '">' + esc(T("k_served")) + '</button>' +
+          (prOn() ? '<button class="btn ico sm ghost" data-kp="' + t.o.id + '" title="' + esc(T("pr_again")) + '">' + icon("print",13) + '</button>' : '') +
         '</div></div>';
     }).join("") : '<div style="grid-column:1/-1">' + empty("Nessuna comanda in cucina. Le comande arrivano quando la sala le manda.","kds") + '</div>') + '</div>';
 
@@ -3801,6 +3804,18 @@ VIEWS.kds = function(){
         const l = o.lines.find(x=> x.id === b.getAttribute("data-kl"));
         l.status = l.status === "pronto" ? "lavorazione" : "pronto";
         save(); refresh();
+      });
+      /* il foglio non e uscito, o si e strappato: si rifa senza rimandare la comanda */
+      $$("[data-kp]").forEach(b=> b.onclick = ()=>{
+        const o = byId(DB.orders, b.getAttribute("data-kp"));
+        if(!o) return;
+        const righe = o.lines.filter(l=> l.status !== "servito");
+        if(!righe.length){ toast(T("pr_nothing"), "warn"); return; }
+        toast(T("pr_again") + "...", "ok");
+        stampaComanda(o, righe, true).then(r=>{
+          toast(r.fatte ? T("pr_sent") : (T("pr_fail") + (r.rotte && r.rotte[0] ? ": " + r.rotte[0] : "")),
+                r.fatte ? "ok" : "err");
+        });
       });
       $$("[data-kr]").forEach(b=> b.onclick = ()=>{
         const o = byId(DB.orders, b.getAttribute("data-kr"));
@@ -8141,7 +8156,7 @@ function fogliaComanda(o, gruppo, lingua){
 }
 
 /** Stampa quello che si sta mandando adesso in cucina. */
-function stampaComanda(o, righe){
+function stampaComanda(o, righe, ristampa){
   if(!prOn() || !righe.length) return Promise.resolve({fatte:0, mancate:[]});
   return prLoad().then((lista)=>{
     const per = comandeDaStampare(o, righe, lista);
@@ -8152,6 +8167,8 @@ function stampaComanda(o, righe){
       if(!g.st){ mancate.push(g.rep); return; }
       const doc = fogliaComanda(o, g, g.st.lingua || "it");
       doc.stampante = g.st.nome;
+      /* una copia rifatta si vede subito: in cucina non si cucina due volte */
+      if(ristampa) doc.sottotitolo = "*** " + T("pr_again").toUpperCase() + " *** " + (doc.sottotitolo || "");
       lavori.push(prSend(doc));
     });
     if(!lavori.length) return {fatte:0, mancate:mancate};

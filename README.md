@@ -300,10 +300,44 @@ TM-m30, Star TSP100 / TSP143 o equivalenti. Parlano tutte la stessa lingua
 
 - **Carta da 80 mm** (48 caratteri per riga). Va bene anche la 58 mm, si imposta.
 - **Taglio automatico**: il foglio si stacca da solo.
-- **Presa di rete (Ethernet)**, con un **indirizzo fisso** dato dal router. Il
-  wifi funziona ma in cucina, fra acciaio e forni, il cavo è più affidabile.
+- **In rete, con un indirizzo fisso** dato dal router: va bene sia col cavo sia
+  col **wifi** (vedi sotto).
 - Alla cassa serve anche l'attacco per il **cassetto dei soldi**, che si apre da
   solo quando si stampa il conto.
+
+### Wifi o cavo
+
+**Il wifi funziona.** Il sistema non vede differenza: apre il filo verso un
+indirizzo sulla porta 9100, e come ci arriva non gli interessa. Modelli che
+vanno: Epson **TM-m30II** (wifi di serie), Star **TSP143IIIW**, Star **TSP654II
+WLAN**. Si mette la stampante sul wifi del locale, le si dà un indirizzo fisso e
+si scrive quello nel programma.
+
+Detto questo, dove puoi tirare un cavo, tiralo:
+
+| | Cavo | Wifi |
+|---|---|---|
+| **In cucina** | fra acciaio, forni e vapore non salta mai | ogni tanto perde il collegamento |
+| **Se manca la corrente** | riparte da sola | deve prima riagganciarsi all'access point |
+| **Da spostare** | serve una presa di rete | la porti dove vuoi |
+| **Costo** | uguale o meno | qualcosa in più |
+
+**Il banco, la cassa e il bar sul wifi vanno benissimo.** In cucina il cavo è più
+tranquillo — ma se il wifi è l'unica strada, il sistema è fatto per reggerlo:
+
+- **se il filo cade, riprova da solo una volta**, dopo mezzo secondo. Un cadere
+  di wifi non ti fa perdere la comanda;
+- **non riprova mai dopo un'attesa lunga**, perché lì il foglio potrebbe essere
+  già uscito: due comande uguali in cucina fanno danno quanto nessuna;
+- se non ce la fa, **te lo dice in mezzo secondo** e la comanda resta comunque
+  sul monitor della cucina.
+
+### Il foglio non è uscito
+
+Capita: carta finita, wifi giù, qualcuno l'ha strappato. Sul monitor della
+cucina, su ogni comanda, c'è il tasto con la stampante: **rifà il foglio senza
+rimandare la comanda**. Esce con scritto sopra `*** RISTAMPA ***` a caratteri
+grandi, così in cucina nessuno cucina la stessa cosa due volte.
 
 Non serve installare driver, né su Windows né sui telefoni: parla il server. Non
 esce nessuna finestra di stampa — la carta esce e basta.
@@ -490,6 +524,11 @@ vercel.json             configurazione per il deploy
 ```
 
 `server.js` non ha nessuna dipendenza: gira con il solo Node, senza `npm install`.
+I due file che si scrive da solo si possono mettere altrove:
+
+```sh
+DATI=/mnt/backup/dati.json STAMPANTI=/etc/barcapri/stampanti.json node server.js
+```
 
 Il cuore è `index.html`, con dentro tutto: design system, icone SVG, bandiere
 disegnate in SVG (si vedono uguali su ogni sistema, anche dove le emoji-bandiera
