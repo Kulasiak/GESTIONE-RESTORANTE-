@@ -1,9 +1,14 @@
 # Bar Capri — sistema di gestione
 
 Gestionale completo per un ristorante con bar e servizio agli hotel, in **un unico
-file HTML**. Nessuna installazione, nessun server, nessuna dipendenza: si apre in
-qualsiasi browser e funziona anche senza connessione. I dati restano sul
-dispositivo, dentro il browser.
+file HTML**. Si apre in qualsiasi browser, non ha nessuna dipendenza e funziona
+anche senza connessione.
+
+Su un apparecchio solo basta aprire il file. Nel locale, con i camerieri che
+prendono le comande dal telefono, si accende anche il **server di sala**
+(`server.js`, un file, nessuna dipendenza): le comande arrivano al monitor della
+cucina e **escono dalla stampante** della partita giusta. Tutto sul wifi del
+locale — niente internet, niente abbonamenti, i dati non escono di casa.
 
 Sei lingue con la propria bandiera: **Italiano, English, Français, Español,
 Deutsch, العربية** (con scrittura da destra a sinistra).
@@ -221,12 +226,129 @@ del telefono che hai in mano.
 della sala cade, il gestionale si apre lo stesso e continua a lavorare. Quando la
 linea torna, si aggiorna da solo.
 
-> **Una cosa importante da sapere.** Ogni dispositivo tiene i **suoi** dati. Le
-> comande scritte sul telefono di un cameriere restano su quel telefono: non
-> arrivano da sole al monitor della cucina né agli altri camerieri. Per farle
-> viaggiare fra i dispositivi serve un server, che oggi non c'è. Oggi il sistema
-> funziona bene su **un dispositivo per postazione** — il tablet in cassa, il
-> computer dell'ufficio, il telefono di chi lavora da solo.
+Senza il server di sala (qui sotto) ogni dispositivo tiene i **suoi** dati e le
+comande restano sul telefono che le ha scritte. Con il server acceso viaggiano.
+
+---
+
+## Il server di sala: le comande arrivano in cucina
+
+`server.js` è un programma piccolo che gira su un computer del locale — il PC
+della cassa va benissimo — e fa due cose:
+
+1. **serve l'applicazione** ai telefoni e ai tablet, così non c'è niente da
+   installare su ogni apparecchio: si apre l'indirizzo e basta;
+2. **tiene insieme i dati**, così la comanda scritta sul telefono del cameriere
+   compare sul monitor della cucina, sul tablet della cassa e sugli altri telefoni.
+
+Non serve internet: basta il wifi del locale. Non serve un abbonamento, non serve
+un account, e i dati restano dentro il locale.
+
+```bash
+node server.js          # oppure:  node server.js 8081  per cambiare porta
+```
+
+All'accensione scrive l'indirizzo da usare sui telefoni:
+
+```
+  Dai telefoni e dai tablet, sullo stesso wifi:
+     ->  http://192.168.1.50:8080
+```
+
+Sui telefoni si apre quell'indirizzo e **il collegamento si accende da solo**.
+Se invece la pagina arriva da un'altra parte, si scrive l'indirizzo a mano in
+**menu → Collegamento**. In alto a destra c'è una spia: verde collegato, gialla
+sta cercando, grigia da solo.
+
+### Come si mettono d'accordo
+
+Ogni scheda — una comanda, un tavolo, un articolo — porta con sé l'ora
+dell'ultima modifica: **vince la più recente**. Le righe della comanda hanno
+un'ora ciascuna, così la cucina può segnare *pronto* mentre il cameriere sta
+aggiungendo un dolce, senza che uno cancelli il lavoro dell'altro. Una riga tolta
+resta tolta e non ricompare.
+
+Se il wifi cade, il telefono continua a lavorare da solo e manda tutto appena la
+linea torna. Un apparecchio riacceso dopo un'ora prende la versione buona e non
+riporta indietro il lavoro degli altri.
+
+### Quanti apparecchi
+
+Misurato davvero, con 100 telefoni collegati insieme: **tutto consegnato, ritardo
+tipico 3 millisecondi**, il peggiore 6. Il primo aggancio di un apparecchio nuovo
+scarica il quadro completo in poco più di un decimo di secondo. Per un locale
+normale — sei camerieri, due monitor in cucina, il bar e la cassa — il server non
+è nemmeno impegnato.
+
+Il limite vero non è il numero di telefoni: è la memoria del browser, circa 5 MB
+per apparecchio. A cento comande al giorno sono **due o tre mesi di servizio**
+prima che convenga archiviare. L'applicazione avvisa quando la memoria si riempie;
+si esporta un backup e si riparte.
+
+---
+
+## Le comande escono dalla stampante
+
+Il foglio esce dalla stampante del reparto giusto: i primi alla partita dei primi,
+il caffè al bar, il conto alla cassa. Si tocca **Manda in cucina** e la carta esce.
+
+### Che stampante serve
+
+Una **stampante termica da scontrino con la presa di rete**: Epson TM-T20III,
+TM-m30, Star TSP100 / TSP143 o equivalenti. Parlano tutte la stessa lingua
+(ESC/POS) sulla porta **9100**.
+
+- **Carta da 80 mm** (48 caratteri per riga). Va bene anche la 58 mm, si imposta.
+- **Taglio automatico**: il foglio si stacca da solo.
+- **Presa di rete (Ethernet)**, con un **indirizzo fisso** dato dal router. Il
+  wifi funziona ma in cucina, fra acciaio e forni, il cavo è più affidabile.
+- Alla cassa serve anche l'attacco per il **cassetto dei soldi**, che si apre da
+  solo quando si stampa il conto.
+
+Non serve installare driver, né su Windows né sui telefoni: parla il server. Non
+esce nessuna finestra di stampa — la carta esce e basta.
+
+### Come si impostano
+
+Dal menu → **Stampanti**. Per ognuna: nome, indirizzo, larghezza della carta,
+**lingua del foglio** (la cucina può leggere in italiano anche se il cameriere
+lavora in arabo) e i **reparti** che le toccano:
+
+| Reparto | Cosa ci finisce |
+|---|---|
+| Primi, Caldo, Freddo, Pizza, Pasticceria | le partite della cucina |
+| Bar | caffè, cappuccino, spremute, vini, birre, cocktail |
+| Conto e cassa | il conto, con il cassetto |
+
+Chi fa tutto con una stampante sola le assegna tutti i reparti: esce un foglio
+unico. Chi ha la partita pizza separata le dà solo *Pizza*.
+
+C'è il **foglio di prova** per capire subito se è attaccata bene.
+
+### Cosa esce sulla carta
+
+```
+                 TAVOLO 7
+             4 coperti - Natalia
+------------------------------------------------
+PRIMO
+2  SPAGHETTI ALLA CARBONARA
+   - senza pepe
+SECONDO
+1  TAGLIATA DI MANZO
+   - al sangue
+------------------------------------------------
+                  19:42
+```
+
+Il tavolo a caratteri doppi, i piatti a doppia altezza perché si leggano da
+lontano e con le mani occupate, la quantità incolonnata a sinistra, le modifiche
+rientrate sotto il loro piatto. Gli accenti italiani escono giusti (`però`,
+`già`, `caffè`), non a punti interrogativi, e il nome lungo va a capo senza
+uscire dalla carta.
+
+**Se la stampante è spenta il lavoro non si ferma:** il programma lo dice in due
+secondi e la comanda resta comunque sul monitor della cucina.
 
 ## Foto o elenco, come preferisci
 
@@ -241,13 +363,24 @@ La scelta resta quella che hai messo, e vale sia in cassa che nella comanda.
 
 ## Come si usa
 
-Apri `index.html` con un doppio clic, oppure servi la cartella:
+**Per provarlo:** apri `index.html` con un doppio clic.
+
+**Nel locale, con più apparecchi:** accendi il server di sala e apri l'indirizzo
+che scrive.
+
+```sh
+node server.js
+```
+
+Serve l'applicazione *e* fa viaggiare le comande, quindi è l'unico comando che
+serve. In alternativa, per la sola pagina su un apparecchio solo:
 
 ```sh
 python3 -m http.server 8000
 ```
 
-e vai su `http://localhost:8000`.
+e vai su `http://localhost:8000`. Così però le comande non escono da quel
+dispositivo, e le stampanti non funzionano.
 
 Su iPhone o iPad, da Safari: **Condividi → Aggiungi a Home**. Si apre a schermo
 intero come un'applicazione.
@@ -333,8 +466,13 @@ quel browser: conviene esportare un backup con regolarità da **Impostazioni →
 Esporta**, che produce un file JSON. **Ripristina** lo rilegge, adattando anche i
 backup fatti con versioni precedenti.
 
+Con il server di sala acceso i dati stanno anche su `dati.json`, sul computer del
+locale, e si scaricano da `http://<indirizzo>:8080/api/backup`. Restano comunque
+dentro il locale: non escono su internet e non passano da nessun servizio esterno.
+
 Lo scontrino prodotto dalla cassa è un promemoria interno: non sostituisce il
-documento commerciale del registratore telematico.
+documento commerciale del registratore telematico. Anche il conto stampato sulla
+termica lo dice sopra: *non è uno scontrino fiscale*.
 
 ---
 
@@ -342,11 +480,16 @@ documento commerciale del registratore telematico.
 
 ```
 index.html              il gestionale, tutto dentro un file
+server.js               il server di sala: comande fra gli apparecchi e stampanti
+stampanti.json          le stampanti del locale (nasce da solo alla prima accensione)
+dati.json               i dati tenuti dal server (nasce da solo)
 manifest.webmanifest    per installarlo sul telefono
 sw.js                   fa funzionare l'app senza linea
 icon-*.png              icone dell'app
 vercel.json             configurazione per il deploy
 ```
+
+`server.js` non ha nessuna dipendenza: gira con il solo Node, senza `npm install`.
 
 Il cuore è `index.html`, con dentro tutto: design system, icone SVG, bandiere
 disegnate in SVG (si vedono uguali su ogni sistema, anche dove le emoji-bandiera

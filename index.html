@@ -176,6 +176,24 @@ a{color:var(--brand);text-decoration:none}
   padding-top:calc(13px + env(safe-area-inset-top));
 }
 .top h1{font-size:20px;font-weight:700;letter-spacing:-.022em}
+/* spia del collegamento fra gli apparecchi: verde va, giallo cerca, grigio da solo */
+.syncdot{
+  flex:none;width:26px;height:26px;border:0;border-radius:50%;background:transparent;
+  cursor:pointer;padding:0;display:grid;place-items:center;
+  margin-inline-start:auto;margin-inline-end:-6px;
+}
+/* la spia sta appiccicata ai pulsanti, non a mezz'aria in mezzo alla barra */
+.syncdot + .topact{margin-inline-start:0}
+.syncdot::after{
+  content:"";width:9px;height:9px;border-radius:50%;background:var(--sep);
+  box-shadow:0 0 0 0 transparent;transition:background .2s, box-shadow .3s;
+}
+.syncdot.on::after{background:var(--green);box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 22%, transparent)}
+.syncdot.wait::after{background:var(--amber);animation:sydot 1.1s ease-in-out infinite}
+.syncdot.off::after{background:var(--sep)}
+.syncdot:hover::after{transform:scale(1.15)}
+@keyframes sydot{0%,100%{opacity:1}50%{opacity:.28}}
+@media (prefers-reduced-motion:reduce){.syncdot.wait::after{animation:none}}
 .top .sub{font-size:12.5px;color:var(--txt-2);margin-top:1px}
 .topact{margin-inline-start:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .view{flex:1;overflow-y:auto;padding:20px 22px 60px;scroll-behavior:smooth}
@@ -759,6 +777,8 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
     <div class="sidefoot" style="flex-direction:column;gap:7px">
       <button class="btn sm ghost block" id="btn-user" style="justify-content:flex-start"></button>
       <button class="btn sm ghost block" id="btn-install" hidden style="justify-content:flex-start"></button>
+      <button class="btn sm ghost block" id="btn-sync" style="justify-content:flex-start"></button>
+      <button class="btn sm ghost block" id="btn-print" hidden style="justify-content:flex-start"></button>
       <div class="row tight" style="width:100%">
       <button class="btn sm ghost" style="flex:1" id="btn-led"></button>
       <button class="btn sm ghost btn-ico" id="btn-lang" style="width:auto;padding:5px 10px"></button>
@@ -774,6 +794,7 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
         <h1 id="vtitle">&nbsp;</h1>
         <div class="sub" id="vsub"></div>
       </div>
+      <button class="syncdot off" id="sync-dot" aria-label="Collegamento"></button>
       <div class="topact" id="vact"></div>
     </header>
     <main class="view" id="view"></main>
@@ -826,6 +847,60 @@ function flag(lk, h){
 const RAW = {
 /* --- navigazione --- */
 nav_today:["Oggi","Today","Aujourd'hui","Hoy","Heute","اليوم"],
+/* --- sincronizzazione fra gli apparecchi --- */
+sy_title:["Collegamento fra gli apparecchi","Link between devices","Liaison entre appareils","Enlace entre dispositivos","Verbindung der Gerate","الربط بين الأجهزة"],
+sy_nav:["Collegamento","Devices","Appareils","Dispositivos","Gerate","الأجهزة"],
+sy_on:["Collegato: le comande viaggiano","Connected: orders travel","Connecte: les commandes circulent","Conectado: las comandas viajan","Verbunden: Bestellungen laufen","متصل: الطلبات تنتقل"],
+sy_wait:["Cerco il server...","Looking for the server...","Recherche du serveur...","Buscando el servidor...","Server wird gesucht...","جارٍ البحث عن الخادم..."],
+sy_off:["Da solo, su questo apparecchio","Alone, on this device","Seul, sur cet appareil","Solo, en este dispositivo","Allein, auf diesem Gerat","بمفرده على هذا الجهاز"],
+sy_ko:["Server non raggiunto","Server not reached","Serveur injoignable","Servidor no alcanzado","Server nicht erreicht","تعذر الوصول إلى الخادم"],
+sy_alone:["Quello che scrivi resta su questo apparecchio. Accendi il server di sala e le comande arrivano in cucina.","What you write stays on this device. Turn on the room server and the orders reach the kitchen.","Ce que vous ecrivez reste sur cet appareil. Allumez le serveur de salle et les commandes arrivent en cuisine.","Lo que escribes se queda en este dispositivo. Enciende el servidor de sala y las comandas llegan a cocina.","Was Sie schreiben, bleibt auf diesem Gerat. Schalten Sie den Saal-Server ein, dann kommen die Bestellungen in die Kuche.","ما تكتبه يبقى على هذا الجهاز. شغّل خادم الصالة لتصل الطلبات إلى المطبخ."],
+sy_at:["Server:","Server:","Serveur:","Servidor:","Server:","الخادم:"],
+sy_addr:["Indirizzo del server di sala","Room server address","Adresse du serveur de salle","Direccion del servidor de sala","Adresse des Saal-Servers","عنوان خادم الصالة"],
+sy_hint:["È l'indirizzo che compare sul computer quando accendi il server. Basta il numero, il resto lo mette da solo.","It is the address shown on the computer when you start the server. The number is enough.","C'est l'adresse affichee sur l'ordinateur au demarrage du serveur. Le numero suffit.","Es la direccion que aparece en el ordenador al encender el servidor. Basta el numero.","Das ist die Adresse, die beim Start des Servers am Computer erscheint. Die Nummer genugt.","هو العنوان الذي يظهر على الحاسوب عند تشغيل الخادم. يكفي الرقم."],
+sy_how:["Come si accende","How to start it","Comment l'allumer","Como encenderlo","So wird er gestartet","كيفية التشغيل"],
+sy_s1:["Sul computer del locale, nella cartella del programma, avvia: node server.js","On the venue computer, in the program folder, run: node server.js","Sur l'ordinateur du local, dans le dossier du programme, lancez: node server.js","En el ordenador del local, en la carpeta del programa, ejecuta: node server.js","Am Computer des Lokals, im Programmordner, starten: node server.js","على حاسوب المحل، داخل مجلد البرنامج، شغّل: node server.js"],
+sy_s2:["Il computer scrive un indirizzo tipo 192.168.1.7:8080. Scrivilo qui sopra.","The computer shows an address like 192.168.1.7:8080. Type it above.","L'ordinateur affiche une adresse comme 192.168.1.7:8080. Ecrivez-la ci-dessus.","El ordenador muestra una direccion como 192.168.1.7:8080. Escribela arriba.","Der Computer zeigt eine Adresse wie 192.168.1.7:8080. Oben eintragen.","يعرض الحاسوب عنوانًا مثل 192.168.1.7:8080. اكتبه في الأعلى."],
+sy_s3:["Tutti i telefoni devono stare sullo stesso wifi del computer.","All phones must be on the same wifi as the computer.","Tous les telephones doivent etre sur le meme wifi que l'ordinateur.","Todos los telefonos deben estar en el mismo wifi que el ordenador.","Alle Telefone mussen im selben WLAN wie der Computer sein.","يجب أن تكون جميع الهواتف على نفس شبكة الواي فاي مع الحاسوب."],
+sy_go:["Collega","Connect","Connecter","Conectar","Verbinden","اتصال"],
+sy_stop:["Stacca","Disconnect","Deconnecter","Desconectar","Trennen","فصل"],
+sy_try:["Provo a collegarmi...","Trying to connect...","Tentative de connexion...","Intentando conectar...","Verbindungsversuch...","محاولة الاتصال..."],
+sy_done:["Collegato","Connected","Connecte","Conectado","Verbunden","تم الاتصال"],
+sy_need:["Scrivi l'indirizzo del server","Type the server address","Ecrivez l'adresse du serveur","Escribe la direccion del servidor","Serveradresse eintragen","اكتب عنوان الخادم"],
+sy_new:["Arrivato dagli altri apparecchi","Arrived from the other devices","Recu des autres appareils","Llegado de los otros dispositivos","Von den anderen Geraten erhalten","وصل من الأجهزة الأخرى"],
+sy_dev:["Questo apparecchio:","This device:","Cet appareil:","Este dispositivo:","Dieses Gerat:","هذا الجهاز:"],
+sy_got:["Schede ricevute:","Records received:","Fiches recues:","Fichas recibidas:","Empfangene Datensatze:","السجلات المستلمة:"],
+/* --- stampa delle comande --- */
+pr_title:["Stampanti","Printers","Imprimantes","Impresoras","Drucker","الطابعات"],
+pr_nav:["Stampanti","Printers","Imprimantes","Impresoras","Drucker","الطابعات"],
+pr_add:["Aggiungi stampante","Add printer","Ajouter imprimante","Anadir impresora","Drucker hinzufugen","إضافة طابعة"],
+pr_name:["Nome","Name","Nom","Nombre","Name","الاسم"],
+pr_ip:["Indirizzo sulla rete","Network address","Adresse reseau","Direccion en la red","Netzwerkadresse","عنوان الشبكة"],
+pr_port:["Porta","Port","Port","Puerto","Port","المنفذ"],
+pr_cols:["Larghezza della carta","Paper width","Largeur du papier","Ancho del papel","Papierbreite","عرض الورق"],
+pr_lang:["Lingua del foglio","Ticket language","Langue du ticket","Idioma del ticket","Sprache des Bons","لغة الإيصال"],
+pr_reps:["Cosa stampa","What it prints","Ce qu'elle imprime","Que imprime","Was sie druckt","ماذا تطبع"],
+pr_reps_t:["Tocca i reparti: quello che si cucina li esce da questa stampante.","Tap the sections: what is cooked there comes out of this printer.","Touchez les postes: ce qui s'y prepare sort de cette imprimante.","Toca las partidas: lo que se cocina alli sale de esta impresora.","Bereiche antippen: was dort zubereitet wird, kommt aus diesem Drucker.","المس الأقسام: ما يُطبخ هناك يخرج من هذه الطابعة."],
+pr_use:["Accesa","In use","Allumee","Encendida","Aktiv","قيد الاستخدام"],
+pr_drawer:["Apre il cassetto","Opens the drawer","Ouvre le tiroir","Abre el cajon","Offnet die Lade","تفتح الدرج"],
+pr_on:["Accesa","On","Allumee","Encendida","Ein","تعمل"],
+pr_off:["Spenta","Off","Eteinte","Apagada","Aus","متوقفة"],
+pr_test:["Foglio di prova","Test print","Feuille de test","Hoja de prueba","Testdruck","صفحة اختبار"],
+pr_sending:["Mando alla","Sending to","Envoi vers","Enviando a","Sende an","إرسال إلى"],
+pr_sent:["Foglio mandato","Sheet sent","Feuille envoyee","Hoja enviada","Blatt gesendet","تم إرسال الورقة"],
+pr_fail:["Non stampa","Not printing","N'imprime pas","No imprime","Druckt nicht","لا تطبع"],
+pr_none:["Nessuna stampante. Aggiungine una e le comande escono da sole.","No printers yet. Add one and the orders print by themselves.","Aucune imprimante. Ajoutez-en une et les commandes sortent seules.","Ninguna impresora. Anade una y las comandas salen solas.","Noch kein Drucker. Fugen Sie einen hinzu, dann drucken die Bons automatisch.","لا توجد طابعات. أضف واحدة لتخرج الطلبات تلقائيًا."],
+pr_norep:["Nessun reparto","No section","Aucun poste","Sin partida","Kein Bereich","لا يوجد قسم"],
+pr_del:["Tolgo la stampante","Remove printer","Retirer l'imprimante","Quitar impresora","Drucker entfernen","إزالة الطابعة"],
+pr_needname:["Servono il nome e l'indirizzo","Name and address are required","Le nom et l'adresse sont necessaires","Hacen falta el nombre y la direccion","Name und Adresse werden benotigt","الاسم والعنوان مطلوبان"],
+pr_noserver:["Serve il server di sala acceso","The room server must be on","Le serveur de salle doit etre allume","El servidor de sala debe estar encendido","Der Saal-Server muss laufen","يجب تشغيل خادم الصالة"],
+pr_needserver:["Le stampanti si attaccano alla rete e il server del locale parla con loro. Accendi prima il collegamento, poi torna qui.","The printers sit on the network and the venue server talks to them. Turn on the link first, then come back.","Les imprimantes sont sur le reseau et le serveur du local leur parle. Activez d'abord la liaison, puis revenez.","Las impresoras estan en la red y el servidor del local habla con ellas. Enciende primero el enlace y vuelve.","Die Drucker hangen im Netzwerk und der Server spricht mit ihnen. Erst die Verbindung einschalten, dann zuruckkommen.","الطابعات على الشبكة والخادم يتحدث إليها. شغّل الاتصال أولاً ثم عد."],
+pr_which:["Che stampante serve","Which printer you need","Quelle imprimante il faut","Que impresora hace falta","Welcher Drucker","أي طابعة تحتاج"],
+pr_which_t:["Una stampante termica da scontrino con la presa di rete: Epson TM-T20, TM-m30, Star TSP100 o simili. Carta da 80 mm, taglio automatico. Si attacca al router con un cavo e le si dà un indirizzo fisso.","A thermal receipt printer with a network port: Epson TM-T20, TM-m30, Star TSP100 or similar. 80 mm paper, auto cutter. Wire it to the router and give it a fixed address.","Une imprimante thermique a ticket avec prise reseau: Epson TM-T20, TM-m30, Star TSP100 ou similaire. Papier 80 mm, coupe automatique. Reliez-la au routeur avec une adresse fixe.","Una impresora termica de tickets con puerto de red: Epson TM-T20, TM-m30, Star TSP100 o similar. Papel de 80 mm, corte automatico. Conectala al router con una direccion fija.","Ein Thermo-Bondrucker mit Netzwerkanschluss: Epson TM-T20, TM-m30, Star TSP100 oder ahnlich. 80-mm-Papier, Autocutter. Per Kabel an den Router, mit fester Adresse.","طابعة حرارية للإيصالات بمنفذ شبكة: إبسون TM-T20 أو TM-m30 أو ستار TSP100. ورق 80 مم مع قاطع تلقائي. تُوصل بالراوتر بعنوان ثابت."],
+pr_change:["Resto","Change","Rendu","Cambio","Ruckgeld","الباقي"],
+pr_nofisc:["Non e uno scontrino fiscale","Not a fiscal receipt","Ce n'est pas un ticket fiscal","No es un ticket fiscal","Kein Steuerbeleg","ليس إيصالًا ضريبيًا"],
+pr_sentkit:["Comanda stampata in cucina","Order printed in the kitchen","Commande imprimee en cuisine","Comanda impresa en cocina","Bon in der Kuche gedruckt","طُبع الطلب في المطبخ"],
+pr_norep2:["Nessuna stampante per:","No printer for:","Aucune imprimante pour:","Sin impresora para:","Kein Drucker fur:","لا توجد طابعة لـ:"],
 nav_dash:["Cruscotto","Dashboard","Tableau de bord","Panel","Ubersicht","لوحة التحكم"],
 nav_briefing:["Briefing","Briefing","Briefing","Briefing","Briefing","اجتماع يومي"],
 nav_check:["Checklist","Checklist","Checklist","Lista control","Checkliste","قائمة المهام"],
@@ -1250,6 +1325,7 @@ const IC = {
   mega:'<path d="M3 11v2a1 1 0 001 1h2l4 4V6L6 10H4a1 1 0 00-1 1zM15 8a5 5 0 010 8M18.5 5a9 9 0 010 14"/>',
   flyer:'<path d="M4 3h16v18l-8-4-8 4zM8 8h8M8 12h5"/>',
   led:'<path d="M2 4h20v13H2zM8 21h8M12 17v4M6 8h5M6 11h9"/>',
+  wifi:'<path d="M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 19.5h.01M1.5 9a15 15 0 0121 0"/>',
   warn:'<path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0zM12 9v4M12 17h.01"/>',
   chart:'<path d="M3 3v18h18M7 15l4-5 3 3 5-7"/>',
   cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 3.6 1.65 1.65 0 0010 2.09V2a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 8v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/>',
@@ -2169,6 +2245,8 @@ function buildSeed(){
 function save(){
   try{ localStorage.setItem(KEY, JSON.stringify(DB)); }
   catch(e){ toast("Memoria piena: esporta un backup", "err"); }
+  /* se il locale ha il server acceso, quello che si e appena scritto parte */
+  if(typeof syncTouch === "function") syncTouch();
 }
 function load(){
   try{
@@ -2659,6 +2737,13 @@ function renderChrome(){
   $("#logo").textContent = (b.name || "R").trim()[0].toUpperCase();
   $("#btn-led").innerHTML = icon("led",14) + '<span>' + esc(T("nav_led")) + '</span>';
   $("#btn-install").innerHTML = icon("down",14) + '<span>' + esc(T("in_app")) + '</span>';
+  $("#btn-sync").innerHTML = icon("wifi",14) + '<span>' + esc(T("sy_nav")) + '</span>';
+  const bp = $("#btn-print");
+  bp.innerHTML = icon("print",14) + '<span>' + esc(T("pr_nav")) + '</span>';
+  bp.hidden = !(typeof SY !== "undefined" && SY.on);
+  const sd = $("#sync-dot");
+  if(sd){ sd.className = "syncdot " + (typeof SY !== "undefined" ? (SY.on ? SY.state : "off") : "off");
+          sd.title = typeof syncLabel === "function" ? syncLabel() : ""; }
   const st = me();
   $("#btn-user").innerHTML = st
     ? '<span class="avat sm" style="width:22px;height:22px;font-size:9.5px">' + esc(initials(st.name)) + '</span>' +
@@ -3285,17 +3370,34 @@ function orderSheet(orderId){
     });
   };
 
-  modal({title:titolo(), size:"xwide", body:draw(), actions:[
-    {label:T("c_close"), cls:"ghost", run:()=> refresh()},
+  const ovl = modal({title:titolo(), size:"xwide", body:draw(), actions:[
+    {label:T("c_close"), cls:"ghost", run:()=>{ SY.hook = null; refresh(); }},
     {label:T("o_note_line"), cls:"ghost", run:(w)=>{ lineNoteSheet(o.id); return false; }},
     {label:T("o_send"), cls:"pri", run:()=>{
-      let n = 0;
-      o.lines.forEach(l=>{ if(l.status === "nuovo"){ l.status = "lavorazione"; l.sentAt = new Date().toISOString(); n++; } });
+      SY.hook = null;
+      const nuove = o.lines.filter(l=> l.status === "nuovo");
+      nuove.forEach(l=>{ l.status = "lavorazione"; l.sentAt = new Date().toISOString(); });
       o.status = "in corso"; save(); refresh();
+      const n = nuove.length;
       toast(n ? n + " piatti mandati in cucina" : "Niente di nuovo da mandare", n ? "ok" : "warn");
+      /* e se in cucina c'e la stampante, il foglio esce da solo */
+      if(n) stampaComanda(o, nuove).then(r=>{
+        if(r.fatte) toast(T("pr_sentkit"), "ok");
+        if(r.rotte && r.rotte.length) toast(T("pr_fail") + ": " + r.rotte[0], "err");
+        if(r.mancate && r.mancate.length) toast(T("pr_norep2") + " " + r.mancate.join(", "), "warn");
+      });
     }},
-    {label:T("o_pay"), cls:"ok", run:()=>{ payOrder(o.id); return false; }}
+    {label:T("o_pay"), cls:"ok", run:()=>{ SY.hook = null; payOrder(o.id); return false; }}
   ], onOpen:wire});
+
+  /* la cucina segna "pronto" mentre il cameriere e ancora dentro la comanda:
+     la schermata si aggiorna da sola, senza chiudere niente */
+  SY.hook = ()=>{
+    if(!document.body.contains(ovl)){ SY.hook = null; return; }
+    if(!byId(DB.orders, orderId)){ SY.hook = null; closeModal(); return; }
+    if($("input:focus, textarea:focus, select:focus", ovl)) return;
+    refreshBody(ovl);
+  };
 }
 </script>
 <script>
@@ -3401,7 +3503,19 @@ function payOrder(orderId){
 
   modal({title:T("o_pay"), size:"slim", body:body, actions:[
     {label:T("c_cancel"), cls:"ghost"},
-    {label:T("c_print"), cls:"ghost", run:(w)=>{ printBill(o); return false; }},
+    {label:T("c_print"), cls:"ghost", run:(w)=>{
+      /* se alla cassa c'e la stampante termica il conto esce da li,
+         altrimenti si passa dalla stampa del browser come prima */
+      if(prOn()){
+        prLoad().then(lista=>{
+          const cassa = stampanteDelReparto("conto", lista);
+          if(!cassa){ printBill(o); return; }
+          toast(T("pr_sending") + " " + cassa.nome, "ok");
+          stampaConto(o).then(r=> toast(r.ok ? T("pr_sent") : (T("pr_fail") + ": " + (r.err || "")), r.ok ? "ok" : "err"));
+        });
+      }else printBill(o);
+      return false;
+    }},
     {label:T("c_confirm"), cls:"ok", run:(w)=>{
       const f = readForm(w);
       const disc = Number(f.disc) || 0;
@@ -7396,10 +7510,12 @@ function installSheet(){
       '<li class="li" style="padding-inline:0;align-items:flex-start">' +
       '<span class="avat sm" style="background:var(--brand-soft);color:var(--brand)">' + (i+1) + '</span>' +
       '<div class="tx"><b style="font-weight:550;white-space:normal">' + esc(t) + '</b></div></li>').join("") + '</ol>' +
-    '<div class="card mt" style="background:var(--amber-soft);border-color:transparent"><div class="card-b" style="padding:11px 13px">' +
-      '<b style="font-size:13px;color:var(--amber)">' + icon("warn",13) + ' ' + esc("Da sapere") + '</b>' +
+    '<div class="card mt" style="background:var(--' + (SY.on ? "green" : "amber") + '-soft);border-color:transparent"><div class="card-b" style="padding:11px 13px">' +
+      '<b style="font-size:13px;color:var(--' + (SY.on ? "green" : "amber") + ')">' + icon(SY.on ? "wifi" : "warn",13) + ' ' + esc(SY.on ? "Comande collegate" : "Da sapere") + '</b>' +
       '<p style="font-size:13px;color:var(--txt-2);margin-top:5px;line-height:1.6">' +
-      esc("Ogni telefono tiene i suoi dati. Le comande scritte su un telefono restano su quel telefono: non arrivano da sole al monitor della cucina o agli altri camerieri. Per farle viaggiare fra i dispositivi serve un server, che oggi non c'e.") +
+      esc(SY.on
+        ? "Questo apparecchio è collegato al server di sala: le comande scritte qui arrivano subito in cucina e sugli altri telefoni, e continuano ad arrivare anche se il wifi cade per qualche minuto."
+        : "Senza il server di sala, ogni telefono tiene i suoi dati: le comande restano qui e non arrivano al monitor della cucina. Accendi il server dal menu, alla voce Collegamento.") +
       '</p></div></div>';
   const acts = [{label:T("c_close"), cls:"ghost"}];
   if(INSTALL_EVT) acts.push({label:T("in_app"), cls:"pri", run:()=>{
@@ -7409,6 +7525,814 @@ function installSheet(){
   modal({title:T("in_app"), size:"slim", body:body, actions:acts});
 }
 
+</script>
+<script>
+/* ============================================================
+   PARTE 32c — SINCRONIZZAZIONE FRA GLI APPARECCHI
+   ------------------------------------------------------------
+   Il cameriere scrive la comanda sul telefono, la cucina la vede
+   sul monitor. Perche succeda, gli apparecchi parlano con un
+   piccolo server acceso su un computer del locale (server.js),
+   sullo stesso wifi. Non serve internet.
+
+   Regola dell'accordo: ogni scheda - una comanda, un tavolo, un
+   articolo - porta con se l'ora dell'ultima modifica. Vince la
+   piu recente. Le righe della comanda hanno un'ora ciascuna, cosi
+   la cucina puo segnare "pronto" mentre il cameriere aggiunge un
+   piatto, senza che uno cancelli il lavoro dell'altro.
+
+   Se il server non c'e, l'applicazione lavora da sola come prima
+   e manda tutto appena lo ritrova.
+   ============================================================ */
+
+/* le raccolte che viaggiano fra gli apparecchi */
+const SYNC_LISTS = ["orders","tables","reservations","hotelOrders","clock","issues","items",
+  "inv","moves","pos","cashups","absences","ledger","haccpLog","shifts","briefings","staff",
+  "mods","cats","suppliers","recipes","cocktails","hotels","slogans","flyers","rooms","prep",
+  "changes","haccp"];
+/* i pezzi unici, non elenchi */
+const SYNC_ONES = ["meta","led","checklists","sloganToday"];
+/* queste restano di ogni apparecchio: la lingua scelta sul telefono di
+   Fatima non deve cambiare quella del monitor in cucina */
+const SYNC_MINE = ["lang","theme","skin","touch","viewMode"];
+
+const DEV_KEY = "barcapri_apparecchio";
+const SRV_KEY = "barcapri_server";
+
+const SY = {
+  url:"", dev:"", on:false, seq:0, es:null, state:"off", err:"",
+  shadow:{}, out:{}, lidx:{}, timer:null, pushing:false, applying:false,
+  retry:null, wait:2000, redraw:null, hook:null, seen:0
+};
+
+function devId(){
+  let d = null;
+  try{ d = localStorage.getItem(DEV_KEY); }catch(e){}
+  if(!d){
+    d = "ap_" + Math.random().toString(36).slice(2,9);
+    try{ localStorage.setItem(DEV_KEY, d); }catch(e){}
+  }
+  return d;
+}
+function srvUrl(){ try{ return localStorage.getItem(SRV_KEY) || ""; }catch(e){ return ""; } }
+function setSrvUrl(u){ try{ u ? localStorage.setItem(SRV_KEY, u) : localStorage.removeItem(SRV_KEY); }catch(e){} }
+
+/** L'indirizzo scritto a mano si aggiusta: "192.168.1.7" diventa "http://192.168.1.7:8080". */
+function tidyUrl(s){
+  let u = String(s || "").trim().replace(/\/+$/, "");
+  if(!u) return "";
+  if(!/^https?:\/\//i.test(u)) u = "http://" + u;
+  if(!/:\d+$/.test(u) && !/^https:/i.test(u)) u += ":8080";
+  return u;
+}
+
+/** La firma di una scheda: dice se e cambiata davvero.
+    Le chiavi si mettono in ordine, cosi due copie uguali scritte da
+    apparecchi diversi hanno la stessa firma. L'ora (_v) non conta. */
+function sig(v){
+  if(v === null || typeof v !== "object") return JSON.stringify(v);
+  if(Array.isArray(v)) return "[" + v.map(sig).join(",") + "]";
+  const ks = Object.keys(v).filter(k=> k !== "_v").sort();
+  let s = "{";
+  for(let i=0;i<ks.length;i++){ if(i) s += ","; s += JSON.stringify(ks[i]) + ":" + sig(v[ks[i]]); }
+  return s + "}";
+}
+function stamp(r){ r._v = Math.max(Date.now(), (Number(r._v) || 0) + 1); return r; }
+
+function oneGet(c){
+  if(c === "meta"){
+    const m = {};
+    for(const k in DB.meta){ if(k !== "_v" && SYNC_MINE.indexOf(k) < 0) m[k] = DB.meta[k]; }
+    return m;
+  }
+  if(c === "sloganToday") return { v: DB.sloganToday == null ? null : DB.sloganToday };
+  return DB[c] || {};
+}
+function oneSet(c, v){
+  if(c === "meta"){
+    for(const k in v){ if(k === "_v" || SYNC_MINE.indexOf(k) >= 0) continue; DB.meta[k] = v[k]; }
+    return;
+  }
+  if(c === "sloganToday"){ DB.sloganToday = v.v; return; }
+  DB[c] = v;
+}
+
+/* ------------------------------------------------------------
+   Cosa e cambiato da mandare
+   ------------------------------------------------------------ */
+function scanLines(o){
+  /* ogni riga della comanda ha la sua ora, e le righe tolte restano tolte */
+  const idx = SY.lidx[o.id] || (SY.lidx[o.id] = {});
+  const vive = {};
+  (o.lines || []).forEach(l=>{
+    if(!l.id) l.id = uid("ln");
+    vive[l.id] = 1;
+    const s = sig(l);
+    if(idx[l.id] === s) return;
+    stamp(l); idx[l.id] = s;
+  });
+  let tolte = null;
+  for(const id in idx){
+    if(vive[id]) continue;
+    delete idx[id];
+    (tolte = tolte || []).push({ id:id, t:Date.now() });
+  }
+  if(tolte){
+    const vecchie = (o._rm || []).filter(x=> x.t > Date.now() - 43200000);
+    o._rm = vecchie.concat(tolte);
+  }
+}
+
+function syncScan(){
+  let n = 0;
+  const vivi = {};
+  for(let i=0;i<SYNC_LISTS.length;i++){
+    const c = SYNC_LISTS[i], arr = DB[c];
+    if(!Array.isArray(arr)) continue;
+    for(let j=0;j<arr.length;j++){
+      const r = arr[j];
+      if(!r || !r.id) continue;
+      const k = c + "/" + r.id;
+      vivi[k] = 1;
+      if(c === "orders") scanLines(r);
+      const s = sig(r);
+      if(SY.shadow[k] === s) continue;
+      stamp(r);
+      SY.shadow[k] = s;
+      SY.out[k] = { c:c, id:r.id, r:r };
+      n++;
+    }
+  }
+  /* schede sparite: si manda un segnaposto, cosi spariscono anche dagli altri */
+  for(const k in SY.shadow){
+    if(vivi[k] || k.charAt(0) === "@") continue;
+    const i = k.indexOf("/");
+    const c = k.slice(0, i), id = k.slice(i + 1);
+    if(SYNC_LISTS.indexOf(c) < 0){ delete SY.shadow[k]; continue; }
+    const t = stamp({ id:id, _del:true });
+    SY.shadow[k] = sig(t);
+    SY.out[k] = { c:c, id:id, r:t };
+    n++;
+  }
+  /* i pezzi unici */
+  for(let i=0;i<SYNC_ONES.length;i++){
+    const c = SYNC_ONES[i], k = "@" + c;
+    const o = oneGet(c);
+    const s = sig(o);
+    if(SY.shadow[k] === s) continue;
+    o._v = Math.max(Date.now(), (Number(SY.shadow["v@" + c]) || 0) + 1);
+    SY.shadow["v@" + c] = o._v;
+    SY.shadow[k] = s;
+    SY.out[k] = { c:"@", id:c, r:o };
+    n++;
+  }
+  return n;
+}
+
+/* ------------------------------------------------------------
+   Cosa arriva dagli altri
+   ------------------------------------------------------------ */
+/** Riempie la scheda che c'e gia invece di sostituirla: cosi le
+    schermate aperte continuano a guardare la stessa. */
+function absorb(dest, src){
+  for(const k in dest){ if(!(k in src)) delete dest[k]; }
+  for(const k in src) dest[k] = src[k];
+  return dest;
+}
+
+/** Unisce due versioni della stessa comanda riga per riga. */
+function mergeOrder(mia, sua){
+  const mv = Number(mia._v) || 0, sv = Number(sua._v) || 0;
+  const tolte = {};
+  (mia._rm || []).concat(sua._rm || []).forEach(x=>{
+    if(x && x.id) tolte[x.id] = Math.max(tolte[x.id] || 0, Number(x.t) || 0);
+  });
+  const righe = {}, ordine = [];
+  (sua.lines || []).forEach(l=>{ if(l && l.id){ righe[l.id] = l; ordine.push(l.id); } });
+  (mia.lines || []).forEach(l=>{
+    if(!l || !l.id) return;
+    const c = righe[l.id];
+    if(!c){ righe[l.id] = l; ordine.push(l.id); return; }
+    if((Number(l._v) || 0) > (Number(c._v) || 0)) righe[l.id] = l;
+  });
+  const lines = [];
+  ordine.forEach(id=>{
+    const l = righe[id];
+    if(!l) return;
+    const t = tolte[id];
+    if(t && t >= (Number(l._v) || 0)) return;    /* tolta dopo l'ultima modifica */
+    lines.push(l);
+  });
+  const base = sv >= mv ? sua : mia;
+  const out = {};
+  for(const k in base) out[k] = base[k];
+  out.lines = lines;
+  out._v = Math.max(mv, sv);
+  const rm = [];
+  for(const id in tolte){ if(tolte[id] > Date.now() - 43200000) rm.push({ id:id, t:tolte[id] }); }
+  if(rm.length) out._rm = rm; else delete out._rm;
+  return out;
+}
+
+function syncApply(recs){
+  if(!recs || !recs.length) return 0;
+  SY.applying = true;
+  let n = 0, tocca = {};
+  for(let i=0;i<recs.length;i++){
+    const it = recs[i];
+    if(!it || !it.c || !it.id) continue;
+
+    /* pezzo unico */
+    if(it.c === "@"){
+      const c = it.id;
+      if(SYNC_ONES.indexOf(c) < 0) continue;
+      const k = "@" + c;
+      const nv = Number(it.r._v) || 0;
+      const ov = Number(SY.shadow["v@" + c]) || 0;
+      if(nv > ov){
+        oneSet(c, it.r);
+        SY.shadow["v@" + c] = nv;
+        SY.shadow[k] = sig(oneGet(c));
+        n++; tocca[c] = 1;
+      }else{
+        SY.shadow[k] = sig(it.r);   /* il mio e piu nuovo: lo ripubblico */
+      }
+      continue;
+    }
+
+    if(SYNC_LISTS.indexOf(it.c) < 0) continue;
+    const arr = DB[it.c];
+    if(!Array.isArray(arr)) continue;
+    const k = it.c + "/" + it.id;
+    const pos = arr.findIndex(x=> x && x.id === it.id);
+    const mia = pos < 0 ? null : arr[pos];
+    const nv = Number(it.r._v) || 0;
+    const ov = Number(mia && mia._v) || 0;
+
+    /* cancellata da un altro apparecchio */
+    if(it.r._del){
+      if(mia && nv > ov){ arr.splice(pos, 1); delete SY.lidx[it.id]; n++; tocca[it.c] = 1; }
+      SY.shadow[k] = sig(it.r);
+      continue;
+    }
+
+    if(!mia){
+      const nuovo = JSON.parse(JSON.stringify(it.r));
+      arr.push(nuovo);
+      SY.shadow[k] = sig(nuovo);
+      if(it.c === "orders"){ SY.lidx[nuovo.id] = {}; (nuovo.lines||[]).forEach(l=> SY.lidx[nuovo.id][l.id] = sig(l)); }
+      n++; tocca[it.c] = 1;
+      continue;
+    }
+
+    if(it.c === "orders"){
+      const fusa = mergeOrder(mia, it.r);
+      const prima = sig(mia);
+      absorb(mia, fusa);
+      SY.lidx[mia.id] = {};
+      (mia.lines || []).forEach(l=> SY.lidx[mia.id][l.id] = sig(l));
+      /* la fusione puo essere diversa da quella che ha il server:
+         si segna la sua firma, cosi al giro dopo si rimanda la nostra */
+      SY.shadow[k] = sig(it.r);
+      if(sig(mia) !== prima){ n++; tocca[it.c] = 1; }
+      continue;
+    }
+
+    if(nv > ov){
+      absorb(mia, JSON.parse(JSON.stringify(it.r)));
+      SY.shadow[k] = sig(mia);
+      n++; tocca[it.c] = 1;
+    }else{
+      SY.shadow[k] = sig(it.r);   /* il mio e piu nuovo: lo ripubblico */
+    }
+  }
+  SY.applying = false;
+  if(n){
+    try{ localStorage.setItem(KEY, JSON.stringify(DB)); }catch(e){}
+    if(tocca.meta || tocca.items || tocca.cats) applyTheme();
+    syncRedraw();
+  }
+  /* se qualcosa di nostro e rimasto piu recente, riparte da solo */
+  syncTouch();
+  return n;
+}
+
+/** Ridisegna quello che si sta guardando, senza far saltare il video. */
+function syncRedraw(){
+  if(SY.redraw) return;
+  SY.redraw = setTimeout(()=>{
+    SY.redraw = null;
+    try{
+      if(typeof LEDON !== "undefined" && LEDON) return;
+      if(SY.hook){ SY.hook(); }
+      refresh();
+    }catch(e){}
+  }, 220);
+}
+
+/* ------------------------------------------------------------
+   Il filo con il server
+   ------------------------------------------------------------ */
+function syncState(s, err){
+  SY.state = s; SY.err = err || "";
+  const d = document.getElementById("sync-dot");
+  if(d){
+    d.className = "syncdot " + s;
+    d.title = syncLabel();
+  }
+}
+function syncLabel(){
+  if(!SY.on) return T("sy_off");
+  if(SY.state === "on") return T("sy_on");
+  if(SY.state === "wait") return T("sy_wait");
+  return T("sy_ko") + (SY.err ? " - " + SY.err : "");
+}
+
+function syncTouch(){
+  if(!SY.on || SY.applying) return;
+  if(SY.timer) clearTimeout(SY.timer);
+  SY.timer = setTimeout(syncPush, 260);
+}
+
+function syncPush(){
+  SY.timer = null;
+  if(!SY.on || SY.pushing) return;
+  syncScan();
+  const keys = Object.keys(SY.out);
+  if(!keys.length) return;
+  const recs = keys.map(k=> SY.out[k]);
+  SY.pushing = true;
+  fetch(SY.url + "/api/push", {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ dev:SY.dev, recs:recs })
+  }).then(r=>{
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(j=>{
+    /* si svuota la coda: quello che e cambiato dopo lo ritrova il
+       controllo successivo, perche la firma non combacia piu */
+    keys.forEach(k=> delete SY.out[k]);
+    SY.seq = Math.max(SY.seq, Number(j.seq) || 0);
+    SY.pushing = false;
+    syncState("on");
+    syncTouch();
+  }).catch(e=>{
+    SY.pushing = false;
+    syncState("wait", String(e.message || e));
+    /* restano in coda: ripartono da sole appena il filo torna */
+    setTimeout(()=>{ if(SY.on) syncTouch(); }, 4000);
+  });
+}
+
+function syncStream(){
+  if(!SY.on) return;
+  if(SY.es){ try{ SY.es.close(); }catch(e){} SY.es = null; }
+  let es;
+  try{ es = new EventSource(SY.url + "/api/stream?dev=" + encodeURIComponent(SY.dev) + "&since=" + SY.seq); }
+  catch(e){ syncState("wait", "collegamento"); return; }
+  SY.es = es;
+  es.onopen = ()=>{ SY.wait = 2000; syncState("on"); };
+  es.onmessage = (ev)=>{
+    let j = null;
+    try{ j = JSON.parse(ev.data); }catch(e){ return; }
+    if(!j) return;
+    SY.seq = Math.max(SY.seq, Number(j.seq) || 0);
+    const n = syncApply(j.recs || []);
+    SY.seen += (j.recs || []).length;
+    syncState("on");
+    if(n && !document.hidden) toast(T("sy_new"), "ok");
+  };
+  es.onerror = ()=>{
+    syncState("wait", "");
+    try{ es.close(); }catch(e){}
+    if(SY.es === es) SY.es = null;
+    if(SY.retry) clearTimeout(SY.retry);
+    SY.retry = setTimeout(()=>{ SY.retry = null; if(SY.on) syncStream(); }, SY.wait);
+    SY.wait = Math.min(SY.wait * 2, 30000);
+  };
+}
+
+/** Primo aggancio: prima si prende tutto quello che c'e sul server,
+    poi si manda quello che qui c'e in piu o e piu recente. */
+function syncJoin(){
+  syncState("wait");
+  return fetch(SY.url + "/api/pull?since=0", {cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(j=>{
+      SY.shadow = {}; SY.lidx = {}; SY.out = {};
+      SY.seq = Number(j.seq) || 0;
+      syncApply(j.recs || []);
+      syncScan();
+      syncStream();
+      syncPush();
+      prLoad().then(()=> renderChrome());
+      return true;
+    })
+    .catch(e=>{ syncState("wait", String(e.message || e)); syncStream(); return false; });
+}
+
+function syncOn(url){
+  SY.url = tidyUrl(url);
+  if(!SY.url){ syncOff(); return Promise.resolve(false); }
+  setSrvUrl(SY.url);
+  SY.on = true;
+  SY.dev = SY.dev || devId();
+  return syncJoin();
+}
+function syncOff(){
+  SY.on = false;
+  if(SY.es){ try{ SY.es.close(); }catch(e){} SY.es = null; }
+  if(SY.retry){ clearTimeout(SY.retry); SY.retry = null; }
+  if(SY.timer){ clearTimeout(SY.timer); SY.timer = null; }
+  setSrvUrl("");
+  SY.url = "";
+  syncState("off");
+}
+function syncInit(){
+  SY.dev = devId();
+  const u = srvUrl();
+  /* se l'applicazione e stata aperta dal server stesso, si aggancia da sola:
+     nessuno deve scrivere indirizzi a mano sui telefoni del locale */
+  const auto = (location.protocol === "http:" || location.protocol === "https:") && location.hostname
+             ? location.origin : "";
+  if(u) syncOn(u);
+  else if(auto) syncProbe(auto);
+  else syncState("off");
+}
+/** Se l'indirizzo da cui arriva la pagina ha anche il server, si usa quello. */
+function syncProbe(u){
+  fetch(u + "/api/info", {cache:"no-store"})
+    .then(r=> r.ok ? r.json() : null)
+    .then(j=>{ if(j && j.ok) syncOn(u); })
+    .catch(()=>{});
+}
+
+/* ------------------------------------------------------------
+   La schermata
+   ------------------------------------------------------------ */
+function syncSheet(){
+  const passi = [T("sy_s1"), T("sy_s2"), T("sy_s3")];
+  const stato = SY.on && SY.state === "on" ? "green" : SY.on ? "amber" : "sep";
+  const body =
+    '<div class="card" style="background:var(--' + (SY.on && SY.state === "on" ? "green" : SY.on ? "amber" : "brand") + '-soft);border-color:transparent;margin-bottom:14px">' +
+      '<div class="card-b" style="padding:11px 13px">' +
+        '<b style="font-size:13.5px">' + esc(syncLabel()) + '</b>' +
+        '<div style="font-size:12.5px;color:var(--txt-2);margin-top:3px;line-height:1.55">' +
+          esc(SY.on ? (T("sy_at") + " " + SY.url) : T("sy_alone")) + '</div>' +
+      '</div></div>' +
+    '<div class="field"><label>' + esc(T("sy_addr")) + '</label>' +
+      '<input class="inp" id="sy-url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" ' +
+        'placeholder="192.168.1.7:8080" value="' + esc(SY.url || "") + '">' +
+      '<div style="font-size:12px;color:var(--txt-2);margin-top:5px;line-height:1.55">' + esc(T("sy_hint")) + '</div>' +
+    '</div>' +
+    '<div style="font-size:12px;font-weight:600;color:var(--txt-2);margin:4px 0 6px">' + esc(T("sy_how")) + '</div>' +
+    '<ol class="list">' + passi.map((t,i)=>
+      '<li class="li" style="padding-inline:0;align-items:flex-start">' +
+      '<span class="avat sm" style="background:var(--brand-soft);color:var(--brand)">' + (i+1) + '</span>' +
+      '<div class="tx"><b style="font-weight:550;white-space:normal">' + esc(t) + '</b></div></li>').join("") + '</ol>' +
+    (SY.on ? '<div class="row" style="justify-content:space-between;margin-top:11px;font-size:11.5px;color:var(--txt-2)">' +
+      '<span>' + esc(T("sy_dev")) + ' ' + esc(SY.dev) + '</span>' +
+      '<span>' + esc(T("sy_got")) + ' <b class="num">' + SY.seen + '</b></span></div>' : '');
+
+  const acts = [{label:T("c_close"), cls:"ghost"}];
+  if(SY.on) acts.push({label:T("sy_stop"), cls:"dang", run:()=>{ syncOff(); toast(T("sy_off"), "ok"); refresh(); }});
+  acts.push({label:T("sy_go"), cls:"pri", run:(w)=>{
+    const el = $("#sy-url", w);
+    const u = el ? el.value : "";
+    if(!String(u).trim()){ toast(T("sy_need"), "err"); return false; }
+    toast(T("sy_try"), "ok");
+    syncOn(u).then(ok=>{
+      toast(ok ? T("sy_done") : T("sy_ko"), ok ? "ok" : "err");
+      refresh();
+    });
+  }});
+  modal({title:T("sy_title"), size:"slim", body:body, actions:acts});
+}
+</script>
+<script>
+/* ============================================================
+   PARTE 32d — STAMPA DELLE COMANDE
+   ------------------------------------------------------------
+   La comanda non si porta piu a mano in cucina: si tocca
+   "Manda in cucina" e il foglio esce dalla stampante del reparto
+   giusto. I primi alla partita dei primi, il caffe al bar, il
+   conto alla cassa.
+
+   Le stampanti sono quelle termiche da scontrino, quelle che si
+   attaccano alla rete con un cavo. Non serve installare niente:
+   il server del locale parla direttamente con loro.
+
+   Se una stampante e spenta il lavoro non si ferma: il programma
+   lo dice e la comanda resta comunque sul monitor della cucina.
+   ============================================================ */
+let STAMPANTI = [];
+
+/** Il nome del piatto nella lingua della stampante: la cucina puo
+    leggere in italiano anche se il cameriere lavora in arabo. */
+function Tx(k, lk){ return (DICT[lk] && DICT[lk][k]) || DICT.it[k] || k; }
+function Lx(o, lk){
+  if(o == null) return "";
+  if(typeof o === "string") return o;
+  return o[lk] || o.it || o.en || Object.values(o)[0] || "";
+}
+function prOn(){ return SY.on && !!SY.url; }
+
+let PR_GIRO = 0;
+function prLoad(){
+  if(!prOn()) return Promise.resolve([]);
+  const mio = ++PR_GIRO;
+  return fetch(SY.url + "/api/stampanti", {cache:"no-store"})
+    .then(r=> r.ok ? r.json() : null)
+    .then(j=>{
+      /* se nel frattempo e partita un'altra lettura, vince quella piu recente */
+      if(mio === PR_GIRO) STAMPANTI = (j && j.stampanti) || [];
+      return STAMPANTI;
+    })
+    .catch(()=> STAMPANTI);
+}
+function prSave(list){
+  return fetch(SY.url + "/api/stampanti", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({stampanti:list})})
+    .then(r=> r.json()).then(j=>{ if(j.stampanti){ PR_GIRO++; STAMPANTI = j.stampanti; } return j; });
+}
+function prSend(doc){
+  if(!prOn()) return Promise.resolve({ok:false, err:T("pr_noserver")});
+  return fetch(SY.url + "/api/stampa", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(doc)}).then(r=> r.json()).catch(e=> ({ok:false, err:String(e.message || e)}));
+}
+function prTest(nome){
+  if(!prOn()) return Promise.resolve({ok:false, err:T("pr_noserver")});
+  return fetch(SY.url + "/api/prova", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({nome:nome})}).then(r=> r.json()).catch(e=> ({ok:false, err:String(e.message || e)}));
+}
+/** In che reparto si fa questo piatto: i primi, il caldo, il bar. */
+function repartoDi(l){
+  const it = itemById(l.itemId);
+  if(!it) return "caldo";
+  const c = catById(it.cat);
+  return it.station || (c && c.station) || "caldo";
+}
+/** Su quale stampante esce questo reparto. Si passa sempre l'elenco:
+    leggere quello generale, che intanto puo essere stato riletto dal
+    server, faceva sbagliare stampante. */
+function stampanteDelReparto(rep, lista){
+  const l = lista || STAMPANTI;
+  return l.find(p=> p.attiva && (p.reparti || []).indexOf(rep) >= 0) || null;
+}
+
+/** Le righe appena mandate, divise per la stampante che le deve stampare.
+    Primi e secondi finiscono sullo stesso foglio se la stampante e una
+    sola; il caffe se ne va al bar per conto suo. */
+function comandeDaStampare(o, righe, lista){
+  const per = {};
+  righe.forEach(l=>{
+    const rep = repartoDi(l);
+    const st = stampanteDelReparto(rep, lista);
+    const k = st ? st.nome : "?" + rep;
+    if(!per[k]) per[k] = {st:st, rep:rep, reparti:[], righe:[]};
+    if(per[k].reparti.indexOf(rep) < 0) per[k].reparti.push(rep);
+    per[k].righe.push(l);
+  });
+  return per;
+}
+
+/** Costruisce il foglio: intestazione, piatti, modifiche, ora. */
+function fogliaComanda(o, gruppo, lingua){
+  const t = o.tableId ? tableById(o.tableId) : null;
+  const chi = staffName(o.waiter);
+  const lk = lingua || "it";
+  const righe = [];
+  const perPortata = {};
+  gruppo.righe.forEach(l=> (perPortata[l.course] = perPortata[l.course] || []).push(l));
+
+  const scrivi = (l)=>{
+    const it = itemById(l.itemId);
+    righe.push({q:l.qty, t:Lx(it ? it.name : null, lk).toUpperCase(), a:true});
+    modsText(l).forEach(m=> righe.push({t:"- " + m, rientro:3}));
+    if(l.note) righe.push({t:"- " + l.note, rientro:3});
+  };
+  const piuGruppi = Object.keys(perPortata).length > 1;
+
+  COURSES.forEach(c=>{
+    const gr = perPortata[c.k];
+    if(!gr || !gr.length) return;
+    delete perPortata[c.k];
+    if(piuGruppi) righe.push({t:Tx(c.t, lk).toUpperCase(), b:true});
+    gr.forEach(scrivi);
+  });
+  /* Quello che non rientra in nessuna portata conosciuta si stampa lo stesso,
+     in fondo. Un piatto che sparisce dal foglio della cucina non si accetta. */
+  Object.keys(perPortata).forEach(k=>{
+    const gr = perPortata[k];
+    if(!gr || !gr.length) return;
+    if(piuGruppi) righe.push({t:String(k || "ALTRO").toUpperCase(), b:true});
+    gr.forEach(scrivi);
+  });
+  const ora = new Date();
+  return {
+    reparto:gruppo.rep,
+    stampante:gruppo.st ? gruppo.st.nome : null,
+    titolo:(t ? Tx("c_table", lk).toUpperCase() + " " + t.n : (o.type === "asporto" ? Tx("nav_away", lk).toUpperCase() : "BANCO")),
+    sottotitolo:(o.covers ? o.covers + " " + Tx("c_covers", lk).toLowerCase() : "") + (chi ? "  -  " + chi : ""),
+    righe:righe,
+    piede:ora.toLocaleTimeString(locale(), {hour:"2-digit", minute:"2-digit"}) +
+          (o.note ? "   " + o.note : "")
+  };
+}
+
+/** Stampa quello che si sta mandando adesso in cucina. */
+function stampaComanda(o, righe){
+  if(!prOn() || !righe.length) return Promise.resolve({fatte:0, mancate:[]});
+  return prLoad().then((lista)=>{
+    const per = comandeDaStampare(o, righe, lista);
+    const lavori = [];
+    const mancate = [];
+    Object.keys(per).forEach(k=>{
+      const g = per[k];
+      if(!g.st){ mancate.push(g.rep); return; }
+      const doc = fogliaComanda(o, g, g.st.lingua || "it");
+      doc.stampante = g.st.nome;
+      lavori.push(prSend(doc));
+    });
+    if(!lavori.length) return {fatte:0, mancate:mancate};
+    return Promise.all(lavori).then(res=>({
+      fatte:res.filter(r=> r.ok).length,
+      rotte:res.filter(r=> !r.ok).map(r=> r.err),
+      mancate:mancate
+    }));
+  });
+}
+
+/** Il conto alla cassa, con il cassetto che si apre se c'e. */
+function stampaConto(o, contanti){
+  if(!prOn()) return Promise.resolve({ok:false, err:T("pr_noserver")});
+  const b = DB.meta.biz;
+  const t = o.tableId ? tableById(o.tableId) : null;
+  const righe = [];
+  o.lines.forEach(l=>{
+    const it = itemById(l.itemId);
+    righe.push({q:l.qty, t:L(it ? it.name : "?"), dx:eur(lineTotal(l))});
+    modsText(l).forEach(m=> righe.push({t:"- " + m, rientro:3}));
+  });
+  const cov = o.type === "sala" ? (o.covers || 0) * (b.cover || 0) : 0;
+  if(cov) righe.push({t:T("o_cover"), dx:eur(cov)});
+  if(o.disc) righe.push({t:T("o_disc"), dx:"-" + eur(o.disc)});
+  righe.push({riga:true});
+  righe.push({t:T("c_total").toUpperCase(), dx:eur(orderTotal(o)), g:true});
+  if(contanti != null){
+    righe.push({t:T("o_cash"), dx:eur(contanti)});
+    righe.push({t:T("pr_change"), dx:eur(Math.max(0, contanti - orderTotal(o)))});
+  }
+  return prSend({
+    reparto:"conto", cassetto:true,
+    titolo:b.name, sottotitolo:b.addr + "  -  " + b.phone,
+    righe:[{t:(t ? T("c_table") + " " + t.n : "") + "   " +
+              new Date().toLocaleString(locale(), {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"})},
+           {riga:true}].concat(righe),
+    piede:T("pr_nofisc") + "\n" + b.vat
+  });
+}
+
+/* ------------------------------------------------------------
+   La schermata delle stampanti
+   ------------------------------------------------------------ */
+/** I reparti scritti come li chiama la gente, non con la sigla di dentro. */
+function nomiReparti(ks){
+  return (ks || []).map(k=>{ const r = REPARTI.find(x=> x.k === k); return r ? r.t : k; }).join(", ");
+}
+
+const REPARTI = [
+  {k:"primi", t:"Primi"}, {k:"caldo", t:"Caldo"}, {k:"freddo", t:"Freddo"},
+  {k:"pizza", t:"Pizza"}, {k:"pasticceria", t:"Pasticceria"},
+  {k:"bar", t:"Bar"}, {k:"conto", t:"Conto e cassa"}
+];
+
+function stampantiSheet(){
+  if(!prOn()){
+    modal({title:T("pr_title"), size:"slim",
+      body:'<div class="card" style="background:var(--amber-soft);border-color:transparent"><div class="card-b" style="padding:12px 14px">' +
+        '<b style="font-size:13px;color:var(--amber)">' + icon("warn",13) + ' ' + esc(T("pr_noserver")) + '</b>' +
+        '<p style="font-size:13px;color:var(--txt-2);margin-top:6px;line-height:1.6">' + esc(T("pr_needserver")) + '</p>' +
+        '</div></div>',
+      actions:[{label:T("c_close"), cls:"ghost"},
+               {label:T("sy_nav"), cls:"pri", run:()=>{ syncSheet(); return false; }}]});
+    return;
+  }
+  const disegna = (w)=>{
+    const body = $(".modal-b", w);
+    body.innerHTML = STAMPANTI.length ? STAMPANTI.map((p,i)=>
+      '<div class="card" style="margin-bottom:10px"><div class="card-b" style="padding:11px 13px">' +
+        '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
+          '<div style="min-width:0">' +
+            '<b style="font-size:14px">' + esc(p.nome) + '</b>' +
+            '<div class="num" style="font-size:12px;color:var(--txt-2);margin-top:2px">' +
+              esc(p.ip || "-") + ":" + (p.porta || 9100) + "  -  " + (p.colonne || 48) + ' col</div>' +
+            '<div style="font-size:11.5px;color:var(--txt-2);margin-top:3px">' +
+              esc(nomiReparti(p.reparti) || T("pr_norep")) + '</div>' +
+          '</div>' +
+          '<div class="row tight" style="flex-wrap:nowrap">' +
+            '<span class="badge ' + (p.attiva ? "g" : "n") + '">' + esc(p.attiva ? T("pr_on") : T("pr_off")) + '</span>' +
+            '<button class="btn ico sm ghost" data-ed="' + i + '" title="' + esc(T("c_edit")) + '">' + icon("edit",12) + '</button>' +
+            '<button class="btn ico sm ghost" data-pv="' + i + '" title="' + esc(T("pr_test")) + '">' + icon("print",12) + '</button>' +
+            '<button class="btn ico sm dang" data-de="' + i + '">' + icon("trash",12) + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div></div>').join("") + aiuto()
+      : '<div style="text-align:center;padding:26px 10px;color:var(--txt-2)">' + icon("print",30) +
+        '<p style="margin-top:9px;font-size:13.5px">' + esc(T("pr_none")) + '</p></div>' + aiuto();
+
+    $$("[data-ed]", w).forEach(b=> b.onclick = ()=> prEdit(Number(b.getAttribute("data-ed")), w));
+    $$("[data-de]", w).forEach(b=> b.onclick = ()=>{
+      const i = Number(b.getAttribute("data-de"));
+      confirmBox(T("pr_del") + " " + STAMPANTI[i].nome + "?", ()=>{
+        STAMPANTI.splice(i,1);
+        prSave(STAMPANTI).then(()=> disegna(w));
+      }, true);
+    });
+    $$("[data-pv]", w).forEach(b=> b.onclick = ()=>{
+      const p = STAMPANTI[Number(b.getAttribute("data-pv"))];
+      toast(T("pr_sending") + " " + p.nome, "ok");
+      prTest(p.nome).then(r=> toast(r.ok ? T("pr_sent") : (T("pr_fail") + ": " + (r.err || "")), r.ok ? "ok" : "err"));
+    });
+  };
+  const aiuto = ()=>
+    '<div class="card" style="background:var(--brand-soft);border-color:transparent">' +
+    '<div class="card-b" style="padding:11px 13px;font-size:12.5px;line-height:1.65;color:var(--txt-2)">' +
+      '<b style="color:var(--txt)">' + esc(T("pr_which")) + '</b><br>' + esc(T("pr_which_t")) +
+    '</div></div>';
+
+  const w = modal({title:T("pr_title"), size:"slim", body:"",
+    actions:[{label:T("c_close"), cls:"ghost"},
+             {label:T("pr_add"), cls:"pri", run:(w2)=>{ prEdit(-1, w2); return false; }}]});
+  prLoad().then(()=> disegna(w));
+}
+
+function prEdit(i, w){
+  const nuova = i < 0;
+  const p = nuova ? {nome:"", ip:"", porta:9100, colonne:48, reparti:[], attiva:true, cassetto:false, lingua:"it"}
+                  : Object.assign({}, STAMPANTI[i]);
+  modal({
+    title:nuova ? T("pr_add") : p.nome, size:"slim",
+    body:
+      '<div class="field"><label>' + esc(T("pr_name")) + '</label>' +
+        '<input class="inp" name="nome" value="' + esc(p.nome) + '" placeholder="Cucina"></div>' +
+      '<div class="grid g2" style="gap:10px">' +
+        '<div class="field"><label>' + esc(T("pr_ip")) + '</label>' +
+          '<input class="inp num" name="ip" inputmode="decimal" value="' + esc(p.ip) + '" placeholder="192.168.1.60"></div>' +
+        '<div class="field"><label>' + esc(T("pr_port")) + '</label>' +
+          '<input class="inp num" name="porta" inputmode="numeric" value="' + (p.porta || 9100) + '"></div>' +
+      '</div>' +
+      '<div class="grid g2" style="gap:10px">' +
+        '<div class="field"><label>' + esc(T("pr_cols")) + '</label>' +
+          '<select class="inp" name="colonne">' +
+          '<option value="48"' + (Number(p.colonne)===48?" selected":"") + '>80 mm  (48)</option>' +
+          '<option value="42"' + (Number(p.colonne)===42?" selected":"") + '>58 mm  (42)</option>' +
+          '<option value="32"' + (Number(p.colonne)===32?" selected":"") + '>58 mm stretta  (32)</option>' +
+          '</select></div>' +
+        '<div class="field"><label>' + esc(T("pr_lang")) + '</label>' +
+          '<select class="inp" name="lingua">' + LKEYS.map(lk=>
+            '<option value="' + lk + '"' + ((p.lingua||"it")===lk?" selected":"") + '>' + esc(LANGS[lk].native) + '</option>').join("") +
+          '</select></div>' +
+      '</div>' +
+      '<div class="field"><label>' + esc(T("pr_reps")) + '</label>' +
+        '<div class="row tight" style="flex-wrap:wrap">' + REPARTI.map(r=>
+          '<button type="button" class="btn sm ' + ((p.reparti||[]).indexOf(r.k)>=0 ? "pri" : "ghost") + '" data-rep="' + r.k + '">' +
+          esc(r.t) + '</button>').join("") + '</div>' +
+        '<div style="font-size:11.5px;color:var(--txt-2);margin-top:6px">' + esc(T("pr_reps_t")) + '</div></div>' +
+      '<div class="row" style="gap:14px;margin-top:4px">' +
+        '<label class="row tight" style="cursor:pointer"><input type="checkbox" name="attiva"' + (p.attiva?" checked":"") + '><span>' + esc(T("pr_use")) + '</span></label>' +
+        '<label class="row tight" style="cursor:pointer"><input type="checkbox" name="cassetto"' + (p.cassetto?" checked":"") + '><span>' + esc(T("pr_drawer")) + '</span></label>' +
+      '</div>',
+    onOpen:(w2)=>{
+      const sel = (p.reparti || []).slice();
+      $$("[data-rep]", w2).forEach(b=> b.onclick = ()=>{
+        const k = b.getAttribute("data-rep");
+        const j = sel.indexOf(k);
+        if(j >= 0) sel.splice(j,1); else sel.push(k);
+        b.className = "btn sm " + (j >= 0 ? "ghost" : "pri");
+      });
+      w2._reparti = sel;
+    },
+    actions:[
+      {label:T("c_cancel"), cls:"ghost"},
+      {label:T("c_save"), cls:"pri", run:(w2)=>{
+        const g = (n)=> ($("[name=" + n + "]", w2) || {}).value || "";
+        const c = (n)=> !!($("[name=" + n + "]", w2) || {}).checked;
+        const nome = g("nome").trim(), ip = g("ip").trim();
+        if(!nome || !ip){ toast(T("pr_needname"), "err"); return false; }
+        const nuovo = {nome:nome, ip:ip, porta:Number(g("porta")) || 9100,
+          colonne:Number(g("colonne")) || 48, lingua:g("lingua") || "it",
+          reparti:(w2._reparti || []).slice(), attiva:c("attiva"), cassetto:c("cassetto")};
+        if(nuova) STAMPANTI.push(nuovo); else STAMPANTI[i] = nuovo;
+        prSave(STAMPANTI).then(j=>{
+          toast(j.ok ? T("c_done") : T("pr_fail"), j.ok ? "ok" : "err");
+          closeModal(); stampantiSheet();
+        });
+        return false;
+      }}
+    ]
+  });
+}
 /* ============================================================
    PARTE 33 — AVVIO
    ============================================================ */
@@ -7449,6 +8373,17 @@ function normalize(d){
   });
   if(!d.mods.length) d.mods = s.mods;
   else s.mods.forEach(m=>{ if(!d.mods.some(x=> x.id === m.id)) d.mods.push(m); });
+
+  /* La colazione e una categoria sola, ma non la fa una persona sola: il
+     caffe, il cappuccino e la spremuta li fa il barista al banco, le uova e
+     lo yogurt li fa la cucina. Senza questa distinzione la comanda del caffe
+     usciva dalla stampante della cucina, dove non serve a nessuno. */
+  const AL_BANCO = ["it_cor","it_cap","it_esp","it_spr"];
+  d.items.forEach(i=>{
+    if(AL_BANCO.indexOf(i.id) >= 0) i.station = "bar";
+    const c = d.cats.find(x=> x.id === i.cat);
+    if(c && c.kind === "bar") i.station = "bar";
+  });
 
   d.items.forEach(i=>{
     if(i.size == null) i.size = "";
@@ -7501,7 +8436,11 @@ function boot(){
   $("#btn-led").onclick = startLed;
   $("#btn-install").onclick = installSheet;
   if(!isStandalone()) $("#btn-install").hidden = false;
+  $("#btn-sync").onclick = syncSheet;
+  $("#btn-print").onclick = stampantiSheet;
+  $("#sync-dot").onclick = syncSheet;
   registerSW();
+  syncInit();
   $("#btn-user").onclick = ()=>{ if(me()) signOut(); else signIn(); };
   $("#btn-lang").onclick = ()=>{
     modal({title:T("c_language"), size:"slim",
