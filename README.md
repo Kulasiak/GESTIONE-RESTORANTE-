@@ -1,4 +1,4 @@
-# Sistema di gestione ristorante
+# Bar Capri — sistema di gestione
 
 Gestionale completo per un ristorante con bar e servizio agli hotel, in **un unico
 file HTML**. Nessuna installazione, nessun server, nessuna dipendenza: si apre in
@@ -203,6 +203,42 @@ gli stessi in tutte e sei le lingue, com'è giusto.
 
 ---
 
+## Sul telefono: si installa come una app
+
+Il cameriere prende le comande dal telefono. La pagina è una **PWA**: si installa
+sulla schermata Home e si apre a schermo intero, senza barra del browser.
+
+**iPhone e iPad** — apri l'indirizzo con **Safari** (solo Safari può installare su
+iOS), tocca **Condividi** → **Aggiungi a Home**.
+
+**Android** — apri con **Chrome**, tre puntini → **Installa applicazione**. Chrome
+mostra anche da solo il suo invito.
+
+Dentro l'app c'è **Installa sul telefono** nella barra laterale, che spiega i passi
+del telefono che hai in mano.
+
+**Funziona senza linea.** Un service worker tiene la pagina in memoria: se il wifi
+della sala cade, il gestionale si apre lo stesso e continua a lavorare. Quando la
+linea torna, si aggiorna da solo.
+
+> **Una cosa importante da sapere.** Ogni dispositivo tiene i **suoi** dati. Le
+> comande scritte sul telefono di un cameriere restano su quel telefono: non
+> arrivano da sole al monitor della cucina né agli altri camerieri. Per farle
+> viaggiare fra i dispositivi serve un server, che oggi non c'è. Oggi il sistema
+> funziona bene su **un dispositivo per postazione** — il tablet in cassa, il
+> computer dell'ufficio, il telefono di chi lavora da solo.
+
+## Foto o elenco, come preferisci
+
+Quando prendi la comanda o batti alla cassa, un selettore in alto cambia come si
+vedono i prodotti:
+
+- **Foto** — piastrelle grandi con l'immagine. Per chi va a colpo d'occhio, e per chi è nuovo.
+- **Foto e nome** — piastrelle piccole, ne stanno molte di più sotto il pollice.
+- **Elenco** — righe scritte con nome, misura e prezzo. A menu imparato è la più veloce.
+
+La scelta resta quella che hai messo, e vale sia in cassa che nella comanda.
+
 ## Come si usa
 
 Apri `index.html` con un doppio clic, oppure servi la cartella:
@@ -304,7 +340,15 @@ documento commerciale del registratore telematico.
 
 ## Struttura
 
-Un solo file, `index.html`, con dentro tutto: design system, icone SVG, bandiere
+```
+index.html              il gestionale, tutto dentro un file
+manifest.webmanifest    per installarlo sul telefono
+sw.js                   fa funzionare l'app senza linea
+icon-*.png              icone dell'app
+vercel.json             configurazione per il deploy
+```
+
+Il cuore è `index.html`, con dentro tutto: design system, icone SVG, bandiere
 disegnate in SVG (si vedono uguali su ogni sistema, anche dove le emoji-bandiera
 non esistono), dizionario delle sei lingue, dati e logica. Nessun passaggio di
 compilazione.

@@ -1,0 +1,27 @@
+{
+  "name": "Bar Capri - Gestione",
+  "short_name": "Bar Capri",
+  "description": "Comande, sala, cucina, bar, magazzino e contabilita del locale.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FBF7F2",
+  "theme_color": "#B4451F",
+  "lang": "it",
+  "dir": "auto",
+  "categories": ["business", "food", "productivity"],
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Monitor cameriere", "short_name": "Comande", "url": "./index.html#terminale",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }] },
+    { "name": "Cassa", "short_name": "Cassa", "url": "./index.html#cassa",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }] },
+    { "name": "Monitor cucina", "short_name": "Cucina", "url": "./index.html#kds",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }] }
+  ]
+}
