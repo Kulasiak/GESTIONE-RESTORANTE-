@@ -412,6 +412,22 @@ righe dell'**elenco** e sullo **schermo LED** — piatto del giorno, cocktail,
 reparti e muro di immagini. Prima lo schermo LED restava vuoto finché qualcuno
 non caricava le fotografie.
 
+### Se la foto non entra
+
+Il programma adesso dice **perché**, invece di lasciarti col dubbio:
+
+| Cosa vedi | Cosa è successo | Come si risolve |
+|---|---|---|
+| *Foto in formato HEIC* | L'iPhone salva in HEIC e fuori da Safari nessun browser lo apre | iPhone: **Impostazioni → Fotocamera → Formati → Massima compatibilità**. Poi riscatta |
+| *Questo file non è una foto* | Hai scelto un PDF o un documento | Servono JPG o PNG |
+| *Foto troppo pesante da aprire* | Uno scatto in RAW, o un file enorme | Usa uno scatto normale |
+| *Non la lascia salvare* | Navigazione privata, o la pagina è dentro una cornice | La foto **si vede lo stesso** per tutta la giornata, ma chiudendo si perde. Apri il programma dal suo indirizzo, non dentro un'anteprima |
+| *Memoria piena* | Troppe foto su questo apparecchio | Esporta un backup e togli le foto vecchie |
+
+La foto viene rimpicciolita da sola a 1100 punti **sul lato lungo**, così anche
+le foto in verticale scendono di peso (una foto da telefono passa da 4 MB a
+circa 150 KB) e restano dritte.
+
 ### Quando fai le foto vere
 
 Con il telefono, senza attrezzatura: **luce di giorno da una finestra**, mai il

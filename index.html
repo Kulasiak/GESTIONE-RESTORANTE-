@@ -2408,6 +2408,7 @@ function phLoadAll(){
     cur.onerror = ()=> res(out);
   })).catch(()=> ({}));
 }
+let PH_AVVISATO = false;
 function phPut(id, dataURL){
   PHOTOS[id] = dataURL;
   return phOpen().then(d=> new Promise((res, rej)=>{
@@ -2415,7 +2416,20 @@ function phPut(id, dataURL){
     tx.objectStore(PH_STORE).put(dataURL, id);
     tx.oncomplete = ()=> res(id);
     tx.onerror = ()=> rej(tx.error);
-  })).catch(e=>{ toast("Foto non salvata: memoria piena", "err"); throw e; });
+  })).catch(e=>{
+    /* Certi browser non lasciano scrivere: navigazione privata, pagina
+       dentro una cornice, spazio finito. Prima la foto spariva e basta,
+       come se non fosse stata scelta. Adesso si vede lo stesso per tutta
+       la giornata di lavoro, e si dice chiaro che chiudendo si perde. */
+    const pieno = e && (e.name === "QuotaExceededError" || /quota/i.test(String(e.name || e.message || "")));
+    if(!PH_AVVISATO){
+      PH_AVVISATO = true;
+      toast(pieno
+        ? "Memoria piena: la foto si vede ma non resta. Esporta un backup e togli qualche foto vecchia."
+        : "La foto si vede, ma questo browser non la lascia salvare: chiudendo l'applicazione si perde.", "err");
+    }
+    return id;
+  });
 }
 function phDel(id){
   delete PHOTOS[id];
@@ -2436,27 +2450,54 @@ function phGarbage(){
 }
 
 /** Una foto da telefono pesa 4 MB: qui ne bastano 150 KB per riempire uno schermo. */
-function shrink(file, maxW, quality){
+/** Vero per i file che il telefono di Apple salva in HEIC: fuori da Safari
+    nessun browser li sa aprire, e conviene dirlo invece di far finta. */
+function isHeic(file){
+  const t = (file.type || "").toLowerCase();
+  const n = (file.name || "").toLowerCase();
+  return t.indexOf("heic") >= 0 || t.indexOf("heif") >= 0 ||
+         /\.(heic|heif)$/.test(n);
+}
+
+/** Rimpicciolisce la foto e la trasforma in JPEG.
+    Una foto di telefono e da 12 milioni di punti: cosi com'e riempirebbe la
+    memoria in quattro scatti. Si legge con un indirizzo temporaneo invece
+    che caricandola tutta in una stringa, e si mette un tempo massimo: certi
+    file non fanno partire ne il caricamento ne l'errore, e senza un limite
+    il programma resterebbe li per sempre a dire "sto preparando la foto". */
+function shrink(file, maxLato, quality){
   return new Promise((res, rej)=>{
-    const fr = new FileReader();
-    fr.onerror = ()=> rej(new Error("lettura"));
-    fr.onload = ()=>{
-      const img = new Image();
-      img.onerror = ()=> rej(new Error("immagine"));
-      img.onload = ()=>{
-        const sc = Math.min(1, (maxW || 1100) / img.width);
+    if(isHeic(file)){ rej(new Error("heic")); return; }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    let finito = false;
+    const chiudi = ()=>{ try{ URL.revokeObjectURL(url); }catch(e){} };
+    const fallisci = (motivo)=>{ if(finito) return; finito = true; chiudi(); rej(new Error(motivo)); };
+    const attesa = setTimeout(()=> fallisci("lenta"), 25000);
+
+    img.onerror = ()=>{ clearTimeout(attesa); fallisci("immagine"); };
+    img.onload = ()=>{
+      clearTimeout(attesa);
+      if(finito) return;
+      finito = true;
+      try{
+        const M = maxLato || 1100;
+        /* si guarda il lato piu lungo: le foto in verticale sono alte, non larghe */
+        const sc = Math.min(1, M / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
+        const w = Math.max(1, Math.round((img.naturalWidth || img.width) * sc));
+        const h = Math.max(1, Math.round((img.naturalHeight || img.height) * sc));
         const c = document.createElement("canvas");
-        c.width = Math.max(1, Math.round(img.width * sc));
-        c.height = Math.max(1, Math.round(img.height * sc));
+        c.width = w; c.height = h;
         const ctx = c.getContext("2d");
-        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
-        ctx.drawImage(img, 0, 0, c.width, c.height);
-        try{ res(c.toDataURL("image/jpeg", quality || 0.72)); }
-        catch(e){ rej(e); }
-      };
-      img.src = fr.result;
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        const out = c.toDataURL("image/jpeg", quality || 0.72);
+        chiudi();
+        if(!out || out.length < 200) return rej(new Error("vuota"));
+        res(out);
+      }catch(e){ chiudi(); rej(new Error("disegno")); }
     };
-    fr.readAsDataURL(file);
+    img.src = url;
   });
 }
 
@@ -2472,9 +2513,28 @@ function pickPhoto(onDone){
     inp.remove();
     if(!f) return;
     toast("Sto preparando la foto...");
+    /* due errori diversi: non riesco a leggerla, oppure non riesco a
+       salvarla. Dirlo giusto e la differenza fra sistemarla e arrendersi. */
     shrink(f, 1100, 0.72)
-      .then(url=>{ const id = uid("ph"); return phPut(id, url).then(()=> onDone(id)); })
-      .catch(()=> toast("Non riesco a leggere questa immagine", "err"));
+      .catch(e=>{ throw Object.assign(new Error(e.message), {fase:"lettura"}); })
+      .then(url=>{
+        const id = uid("ph");
+        return phPut(id, url)
+          .then(()=> onDone(id))
+          .catch(e2=>{ throw Object.assign(new Error(e2 && e2.message || "memoria"), {fase:"memoria"}); });
+      })
+      .catch(e=>{
+        const m = String(e && e.message || "");
+        if(e && e.fase === "memoria"){
+          toast("La foto non entra: memoria piena. Esporta un backup e togli qualche foto vecchia.", "err");
+        }else if(m === "heic"){
+          toast("Foto in formato HEIC. Sull'iPhone: Impostazioni, Fotocamera, Formati, Massima compatibilita.", "err");
+        }else if(m === "lenta"){
+          toast("Foto troppo pesante da aprire. Riprova con uno scatto normale, non in RAW.", "err");
+        }else{
+          toast("Questo file non e una foto che so leggere. Servono JPG o PNG.", "err");
+        }
+      });
   };
   document.body.appendChild(inp);
   inp.click();
