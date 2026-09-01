@@ -384,6 +384,41 @@ uscire dalla carta.
 **Se la stampante è spenta il lavoro non si ferma:** il programma lo dice in due
 secondi e la comanda resta comunque sul monitor della cucina.
 
+## Le immagini dei piatti
+
+Il listino senza immagini si legge male e si batte lento. Ma le foto giuste sono
+quelle **dei piatti che si cucinano qui**: quelle scaricate da internet mostrano
+roba che in cucina non esiste, e l'ospite se ne accorge. È scritto anche nella
+guida ai volantini, dentro questo stesso programma.
+
+Allora, finché la foto vera non c'è, **il piatto se lo disegna il programma**.
+Trentaquattro disegni, visti dall'alto, riconoscibili a colpo d'occhio anche
+sulla piastrella piccola del telefono: espresso, cappuccino, cornetto, spremuta,
+uova, yogurt, toast, pizza rossa e margherita, tre tipi di pasta, risotto,
+tagliata, pesce, insalata, contorni, tagliere, bruschette, burrata, dolci,
+gelato, vini bianchi rossi e bollicine, cocktail, birra, amari, acqua, lattine,
+salse.
+
+Non pesano niente, non si scaricano, funzionano senza linea e non sono di
+nessun altro: li disegna l'applicazione ogni volta, in una riga di codice.
+**Appena metti la foto vera del tuo piatto, il disegno sparisce.**
+
+Il disegno si sceglie dal nome del piatto e dalla sua categoria. Quando la
+categoria è già sicura comanda lei: dentro *Distillati* una grappa **bianca** non
+diventa un vino bianco, e un whisky s**cozz**ese non diventa un piatto di cozze.
+
+Le immagini si vedono dove servono: nella **presa comanda**, in **cassa**, nelle
+righe dell'**elenco** e sullo **schermo LED** — piatto del giorno, cocktail,
+reparti e muro di immagini. Prima lo schermo LED restava vuoto finché qualcuno
+non caricava le fotografie.
+
+### Quando fai le foto vere
+
+Con il telefono, senza attrezzatura: **luce di giorno da una finestra**, mai il
+flash; il piatto **dall'alto** o a 45 gradi; tovaglia chiara e niente in giro;
+il piatto **pieno come lo servi**, non di più. Tre minuti a piatto, e il listino
+diventa il tuo.
+
 ## Foto o elenco, come preferisci
 
 Quando prendi la comanda o batti alla cassa, un selettore in alto cambia come si

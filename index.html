@@ -521,7 +521,9 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
   display:grid;place-items:center;padding:9px;
 }
 .catile .ph-txt{font-family:var(--serif);font-size:15px;line-height:1.2;color:var(--txt-2);text-align:center}
-.catile .nm{padding:7px 9px 0;font-size:12.5px;font-weight:650;line-height:1.25}
+/* i nomi lunghi vanno a capo invece di essere tagliati: in comanda il
+   cameriere deve leggere tutto il piatto, non mezzo */
+.catile .nm{padding:7px 9px 0;font-size:12.5px;font-weight:650;line-height:1.25;overflow-wrap:break-word;hyphens:auto}
 .catile .pr{padding:1px 9px 8px;font-size:13px;font-weight:750;color:var(--brand);font-variant-numeric:tabular-nums}
 .catile.off{opacity:.4}
 .catile .so{position:absolute;top:7px;inset-inline-end:7px;background:var(--red);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:var(--r-pill)}
@@ -536,7 +538,13 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 }
 .carow:hover{background:var(--fill-3);border-color:var(--brand)}
 .carow:active{transform:scale(.99)}
-.carow .dot2{width:8px;height:8px;border-radius:50%;background:var(--fill-2);flex:none}
+/* nell'elenco il piatto si vede lo stesso, in piccolo: aiuta chi e nuovo */
+.carow .dot2{
+  width:34px;height:34px;border-radius:9px;flex:none;
+  background:var(--fill-2) center/cover no-repeat;
+  box-shadow:inset 0 0 0 1px var(--sep);
+}
+:root[data-touch="si"] .carow .dot2{width:40px;height:40px;border-radius:11px}
 .carow .nm{flex:1;min-width:0;font-size:14.5px;font-weight:600;line-height:1.3}
 .carow .nm .sz{font-weight:500;color:var(--txt-3);font-size:12.5px}
 .carow .pr{font-size:15px;font-weight:750;color:var(--brand);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -704,6 +712,11 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
   .modal.xwide .modal-b{padding:12px}
   .cagrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
   .cagrid.mini{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+  /* la modalita tocco allarga le piastrelle per il touch screen del banco,
+     ma sul telefono quella misura ci sta una volta sola: sullo schermo
+     piccolo comanda la larghezza dello schermo, non il dito */
+  :root[data-touch="si"] .cagrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px}
+  :root[data-touch="si"] .cagrid.mini{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 }
 @media (max-width:920px){
   .app{grid-template-columns:1fr}
@@ -2623,6 +2636,442 @@ function signOut(){
   });
 }
 </script>
+</script>
+<script>
+/* ============================================================
+   PARTE 4b — I DISEGNI DEI PIATTI
+   ------------------------------------------------------------
+   Un listino senza immagini si legge male e si batte lento. Ma le
+   foto vere sono quelle dei piatti che si cucinano qui: quelle
+   scaricate da internet mostrano roba che non esiste in cucina, e
+   l'ospite se ne accorge.
+
+   Allora finche la foto vera non c'e, il piatto se lo disegna il
+   programma: un disegno pulito, visto dall'alto, riconoscibile a
+   colpo d'occhio anche sulla piastrella piccola del telefono.
+   Non pesa niente, non si scarica, funziona senza linea e non e
+   di nessun altro. Appena metti la foto vera, il disegno sparisce.
+   ============================================================ */
+
+/* i colori del cibo: quelli restano quelli, chiaro o scuro che sia */
+const A = {
+  fondo1:"#F1E6D6", fondo2:"#E3D3BE", piatto:"#FBF7F1", bordo:"#E6DACA", ombra:"#00000014",
+  pomodoro:"#C4432A", sugo:"#A93A24", mozza:"#FCF8F0", basilico:"#4C7F3E", verde:"#6DA050",
+  pasta:"#EFC978", pastachiara:"#F6DCA4", crosta:"#E0B36C", crostascura:"#C9924A",
+  carne:"#A34430", carnecruda:"#C1604C", pesce:"#C3CFD6", pescescuro:"#9FB0BA",
+  caffe:"#452A18", crema:"#BC8B54", latte:"#F7EEE0", cioccolato:"#5B3620",
+  vinorosso:"#7C1F38", vinobianco:"#E9DFA6", bolle:"#F2E9BE", arancia:"#E88A22",
+  birra:"#D99B2A", schiuma:"#FBF3E2", acqua:"#CFE3EA", vetro:"#DCE8ED",
+  legno:"#C89A63", legnoscuro:"#A87A45", formaggio:"#F0D794", salume:"#C9707A",
+  cacao:"#6B4326", panna:"#FAF3E7", rosso:"#B8342E", oliva:"#5C6E38", limone:"#EBC64A"
+};
+
+/* --- pezzi che tornano in tanti disegni --- */
+const _plate = (cx,cy,r)=>
+  '<ellipse cx="'+cx+'" cy="'+(cy+r*0.06)+'" rx="'+r+'" ry="'+r*0.97+'" fill="'+A.ombra+'"/>' +
+  '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+A.piatto+'"/>' +
+  '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.80)+'" fill="none" stroke="'+A.bordo+'" stroke-width="'+(r*0.045)+'"/>';
+const _bowl = (cx,cy,r,fill)=>
+  '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+A.piatto+'"/>' +
+  '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.82)+'" fill="'+(fill||A.bordo)+'"/>';
+/** foglia di basilico o rucola, inclinata come viene */
+const _leaf = (x,y,s,rot,col)=>
+  '<path transform="translate('+x+','+y+') rotate('+rot+') scale('+s+')" fill="'+(col||A.basilico)+'" ' +
+  'd="M0 0C5 -7 14 -8 18 0 14 8 5 7 0 0Z"/>';
+/** macchie sparse ma sempre uguali: stesso piatto, stesso disegno */
+function _rand(seed){ let s = seed % 2147483647; if(s <= 0) s += 2147483646;
+  return ()=>{ s = s * 16807 % 2147483647; return (s - 1) / 2147483646; }; }
+
+/** Il nido di pasta avvolta: anelli schiacciati girati a caso attorno al
+    centro. E' cosi che si vede una forchettata dall'alto. */
+function _nest(cx,cy,r,col,seed){
+  const rnd = _rand(seed || 7);
+  let out = "";
+  for(let i=0;i<12;i++){
+    const rr = r * (0.40 + rnd() * 0.50);
+    const sc = 0.40 + rnd() * 0.40;
+    out += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rr.toFixed(1)+'" ry="'+(rr*sc).toFixed(1)+'" ' +
+      'fill="none" stroke="'+col+'" stroke-width="'+(r*0.16).toFixed(1)+'" stroke-linecap="round" ' +
+      'transform="rotate('+(rnd()*180).toFixed(0)+' '+cx+' '+cy+')"/>';
+  }
+  return out;
+}
+/** Una fetta di carne: fuori cotta, dentro rosata. */
+function _fetta(cx,cy,w,h,rot){
+  return '<g transform="rotate('+rot+' '+cx+' '+cy+')">' +
+    '<rect x="'+(cx-w/2)+'" y="'+(cy-h/2)+'" width="'+w+'" height="'+h+'" rx="'+(h/2)+'" fill="'+A.carne+'"/>' +
+    '<rect x="'+(cx-w/2+h*0.45)+'" y="'+(cy-h*0.22)+'" width="'+(w-h*0.9)+'" height="'+(h*0.44)+'" rx="'+(h*0.22)+'" fill="'+A.carnecruda+'"/>' +
+    '</g>';
+}
+
+/* ------------------------------------------------------------
+   I disegni, uno per famiglia di piatto
+   ------------------------------------------------------------ */
+const ART = {
+
+espresso: ()=> _plate(100,104,64) +
+  '<circle cx="100" cy="104" r="40" fill="#FFFFFF"/>' +
+  '<circle cx="100" cy="104" r="33" fill="'+A.caffe+'"/>' +
+  '<circle cx="100" cy="104" r="33" fill="none" stroke="'+A.crema+'" stroke-width="7" opacity=".9"/>' +
+  '<ellipse cx="93" cy="97" rx="11" ry="7" fill="'+A.crema+'" opacity=".55"/>' +
+  '<path d="M142 92c16 0 16 26 0 26" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round"/>',
+
+cappuccino: ()=> _plate(100,104,66) +
+  '<circle cx="100" cy="104" r="47" fill="#FFFFFF"/>' +
+  '<circle cx="100" cy="104" r="40" fill="'+A.latte+'"/>' +
+  '<circle cx="100" cy="104" r="40" fill="none" stroke="'+A.crema+'" stroke-width="5" opacity=".7"/>' +
+  '<path d="M100 122c-13-10-19-18-19-25 0-7 6-11 11-11 4 0 7 2 8 5 1-3 4-5 8-5 5 0 11 4 11 11 0 7-6 15-19 25Z" fill="'+A.crema+'" opacity=".85"/>' +
+  '<path d="M147 92c17 0 17 26 0 26" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round"/>',
+
+cioccolata: ()=> _plate(100,104,64) +
+  '<circle cx="100" cy="104" r="42" fill="#FFFFFF"/>' +
+  '<circle cx="100" cy="104" r="35" fill="'+A.cioccolato+'"/>' +
+  '<ellipse cx="100" cy="99" rx="20" ry="13" fill="'+A.panna+'"/>' +
+  '<circle cx="100" cy="94" r="4" fill="'+A.cacao+'" opacity=".5"/>',
+
+cornetto: ()=> _plate(100,104,68) +
+  /* la mezzaluna: pancia in basso, due corni che si assottigliano in su */
+  '<path d="M44 96c2 34 26 56 56 56s54-22 56-56c-6 20-24 36-40 26-8-5-10-16-4-24-14 8-30 8-44 0 6 8 4 19-4 24-16 10-34-6-40-26Z" ' +
+  'fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="3" stroke-linejoin="round"/>' +
+  '<path d="M72 128c8 8 18 12 28 12s20-4 28-12" fill="none" stroke="'+A.crostascura+'" stroke-width="2.5" opacity=".5"/>' +
+  '<path d="M82 114c6 6 12 9 18 9s12-3 18-9" fill="none" stroke="'+A.crostascura+'" stroke-width="2.5" opacity=".35"/>',
+
+spremuta: ()=>
+  '<path d="M74 44h52l-5 108a14 14 0 0 1-14 13H93a14 14 0 0 1-14-13Z" fill="'+A.vetro+'" opacity=".55"/>' +
+  '<path d="M77 66h46l-4 86a12 12 0 0 1-12 11H93a12 12 0 0 1-12-11Z" fill="'+A.arancia+'"/>' +
+  '<ellipse cx="100" cy="66" rx="23" ry="6" fill="#F2A03C"/>' +
+  '<path d="M126 52a24 24 0 1 1 0 30Z" fill="'+A.arancia+'"/>' +
+  '<path d="M126 52a24 24 0 1 1 0 30Z" fill="none" stroke="#FFF" stroke-width="3"/>' +
+  '<path d="M126 67h24M132 55l14 24M132 79l14-24" stroke="#FFF" stroke-width="2" opacity=".8"/>',
+
+uova: ()=> _plate(100,104,68) +
+  '<ellipse cx="86" cy="98" rx="26" ry="20" fill="#FFFFFF"/>' +
+  '<ellipse cx="118" cy="114" rx="24" ry="18" fill="#FFFFFF"/>' +
+  '<circle cx="86" cy="98" r="10" fill="#F2B22E"/>' +
+  '<circle cx="118" cy="114" r="9" fill="#F2B22E"/>' +
+  '<g transform="rotate(-10 138 76)">' +
+  '<path d="M118 62h40v22a20 20 0 0 1-40 0Z" fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="2.5"/>' +
+  '<path d="M124 68h28v14a14 14 0 0 1-28 0Z" fill="'+A.crostascura+'" opacity=".3"/></g>',
+
+yogurt: ()=> _bowl(100,104,64, A.latte) +
+  /* la granola sta da una parte, i frutti dall'altra: come la mette il barista */
+  '<path d="M100 104a48 48 0 0 1 44-30 52 52 0 0 1 0 60 48 48 0 0 1-44-30Z" fill="'+A.crosta+'" opacity=".28"/>' +
+  '<g fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="1.5">' +
+  '<rect x="108" y="82" width="13" height="9" rx="3" transform="rotate(-18 114 86)"/>' +
+  '<rect x="124" y="92" width="13" height="9" rx="3" transform="rotate(22 130 96)"/>' +
+  '<rect x="110" y="102" width="13" height="9" rx="3" transform="rotate(8 116 106)"/>' +
+  '<rect x="126" y="114" width="12" height="9" rx="3" transform="rotate(-26 132 118)"/>' +
+  '<rect x="106" y="120" width="12" height="9" rx="3" transform="rotate(34 112 124)"/></g>' +
+  '<circle cx="76" cy="94" r="8" fill="'+A.rosso+'"/><circle cx="88" cy="114" r="7" fill="'+A.rosso+'"/>' +
+  '<circle cx="70" cy="116" r="6" fill="#7A3A6E"/>' +
+  '<path d="M64 84c10-4 22-2 30 6" fill="none" stroke="'+A.limone+'" stroke-width="4" stroke-linecap="round"/>',
+
+toast: ()=> _plate(100,104,68) +
+  '<g transform="rotate(-8 92 112)">' +
+  '<path d="M48 138 88 66l40 72Z" fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="3" stroke-linejoin="round"/>' +
+  '<path d="M60 122 88 96l28 26Z" fill="'+A.formaggio+'"/>' +
+  '<path d="M64 128h48" stroke="'+A.salume+'" stroke-width="8" stroke-linecap="round"/></g>' +
+  '<g transform="rotate(14 132 116)">' +
+  '<path d="M104 146 140 82l36 64Z" fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="3" stroke-linejoin="round"/>' +
+  '<path d="M116 132 140 110l24 22Z" fill="'+A.formaggio+'"/></g>',
+
+pizza: ()=>
+  '<circle cx="100" cy="104" r="80" fill="'+A.crosta+'"/>' +
+  '<circle cx="100" cy="104" r="80" fill="none" stroke="'+A.crostascura+'" stroke-width="4"/>' +
+  '<circle cx="100" cy="104" r="66" fill="'+A.pomodoro+'"/>' +
+  '<circle cx="78" cy="84" r="14" fill="'+A.mozza+'"/><circle cx="120" cy="80" r="12" fill="'+A.mozza+'"/>' +
+  '<circle cx="128" cy="118" r="14" fill="'+A.mozza+'"/><circle cx="82" cy="126" r="13" fill="'+A.mozza+'"/>' +
+  '<circle cx="102" cy="104" r="11" fill="'+A.mozza+'"/>' +
+  _leaf(92,64,0.9,-20) + _leaf(126,140,0.9,160) + _leaf(60,110,0.8,80),
+
+pizza_rossa: ()=>
+  '<circle cx="100" cy="104" r="80" fill="'+A.crosta+'"/>' +
+  '<circle cx="100" cy="104" r="80" fill="none" stroke="'+A.crostascura+'" stroke-width="4"/>' +
+  '<circle cx="100" cy="104" r="66" fill="'+A.pomodoro+'"/>' +
+  '<circle cx="80" cy="84" r="13" fill="'+A.mozza+'"/><circle cx="122" cy="88" r="12" fill="'+A.mozza+'"/>' +
+  '<circle cx="100" cy="124" r="13" fill="'+A.mozza+'"/>' +
+  '<circle cx="76" cy="120" r="11" fill="'+A.salume+'"/><circle cx="126" cy="126" r="10" fill="'+A.salume+'"/>' +
+  '<circle cx="104" cy="74" r="10" fill="'+A.salume+'"/>',
+
+pasta_rossa: ()=> _plate(100,104,76) +
+  '<circle cx="100" cy="104" r="54" fill="'+A.sugo+'"/>' +
+  _nest(100,104,50,A.pasta,3) +
+  '<circle cx="84" cy="86" r="8" fill="'+A.pomodoro+'"/>' +
+  '<circle cx="124" cy="124" r="7" fill="'+A.pomodoro+'"/>' +
+  _leaf(112,76,0.8,-15),
+
+pasta_bianca: ()=> _plate(100,104,76) +
+  '<circle cx="100" cy="104" r="54" fill="'+A.pastachiara+'"/>' +
+  _nest(100,104,50,A.pasta,11) +
+  '<circle cx="100" cy="100" r="13" fill="#F2B22E"/>' +
+  '<circle cx="100" cy="100" r="13" fill="none" stroke="#DE9A1E" stroke-width="2"/>' +
+  '<rect x="76" y="120" width="16" height="10" rx="3" fill="'+A.salume+'" transform="rotate(-12 84 125)"/>' +
+  '<rect x="116" y="84" width="15" height="10" rx="3" fill="'+A.salume+'" transform="rotate(24 123 89)"/>',
+
+pasta_verde: ()=> _plate(100,104,76) +
+  '<circle cx="100" cy="104" r="54" fill="'+A.basilico+'"/>' +
+  /* il nido piu piccolo: il pesto deve restare visibile tutto intorno */
+  _nest(100,104,36,"#CFD98A",23) +
+  '<circle cx="74" cy="86" r="5" fill="#F3E6BE"/><circle cx="128" cy="126" r="5" fill="#F3E6BE"/>' +
+  '<circle cx="122" cy="80" r="4.5" fill="#F3E6BE"/>' +
+  _leaf(70,124,1,25) + _leaf(130,96,0.9,-160),
+
+risotto: ()=> _bowl(100,104,72, A.pastachiara) +
+  '<g fill="'+A.crosta+'" opacity=".75">' +
+  '<ellipse cx="84" cy="92" rx="6" ry="4"/><ellipse cx="104" cy="86" rx="6" ry="4"/>' +
+  '<ellipse cx="120" cy="102" rx="6" ry="4"/><ellipse cx="94" cy="112" rx="6" ry="4"/>' +
+  '<ellipse cx="112" cy="124" rx="6" ry="4"/><ellipse cx="78" cy="116" rx="6" ry="4"/></g>' +
+  '<path d="M96 68c14 0 22 8 22 16 0 6-6 10-14 10s-14-4-14-10c0-8 0-16 6-16Z" fill="'+A.crostascura+'"/>' +
+  '<rect x="100" y="90" width="8" height="16" rx="3" fill="'+A.crosta+'"/>',
+
+carne: ()=> _plate(100,104,76) +
+  _fetta(86,124,74,19,-26) + _fetta(94,116,78,19,-18) +
+  _fetta(102,108,80,19,-10) + _fetta(110,100,78,19,-2) +
+  _fetta(118,92,72,19,6) +
+  _leaf(62,80,1.1,-40,A.verde) + _leaf(78,66,1,-10,A.verde) +
+  _leaf(100,58,0.95,25,A.verde) + _leaf(126,64,0.9,55,A.verde),
+
+pesce: ()=> _plate(100,104,76) +
+  '<path d="M52 104c18-26 62-30 84-12 8 7 8 17 0 24-22 18-66 14-84-12Z" fill="'+A.pesce+'"/>' +
+  '<path d="M136 92c10-8 22-12 22-12s-4 14-4 24 4 24 4 24-12-4-22-12Z" fill="'+A.pescescuro+'"/>' +
+  '<circle cx="70" cy="100" r="5" fill="#3C4A52"/>' +
+  '<path d="M84 92c10 6 22 8 34 6M84 116c10-6 22-8 34-6" fill="none" stroke="'+A.pescescuro+'" stroke-width="3" opacity=".7"/>' +
+  '<circle cx="60" cy="140" r="10" fill="'+A.limone+'"/><path d="M60 130v20M50 140h20" stroke="#FFF" stroke-width="2"/>' +
+  _leaf(126,142,0.8,150,A.verde),
+
+insalata: ()=> _bowl(100,104,72, "#EFF4E6") +
+  _leaf(74,88,1.5,-30) + _leaf(112,80,1.4,20,A.verde) + _leaf(80,124,1.4,40) +
+  _leaf(122,120,1.3,150,A.verde) + _leaf(96,100,1.5,-100,A.verde) +
+  '<circle cx="90" cy="112" r="8" fill="'+A.pomodoro+'"/><circle cx="118" cy="98" r="7" fill="'+A.pomodoro+'"/>' +
+  '<ellipse cx="106" cy="126" rx="6" ry="8" fill="'+A.oliva+'"/>',
+
+contorno: ()=> _bowl(100,104,68, A.pastachiara) +
+  '<g fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="2">' +
+  '<rect x="72" y="82" width="30" height="18" rx="6" transform="rotate(-16 87 91)"/>' +
+  '<rect x="104" y="88" width="30" height="18" rx="6" transform="rotate(14 119 97)"/>' +
+  '<rect x="78" y="110" width="30" height="18" rx="6" transform="rotate(8 93 119)"/>' +
+  '<rect x="108" y="116" width="26" height="17" rx="6" transform="rotate(-20 121 124)"/></g>' +
+  _leaf(100,74,0.7,-10,A.verde),
+
+tagliere: ()=>
+  '<rect x="26" y="46" width="148" height="116" rx="12" fill="'+A.legno+'"/>' +
+  '<rect x="26" y="46" width="148" height="116" rx="12" fill="none" stroke="'+A.legnoscuro+'" stroke-width="4"/>' +
+  '<path d="M40 62v88M56 62v88" stroke="'+A.legnoscuro+'" stroke-width="2" opacity=".35"/>' +
+  '<circle cx="82" cy="82" r="18" fill="'+A.salume+'"/><circle cx="82" cy="82" r="18" fill="none" stroke="#FFF" stroke-width="3"/>' +
+  '<circle cx="120" cy="90" r="16" fill="'+A.salume+'" opacity=".85"/>' +
+  '<path d="M96 118 132 112l6 30-40 6Z" fill="'+A.formaggio+'"/>' +
+  '<path d="M64 116l24 6-6 26-24-8Z" fill="'+A.formaggio+'" opacity=".9"/>' +
+  '<circle cx="148" cy="70" r="7" fill="'+A.oliva+'"/><circle cx="150" cy="140" r="7" fill="'+A.oliva+'"/>',
+
+bruschetta: ()=> _plate(100,104,74) +
+  '<g transform="rotate(-12 84 112)">' +
+  '<rect x="48" y="96" width="76" height="30" rx="13" fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="3"/>' +
+  '<circle cx="66" cy="108" r="7" fill="'+A.pomodoro+'"/><circle cx="82" cy="112" r="6" fill="'+A.pomodoro+'"/>' +
+  '<circle cx="98" cy="106" r="7" fill="'+A.pomodoro+'"/><circle cx="112" cy="112" r="6" fill="'+A.pomodoro+'"/></g>' +
+  '<g transform="rotate(14 122 82)">' +
+  '<rect x="86" y="68" width="74" height="29" rx="13" fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="3"/>' +
+  '<circle cx="104" cy="80" r="7" fill="'+A.pomodoro+'"/><circle cx="120" cy="84" r="6" fill="'+A.pomodoro+'"/>' +
+  '<circle cx="136" cy="78" r="7" fill="'+A.pomodoro+'"/></g>' +
+  _leaf(72,138,0.9,20) + _leaf(146,100,0.8,-150),
+
+caprese: ()=> _plate(100,104,74) +
+  '<circle cx="98" cy="98" r="30" fill="'+A.mozza+'" stroke="'+A.bordo+'" stroke-width="2.5"/>' +
+  '<ellipse cx="90" cy="90" rx="11" ry="8" fill="#FFFFFF" opacity=".8"/>' +
+  '<circle cx="62" cy="120" r="13" fill="'+A.pomodoro+'"/><circle cx="62" cy="120" r="6" fill="#D9614A"/>' +
+  '<circle cx="92" cy="140" r="12" fill="'+A.pomodoro+'"/><circle cx="92" cy="140" r="5.5" fill="#D9614A"/>' +
+  '<circle cx="132" cy="128" r="12" fill="'+A.pomodoro+'"/><circle cx="132" cy="128" r="5.5" fill="#D9614A"/>' +
+  _leaf(126,74,1.1,-25) + _leaf(66,80,1,-120),
+
+dolce: ()=> _plate(100,104,72) +
+  '<rect x="58" y="70" width="84" height="68" rx="7" fill="'+A.panna+'"/>' +
+  '<rect x="58" y="70" width="84" height="16" rx="7" fill="'+A.cacao+'"/>' +
+  '<rect x="58" y="98" width="84" height="12" fill="'+A.crosta+'" opacity=".8"/>' +
+  '<rect x="58" y="70" width="84" height="68" rx="7" fill="none" stroke="'+A.crostascura+'" stroke-width="2.5"/>' +
+  '<circle cx="76" cy="78" r="3" fill="'+A.cacao+'" opacity=".7"/><circle cx="120" cy="76" r="2.5" fill="'+A.cacao+'" opacity=".7"/>',
+
+gelato: ()=> _plate(100,104,70) +
+  '<circle cx="84" cy="94" r="24" fill="'+A.panna+'"/>' +
+  '<circle cx="118" cy="100" r="22" fill="'+A.rosso+'"/>' +
+  '<circle cx="100" cy="126" r="21" fill="'+A.cacao+'"/>' +
+  '<path d="M136 66l14-10-4 18Z" fill="'+A.crosta+'"/>',
+
+vino_rosso: ()=>
+  '<path d="M70 40h60c0 34-8 46-22 52v46h14v10H78v-10h14v-46c-14-6-22-18-22-52Z" fill="'+A.vetro+'" opacity=".6"/>' +
+  '<path d="M74 60h52c-2 22-10 30-20 34h-12c-10-4-18-12-20-34Z" fill="'+A.vinorosso+'"/>' +
+  '<ellipse cx="100" cy="61" rx="26" ry="5" fill="#93304A"/>' +
+  '<rect x="70" y="146" width="60" height="7" rx="3" fill="'+A.vetro+'"/>',
+
+vino_bianco: ()=>
+  '<path d="M72 40h56c0 32-8 44-20 50v48h13v10H79v-10h13V90c-12-6-20-18-20-50Z" fill="'+A.vetro+'" opacity=".6"/>' +
+  '<path d="M76 62h48c-2 20-9 28-18 32h-12c-9-4-16-12-18-32Z" fill="'+A.vinobianco+'"/>' +
+  '<ellipse cx="100" cy="63" rx="24" ry="5" fill="#D9CE8E"/>' +
+  '<rect x="72" y="146" width="56" height="7" rx="3" fill="'+A.vetro+'"/>',
+
+bollicine: ()=>
+  '<path d="M84 34h32l-4 78c0 8-4 12-12 12s-12-4-12-12Z" fill="'+A.vetro+'" opacity=".6"/>' +
+  '<path d="M86 54h28l-3 58c0 6-3 9-11 9s-11-3-11-9Z" fill="'+A.bolle+'"/>' +
+  '<g fill="#FFF" opacity=".85"><circle cx="96" cy="96" r="3"/><circle cx="106" cy="84" r="2.4"/>' +
+  '<circle cx="99" cy="72" r="2"/><circle cx="105" cy="106" r="2.2"/></g>' +
+  '<rect x="96" y="124" width="8" height="24" fill="'+A.vetro+'"/>' +
+  '<rect x="74" y="148" width="52" height="7" rx="3" fill="'+A.vetro+'"/>',
+
+cocktail: ()=>
+  '<path d="M50 46h100l-46 56v44h20v8H76v-8h20v-44Z" fill="'+A.vetro+'" opacity=".6"/>' +
+  '<path d="M64 56h72l-33 40h-6Z" fill="'+A.arancia+'"/>' +
+  '<circle cx="140" cy="52" r="13" fill="'+A.arancia+'"/><path d="M140 39v26M127 52h26" stroke="#FFF" stroke-width="2"/>' +
+  '<rect x="118" y="30" width="4" height="52" rx="2" fill="'+A.oliva+'" transform="rotate(16 120 56)"/>' +
+  '<rect x="70" y="152" width="60" height="7" rx="3" fill="'+A.vetro+'"/>',
+
+birra: ()=>
+  '<path d="M64 48h72v104a10 10 0 0 1-10 10H74a10 10 0 0 1-10-10Z" fill="'+A.vetro+'" opacity=".55"/>' +
+  '<path d="M68 72h64v80a8 8 0 0 1-8 8H76a8 8 0 0 1-8-8Z" fill="'+A.birra+'"/>' +
+  '<path d="M66 46c8-8 20-6 26 0 6-8 20-8 26 0 6-6 16-4 18 4v22H66Z" fill="'+A.schiuma+'"/>' +
+  '<g fill="#FFF" opacity=".5"><circle cx="84" cy="112" r="4"/><circle cx="104" cy="96" r="3"/>' +
+  '<circle cx="118" cy="124" r="3.5"/><circle cx="92" cy="138" r="3"/></g>' +
+  '<path d="M136 84h16a14 14 0 0 1 0 28h-16" fill="none" stroke="'+A.vetro+'" stroke-width="9"/>',
+
+lattina: ()=>
+  '<rect x="72" y="42" width="56" height="120" rx="14" fill="'+A.rosso+'"/>' +
+  '<rect x="72" y="42" width="56" height="120" rx="14" fill="none" stroke="#8E241F" stroke-width="3"/>' +
+  '<ellipse cx="100" cy="46" rx="27" ry="7" fill="#D8D2CB"/>' +
+  '<ellipse cx="100" cy="46" rx="10" ry="3.5" fill="#B3ACA4"/>' +
+  '<rect x="78" y="88" width="44" height="26" rx="4" fill="#FFFFFF" opacity=".92"/>' +
+  '<rect x="78" y="128" width="44" height="8" rx="4" fill="#FFFFFF" opacity=".55"/>',
+
+acqua: ()=>
+  '<path d="M88 26h24v22l12 20v104a10 10 0 0 1-10 10H86a10 10 0 0 1-10-10V68l12-20Z" fill="'+A.acqua+'" opacity=".75"/>' +
+  '<rect x="86" y="18" width="28" height="12" rx="3" fill="'+A.pescescuro+'"/>' +
+  '<rect x="80" y="96" width="40" height="34" rx="4" fill="#FFF" opacity=".85"/>' +
+  '<path d="M100 104c6 8 9 12 9 16a9 9 0 0 1-18 0c0-4 3-8 9-16Z" fill="'+A.acqua+'"/>',
+
+caffe_altro: ()=> _plate(100,104,64) +
+  '<circle cx="100" cy="104" r="42" fill="#FFFFFF"/>' +
+  '<circle cx="100" cy="104" r="35" fill="'+A.caffe+'" opacity=".85"/>' +
+  '<path d="M144 92c16 0 16 26 0 26" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round"/>',
+
+salsa: ()=>
+  '<rect x="72" y="52" width="56" height="104" rx="12" fill="'+A.vetro+'" opacity=".5"/>' +
+  '<rect x="78" y="76" width="44" height="74" rx="8" fill="'+A.basilico+'"/>' +
+  '<rect x="76" y="38" width="48" height="18" rx="5" fill="'+A.legnoscuro+'"/>' +
+  '<rect x="80" y="92" width="40" height="24" rx="3" fill="#FFF" opacity=".9"/>',
+
+amaro: ()=>
+  '<path d="M84 30h32v34l16 26v66a10 10 0 0 1-10 10H78a10 10 0 0 1-10-10V90l16-26Z" fill="'+A.vetro+'" opacity=".5"/>' +
+  '<path d="M70 104h60v52a8 8 0 0 1-8 8H78a8 8 0 0 1-8-8Z" fill="'+A.cacao+'"/>' +
+  '<rect x="82" y="22" width="36" height="12" rx="3" fill="'+A.legnoscuro+'"/>' +
+  '<rect x="76" y="112" width="48" height="26" rx="3" fill="'+A.formaggio+'" opacity=".9"/>',
+
+banco: ()=>
+  '<rect x="26" y="58" width="148" height="94" rx="10" fill="'+A.piatto+'"/>' +
+  '<rect x="26" y="58" width="148" height="94" rx="10" fill="none" stroke="'+A.bordo+'" stroke-width="4"/>' +
+  '<rect x="38" y="72" width="58" height="30" rx="6" fill="'+A.pomodoro+'"/>' +
+  '<rect x="104" y="72" width="58" height="30" rx="6" fill="'+A.formaggio+'"/>' +
+  '<rect x="38" y="110" width="58" height="30" rx="6" fill="'+A.verde+'"/>' +
+  '<rect x="104" y="110" width="58" height="30" rx="6" fill="'+A.crosta+'"/>',
+
+piatto: ()=> _plate(100,104,74) +
+  '<path d="M76 74v60M76 74c-5 0-8 4-8 10s3 10 8 10M124 74v60M124 74c5 0 8 4 8 10s-3 10-8 10" ' +
+  'fill="none" stroke="'+A.bordo+'" stroke-width="5" stroke-linecap="round"/>'
+};
+
+/* ------------------------------------------------------------
+   Che disegno tocca a questo piatto
+   Prima si guarda il nome, che dice piu della categoria: dentro
+   "Primi piatti" ci sono la carbonara e il pesto, e non si
+   somigliano per niente.
+   ------------------------------------------------------------ */
+const ART_PAROLE = [
+  [/cappuccin|latte macchiat|marocchin/i, "cappuccino"],
+  [/cioccolat.*cald|cald.*cioccolat/i,    "cioccolata"],
+  [/espress|caff|ristrett|american(?!o\b.*cocktail)/i, "espresso"],
+  [/cornett|croissant|brioche|pain au|maritozz|sfogliat/i, "cornetto"],
+  [/spremut|succ|juice/i,                 "spremuta"],
+  [/uov|omelet|frittat|strapazz/i,        "uova"],
+  [/yogurt|granol|muesl/i,                "yogurt"],
+  [/toast|tramezzin|panin|piadin|croque/i,"toast"],
+  [/pizz.*margherit|margherit/i,          "pizza"],
+  [/pizz|focacc|calzon/i,                 "pizza_rossa"],
+  [/tiramis|panna cott|cannol|torta|semifredd|profiterol|cheesecake|budin|crostat/i, "dolce"],
+  [/gelat|sorbett|coppa/i,                "gelato"],
+  [/carbonar|cacio|alfred|quattro formagg|panna(?! cott)/i, "pasta_bianca"],
+  [/pest|genoves|verde/i,                 "pasta_verde"],
+  [/amatricia|arrabbiat|ragu|rag(u|ù)|bolognes|pomodor.*past|spaghett|bucatin|linguin|penn|maccheron|lasagn|cannellon|tagliatell|paccher|fusill|pasta/i, "pasta_rossa"],
+  [/risott|riso\b/i,                      "risotto"],
+  [/gnocch/i,                             "pasta_verde"],
+  [/tagliat.*manz|bistecc|filett|entrec|costat|tomahawk|manzo|vitell|cotolett|scaloppin|pollo|arrost|polpett|salsicc|agnell|maial/i, "carne"],
+  [/branzin|orat|pesc|salmon|tonn|polp|calamar|gamber|cozz|vongol|scogli|frutti di mare|baccal/i, "pesce"],
+  [/insalat|misticanz|caprese|rucol/i,    "insalata"],
+  [/patat|verdur|contorn|spinac|fagiolin|grigliat/i, "contorno"],
+  [/bruschett|crostin|crostone/i,          "bruschetta"],
+  [/burrat|mozzarell|caprese|stracciatell|scamorz/i, "caprese"],
+  [/taglier|salum|prosciutt|mortadell|bresaol|formagg|pecorin|antipast/i, "tagliere"],
+  [/tiramis|panna cott|cannol|torta|dolc|dessert|semifredd|profiterol|cheesecake/i, "dolce"],
+  [/gelat|sorbett|coppa/i,                "gelato"],
+  [/spritz|negroni|mojito|cocktail|margarit(a)?\b.*cocktail|daiquir|martini|gin tonic|aperol|campari|vermouth|aperitiv/i, "cocktail"],
+  [/prosecc|franciacort|champagne|cava|spumant|bollicin/i, "bollicine"],
+  [/bianc|vermentin|pigat|gavi|soave|sauvignon|chardonn|cinque terre|bianchett/i, "vino_bianco"],
+  [/ross|chianti|barber|montepulcian|nero d|malbec|rioja|rossese|ormeasc|barol|amaron|vino/i, "vino_rosso"],
+  [/birr|beer|lager|ipa|stout|weiss|pilsner|blanche|trappist|ambrat/i, "birra"],
+  [/lattin|bibit|cola\b|aranciat|limonat|chinott|gazzos|the freddo|te freddo/i, "lattina"],
+  [/acqu|water/i,                         "acqua"],
+  [/amar|grapp|limoncell|sambuc|mirt|whisk|gin\b|rum\b|vodka|tequil|cognac|brandy|malt|digestiv|distillat/i, "amaro"],
+  [/salsa|maiones|ketch|senap|pest.*vasett|oli(o|va)|acet|condiment|dressing/i, "salsa"]
+];
+const ART_CAT = {
+  cat_col:"cornetto", cat_ant:"tagliere", cat_pri:"pasta_rossa", cat_sec:"carne",
+  cat_con:"contorno", cat_piz:"pizza", cat_dol:"dolce", cat_bev:"acqua",
+  cat_vin:"vino_rosso", cat_coc:"cocktail",
+  cat_gteg:"pasta_rossa", cat_gsec:"carne", cat_gban:"tagliere", cat_sals:"salsa",
+  cat_aper:"cocktail", cat_vbia:"vino_bianco", cat_vros:"vino_rosso", cat_vbol:"bollicine",
+  cat_birn:"birra", cat_bire:"birra", cat_amar:"amaro", cat_dist:"amaro", cat_acq:"acqua"
+};
+
+/* Categorie che decidono da sole. Dentro "Distillati" una grappa BIANCA
+   non e un vino bianco, e un whisky sCOZZese non e una cozza: se la
+   categoria dice gia di che famiglia si tratta, il nome non la smentisce. */
+const ART_CAT_FORTE = {
+  cat_sals:"salsa", cat_acq:"acqua", cat_amar:"amaro", cat_dist:"amaro",
+  cat_birn:"birra", cat_bire:"birra", cat_vbia:"vino_bianco", cat_vros:"vino_rosso",
+  cat_vbol:"bollicine", cat_coc:"cocktail", cat_aper:"cocktail", cat_piz:"pizza_rossa"
+};
+
+/** Il disegno giusto per questo articolo. */
+function artKind(it){
+  if(!it) return "piatto";
+  const n = (L(it.name) + " " + (it.name && it.name.it || "") + " " + (it.size || "")).toLowerCase();
+  const forte = ART_CAT_FORTE[it.cat];
+  if(forte){
+    /* dentro la famiglia si distingue solo quel che vale la pena distinguere */
+    if(it.cat === "cat_piz") return /margherit/i.test(n) ? "pizza" : "pizza_rossa";
+    if(it.cat === "cat_coc" || it.cat === "cat_aper") return "cocktail";
+    return forte;
+  }
+  for(let i=0;i<ART_PAROLE.length;i++){ if(ART_PAROLE[i][0].test(n)) return ART_PAROLE[i][1]; }
+  return ART_CAT[it.cat] || "piatto";
+}
+
+/** Il disegno pronto da mettere come sfondo, gia infilato in un indirizzo. */
+const ART_CACHE = {};
+function artURL(it){
+  const k = artKind(it);
+  if(ART_CACHE[k]) return ART_CACHE[k];
+  const dis = (ART[k] || ART.piatto)();
+  const svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="' + A.fondo1 + '"/><stop offset="1" stop-color="' + A.fondo2 + '"/>' +
+    '</linearGradient></defs>' +
+    '<rect width="200" height="200" fill="url(#g)"/>' + dis + '</svg>';
+  /* apici singoli: l'indirizzo finisce dentro style="...", e le virgolette
+     doppie chiuderebbero l'attributo a meta lasciando la piastrella vuota */
+  return (ART_CACHE[k] = "url('data:image/svg+xml," + encodeURIComponent(svg).replace(/'/g, "%27") + "')");
+}
+/** La foto vera se c'e, altrimenti il disegno. */
+function fotoOArte(it){
+  const u = photoURL(it && it.photo);
+  return u ? "url('" + u + "')" : artURL(it);
+}
+</script>
 <script>
 /* ============================================================
    PARTE 7 — NAVIGAZIONE E ROUTER
@@ -3241,13 +3690,12 @@ function renderPicker(root, onPick){
       const u = mode !== "elenco" ? photoURL(i.photo) : null;
       if(mode === "elenco")
         return '<button class="carow' + (i.available ? "" : " off") + '" data-pi="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
-          '<span class="dot2"></span><span class="nm">' + esc(L(i.name)) +
+          '<span class="dot2" style="background-image:' + fotoOArte(i) + '"></span><span class="nm">' + esc(L(i.name)) +
           (i.size ? ' <span class="sz">' + esc(i.size) + '</span>' : '') + '</span>' +
           '<span class="pr">' + eur(i.price) + '</span>' +
           (i.available ? '' : '<span class="badge r" style="font-size:9.5px">' + esc(T("k_sold")) + '</span>') + '</button>';
       return '<button class="catile' + (i.available ? "" : " off") + '" data-pi="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
-        '<span class="im"' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' +
-          (u ? '' : '<span class="ph-txt">' + esc(L(i.name)) + '</span>') + '</span>' +
+        '<span class="im" style="background-image:' + fotoOArte(i) + '"></span>' +
         '<span class="nm">' + esc(L(i.name)) + '</span>' +
         '<span class="pr">' + eur(i.price) + (i.size ? ' <span style="color:var(--txt-3);font-weight:600">' + esc(i.size) + '</span>' : '') + '</span>' +
         (i.available ? '' : '<span class="so">' + esc(T("k_sold")) + '</span>') + '</button>';
@@ -6185,15 +6633,15 @@ VIEWS.cassa = function(){
     const n = sum(CASSA.lines.filter(l=> l.itemId === i.id).map(l=> l.qty));
     if(mode === "elenco"){
       return '<button class="carow' + (i.available ? "" : " off") + '" data-cai="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
-        (n ? '<span class="qb">' + n + '</span>' : '<span class="dot2"></span>') +
+        (n ? '<span class="qb">' + n + '</span>'
+           : '<span class="dot2" style="background-image:' + fotoOArte(i) + '"></span>') +
         '<span class="nm">' + esc(L(i.name)) + (i.size ? ' <span class="sz">' + esc(i.size) + '</span>' : '') + '</span>' +
         '<span class="pr">' + eur(i.price) + '</span>' +
         (i.available ? '' : '<span class="badge r" style="font-size:9.5px">' + esc(T("k_sold")) + '</span>') +
       '</button>';
     }
     return '<button class="catile' + (i.available ? "" : " off") + '" data-cai="' + i.id + '"' + (i.available ? "" : " disabled") + '>' +
-      '<span class="im"' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' +
-        (u ? '' : '<span class="ph-txt">' + esc(L(i.name)) + '</span>') + '</span>' +
+      '<span class="im" style="background-image:' + fotoOArte(i) + '"></span>' +
       '<span class="nm">' + esc(L(i.name)) + '</span>' +
       '<span class="pr">' + eur(i.price) + (i.size ? ' <span style="color:var(--txt-3);font-weight:600">' + esc(i.size) + '</span>' : '') + '</span>' +
       (i.available ? '' : '<span class="so">' + esc(T("k_sold")) + '</span>') +
@@ -6720,9 +7168,11 @@ function ledTextSheet(id){
 <script>
 /* --- riproduzione a tutto schermo --- */
 function inArea(k){ return DB.items.filter(i=>{ const c = catById(i.cat); return c && c.area === k; }); }
-/** Vero se questa schermata ha davvero una foto da mostrare. */
+/** Vero se questa schermata mostra un'immagine: la foto vera se c'e,
+    altrimenti il disegno del piatto. Prima lo schermo restava vuoto
+    finche qualcuno non caricava le fotografie. */
 function slideHasPhoto(s){
-  const any = (arr)=> arr.some(i=> i && photoURL(i.photo));
+  const any = (arr)=> arr.some(i=> i && i.id);
   if(s.type === "wall")     return any(DB.items.filter(i=> !s.area || (catById(i.cat)||{}).area === s.area));
   if(s.type === "special")  return any(specials());
   if(s.type === "slogan"){ const sl = todaySlogan() || DB.slogans[0]; return !!(sl && photoURL(sl.photo)) || any(specials()); }
@@ -6750,22 +7200,25 @@ function ledContent(s, lk){
   const H = (t)=> '<div class="led-t">' + esc(t) + '</div>';
   const S = (t)=> t ? '<div class="led-s">' + esc(t) + '</div>' : "";
   const pick = (a)=> a.length ? a[Math.floor(Math.random()*a.length)] : null;
-  const withPhoto = (a)=> a.filter(x=> photoURL(x.photo));
+  /* prima i piatti fotografati davvero, poi gli altri col loro disegno */
+  const withPhoto = (a)=> { const f = a.filter(x=> photoURL(x.photo)); return f.length ? f : a; };
+  const sfondo = (it)=> it ? fotoOArte(it) : null;
 
   if(s.type === "welcome"){
     out = K(L(b.tagline)) + H(b.name) + S(b.openLunch + "  /  " + b.openDinner);
-    bg = (pick(withPhoto(DB.items.filter(i=> i.available))) || {}).photo || null;
+    bg = sfondo(pick(withPhoto(DB.items.filter(i=> i.available))));
   }else if(s.type === "slogan"){
     const sl = todaySlogan() || DB.slogans[0];
     /* la foto dello slogan, se c'e; altrimenti un piatto del giorno fotografato */
-    bg = (sl && photoURL(sl.photo)) ? sl.photo : (pick(withPhoto(specials())) || {}).photo || null;
+    bg = (sl && photoURL(sl.photo)) ? "url('" + photoURL(sl.photo) + "')"
+                                     : sfondo(pick(withPhoto(specials())));
     out = K(T("nav_slogan")) + H(sl ? L(sl.text) : b.name);
   }else if(s.type === "special"){
     const sp = specials();
     const hero = pick(withPhoto(sp));
     if(hero){
       /* a ogni giro tocca a un piatto diverso, cosi lo schermo non si ripete */
-      out = '<div class="led-hero"><span class="ph" style="background-image:url(' + photoURL(hero.photo) + ')"></span>' +
+      out = '<div class="led-hero"><span class="ph" style="background-image:' + fotoOArte(hero) + '"></span>' +
         '<div class="tx">' + K(T("m_special")) + H(L(hero.name)) + S(L(hero.desc)) +
         '<div class="led-p">' + eur(hero.price) + '</div></div></div>';
     }else{
@@ -6777,8 +7230,8 @@ function ledContent(s, lk){
     const cks = DB.cocktails.filter(c=> itemById(c.itemId));
     const c = pick(cks);
     const i = c ? itemById(c.itemId) : null;
-    if(i && photoURL(i.photo)){
-      out = '<div class="led-hero"><span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' +
+    if(i){
+      out = '<div class="led-hero"><span class="ph" style="background-image:' + fotoOArte(i) + '"></span>' +
         '<div class="tx">' + K(T("nav_cocktail")) + H(L(i.name)) + S(c.build.join("  -  ")) +
         '<div class="led-p">' + eur(i.price) + '</div></div></div>';
     }else{
@@ -6789,15 +7242,26 @@ function ledContent(s, lk){
       fr:"Tous les jours au comptoir et en terrasse", es:"Todos los dias en la barra y la terraza",
       de:"Jeden Tag an der Bar und auf der Terrasse", ar:"كل يوم عند البار وعلى التراس"}[lk]);
     const cks = DB.cocktails.map(c=> itemById(c.itemId)).filter(Boolean);
-    bg = (pick(withPhoto(cks)) || {}).photo || null;
+    bg = sfondo(pick(withPhoto(cks)));
   }else if(s.type === "menu"){
     const cat = catById(s.catId) || DB.cats[1];
     const items = DB.items.filter(i=> i.cat === cat.id && i.available).slice(0,6);
     out = K(L(cat.name)) + '<ul class="led-list">' + items.map(i=>
-      '<li>' + (photoURL(i.photo) ? '<span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
+      '<li><span class="ph" style="background-image:' + fotoOArte(i) + '"></span>' +
       '<b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
   }else if(s.type === "wall"){
-    const pool = DB.items.filter(i=> i.available && photoURL(i.photo) && (!s.area || (catById(i.cat)||{}).area === s.area));
+    /* Prima i piatti fotografati davvero. Per riempire il muro si aggiungono
+       gli altri col loro disegno, uno per tipo, cosi non escono otto piastrelle
+       uguali sullo schermo. */
+    const zona = DB.items.filter(i=> i.available && (!s.area || (catById(i.cat)||{}).area === s.area));
+    const pool = zona.filter(i=> photoURL(i.photo));
+    const visti = {};
+    zona.forEach(i=>{
+      if(photoURL(i.photo)) return;
+      const k = artKind(i);
+      if(visti[k]) return;
+      visti[k] = 1; pool.push(i);
+    });
     /* si prendono 8, 6, 4, 3, 2 o 1 foto: numeri che riempiono la griglia
        senza lasciare buchi in fondo */
     const GRID = {8:[4,2], 6:[3,2], 4:[2,2], 3:[3,1], 2:[2,1], 1:[1,1]};
@@ -6805,21 +7269,20 @@ function ledContent(s, lk){
     const shuffled = pool.slice().sort(()=> Math.random() - 0.5).slice(0, n);
     const [cols, rows] = GRID[n] || [1,1];
     out = '<div class="led-wall" style="grid-template-columns:repeat(' + cols + ',1fr);grid-template-rows:repeat(' + rows + ',1fr)">' +
-      shuffled.map(i=> '<span class="w" style="background-image:url(' + photoURL(i.photo) + ')">' +
+      shuffled.map(i=> '<span class="w" style="background-image:' + fotoOArte(i) + '">' +
         '<em><b>' + esc(L(i.name)) + '</b><i>' + eur(i.price) + '</i></em></span>').join("") + '</div>';
   }else if(s.type === "area"){
     const a = AREAS.find(x=> x.k === s.area) || AREAS[0];
     const its = inArea(a.k).filter(i=> i.available).slice(0, 6);
     out = K(T(a.t)) + '<ul class="led-list">' + its.map(i=>
-      '<li>' + (photoURL(i.photo) ? '<span class="ph" style="background-image:url(' + photoURL(i.photo) + ')"></span>' : '') +
+      '<li><span class="ph" style="background-image:' + fotoOArte(i) + '"></span>' +
       '<b>' + esc(L(i.name)) + '</b><i></i><span>' + eur(i.price) + '</span></li>').join("") + '</ul>';
-    const conFoto = inArea(a.k).filter(i=> photoURL(i.photo));
-    bg = conFoto.length ? conFoto[Math.floor(Math.random()*conFoto.length)].photo : null;
+    bg = sfondo(pick(withPhoto(inArea(a.k))));
   }else if(s.type === "clock"){
     out = K(fmtDate(today(),{weekday:"long",day:"numeric",month:"long"})) + '<div class="led-clock">' + nowHM() + '</div>';
   }else{
     out = H(L(s.title)) + S(L(s.sub));
-    bg = s.photo || null;
+    bg = photoURL(s.photo) ? "url('" + photoURL(s.photo) + "')" : null;
   }
   LANG = prev;
   return {html:out, bg:bg};
@@ -6837,9 +7300,9 @@ function drawLed(){
   inner.dir = LANGS[lk].dir;
   inner.className = "led-in fadein" + (s.type === "wall" ? " wide" : "");
   inner.innerHTML = c.html;
-  const u = photoURL(c.bg);
+  const u = c.bg;
   const img = $(".led-img", root), scrim = $(".led-scrim", root);
-  if(img){ img.style.backgroundImage = u ? 'url(' + u + ')' : "none"; img.hidden = !u; }
+  if(img){ img.style.backgroundImage = u || "none"; img.hidden = !u; }
   if(scrim) scrim.hidden = !u;
   void inner.offsetWidth;
   $(".led-foot", root).textContent = DB.meta.biz.name + "  -  " + DB.meta.biz.phone;
