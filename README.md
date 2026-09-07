@@ -287,6 +287,65 @@ si esporta un backup e si riparte.
 
 ---
 
+## Ordini al telefono e su WhatsApp
+
+Squilla il telefono, o arriva un messaggio: l'ordine si batte **mentre si parla**
+e finisce dritto in comanda, come quello di un tavolo. Stessa cucina, stessa
+stampante, stesso conto.
+
+Dal **cruscotto** e dalla schermata **Asporto** ci sono due tasti: *Telefono* e
+*WhatsApp*.
+
+**Il numero si scrive per primo**, perché è l'unica cosa che hai in mano mentre
+il telefono squilla. Poi il nome, ritiro o consegna, e per che ora. Toccando
+*Passa ai piatti* si apre subito il listino: nessun altro giro.
+
+### La rubrica risponde da sola
+
+Chi ha già ordinato viene riconosciuto **mentre scrivi il numero**: compare
+*Già cliente: Mario Rossi — 3 ordini*, e nome e indirizzo si riempiono da soli.
+Non si chiede due volte. La rubrica sta in fondo alla schermata Asporto, e da lì
+si riparte con un ordine già intestato.
+
+### Il foglio che esce in cucina
+
+```
+              MARIO ROSSI  20:15
+        Telefono - CONSEGNA - 335 12 34 567
+------------------------------------------------
+2  SPAGHETTI ALLA CARBONARA
+1  PIZZA MARGHERITA
+------------------------------------------------
+       19:48 chiamare al citofono
+```
+
+In cucina serve sapere **per quando** deve essere pronto e se esce dalla porta o
+dal bancone, non solo che c'è un ordine.
+
+### La conferma su WhatsApp
+
+Un tasto nella comanda apre la chat del cliente **con il messaggio già scritto**:
+riepilogo dei piatti, totale, dove e a che ora. Si tocca invia e basta.
+
+```
+Mario Rossi, ecco il riepilogo del suo ordine:
+
+- 2 Spaghetti alla carbonara
+- 1 Pizza margherita
+
+Totale: 33,50 €
+Consegna in Via Roma 12, citofono Rossi alle 20:15
+
+Bar Capri - +39 0541 11 22 33
+```
+
+**Non serve nessun collegamento a pagamento** e nessun account da azienda: si
+apre WhatsApp com'è, con il numero e il testo pronti. Funziona da telefono e da
+computer. C'è anche il tasto per **richiamare** il cliente.
+
+Il prefisso del paese si imposta nei dati del locale (`39` per l'Italia): i
+numeri si scrivono come vengono, con o senza spazi.
+
 ## Le comande escono dalla stampante
 
 Il foglio esce dalla stampante del reparto giusto: i primi alla partita dei primi,

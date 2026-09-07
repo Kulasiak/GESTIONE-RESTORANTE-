@@ -912,6 +912,34 @@ pr_which:["Che stampante serve","Which printer you need","Quelle imprimante il f
 pr_which_t:["Una stampante termica da scontrino con la presa di rete: Epson TM-T20, TM-m30, Star TSP100 o simili. Carta da 80 mm, taglio automatico. Si attacca al router con un cavo e le si dà un indirizzo fisso.","A thermal receipt printer with a network port: Epson TM-T20, TM-m30, Star TSP100 or similar. 80 mm paper, auto cutter. Wire it to the router and give it a fixed address.","Une imprimante thermique a ticket avec prise reseau: Epson TM-T20, TM-m30, Star TSP100 ou similaire. Papier 80 mm, coupe automatique. Reliez-la au routeur avec une adresse fixe.","Una impresora termica de tickets con puerto de red: Epson TM-T20, TM-m30, Star TSP100 o similar. Papel de 80 mm, corte automatico. Conectala al router con una direccion fija.","Ein Thermo-Bondrucker mit Netzwerkanschluss: Epson TM-T20, TM-m30, Star TSP100 oder ahnlich. 80-mm-Papier, Autocutter. Per Kabel an den Router, mit fester Adresse.","طابعة حرارية للإيصالات بمنفذ شبكة: إبسون TM-T20 أو TM-m30 أو ستار TSP100. ورق 80 مم مع قاطع تلقائي. تُوصل بالراوتر بعنوان ثابت."],
 pr_change:["Resto","Change","Rendu","Cambio","Ruckgeld","الباقي"],
 pr_again:["Ristampa","Reprint","Reimprimer","Reimprimir","Nachdruck","إعادة طباعة"],
+/* --- ordini al telefono e su WhatsApp --- */
+tl_phone:["Telefono","Phone","Telephone","Telefono","Telefon","هاتف"],
+tl_wa:["WhatsApp","WhatsApp","WhatsApp","WhatsApp","WhatsApp","واتساب"],
+tl_new:["nuovo ordine","new order","nouvelle commande","nuevo pedido","neue Bestellung","طلب جديد"],
+tl_num:["Numero di telefono","Phone number","Numero de telephone","Numero de telefono","Telefonnummer","رقم الهاتف"],
+tl_who:["Chi ordina","Who is ordering","Qui commande","Quien pide","Wer bestellt","من يطلب"],
+tl_whoph:["Nome e cognome","Name","Nom","Nombre","Name","الاسم"],
+tl_how:["Ritira o consegna","Pickup or delivery","Retrait ou livraison","Recogida o entrega","Abholung oder Lieferung","استلام أو توصيل"],
+tl_pick:["Ritira","Pickup","Retrait","Recoge","Abholung","استلام"],
+tl_deliv:["Consegna","Delivery","Livraison","Entrega","Lieferung","توصيل"],
+tl_when:["Per le","For","Pour","Para las","Fur","في الساعة"],
+tl_addr:["Indirizzo","Address","Adresse","Direccion","Adresse","العنوان"],
+tl_noteph:["Citofono, allergie, come deve arrivare","Doorbell, allergies, how to deliver","Interphone, allergies","Portero, alergias","Klingel, Allergien","الجرس، الحساسية"],
+tl_go:["Passa ai piatti","Go to the dishes","Passer aux plats","Ir a los platos","Weiter zu den Gerichten","انتقل إلى الأطباق"],
+tl_need:["Serve almeno il numero o il nome","At least a number or a name","Il faut au moins le numero ou le nom","Hace falta el numero o el nombre","Mindestens Nummer oder Name","الرقم أو الاسم على الأقل"],
+tl_known:["Già cliente:","Known customer:","Deja client:","Ya cliente:","Bekannter Kunde:","زبون معروف:"],
+tl_order1:["ordine","order","commande","pedido","Bestellung","طلب"],
+tl_ordern:["ordini","orders","commandes","pedidos","Bestellungen","طلبات"],
+tl_nonum:["Questo ordine non ha un numero di telefono","This order has no phone number","Cette commande n'a pas de numero","Este pedido no tiene numero","Diese Bestellung hat keine Nummer","هذا الطلب بلا رقم هاتف"],
+tl_call:["Chiama","Call","Appeler","Llamar","Anrufen","اتصال"],
+tl_conf:["Conferma su WhatsApp","Confirm on WhatsApp","Confirmer sur WhatsApp","Confirmar por WhatsApp","Auf WhatsApp bestatigen","تأكيد على واتساب"],
+tl_msg1:["ecco il riepilogo del suo ordine:","here is your order:","voici le recapitulatif de votre commande:","este es el resumen de su pedido:","hier ist Ihre Bestellung:","إليك ملخص طلبك:"],
+tl_msg_pick:["Da ritirare da noi","To pick up at the venue","A retirer chez nous","Para recoger en el local","Abholung bei uns","للاستلام من عندنا"],
+tl_msg_deliv:["Consegna in","Delivery to","Livraison a","Entrega en","Lieferung nach","توصيل إلى"],
+tl_msg_at:["alle","at","a","a las","um","الساعة"],
+tl_book:["Rubrica clienti","Customer book","Repertoire clients","Agenda de clientes","Kundenkartei","دفتر الزبائن"],
+tl_none:["Ancora nessun cliente al telefono","No phone customers yet","Aucun client par telephone","Ningun cliente por telefono","Noch keine Telefonkunden","لا يوجد زبائن بعد"],
+tl_last:["ultimo","last","dernier","ultimo","letzter","آخر"],
 pr_nothing:["Niente da ristampare: e gia tutto servito","Nothing to reprint: it is all served","Rien a reimprimer","Nada que reimprimir","Nichts zum Nachdrucken","لا شيء لإعادة طباعته"],
 pr_nofisc:["Non e uno scontrino fiscale","Not a fiscal receipt","Ce n'est pas un ticket fiscal","No es un ticket fiscal","Kein Steuerbeleg","ليس إيصالًا ضريبيًا"],
 pr_sentkit:["Comanda stampata in cucina","Order printed in the kitchen","Commande imprimee en cuisine","Comanda impresa en cocina","Bon in der Kuche gedruckt","طُبع الطلب في المطبخ"],
@@ -2072,7 +2100,7 @@ function buildSeed(){
         addr:"Lungomare Vittoria 21", city:"Rimini", phone:"+39 0541 11 22 33",
         email:"info@danatalia.it", wifi:"DaNatalia-Ospiti", vat:"IT 01234567890",
         cover:2.50, service:0, openLunch:"12:00 - 15:00", openDinner:"19:00 - 23:30", aperitivo:"17:00 - 19:30",
-        closedDay:"Lunedì"
+        closedDay:"Lunedì", prefisso:"39"
       }
     },
     rooms:SEED_ROOMS.map(r=>({id:r.id, name:r.name})),
@@ -2127,7 +2155,7 @@ function buildSeed(){
     haccp:SEED_HACCP.slice(), haccpLog:[],
     checklists:{}, prep:[],
     recipes:[],
-    cashups:[], changes:[], absences:[], ledger:[]
+    cashups:[], changes:[], absences:[], ledger:[], clienti:[]
   };
 
   /* magazzino del bar generato dalla carta, coi collegamenti alle voci */
@@ -2303,6 +2331,10 @@ function orderLabel(o){
   if(o.type === "banco") return T("nav_cassa") + " " + T("a_counter").toLowerCase();
   if(o.type === "sala"){ const t = tableById(o.tableId); return T("c_table") + " " + (t ? t.n : "?"); }
   if(o.type === "hotel"){ const h = hotelById(o.hotelId); return "Hotel " + (h ? h.name : ""); }
+  /* un ordine al telefono si riconosce dal nome di chi ha chiamato e
+     dall'ora: in cucina serve sapere per quando, non solo che c'e */
+  if(o.type === "asporto" && (o.cliente || o.canale) && typeof etichettaAsporto === "function")
+    return etichettaAsporto(o);
   return T("nav_away");
 }
 
@@ -3393,11 +3425,16 @@ VIEWS.dash = function(){
   return {
     title: T("nav_dash"),
     sub: fmtDate(d,{weekday:"long",day:"numeric",month:"long",year:"numeric"}) + ' &middot; ' + esc(DB.meta.biz.openLunch) + ' / ' + esc(DB.meta.biz.openDinner),
-    actions: '<button class="btn ghost" data-go="briefing">' + icon("brief",15) + esc(T("nav_briefing")) + '</button>' +
+    actions: '<button class="btn ghost" data-dtel>' + icon("clock",15) + esc(T("tl_phone")) + '</button>' +
+             '<button class="btn ghost" data-dwa>' + icon("mega",15) + esc(T("tl_wa")) + '</button>' +
              '<button class="btn ghost" data-led>' + icon("led",15) + esc(T("mk_led_play")) + '</button>' +
              '<button class="btn pri" data-go="cassa">' + icon("order",15) + esc(T("nav_cassa")) + '</button>',
     html: html,
-    after: ()=>{ const b = $("[data-led]"); if(b) b.onclick = startLed; }
+    after: ()=>{
+      const b = $("[data-led]"); if(b) b.onclick = startLed;
+      const t = $("[data-dtel]"); if(t) t.onclick = ()=> ordineTelefono("telefono");
+      const w = $("[data-dwa]"); if(w) w.onclick = ()=> ordineTelefono("whatsapp");
+    }
   };
 };
 </script>
@@ -3883,6 +3920,10 @@ function orderSheet(orderId){
   const ovl = modal({title:titolo(), size:"xwide", body:draw(), actions:[
     {label:T("c_close"), cls:"ghost", run:()=>{ SY.hook = null; refresh(); }},
     {label:T("o_note_line"), cls:"ghost", run:(w)=>{ lineNoteSheet(o.id); return false; }},
+    (o.cliente && o.cliente.tel)
+      ? {label:T("tl_conf"), cls:"ok", run:()=>{ apriWhatsApp(o); return false; }} : null,
+    (o.cliente && o.cliente.tel)
+      ? {label:T("tl_call"), cls:"ghost", run:()=>{ chiamaCliente(o); return false; }} : null,
     {label:T("o_send"), cls:"pri", run:()=>{
       SY.hook = null;
       const nuove = o.lines.filter(l=> l.status === "nuovo");
@@ -3898,7 +3939,7 @@ function orderSheet(orderId){
       });
     }},
     {label:T("o_pay"), cls:"ok", run:()=>{ SY.hook = null; payOrder(o.id); return false; }}
-  ], onOpen:wire});
+  ].filter(Boolean), onOpen:wire});
 
   /* la cucina segna "pronto" mentre il cameriere e ancora dentro la comanda:
      la schermata si aggiorna da sola, senza chiudere niente */
@@ -4143,10 +4184,185 @@ VIEWS.orders = function(){
 };
 
 function newAwayOrder(){
-  const o = {id:uid("or"), tableId:null, type:"asporto", covers:0, waiter:"", status:"aperto",
+  const o = {id:uid("or"), tableId:null, type:"asporto", canale:"banco", covers:0, waiter:"", status:"aperto",
     opened:new Date().toISOString(), closed:null, date:today(), lines:[], pay:null, disc:0, total:null, note:""};
   DB.orders.push(o); save(); orderSheet(o.id);
+}</script>
+<script>
+/* ============================================================
+   PARTE 10b — ORDINI AL TELEFONO E SU WHATSAPP
+   ------------------------------------------------------------
+   Squilla il telefono, o arriva un messaggio: l'ordine si batte
+   mentre si parla e finisce dritto in comanda, come quello di un
+   tavolo. Stessa cucina, stessa stampante, stesso conto.
+
+   Il numero si scrive per primo perche e l'unica cosa che si ha in
+   mano mentre il telefono squilla. Se quel numero ha gia ordinato,
+   nome e indirizzo si riempiono da soli e non si chiede due volte.
+
+   Su WhatsApp non serve nessun collegamento a pagamento: si apre la
+   chat con il messaggio di conferma gia scritto, e si tocca invia.
+   ============================================================ */
+
+const CANALI = [
+  {k:"telefono", t:"tl_phone", ic:"clock"},
+  {k:"whatsapp", t:"tl_wa",    ic:"mega"},
+  {k:"banco",    t:"a_counter",ic:"bag"}
+];
+
+/** Il numero come lo vuole WhatsApp: solo cifre, col prefisso del paese. */
+function waNumber(tel){
+  let n = String(tel || "").replace(/[^\d+]/g, "");
+  if(!n) return "";
+  if(n.charAt(0) === "+") n = n.slice(1);
+  else if(n.indexOf("00") === 0) n = n.slice(2);
+  else n = (DB.meta.biz.prefisso || "39") + n;   /* i fissi italiani tengono lo zero */
+  return n;
 }
+
+/* --- la rubrica: chi ha gia ordinato non si fa domandare di nuovo --- */
+function clienteByTel(tel){
+  const n = String(tel || "").replace(/\D/g, "");
+  if(!n) return null;
+  return (DB.clienti || []).find(c=> String(c.tel || "").replace(/\D/g, "") === n) || null;
+}
+function salvaCliente(dati){
+  if(!dati.tel) return null;
+  let c = clienteByTel(dati.tel);
+  if(!c){
+    c = {id:uid("cl"), tel:dati.tel, nome:"", via:"", note:"", ordini:0, ultimo:null};
+    (DB.clienti = DB.clienti || []).push(c);
+  }
+  if(dati.nome) c.nome = dati.nome;
+  if(dati.via) c.via = dati.via;
+  c.ordini = (c.ordini || 0) + 1;
+  c.ultimo = today();
+  return c;
+}
+
+/** Come si chiama questo ordine in cucina e sul conto. */
+function etichettaAsporto(o){
+  const c = o.cliente || {};
+  const chi = c.nome || c.tel || "";
+  const cn = CANALI.find(x=> x.k === o.canale);
+  const testa = cn ? T(cn.t) : T("nav_away");
+  return testa + (chi ? "  " + chi : "") + (o.quando ? "  " + o.quando : "");
+}
+
+/* ------------------------------------------------------------
+   La schermata: si apre mentre il telefono squilla
+   ------------------------------------------------------------ */
+function ordineTelefono(canale, orderId){
+  const o = orderId ? byId(DB.orders, orderId) : null;
+  const c = (o && o.cliente) || {};
+  const can = (o && o.canale) || canale || "telefono";
+  const oraDefault = (o && o.quando) || min2hm(hm2min(nowHM()) + 25);
+
+  const body =
+    '<div class="field"><label>' + esc(T("tl_num")) + '</label>' +
+      '<input class="inp num" name="tel" type="tel" inputmode="tel" autocomplete="off" ' +
+        'placeholder="+39 335 12 34 567" value="' + esc(c.tel || "") + '" id="tl-tel">' +
+      '<div id="tl-noto" style="font-size:12.5px;margin-top:6px;min-height:18px;color:var(--green);font-weight:600"></div>' +
+    '</div>' +
+    '<div class="field"><label>' + esc(T("tl_who")) + '</label>' +
+      '<input class="inp" name="nome" value="' + esc(c.nome || "") + '" placeholder="' + esc(T("tl_whoph")) + '" id="tl-nome"></div>' +
+    '<div class="f2">' +
+      '<div class="field"><label>' + esc(T("tl_how")) + '</label>' +
+        '<div class="seg" style="width:100%;display:flex">' +
+          '<button type="button" data-cons="ritiro" class="' + ((o && o.consegna) !== "consegna" ? "on" : "") + '" style="flex:1">' + esc(T("tl_pick")) + '</button>' +
+          '<button type="button" data-cons="consegna" class="' + ((o && o.consegna) === "consegna" ? "on" : "") + '" style="flex:1">' + esc(T("tl_deliv")) + '</button>' +
+        '</div></div>' +
+      '<div class="field"><label>' + esc(T("tl_when")) + '</label>' +
+        '<input class="inp num" name="quando" type="time" value="' + esc(oraDefault) + '"></div>' +
+    '</div>' +
+    '<div class="field" id="tl-via-box"' + ((o && o.consegna) === "consegna" ? '' : ' hidden') + '>' +
+      '<label>' + esc(T("tl_addr")) + '</label>' +
+      '<input class="inp" name="via" value="' + esc(c.via || "") + '" placeholder="Via, numero, campanello" id="tl-via"></div>' +
+    '<div class="field"><label>' + esc(T("c_notes")) + '</label>' +
+      '<input class="inp" name="note" value="' + esc((o && o.note) || "") + '" placeholder="' + esc(T("tl_noteph")) + '"></div>';
+
+  let consegna = (o && o.consegna) || "ritiro";
+  modal({
+    title:T(CANALI.find(x=> x.k === can) ? CANALI.find(x=> x.k === can).t : "nav_away") + " - " + T("tl_new"),
+    size:"slim", body:body,
+    onOpen:(w)=>{
+      $$("[data-cons]", w).forEach(b=> b.onclick = ()=>{
+        consegna = b.getAttribute("data-cons");
+        $$("[data-cons]", w).forEach(x=> x.className = x === b ? "on" : "");
+        $("#tl-via-box", w).hidden = consegna !== "consegna";
+      });
+      /* mentre si scrive il numero, la rubrica risponde da sola */
+      const tel = $("#tl-tel", w);
+      tel.oninput = ()=>{
+        const noto = clienteByTel(tel.value);
+        const box = $("#tl-noto", w);
+        if(noto){
+          box.textContent = T("tl_known") + " " + (noto.nome || "") +
+            (noto.ordini ? "  -  " + plur(noto.ordini, T("tl_order1"), T("tl_ordern")) : "");
+          if(!$("#tl-nome", w).value) $("#tl-nome", w).value = noto.nome || "";
+          if(!$("#tl-via", w).value) $("#tl-via", w).value = noto.via || "";
+        }else box.textContent = "";
+      };
+      tel.oninput();
+    },
+    actions:[
+      {label:T("c_cancel"), cls:"ghost"},
+      {label:T("tl_go"), cls:"pri", run:(w)=>{
+        const f = readForm(w);
+        if(!String(f.nome || "").trim() && !String(f.tel || "").trim()){
+          toast(T("tl_need"), "err"); return false;
+        }
+        const cli = {nome:(f.nome||"").trim(), tel:(f.tel||"").trim(), via:(f.via||"").trim()};
+        salvaCliente(cli);
+        if(o){
+          Object.assign(o, {cliente:cli, canale:can, consegna:consegna, quando:f.quando || "", note:f.note || ""});
+          save(); closeModal(); orderSheet(o.id);
+          return false;
+        }
+        const nuovo = {
+          id:uid("or"), tableId:null, type:"asporto", canale:can, cliente:cli,
+          consegna:consegna, quando:f.quando || "", covers:0,
+          waiter:(me() || {}).id || "", status:"aperto",
+          opened:new Date().toISOString(), closed:null, date:today(),
+          lines:[], pay:null, disc:0, total:null, note:f.note || ""
+        };
+        DB.orders.push(nuovo); save();
+        closeModal();
+        orderSheet(nuovo.id);   /* si passa subito ai piatti, senza altri giri */
+        return false;
+      }}
+    ]
+  });
+}
+
+/** Il messaggio di conferma gia scritto: si apre WhatsApp e si tocca invia. */
+function testoConferma(o){
+  const b = DB.meta.biz;
+  const righe = (o.lines || []).map(l=>{
+    const it = itemById(l.itemId);
+    const m = modsText(l);
+    return "- " + l.qty + " " + (it ? L(it.name) : "?") + (m.length ? " (" + m.join(", ") + ")" : "");
+  }).join("\n");
+  const c = o.cliente || {};
+  const capo = (c.nome ? c.nome + ", " : "") + T("tl_msg1");
+  const coda = o.consegna === "consegna"
+    ? T("tl_msg_deliv") + (c.via ? " " + c.via : "") + (o.quando ? " " + T("tl_msg_at") + " " + o.quando : "")
+    : T("tl_msg_pick") + (o.quando ? " " + T("tl_msg_at") + " " + o.quando : "");
+  return capo + "\n\n" + righe + "\n\n" +
+    T("c_total") + ": " + eur(orderTotal(o)) + "\n" + coda + "\n\n" + b.name + " - " + b.phone;
+}
+function apriWhatsApp(o){
+  const n = waNumber((o.cliente || {}).tel);
+  if(!n){ toast(T("tl_nonum"), "err"); return; }
+  const url = "https://wa.me/" + n + "?text=" + encodeURIComponent(testoConferma(o));
+  window.open(url, "_blank", "noopener");
+}
+function chiamaCliente(o){
+  const t = (o.cliente || {}).tel;
+  if(!t){ toast(T("tl_nonum"), "err"); return; }
+  window.open("tel:" + String(t).replace(/\s/g, ""), "_self");
+}
+
 
 /* ============================================================
    PARTE 11 — PRENOTAZIONI
@@ -6223,14 +6439,40 @@ VIEWS.away = function(){
           '<div class="end"><b class="num">' + eur(hoTotal(o)) + '</b><span class="badge ' + (o.status==="consegnato"?"g":"b") + '">' + esc(o.status) + '</span>' +
           '<button class="btn ico sm ghost" data-addt="' + o.id + '">' + icon("print",12) + '</button>' +
           '<button class="btn ico sm ghost" data-aed="' + o.id + '">' + icon("edit",12) + '</button></div></div>';
-      }).join("") + '</div>' : empty("Nessuna consegna hotel oggi","hotel"), '', "mt flush");
+      }).join("") + '</div>' : empty("Nessuna consegna hotel oggi","hotel"), '', "mt flush") +
+    card(T("tl_book"), (function(){
+      const cl = (DB.clienti || []).slice().sort((a,b)=> (b.ordini||0) - (a.ordini||0)).slice(0, 30);
+      if(!cl.length) return empty(T("tl_none"), "team");
+      return '<div class="list">' + cl.map(c=>
+        '<div class="li"><div class="avat">' + esc(initials(c.nome || c.tel)) + '</div>' +
+        '<div class="tx"><b>' + esc(c.nome || c.tel) + '</b><span class="num">' + esc(c.tel) +
+          (c.via ? ' &middot; ' + esc(c.via) : '') + '</span></div>' +
+        '<div class="end"><span class="badge">' + plur(c.ordini || 0, T("tl_order1"), T("tl_ordern")) + '</span>' +
+        (c.ultimo ? '<span style="font-size:11.5px;color:var(--txt-3)">' + esc(T("tl_last") + " " + fmtDate(c.ultimo,{day:"2-digit",month:"short"})) + '</span>' : '') +
+        '<button class="btn sm pri" data-cnew="' + c.id + '">' + esc(T("c_new")) + '</button></div></div>').join("") + '</div>';
+    })(), '', "mt flush");
 
   return {
     title:T("nav_away"), sub:fmtDate(d,{weekday:"long",day:"numeric",month:"long"}),
     actions:'<button class="btn ghost" data-anh>' + icon("hotel",15) + esc("Consegna hotel") + '</button>' +
+            '<button class="btn ghost" data-atel>' + icon("clock",15) + esc(T("tl_phone")) + '</button>' +
+            '<button class="btn ok" data-awa>' + icon("mega",15) + esc(T("tl_wa")) + '</button>' +
             '<button class="btn pri" data-ant>' + icon("plus",15) + esc(T("c_new")) + '</button>',
     html:html,
     after:()=>{
+      $("[data-atel]").onclick = ()=> ordineTelefono("telefono");
+      /* dalla rubrica si riparte con un ordine gia intestato */
+      $$("[data-cnew]").forEach(b=> b.onclick = ()=>{
+        const c = (DB.clienti || []).find(x=> x.id === b.getAttribute("data-cnew"));
+        if(!c) return;
+        const o = {id:uid("or"), tableId:null, type:"asporto", canale:"telefono",
+          cliente:{nome:c.nome, tel:c.tel, via:c.via}, consegna:c.via ? "consegna" : "ritiro",
+          quando:min2hm(hm2min(nowHM()) + 25), covers:0, waiter:(me() || {}).id || "",
+          status:"aperto", opened:new Date().toISOString(), closed:null, date:today(),
+          lines:[], pay:null, disc:0, total:null, note:""};
+        DB.orders.push(o); save(); orderSheet(o.id);
+      });
+      $("[data-awa]").onclick = ()=> ordineTelefono("whatsapp");
       $$("[data-ao]").forEach(b=> b.onclick = ()=> orderSheet(b.getAttribute("data-ao")));
       $$("[data-ap]").forEach(b=> b.onclick = ()=> payOrder(b.getAttribute("data-ap")));
       $$("[data-aed]").forEach(b=> b.onclick = ()=> hotelOrderSheet(b.getAttribute("data-aed")));
@@ -8670,8 +8912,18 @@ function fogliaComanda(o, gruppo, lingua){
   return {
     reparto:gruppo.rep,
     stampante:gruppo.st ? gruppo.st.nome : null,
-    titolo:(t ? Tx("c_table", lk).toUpperCase() + " " + t.n : (o.type === "asporto" ? Tx("nav_away", lk).toUpperCase() : "BANCO")),
-    sottotitolo:(o.covers ? o.covers + " " + Tx("c_covers", lk).toLowerCase() : "") + (chi ? "  -  " + chi : ""),
+    titolo:(t ? Tx("c_table", lk).toUpperCase() + " " + t.n
+              : o.type === "asporto"
+                ? ((o.cliente && o.cliente.nome ? o.cliente.nome : Tx("nav_away", lk)).toUpperCase() +
+                   (o.quando ? "  " + o.quando : ""))
+                : "BANCO"),
+    /* in cucina serve sapere se esce dalla porta o dal bancone, e per quando */
+    sottotitolo:(o.type === "asporto"
+      ? (o.canale === "whatsapp" ? "WhatsApp" : o.canale === "telefono" ? Tx("tl_phone", lk) : Tx("a_counter", lk)) +
+        (o.consegna === "consegna" ? "  -  " + Tx("tl_deliv", lk).toUpperCase() : "  -  " + Tx("tl_pick", lk)) +
+        (o.cliente && o.cliente.tel ? "  -  " + o.cliente.tel : "")
+      : (o.covers ? o.covers + " " + Tx("c_covers", lk).toLowerCase() : "")) +
+      (chi ? "  -  " + chi : ""),
     righe:righe,
     piede:ora.toLocaleTimeString(locale(), {hour:"2-digit", minute:"2-digit"}) +
           (o.note ? "   " + o.note : "")
@@ -8883,7 +9135,8 @@ function normalize(d){
   d.meta.biz = Object.assign({}, s.meta.biz, d.meta.biz || {});
   ["rooms","tables","cats","items","orders","reservations","inv","moves","suppliers","staff",
    "shifts","clock","briefings","issues","hotels","hotelOrders","slogans","flyers","cocktails",
-   "haccp","haccpLog","prep","recipes","cashups","pos","mods","changes","absences","ledger"].forEach(k=>{
+   "haccp","haccpLog","prep","recipes","cashups","pos","mods","changes","absences","ledger",
+   "clienti"].forEach(k=>{
     if(!Array.isArray(d[k])) d[k] = s[k] || [];
   });
   d.checklists = d.checklists || {};
