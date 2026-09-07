@@ -538,6 +538,40 @@ riparte da capo.
 ### Colori del sistema
 
 Sei tinte: Terracotta, Notte e oro, Marino, Bosco, Vino, Oro. Ognuna funziona in
+chiaro e in scuro. Si cambiano da Impostazioni e valgono per tutto, schermo LED e
+volantini compresi.
+
+**Quale scegliere, per il posto dove sta l'apparecchio:**
+
+| Dove | Consiglio | Perché |
+|---|---|---|
+| **Tablet in sala, di giorno** | qualsiasi tinta, **tema chiaro** | fuori e vicino alle vetrate lo schermo è poco leggibile: il fondo chiaro tiene di più |
+| **Monitor cucina** | **tema scuro**, tinta indifferente | il monitor sta acceso ore, e di sera lo scuro non abbaglia chi lavora |
+| **Bar la sera** | **Notte e oro** o **Vino**, tema scuro | non fa da lampada sul bancone |
+| **Ufficio, contabilità** | **Marino** o **Bosco**, chiaro | tinte fredde, si legge a lungo senza stancare |
+| **Dehors, terrazza** | tema **chiaro**, tinta **Vino** o **Marino** | sono le due col contrasto più alto sui tasti |
+
+**Automatico** segue il telefono o il tablet: chiaro di giorno, scuro la sera. Se
+un apparecchio sta sempre nello stesso posto conviene invece fissarlo.
+
+### Misurato, non a occhio
+
+Tutte e dodici le combinazioni (sei tinte × chiaro e scuro) sono state misurate
+col rapporto di contrasto della norma, che vuole almeno **4,5** perché un testo
+si legga:
+
+- **testo sul fondo**: da 16,9 a 17,1 — molto oltre il minimo;
+- **tasti colorati** (*Manda in cucina*, *Incassa*, *Pronto*): il peggiore adesso
+  è **4,54**. Prima ce n'erano sette sotto la soglia: il bianco sull'oro stava a
+  **2,4** e il verde di *Incassa* al buio a **2,3**. Ora il testo sui colori
+  pieni diventa nero quando il colore è chiaro;
+- **bersagli da toccare**: nessuno sotto i **44 pixel** in nessuna schermata. In
+  cucina le righe da segnare *pronto* sono a **52**, perché lì si tocca con le
+  mani appena uscite dal piatto.
+
+
+
+Sei tinte: Terracotta, Notte e oro, Marino, Bosco, Vino, Oro. Ognuna funziona in
 chiaro e in scuro. Si cambiano da Impostazioni e valgono per tutto, schermo LED
 e volantini compresi.
 
