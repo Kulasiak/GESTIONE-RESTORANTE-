@@ -2783,7 +2783,9 @@ const A = {
   vinorosso:"#7C1F38", vinobianco:"#E9DFA6", bolle:"#F2E9BE", arancia:"#E88A22",
   birra:"#D99B2A", schiuma:"#FBF3E2", acqua:"#CFE3EA", vetro:"#DCE8ED",
   legno:"#C89A63", legnoscuro:"#A87A45", formaggio:"#F0D794", salume:"#C9707A",
-  cacao:"#6B4326", panna:"#FAF3E7", rosso:"#B8342E", oliva:"#5C6E38", limone:"#EBC64A"
+  cacao:"#6B4326", panna:"#FAF3E7", rosso:"#B8342E", oliva:"#5C6E38", limone:"#EBC64A",
+  brodo:"#DDB456", zafferano:"#F0B92E", zuppa:"#BE7040", fagiolo:"#A9573A", fagioloscuro:"#84402A",
+  cozza:"#3B3547", cozzachiara:"#6E6377", vongola:"#DAC7A6", vongolascura:"#B39B72"
 };
 
 /* --- pezzi che tornano in tanti disegni --- */
@@ -2822,6 +2824,62 @@ function _fetta(cx,cy,w,h,rot){
     '<rect x="'+(cx-w/2)+'" y="'+(cy-h/2)+'" width="'+w+'" height="'+h+'" rx="'+(h/2)+'" fill="'+A.carne+'"/>' +
     '<rect x="'+(cx-w/2+h*0.45)+'" y="'+(cy-h*0.22)+'" width="'+(w-h*0.9)+'" height="'+(h*0.44)+'" rx="'+(h*0.22)+'" fill="'+A.carnecruda+'"/>' +
     '</g>';
+}
+
+/** Cozza: la goccia scura, allungata. E' la sagoma che dice "mare" da
+    lontano meglio di ogni altra, percio' nel piatto ce n'e' sempre una. */
+const _cozza = (cx,cy,r,rot)=>
+  '<g transform="translate('+cx+','+cy+') rotate('+rot+')">' +
+  '<path d="M0 0C'+(r*0.5)+' '+(-r*0.85)+' '+(r*1.5)+' '+(-r*0.7)+' '+(r*2)+' '+(-r*0.08)+
+  'C'+(r*1.5)+' '+(r*0.6)+' '+(r*0.5)+' '+(r*0.7)+' 0 0Z" ' +
+  'fill="'+A.cozza+'" stroke="'+A.cozzachiara+'" stroke-width="1.6"/>' +
+  '<path d="M'+(r*0.35)+' '+(-r*0.06)+'C'+(r*0.8)+' '+(-r*0.4)+' '+(r*1.3)+' '+(-r*0.38)+' '+(r*1.75)+' '+(-r*0.1)+'" ' +
+  'fill="none" stroke="'+A.cozzachiara+'" stroke-width="1.4" opacity=".8"/></g>';
+
+/** Vongola: il ventaglio chiaro con le costole che partono dalla cerniera.
+    La cerniera in basso e il colore caldo la tengono lontana dallo
+    spicchio di limone, che a questa misura le somiglia troppo. */
+const _vongola = (cx,cy,r,rot)=>
+  '<g transform="translate('+cx+','+cy+') rotate('+rot+')">' +
+  '<path d="M'+(-r)+' 0A'+r+' '+(r*0.92)+' 0 0 1 '+r+' 0Z" fill="'+A.vongola+'" ' +
+  'stroke="'+A.vongolascura+'" stroke-width="1.8"/>' +
+  '<path d="M0 0Q'+(-r*0.62)+' '+(-r*0.3)+' '+(-r*0.72)+' '+(-r*0.48)+
+  'M0 0Q'+(-r*0.28)+' '+(-r*0.5)+' '+(-r*0.34)+' '+(-r*0.76)+
+  'M0 0V'+(-r*0.86)+
+  'M0 0Q'+(r*0.28)+' '+(-r*0.5)+' '+(r*0.34)+' '+(-r*0.76)+
+  'M0 0Q'+(r*0.62)+' '+(-r*0.3)+' '+(r*0.72)+' '+(-r*0.48)+'" ' +
+  'fill="none" stroke="'+A.vongolascura+'" stroke-width="1.3" opacity=".75"/>' +
+  '<circle cx="0" cy="0" r="'+(r*0.16)+'" fill="'+A.vongolascura+'"/></g>';
+
+/** Fagiolo: il chicco scuro con l'occhio chiaro sul fianco. */
+const _fagiolo = (cx,cy,rot)=>
+  '<g transform="rotate('+rot+' '+cx+' '+cy+')">' +
+  '<ellipse cx="'+cx+'" cy="'+cy+'" rx="11" ry="7.5" fill="'+A.fagiolo+'" ' +
+  'stroke="'+A.fagioloscuro+'" stroke-width="1.5"/>' +
+  '<path d="M'+(cx-4)+' '+(cy+2)+'a5 4 0 0 1 8 0" fill="none" stroke="#E0B79A" ' +
+  'stroke-width="2" stroke-linecap="round"/></g>';
+
+/** Gnocco: il cuscinetto con la riga della forchetta. */
+const _gnocco = (cx,cy,rot)=>
+  '<g transform="rotate('+rot+' '+cx+' '+cy+')">' +
+  '<ellipse cx="'+cx+'" cy="'+cy+'" rx="12" ry="9" fill="'+A.pastachiara+'" ' +
+  'stroke="'+A.crosta+'" stroke-width="1.8"/>' +
+  '<path d="M'+(cx-5)+' '+(cy-4)+'v8M'+cx+' '+(cy-5)+'v10M'+(cx+5)+' '+(cy-4)+'v8" ' +
+  'stroke="'+A.crosta+'" stroke-width="1.5" opacity=".8"/></g>';
+
+/** Tortellini a galla: anelli sparsi sul brodo, sempre negli stessi posti
+    perche' il piatto non cambi disegno ad ogni ridisegno. */
+function _tortellini(cx,cy,r,n,seed){
+  const rnd = _rand(seed || 29);
+  let out = "";
+  for(let i=0;i<n;i++){
+    const a = rnd() * 6.283, rr = r * (0.18 + rnd() * 0.68);
+    const x = cx + Math.cos(a) * rr, y = cy + Math.sin(a) * rr * 0.88;
+    out += '<ellipse cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" rx="11" ry="8" ' +
+      'fill="'+A.pastachiara+'" stroke="'+A.crostascura+'" stroke-width="2"/>' +
+      '<ellipse cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" rx="4.2" ry="2.8" fill="'+A.crosta+'"/>';
+  }
+  return out;
 }
 
 /* ------------------------------------------------------------
@@ -2943,6 +3001,81 @@ risotto: ()=> _bowl(100,104,72, A.pastachiara) +
   '<ellipse cx="112" cy="124" rx="6" ry="4"/><ellipse cx="78" cy="116" rx="6" ry="4"/></g>' +
   '<path d="M96 68c14 0 22 8 22 16 0 6-6 10-14 10s-14-4-14-10c0-8 0-16 6-16Z" fill="'+A.crostascura+'"/>' +
   '<rect x="100" y="90" width="8" height="16" rx="3" fill="'+A.crosta+'"/>',
+
+/* Il risotto giallo dello zafferano: stesso chicco, altro colore.
+   Il porcino del risotto ai funghi qui non ci va. */
+risotto_giallo: ()=> _bowl(100,104,72, A.zafferano) +
+  '<g fill="#D9A21F" opacity=".55">' +
+  '<ellipse cx="84" cy="92" rx="6" ry="4"/><ellipse cx="104" cy="86" rx="6" ry="4"/>' +
+  '<ellipse cx="120" cy="102" rx="6" ry="4"/><ellipse cx="94" cy="112" rx="6" ry="4"/>' +
+  '<ellipse cx="112" cy="124" rx="6" ry="4"/><ellipse cx="78" cy="116" rx="6" ry="4"/></g>' +
+  '<circle cx="92" cy="84" r="3" fill="#FFFFFF" opacity=".75"/>' +
+  '<circle cx="118" cy="118" r="2.6" fill="#FFFFFF" opacity=".75"/>' +
+  _leaf(114,76,0.85,-20),
+
+/* Vongole e scoglio: il nido chiaro d'olio con le conchiglie aperte.
+   Prima "spaghetti" bastava a farne una pasta al pomodoro. */
+pasta_mare: ()=> _plate(100,104,76) +
+  '<circle cx="100" cy="104" r="54" fill="'+A.pastachiara+'"/>' +
+  _nest(100,104,48,A.pasta,17) +
+  _vongola(72,130,17,-14) + _vongola(126,74,14,166) +
+  _cozza(108,118,15,18) +
+  '<circle cx="88" cy="92" r="3" fill="'+A.verde+'"/>' +
+  '<circle cx="112" cy="134" r="2.6" fill="'+A.verde+'"/>' +
+  '<circle cx="126" cy="98" r="2.6" fill="'+A.verde+'"/>',
+
+/* Tortellini in brodo: la scodella col brodo chiaro e gli anelli a galla.
+   Non e' pasta asciutta e non e' zuppa densa: tra un tortellino e l'altro
+   si deve vedere il fondo del brodo. */
+brodo: ()=> _bowl(100,104,72, A.brodo) +
+  _tortellini(100,104,50,8,29) +
+  '<ellipse cx="74" cy="80" rx="9" ry="5" fill="#FFFFFF" opacity=".35"/>',
+
+/* Pasta e fagioli, zuppe, minestre: densa, il cucchiaio ci sta in piedi.
+   I fagioli si riconoscono dall'occhio chiaro sul fianco. */
+zuppa: ()=> _bowl(100,104,72, A.zuppa) +
+  '<g fill="'+A.pasta+'">' +
+  '<rect x="74" y="76" width="21" height="11" rx="5" transform="rotate(-18 84 81)"/>' +
+  '<rect x="107" y="120" width="21" height="11" rx="5" transform="rotate(22 117 125)"/>' +
+  '<rect x="66" y="116" width="19" height="10" rx="5" transform="rotate(8 75 121)"/></g>' +
+  _fagiolo(112,86,-20) + _fagiolo(88,106,15) + _fagiolo(126,106,40) + _fagiolo(96,130,-8) +
+  '<circle cx="104" cy="72" r="1.8" fill="#4A3524"/><circle cx="132" cy="128" r="1.8" fill="#4A3524"/>',
+
+/* Lasagna e cannelloni: si guardano di taglio, perche' e' l'unico modo di
+   far vedere gli strati. Dall'alto sarebbero un rettangolo bruno e basta. */
+lasagna: ()=> _plate(100,104,74) +
+  '<g transform="rotate(-4 100 108)">' +
+  '<rect x="52" y="72" width="96" height="72" rx="5" fill="'+A.pasta+'"/>' +
+  '<rect x="52" y="88" width="96" height="13" fill="'+A.sugo+'"/>' +
+  '<rect x="52" y="114" width="96" height="13" fill="'+A.sugo+'"/>' +
+  '<path d="M52 77a5 5 0 0 1 5-5h86a5 5 0 0 1 5 5v11H52Z" fill="'+A.crosta+'"/>' +
+  '<path d="M60 80c12-4 26 3 38-1s26 3 42-2" fill="none" stroke="'+A.crostascura+'" ' +
+  'stroke-width="3" opacity=".5"/>' +
+  '<rect x="52" y="72" width="96" height="72" rx="5" fill="none" stroke="'+A.crostascura+'" stroke-width="2.5"/></g>' +
+  _leaf(112,64,0.9,-20),
+
+/* Gnocchi: prima finivano nel disegno del pesto anche quando erano
+   al pomodoro, perche' la regola li mandava tutti sul verde. */
+gnocchi: ()=> _plate(100,104,76) +
+  '<circle cx="100" cy="104" r="54" fill="'+A.sugo+'"/>' +
+  _gnocco(80,88,-14) + _gnocco(112,84,18) + _gnocco(70,116,8) +
+  _gnocco(100,110,-6) + _gnocco(130,110,24) + _gnocco(90,136,14) + _gnocco(122,136,-18) +
+  _leaf(104,68,0.85,-15),
+
+/* Fritto misto: anelli di calamaro e code di gambero nella carta gialla,
+   col limone di fianco. La frittura non sta mai nel piatto bianco. */
+fritto: ()=> _plate(100,104,76) +
+  '<path d="M46 66h108l-10 82H56Z" fill="#F0DFAE"/>' +
+  '<g fill="'+A.crosta+'" stroke="'+A.crostascura+'" stroke-width="2">' +
+  '<circle cx="82" cy="92" r="13"/><circle cx="116" cy="86" r="11"/>' +
+  '<circle cx="72" cy="124" r="11"/><circle cx="126" cy="118" r="12"/></g>' +
+  '<g fill="'+A.piatto+'">' +
+  '<circle cx="82" cy="92" r="5"/><circle cx="116" cy="86" r="4"/>' +
+  '<circle cx="72" cy="124" r="4"/><circle cx="126" cy="118" r="4.5"/></g>' +
+  '<path d="M92 118c0-9 8-15 16-13 7 2 9 10 4 15-5 5-14 4-18-1Z" fill="'+A.salume+'" ' +
+  'stroke="'+A.crostascura+'" stroke-width="1.6"/>' +
+  '<circle cx="143" cy="128" r="12" fill="'+A.limone+'"/>' +
+  '<path d="M143 116v24M131 128h24" stroke="#FFF" stroke-width="2"/>',
 
 carne: ()=> _plate(100,104,76) +
   _fetta(86,124,74,19,-26) + _fetta(94,116,78,19,-18) +
@@ -3111,22 +3244,31 @@ const ART_PAROLE = [
   [/toast|tramezzin|panin|piadin|croque/i,"toast"],
   [/pizz.*margherit|margherit/i,          "pizza"],
   [/pizz|focacc|calzon/i,                 "pizza_rossa"],
-  [/tiramis|panna cott|cannol|torta|semifredd|profiterol|cheesecake|budin|crostat/i, "dolce"],
+  [/tiramis|panna cott|cannol|torta|dolc|dessert|semifredd|profiterol|cheesecake|budin|crostat/i, "dolce"],
   [/gelat|sorbett|coppa/i,                "gelato"],
   [/carbonar|cacio|alfred|quattro formagg|panna(?! cott)/i, "pasta_bianca"],
   [/pest|genoves|verde/i,                 "pasta_verde"],
-  [/amatricia|arrabbiat|ragu|rag(u|ù)|bolognes|pomodor.*past|spaghett|bucatin|linguin|penn|maccheron|lasagn|cannellon|tagliatell|paccher|fusill|pasta/i, "pasta_rossa"],
+  /* Queste quattro stanno prima della pasta rossa perche' il formato della
+     pasta si legge nel nome molto prima del condimento: "spaghetti alle
+     vongole" incontrava "spaghett" e finiva col sugo di pomodoro. */
+  [/\b(in |al )?brodo\b|tortellin|cappellett|anolin|passatell/i, "brodo"],
+  [/zupp|minestr|fagiol(?!in)|lenticch|\bceci\b|farro|vellutat/i, "zuppa"],
+  [/lasagn|cannellon/i,                   "lasagna"],
+  [/(spaghett|linguin|tagliolin|paccher|fusill|penn|maccheron|trofi|calamarat|bucatin|vermicell|pasta).*(vongol|scogli|frutti di mare|gamber|cozz|astice|seppi|calamar|arsell|tellin|granchi|\bmare\b)|(vongol|scogli|frutti di mare|gamber|cozz|astice|seppi|calamar).*(spaghett|linguin|tagliolin|paccher|fusill|penn|maccheron|bucatin|pasta)/i, "pasta_mare"],
+  [/amatricia|arrabbiat|ragu|rag(u|ù)|bolognes|pomodor.*past|spaghett|bucatin|linguin|penn|maccheron|tagliatell|paccher|fusill|pasta/i, "pasta_rossa"],
+  [/risott.*(milanes|zafferan|giall)|(milanes|zafferan).*risott/i, "risotto_giallo"],
   [/risott|riso\b/i,                      "risotto"],
-  [/gnocch/i,                             "pasta_verde"],
+  [/gnocch/i,                             "gnocchi"],
+  [/fritt(o|ura|ell)|paranza|calamar.*fritt|frittur/i, "fritto"],
   [/tagliat.*manz|bistecc|filett|entrec|costat|tomahawk|manzo|vitell|cotolett|scaloppin|pollo|arrost|polpett|salsicc|agnell|maial/i, "carne"],
   [/branzin|orat|pesc|salmon|tonn|polp|calamar|gamber|cozz|vongol|scogli|frutti di mare|baccal/i, "pesce"],
-  [/insalat|misticanz|caprese|rucol/i,    "insalata"],
+  /* Sopra l'insalata: "insalata caprese" e' un caprese, non un
+     cespo di misticanza. */
+  [/burrat|mozzarell|caprese|stracciatell|scamorz/i, "caprese"],
+  [/insalat|misticanz|rucol/i,            "insalata"],
   [/patat|verdur|contorn|spinac|fagiolin|grigliat/i, "contorno"],
   [/bruschett|crostin|crostone/i,          "bruschetta"],
-  [/burrat|mozzarell|caprese|stracciatell|scamorz/i, "caprese"],
   [/taglier|salum|prosciutt|mortadell|bresaol|formagg|pecorin|antipast/i, "tagliere"],
-  [/tiramis|panna cott|cannol|torta|dolc|dessert|semifredd|profiterol|cheesecake/i, "dolce"],
-  [/gelat|sorbett|coppa/i,                "gelato"],
   [/spritz|negroni|mojito|cocktail|margarit(a)?\b.*cocktail|daiquir|martini|gin tonic|aperol|campari|vermouth|aperitiv/i, "cocktail"],
   [/prosecc|franciacort|champagne|cava|spumant|bollicin/i, "bollicine"],
   [/bianc|vermentin|pigat|gavi|soave|sauvignon|chardonn|cinque terre|bianchett/i, "vino_bianco"],
