@@ -554,6 +554,13 @@ volantini compresi.
 **Automatico** segue il telefono o il tablet: chiaro di giorno, scuro la sera. Se
 un apparecchio sta sempre nello stesso posto conviene invece fissarlo.
 
+### Sul telefono
+
+Sotto gli 820 pixel la **cassa** e la **comanda** si mettono in colonna: prima i
+piatti, che è dove si tocca, poi il carrello col totale e i tasti per incassare.
+Prima il carrello si prendeva 280 pixel fissi e ai piatti ne restavano **64** —
+una fetta di piastrella e le linguette tagliate a metà.
+
 ### Misurato, non a occhio
 
 Tutte e dodici le combinazioni (sei tinte × chiaro e scuro) sono state misurate

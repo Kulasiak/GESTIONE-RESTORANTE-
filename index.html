@@ -698,8 +698,11 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
    altrimenti le due viste diventano la stessa cosa e sul tablet si
    vedono due piatti alla volta invece di sei */
 :root[data-touch="si"] .cagrid.mini{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
-:root[data-touch="si"] .catile .nm{font-size:14.5px;padding:9px 11px 0}
-:root[data-touch="si"] .catile .pr{font-size:15px;padding:2px 11px 11px}
+/* margini interni piu stretti: sulla piastrella del telefono quegli 11
+   pixel per lato facevano andare a capo "Cappuccino", che per 4 pixel
+   ci starebbe tutto su una riga */
+:root[data-touch="si"] .catile .nm{font-size:14.5px;padding:9px 8px 0}
+:root[data-touch="si"] .catile .pr{font-size:15px;padding:2px 8px 10px}
 :root[data-touch="si"] .phgrid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 :root[data-touch="si"] .pin-k{height:70px;font-size:26px}
 :root[data-touch="si"] .pin-pad{max-width:330px;gap:12px}
@@ -735,6 +738,11 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
   .modal-b .row > .search{flex:1 1 100%}
   /* comanda e cassa sul telefono: una colonna, listino sotto al carrello */
   #os-grid{grid-template-columns:1fr!important}
+  /* In cassa il carrello chiedeva 280 pixel fissi: sul telefono ne restavano
+     64 per i piatti, cioe una fetta di piastrella e le linguette tagliate.
+     Sotto gli 820 si mette tutto in colonna: prima i piatti, che e dove si
+     tocca, poi il carrello col totale e i tasti per incassare. */
+  #cassa-grid{grid-template-columns:1fr!important}
   #os-grid > div:first-child{order:2}
   #os-grid > div:last-child{order:1}
   .modal.xwide .modal-b{padding:12px}
@@ -7001,7 +7009,7 @@ VIEWS.cassa = function(){
         esc("Questa cassa serve solo a prendere l'ordine e a sapere quanto fa. Lo scontrino valido lo batte il registratore telematico: il foglio che stampa da qui e un promemoria interno.") +
         '</div></div></div>' +
 
-    '<div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px;align-items:start">' +
+    '<div class="grid" id="cassa-grid" style="grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px;align-items:start">' +
       '<div>' +
         '<div class="seg" style="margin-bottom:10px">' + AREAS.map(a=>
           '<button class="' + (CASSA.area === a.k ? "on":"") + '" data-caa="' + a.k + '">' + esc(T(a.t)) + '</button>').join("") + '</div>' +
