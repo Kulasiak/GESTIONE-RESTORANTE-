@@ -451,12 +451,13 @@ roba che in cucina non esiste, e l'ospite se ne accorge. È scritto anche nella
 guida ai volantini, dentro questo stesso programma.
 
 Allora, finché la foto vera non c'è, **il piatto se lo disegna il programma**.
-Trentaquattro disegni, visti dall'alto, riconoscibili a colpo d'occhio anche
+Quarantadue disegni, visti dall'alto, riconoscibili a colpo d'occhio anche
 sulla piastrella piccola del telefono: espresso, cappuccino, cornetto, spremuta,
-uova, yogurt, toast, pizza rossa e margherita, tre tipi di pasta, risotto,
-tagliata, pesce, insalata, contorni, tagliere, bruschette, burrata, dolci,
-gelato, vini bianchi rossi e bollicine, cocktail, birra, amari, acqua, lattine,
-salse.
+uova, yogurt, toast, pizza rossa e margherita, quattro tipi di pasta — rossa,
+bianca, verde e di mare — lasagne, gnocchi, tortellini in brodo, zuppe e pasta e
+fagioli, risotto bianco e giallo, tagliata, pesce, fritto misto, insalata,
+contorni, tagliere, bruschette, burrata, dolci, gelato, vini bianchi rossi e
+bollicine, cocktail, birra, amari, acqua, lattine, salse.
 
 Non pesano niente, non si scaricano, funzionano senza linea e non sono di
 nessun altro: li disegna l'applicazione ogni volta, in una riga di codice.
@@ -465,6 +466,12 @@ nessun altro: li disegna l'applicazione ogni volta, in una riga di codice.
 Il disegno si sceglie dal nome del piatto e dalla sua categoria. Quando la
 categoria è già sicura comanda lei: dentro *Distillati* una grappa **bianca** non
 diventa un vino bianco, e un whisky s**cozz**ese non diventa un piatto di cozze.
+
+Nel nome, il formato della pasta si legge prima del condimento, e per questo
+l'ordine delle regole conta: *spaghetti alle vongole* incontrava «spaghetti» e
+finiva col sugo di pomodoro, così come *insalata caprese* finiva nel cespo di
+misticanza. Le paste di mare, le lasagne, le zuppe e il caprese si decidono
+adesso **prima** delle regole generiche.
 
 Le immagini si vedono dove servono: nella **presa comanda**, in **cassa**, nelle
 righe dell'**elenco** e sullo **schermo LED** — piatto del giorno, cocktail,
