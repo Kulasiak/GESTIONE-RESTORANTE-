@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E9DFCF;font-family:'Figtree',system-ui,sans-serif;color:#2A211B;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#B5502F}a:hover{color:#8E3C22}
+button{font-family:inherit;cursor:pointer}
+input[type=range]{accent-color:#B5502F}
+@keyframes cpulse{0%{transform:scale(.6);opacity:.6}100%{transform:scale(2.8);opacity:0}}
+@keyframes cscan{0%{top:6%}50%{top:90%}100%{top:6%}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:56px;justify-content:center;align-items:flex-start;padding:48px 32px">
+
+<sc-if value="{{ showPanel }}" hint-placeholder-val="{{ true }}">
+<div style="width:280px;display:flex;flex-direction:column;gap:24px;padding-top:28px">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-family:'Instrument Serif',serif;font-size:48px;line-height:1">Custode</div>
+    <div style="font-size:14px;color:#6B5D52;line-height:1.5;text-wrap:pretty">Prototipo interattivo · Roma. Viaggio sicuro per turisti singoli, membri di gruppo e capigruppo.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">Ruolo</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <sc-for list="{{ panelRoles }}" as="r" hint-placeholder-count="3">
+        <button onClick="{{ r.on }}" style="text-align:left;padding:11px 14px;border-radius:12px;border:1px solid #D9CCB9;background:{{ r.bg }};color:{{ r.color }};font-size:14px;font-weight:600">{{ r.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">Lingua</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <sc-for list="{{ panelLangs }}" as="r" hint-placeholder-count="2">
+        <button onClick="{{ r.on }}" style="flex:1 1 calc(50% - 6px);padding:10px;border-radius:12px;border:1px solid #D9CCB9;background:{{ r.bg }};color:{{ r.color }};font-size:14px;font-weight:600">{{ r.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">Simula</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button onClick="{{ simZone }}" style="text-align:left;padding:11px 14px;border-radius:12px;border:none;background:#B3261E;color:#fff;font-size:14px;font-weight:600">Fuori dalla zona del gruppo</button>
+      <button onClick="{{ simTheft }}" style="text-align:left;padding:11px 14px;border-radius:12px;border:none;background:#2A211B;color:#FAF6EF;font-size:14px;font-weight:600">Entra in zona borseggi</button>
+      <button onClick="{{ simMove }}" style="text-align:left;padding:11px 14px;border-radius:12px;border:1px solid #D9CCB9;background:#FAF6EF;color:#2A211B;font-size:14px;font-weight:600">Cambia posizione (racconto)</button>
+      <button onClick="{{ restart }}" style="text-align:left;padding:11px 14px;border-radius:12px;border:1px solid #D9CCB9;background:transparent;color:#2A211B;font-size:14px;font-weight:600">Ricomincia dall'onboarding</button>
+    </div>
+  </div>
+  <div style="font-size:12px;color:#6B5D52;line-height:1.5;text-wrap:pretty">Prezzi e orari sono indicativi (2026) e vanno verificati con le fonti ufficiali prima del lancio.</div>
+</div>
+</sc-if>
+
+<div style="width:390px;height:844px;flex:none;border-radius:58px;background:#1E1814;padding:11px;box-shadow:0 50px 90px -40px rgba(70,40,20,.55),0 0 0 1px rgba(0,0,0,.25)">
+<div style="position:relative;width:368px;height:822px;border-radius:47px;overflow:hidden;background:#FAF6EF;display:flex;flex-direction:column">
+
+  <div style="flex:none;height:52px;display:flex;align-items:center;justify-content:space-between;padding:8px 30px 0 36px;font-size:15px;font-weight:600;color:{{ sbColor }};background:{{ sbBg }};position:relative;z-index:25">
+    <span>10:40</span>
+    <div style="position:absolute;left:50%;top:11px;transform:translateX(-50%);width:118px;height:34px;border-radius:20px;background:#0E0B09"></div>
+    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px">5G</span><div style="width:24px;height:12px;border-radius:4px;border:1.5px solid {{ sbColor }};padding:1.5px"><div style="width:70%;height:100%;border-radius:2px;background:{{ sbColor }}"></div></div></div>
+  </div>
+
+  <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:14px 28px 46px;background:#B5502F;color:#FBF3EA">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:26px;height:26px;border-radius:50%;border:2px solid #FBF3EA;display:grid;place-items:center"><div style="width:8px;height:8px;border-radius:50%;background:#FBF3EA"></div></div>
+      <div style="font-weight:700;letter-spacing:.18em;font-size:13px">CUSTODE</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.08em">41°53′N · 12°29′E · ROMA</div>
+      <div style="font-family:'Instrument Serif',serif;font-size:62px;line-height:.98;letter-spacing:-.01em;text-wrap:balance">{{ t.tagline }}</div>
+      <div style="font-size:17px;line-height:1.45;text-wrap:pretty">{{ t.welcomeBody }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">{{ t.chooseLang }}</span>
+        <div style="display:flex;gap:4px;background:rgba(0,0,0,.16);padding:4px;border-radius:999px">
+          <sc-for list="{{ langOptsDark }}" as="l" hint-placeholder-count="2"><button onClick="{{ l.on }}" style="border:none;border-radius:999px;padding:6px 8px;font-size:13px;font-weight:700;background:{{ l.bg }};color:{{ l.color }}">{{ l.label }}</button></sc-for>
+        </div>
+      </div>
+      <button onClick="{{ goRole }}" style="height:56px;border:none;border-radius:18px;background:#FBF3EA;color:#8E3C22;font-size:17px;font-weight:700">{{ t.start }}</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isRole }}">
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:18px;padding:10px 22px 44px;overflow-y:auto;scrollbar-width:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.step1 }}</span>
+      <div style="display:flex;gap:2px;border:1px solid #E6DBCB;padding:3px;border-radius:999px"><sc-for list="{{ langOpts }}" as="l" hint-placeholder-count="2"><button onClick="{{ l.on }}" style="border:none;border-radius:999px;padding:5px 6px;font-size:12px;font-weight:700;background:{{ l.bg }};color:{{ l.color }}">{{ l.label }}</button></sc-for></div>
+    </div>
+    <div style="font-family:'Instrument Serif',serif;font-size:42px;line-height:1">{{ t.roleTitle }}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ roleCards }}" as="r" hint-placeholder-count="3">
+        <button onClick="{{ r.on }}" style="text-align:left;display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:18px;border:2px solid {{ r.border }};background:{{ r.bg }};color:#2A211B">
+          <div style="flex:none;width:22px;height:22px;border-radius:50%;border:2px solid {{ r.border }};display:grid;place-items:center;margin-top:1px"><div style="width:10px;height:10px;border-radius:50%;background:{{ r.fill }}"></div></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:17px;font-weight:700">{{ r.title }}</div><div style="font-size:14px;line-height:1.4;color:#6B5D52;text-wrap:pretty">{{ r.desc }}</div></div>
+        </button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ isMemberSel }}">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <label style="font-size:13px;font-weight:600;color:#6B5D52">{{ t.groupCode }}</label>
+        <input value="{{ groupCode }}" onChange="{{ onCode }}" style="height:52px;border-radius:14px;border:1.5px solid #D9CCB9;background:#fff;padding:0 16px;font-family:ui-monospace,Menlo,monospace;font-size:17px;letter-spacing:.1em;color:#2A211B;outline:none">
+        <div style="font-size:13px;color:#4E6B4A;font-weight:600">{{ t.groupFound }}</div>
+      </div>
+    </sc-if>
+    <div style="flex:1"></div>
+    <button onClick="{{ goScan }}" style="flex:none;height:56px;border:none;border-radius:18px;background:#B5502F;color:#fff;font-size:17px;font-weight:700">{{ t.continue }}</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isScan }}">
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;padding:10px 22px 40px">
+    <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.step2 }}</span>
+    <div style="font-family:'Instrument Serif',serif;font-size:40px;line-height:1">{{ t.scanTitle }}</div>
+    <div style="font-size:15px;line-height:1.45;color:#6B5D52;text-wrap:pretty">{{ t.scanBody }}</div>
+    <div style="position:relative;height:250px;border-radius:24px;background:#1E1814;overflow:hidden;display:grid;place-items:center">
+      <div style="width:272px;height:178px;border-radius:10px;background:#EFE3D0;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px">
+          <div style="width:60px;height:76px;border-radius:6px;background:#D5C6B0"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px"><div style="width:120px;height:7px;border-radius:4px;background:#CDBDA5"></div><div style="width:86px;height:7px;border-radius:4px;background:#CDBDA5"></div><div style="width:108px;height:7px;border-radius:4px;background:#CDBDA5"></div><div style="width:64px;height:7px;border-radius:4px;background:#CDBDA5"></div></div>
+        </div>
+        <div style="margin-top:auto;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.05em;color:#4A3E35;line-height:1.55;white-space:nowrap;overflow:hidden">P&lt;GBRSMITH&lt;&lt;EMMA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>5334821&lt;&lt;3GBR8807146F3103228&lt;&lt;&lt;&lt;</div>
+      </div>
+      <div style="position:absolute;left:16px;top:16px;width:30px;height:30px;border-left:3px solid #FBF3EA;border-top:3px solid #FBF3EA;border-radius:8px 0 0 0"></div>
+      <div style="position:absolute;right:16px;top:16px;width:30px;height:30px;border-right:3px solid #FBF3EA;border-top:3px solid #FBF3EA;border-radius:0 8px 0 0"></div>
+      <div style="position:absolute;left:16px;bottom:16px;width:30px;height:30px;border-left:3px solid #FBF3EA;border-bottom:3px solid #FBF3EA;border-radius:0 0 0 8px"></div>
+      <div style="position:absolute;right:16px;bottom:16px;width:30px;height:30px;border-right:3px solid #FBF3EA;border-bottom:3px solid #FBF3EA;border-radius:0 0 8px 0"></div>
+      {{ scanLine }}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#6B5D52"><span>{{ scanStatus }}</span><span>{{ scanPctLabel }}</span></div>
+      <div style="height:6px;border-radius:3px;background:#E6DBCB;overflow:hidden"><div style="height:100%;width:{{ scanPctCss }};background:#B5502F;border-radius:3px"></div></div>
+    </div>
+    <div style="flex:1"></div>
+    <button onClick="{{ startScan }}" style="flex:none;height:56px;border:none;border-radius:18px;background:#B5502F;color:#fff;font-size:17px;font-weight:700">{{ scanBtn }}</button>
+    <button onClick="{{ finishOnboarding }}" style="flex:none;height:40px;border:none;background:transparent;color:#6B5D52;font-size:15px;font-weight:600">{{ t.skip }}</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isScanned }}">
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:18px;padding:18px 22px 40px">
+    <div style="width:72px;height:72px;border-radius:50%;background:#4E6B4A;color:#fff;display:grid;place-items:center;font-size:34px;font-weight:700">✓</div>
+    <div style="font-family:'Instrument Serif',serif;font-size:42px;line-height:1">{{ t.savedTitle }}</div>
+    <div style="font-size:15px;color:#4E6B4A;font-weight:600">{{ t.savedBody }}</div>
+    <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <sc-for list="{{ passportFields }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#6B5D52;font-weight:600">{{ f.k }}</span><span style="font-size:16px;font-weight:600">{{ f.v }}</span></div></sc-for>
+    </div>
+    <button onClick="{{ scanNew }}" style="display:flex;justify-content:space-between;align-items:center;text-align:left;padding:16px;border-radius:18px;border:1.5px dashed #C9BBA8;background:transparent;color:#2A211B">
+      <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:700">{{ t.addMore }}</span><span style="font-size:13px;color:#6B5D52">{{ t.addMoreD }}</span></div><span style="font-size:22px;color:#B5502F">+</span>
+    </button>
+    <div style="flex:1"></div>
+    <button onClick="{{ finishOnboarding }}" style="flex:none;height:56px;border:none;border-radius:18px;background:#B5502F;color:#fff;font-size:17px;font-weight:700">{{ t.continue }}</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}">
+  <div ref="{{ scrollRef }}" style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none">
+
+    <sc-if value="{{ showToday }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.12em;color:#6B5D52">{{ t.dateLine }}</span>
+        <div style="display:flex;gap:2px;border:1px solid #E6DBCB;padding:3px;border-radius:999px"><sc-for list="{{ langOpts }}" as="l" hint-placeholder-count="2"><button onClick="{{ l.on }}" style="border:none;border-radius:999px;padding:4px 6px;font-size:12px;font-weight:700;background:{{ l.bg }};color:{{ l.color }}">{{ l.label }}</button></sc-for></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1">{{ hello }}</div>
+        <div style="font-size:15px;color:#6B5D52">{{ t.dayOf }}</div>
+      </div>
+      <button onClick="{{ goMap }}" style="display:flex;gap:14px;align-items:center;text-align:left;padding:16px;border-radius:20px;border:none;background:{{ safety.bg }};color:#2A211B">
+        <div style="flex:none;width:14px;height:14px;border-radius:50%;background:{{ safety.dot }};box-shadow:0 0 0 6px rgba(255,255,255,.7)"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;padding-left:4px"><span style="font-size:16px;font-weight:700">{{ safety.title }}</span><span style="font-size:14px;color:#4A3E35;line-height:1.35">{{ safety.desc }}</span></div>
+        <span style="font-size:18px">→</span>
+      </button>
+
+      <sc-if value="{{ isLeader }}">
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:700">{{ t.groupName }}</span><span style="font-size:13px;color:#6B5D52">14 {{ t.people }}</span></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <sc-for list="{{ avatars }}" as="a" hint-placeholder-count="6"><div style="width:38px;height:38px;border-radius:50%;background:#EFE7DA;display:grid;place-items:center;font-size:12px;font-weight:700;box-shadow:0 0 0 2.5px {{ a.ring }}">{{ a.i }}</div></sc-for>
+          <div style="font-size:13px;font-weight:600;color:#6B5D52;padding-left:4px">+8</div>
+        </div>
+        <button onClick="{{ openEditor }}" style="height:46px;border-radius:14px;border:1.5px solid #2A211B;background:transparent;color:#2A211B;font-size:15px;font-weight:700">{{ t.editPlan }}</button>
+      </div>
+      </sc-if>
+
+      <button onClick="{{ openTransfer }}" style="display:flex;gap:14px;align-items:center;text-align:left;padding:14px;border-radius:20px;border:1px solid #E6DBCB;background:#fff;color:#2A211B">
+        <div style="flex:none;width:52px;height:52px;border-radius:14px;background:#2A211B;color:#FAF6EF;display:grid;place-items:center;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:700">FCO</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B5D52">{{ t.day1 }}</span><span style="font-size:16px;font-weight:700">{{ t.arrivalT }}</span><span style="font-size:13px;color:#6B5D52">{{ t.arrivalD }}</span></div>
+        <span style="font-size:18px">→</span>
+      </button>
+
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:6px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Instrument Serif',serif;font-size:28px">{{ t.planToday }}</span><button onClick="{{ goMap }}" style="border:none;background:transparent;color:#B5502F;font-size:14px;font-weight:700;padding:0">{{ t.openMap }}</button></div>
+        <sc-if value="{{ isSolo }}">
+          <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px">
+            <sc-for list="{{ tourChips }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.on }}" style="flex:none;padding:8px 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};font-size:14px;font-weight:600">{{ c.label }}</button></sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSolo }}"><div style="font-size:14px;color:#6B5D52">{{ planBy }}</div></sc-if>
+        <div style="font-size:13px;color:#6B5D52">{{ t.fromHotel }}</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column">
+          <sc-if value="{{ s.hasLeg }}">
+          <div style="display:grid;grid-template-columns:46px 20px minmax(0,1fr);gap:10px;min-height:42px">
+            <div></div>
+            <div style="display:flex;justify-content:center"><div style="width:2px;background-image:linear-gradient(#C9BBA8 55%,transparent 55%);background-size:2px 7px"></div></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 0;flex-wrap:wrap"><span style="font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:{{ s.legSoft }};color:{{ s.legC }}">{{ s.legLabel }}</span><span style="font-size:13px;color:#6B5D52">{{ s.legText }}</span></div>
+          </div>
+          </sc-if>
+          <div onClick="{{ s.onTap }}" style="display:grid;grid-template-columns:46px 20px minmax(0,1fr);gap:10px;cursor:pointer;align-items:start">
+            <div style="font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;padding-top:13px;color:{{ s.timeC }}">{{ s.time }}</div>
+            <div style="display:flex;justify-content:center;padding-top:15px"><div style="width:16px;height:16px;border-radius:50%;background:{{ s.dotBg }};border:2px solid {{ s.dotBorder }}"></div></div>
+            <div style="background:{{ s.cardBg }};border:1px solid {{ s.cardBorder }};border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div style="font-size:16px;font-weight:700;line-height:1.25">{{ s.name }}</div><sc-if value="{{ s.isNow }}"><span style="flex:none;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#B5502F;padding:3px 7px;border-radius:6px">{{ t.now }}</span></sc-if></div>
+              <sc-if value="{{ s.hasMeta }}"><div style="font-size:13px;color:#6B5D52">{{ s.meta }}</div></sc-if>
+              <sc-if value="{{ s.hasTip }}"><div style="font-size:13px;color:#8E3C22;line-height:1.4;padding-top:2px;text-wrap:pretty">{{ s.tip }}</div></sc-if>
+              <sc-if value="{{ s.open }}">
+                <div style="margin-top:8px;padding-top:10px;border-top:1px dashed #D9CCB9;display:flex;flex-direction:column;gap:8px">
+                  <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.minute }}</span>
+                  <sc-for list="{{ s.detail }}" as="d" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;font-size:13px;line-height:1.4"><span style="font-variant-numeric:tabular-nums;font-weight:700">{{ d.tm }}</span><span style="text-wrap:pretty">{{ d.x }}</span></div></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+        </sc-for>
+      </div>
+
+      <div style="background:#F4E6C6;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6E4C0C">{{ t.tipTitle }}</span>
+        <div style="font-size:16px;line-height:1.45;text-wrap:pretty">{{ tip }}</div>
+        <button onClick="{{ nextTip }}" style="align-self:flex-start;border:none;background:transparent;padding:0;color:#6E4C0C;font-size:14px;font-weight:700">{{ t.moreTip }}</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showMap }}">
+    <div style="display:flex;flex-direction:column">
+      <div style="position:relative;width:368px;height:440px;overflow:hidden;background:#EDE4D3">
+        <svg width="368" height="440" style="position:absolute;left:0;top:0;display:block">
+          <ellipse cx="302" cy="46" rx="64" ry="38" style="fill:#D8DDC2"></ellipse>
+          <ellipse cx="52" cy="262" rx="32" ry="62" style="fill:#D8DDC2"></ellipse>
+          <ellipse cx="264" cy="310" rx="20" ry="15" style="fill:#D8DDC2"></ellipse>
+          <path d="M150 0 C160 50,118 95,135 150 S150 215,140 258 S104 300,148 352 S190 402,172 440" style="fill:none;stroke:#B7CAC6;stroke-width:14px;stroke-linecap:round"></path>
+          <line x1="178" y1="44" x2="210" y2="256" style="stroke:#fff;stroke-width:5px"></line>
+          <line x1="210" y1="256" x2="338" y2="176" style="stroke:#fff;stroke-width:5px"></line>
+          <line x1="210" y1="256" x2="294" y2="294" style="stroke:#fff;stroke-width:5px"></line>
+          <line x1="330" y1="186" x2="256" y2="270" style="stroke:#fff;stroke-width:4px"></line>
+          <line x1="58" y1="178" x2="112" y2="152" style="stroke:#fff;stroke-width:5px"></line>
+          <line x1="205" y1="160" x2="305" y2="148" style="stroke:#fff;stroke-width:4px"></line>
+          <line x1="210" y1="256" x2="150" y2="226" style="stroke:#fff;stroke-width:4px"></line>
+          <line x1="150" y1="226" x2="112" y2="152" style="stroke:#fff;stroke-width:4px"></line>
+          <line x1="88" y1="322" x2="80" y2="440" style="stroke:#fff;stroke-width:5px"></line>
+          <line x1="294" y1="294" x2="345" y2="335" style="stroke:#fff;stroke-width:4px"></line>
+          <line x1="40" y1="120" x2="140" y2="96" style="stroke:#fff;stroke-width:3px"></line>
+          <line x1="198" y1="322" x2="240" y2="338" style="stroke:#fff;stroke-width:3px"></line>
+          <text x="104" y="104" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:13px;fill:#7F9A95">Tevere</text>
+          <sc-if value="{{ showRisk }}">
+            <sc-for list="{{ riskZones }}" as="z" hint-placeholder-count="4"><circle cx="{{ z.x }}" cy="{{ z.y }}" r="{{ z.r }}" style="fill:rgba(179,38,30,.13);stroke:#B3261E;stroke-width:1.5px;stroke-dasharray:3 3"></circle></sc-for>
+            <polyline points="338,176 272,214 212,256 170,228 118,160 58,178" style="fill:none;stroke:#B3261E;stroke-width:2px;stroke-dasharray:1 5;stroke-linecap:round;opacity:.8"></polyline>
+          </sc-if>
+          <sc-if value="{{ showRoute }}">
+            <sc-for list="{{ segs }}" as="g" hint-placeholder-count="5"><line x1="{{ g.x1 }}" y1="{{ g.y1 }}" x2="{{ g.x2 }}" y2="{{ g.y2 }}" style="stroke:{{ g.c }};stroke-width:{{ g.w }};stroke-dasharray:{{ g.dash }};stroke-linecap:round;opacity:{{ g.op }}"></line></sc-for>
+          </sc-if>
+          <sc-if value="{{ showGroup }}">
+            <circle cx="{{ zone.x }}" cy="{{ zone.y }}" r="{{ zone.r }}" style="fill:rgba(78,107,74,.14);stroke:#4E6B4A;stroke-width:1.5px;stroke-dasharray:5 4"></circle>
+            <sc-for list="{{ groupDots }}" as="d" hint-placeholder-count="10"><circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.5" style="fill:#4E6B4A;stroke:#fff;stroke-width:1.5px"></circle></sc-for>
+            <circle cx="{{ zone.gx }}" cy="{{ zone.gy }}" r="6" style="fill:#2A211B;stroke:#fff;stroke-width:2px"></circle>
+            <sc-if value="{{ hasStray }}">
+              <line x1="{{ stray.x }}" y1="{{ stray.y }}" x2="{{ zone.gx }}" y2="{{ zone.gy }}" style="stroke:#B3261E;stroke-width:2px;stroke-dasharray:4 4"></line>
+              <circle cx="{{ stray.x }}" cy="{{ stray.y }}" r="5" style="fill:#B3261E;stroke:#fff;stroke-width:2px"></circle>
+            </sc-if>
+          </sc-if>
+        </svg>
+        {{ meDot }}
+        <sc-if value="{{ showRoute }}">
+          <sc-for list="{{ markers }}" as="m" hint-placeholder-count="5">
+            <div style="position:absolute;left:{{ m.left }};top:{{ m.top }};display:flex;align-items:center;gap:4px;flex-direction:{{ m.dir }};pointer-events:none;z-index:{{ m.z }};transform:{{ m.tf }}">
+              <div style="flex:none;width:{{ m.size }};height:{{ m.size }};border-radius:50%;background:{{ m.fill }};border:2px solid {{ m.stroke }};color:{{ m.tc }};display:grid;place-items:center;font-size:10px;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.2)">{{ m.label }}</div>
+              <span style="font-size:10px;font-weight:700;color:#2A211B;white-space:nowrap;background:rgba(237,228,211,.85);padding:1px 4px;border-radius:4px">{{ m.name }}</span>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ hasStrayShown }}">
+          <div style="position:absolute;left:{{ stray.left }};top:{{ stray.top }};font-size:10px;font-weight:700;color:#fff;background:#B3261E;padding:2px 6px;border-radius:5px;white-space:nowrap;pointer-events:none;z-index:4">{{ stray.label }}</div>
+        </sc-if>
+        <div style="position:absolute;top:12px;left:12px;right:12px;display:flex;gap:6px;flex-wrap:wrap">
+          <sc-for list="{{ layerChips }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.on }}" style="padding:7px 12px;border-radius:999px;border:none;background:{{ c.bg }};color:{{ c.color }};font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(42,33,27,.12)">{{ c.label }}</button></sc-for>
+        </div>
+      </div>
+      <div style="margin-top:-24px;position:relative;background:#FAF6EF;border-radius:24px 24px 0 0;padding:10px 20px 30px;display:flex;flex-direction:column;gap:16px">
+        <div style="align-self:center;width:40px;height:5px;border-radius:3px;background:#D9CCB9"></div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.youAreAt }}</span>
+          <div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05">{{ placeName }}</div>
+          <sc-if value="{{ nearRisk }}"><div style="align-self:flex-start;margin-top:6px;font-size:13px;font-weight:700;color:#B3261E;background:#F7DCD7;padding:5px 10px;border-radius:8px">{{ t.riskNear }}</div></sc-if>
+        </div>
+        <sc-if value="{{ showStory }}">
+        <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8E3C22">{{ storyLabel }}</span>
+          <div style="font-size:16px;line-height:1.5;text-wrap:pretty">{{ storyText }}</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <button onClick="{{ togglePlay }}" style="flex:none;width:44px;height:44px;border-radius:50%;border:none;background:#B5502F;color:#fff;font-size:14px;font-weight:700">{{ playIcon }}</button>
+            <div style="flex:1;height:4px;border-radius:2px;background:#E6DBCB;overflow:hidden"><div style="height:100%;width:{{ progCss }};background:#B5502F"></div></div>
+            <span style="font-size:13px;font-weight:600;color:#6B5D52;font-variant-numeric:tabular-nums">1:20</span>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ showGuideNote }}">
+        <div style="background:#E1E8D6;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:16px;font-weight:700">{{ t.guideTells }}</span>
+          <span style="font-size:14px;line-height:1.45;color:#3B4A38;text-wrap:pretty">{{ t.guideTellsD }}</span>
+        </div>
+        </sc-if>
+        <sc-if value="{{ hasNextLeg }}">
+        <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ nextLeg.title }}</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:{{ nextLeg.soft }};color:{{ nextLeg.c }}">{{ nextLeg.label }}</span><span style="font-size:15px;font-weight:600">{{ nextLeg.to }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px">
+            <sc-for list="{{ nextLeg.detail }}" as="d" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;font-size:13px;line-height:1.4"><span style="font-weight:700;font-variant-numeric:tabular-nums">{{ d.tm }}</span><span>{{ d.x }}</span></div></sc-for>
+          </div>
+        </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52;padding-bottom:6px">{{ t.around }}</span>
+          <sc-for list="{{ around }}" as="a" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #EDE4D3;font-size:15px"><span style="font-weight:600">{{ a.n }}</span><span style="color:#6B5D52;font-variant-numeric:tabular-nums">{{ a.d }}</span></div></sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 16px;font-size:12px;color:#6B5D52;font-weight:600">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:18px;border-top:3px dotted #B5502F"></span>{{ t.walk }}</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:18px;height:4px;background:#2A211B;border-radius:2px"></span>Metro</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:18px;height:4px;background:#A87414;border-radius:2px"></span>Bus</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:50%;background:rgba(179,38,30,.15);border:1.5px dashed #B3261E"></span>{{ t.layerRisk }}</span>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showDocs }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <sc-if value="{{ docsLocked }}">
+      <div style="min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:0 10px">
+        <div style="width:92px;height:92px;border-radius:50%;background:#F3DED2;display:grid;place-items:center">
+          <div style="position:relative;width:34px;height:40px"><div style="position:absolute;left:6px;top:0;width:22px;height:22px;border:4px solid #B5502F;border-bottom:none;border-radius:12px 12px 0 0"></div><div style="position:absolute;left:0;bottom:0;width:34px;height:24px;border-radius:6px;background:#B5502F"></div></div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.docsTitle }}</div>
+        <div style="font-size:15px;line-height:1.45;color:#6B5D52;text-wrap:pretty">{{ t.lockedD }}</div>
+        <button onClick="{{ unlock }}" style="margin-top:8px;width:100%;height:56px;border:none;border-radius:18px;background:#2A211B;color:#FAF6EF;font-size:17px;font-weight:700">{{ unlockLabel }}</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ docsOpen }}">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.docsTitle }}</div><span style="font-size:12px;font-weight:700;color:#3B4A38;background:#E1E8D6;padding:5px 10px;border-radius:999px">{{ t.encOff }}</span></div>
+        <div style="background:#2A211B;color:#FAF6EF;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase"><span>{{ t.passportUK }}</span><span style="font-family:ui-monospace,Menlo,monospace">GBR</span></div>
+          <div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1">Emma Smith</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#CDBFAE">{{ t.fNum }}</span><span style="font-size:15px;font-weight:600">•••• 4821</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#CDBFAE">{{ t.fExp }}</span><span style="font-size:15px;font-weight:600">03/2031</span></div>
+          </div>
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#CDBFAE;letter-spacing:.05em;white-space:nowrap;overflow:hidden">P&lt;GBRSMITH&lt;&lt;EMMA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+          <div style="font-size:13px;color:#E6D9C7;line-height:1.4;border-top:1px solid rgba(255,255,255,.15);padding-top:12px">{{ t.backupNote }}</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:4px 16px">
+          <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EDE4D3">
+              <div style="flex:none;width:40px;height:40px;border-radius:12px;background:#EFE7DA;display:grid;place-items:center;font-size:12px;font-weight:700">{{ d.k }}</div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:700">{{ d.n }}</span><span style="font-size:13px;color:#6B5D52">{{ d.s }}</span></div>
+              <span style="font-size:12px;font-weight:700;color:#4E6B4A">{{ t.offline }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ scanNew }}" style="height:52px;border-radius:16px;border:1.5px dashed #C9BBA8;background:transparent;color:#2A211B;font-size:15px;font-weight:700">+ {{ t.scanNew }}</button>
+        <button onClick="{{ openLost }}" style="display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:20px;border:none;background:#F7DCD7;color:#2A211B">
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:700;color:#8F1D17">{{ t.lost }}</span><span style="font-size:14px;color:#4A3E35">{{ t.lostD }}</span></div><span style="font-size:18px;color:#8F1D17">→</span>
+        </button>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showPlaces }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.placesTitle }}</div><div style="font-size:14px;color:#6B5D52">{{ t.placesD }}</div></div>
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px">
+        <sc-for list="{{ filterChips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.on }}" style="flex:none;padding:8px 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};font-size:14px;font-weight:600">{{ c.label }}</button></sc-for>
+      </div>
+      <div style="background:#F4E6C6;border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.4;text-wrap:pretty">{{ t.firstSunday }}</div>
+      <sc-for list="{{ museums }}" as="m" hint-placeholder-count="5">
+        <button onClick="{{ m.on }}" style="text-align:left;display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:20px;border:1px solid #E6DBCB;background:#fff;color:#2A211B">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;width:100%"><span style="font-size:17px;font-weight:700;line-height:1.25">{{ m.name }}</span><span style="flex:none;font-family:'Instrument Serif',serif;font-size:24px;line-height:1">{{ m.price }}</span></div>
+          <span style="font-size:13px;color:#6B5D52">{{ m.tags }}</span>
+          <div style="display:flex;justify-content:space-between;width:100%;font-size:13px"><span style="color:#3B5A37;font-weight:700">● {{ m.status }}</span><span style="color:#6B5D52">{{ m.hours }}</span></div>
+        </button>
+      </sc-for>
+      <div style="font-size:12px;color:#6B5D52;line-height:1.45">{{ t.priceNote }}</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showSos }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1">{{ t.sosTitle }}</div><div style="font-size:14px;color:#6B5D52;line-height:1.4">{{ t.num112 }}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:26px 0 8px">
+        <button onClick="{{ sosPress }}" style="width:190px;height:190px;border-radius:50%;border:none;background:#B3261E;color:#fff;box-shadow:0 0 0 14px #F7DCD7,0 0 0 28px #FBEDEA;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+          <span style="font-family:'Instrument Serif',serif;font-size:76px;line-height:.9">{{ sosBig }}</span><span style="font-size:13px;font-weight:700">{{ sosSub }}</span>
+        </button>
+        <sc-if value="{{ sosActive }}"><button onClick="{{ sosCancel }}" style="margin-top:14px;padding:10px 22px;border-radius:999px;border:1.5px solid #2A211B;background:transparent;color:#2A211B;font-size:15px;font-weight:700">{{ t.cancel }}</button></sc-if>
+      </div>
+      <button onClick="{{ toggleShare }}" style="display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:20px;border:1px solid #E6DBCB;background:#fff;color:#2A211B">
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:700">{{ t.sharePos }}</span><span style="font-size:13px;color:#6B5D52">{{ t.sharePosD }}</span></div>
+        <div style="flex:none;width:50px;height:30px;border-radius:15px;background:{{ share.bg }};padding:3px;display:flex;justify-content:{{ share.jc }}"><div style="width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div>
+      </button>
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:4px 16px">
+        <sc-for list="{{ sosRows }}" as="r" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EDE4D3">
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B5D52">{{ r.k }}</span><span style="font-size:15px;font-weight:600">{{ r.n }}</span></div>
+            <button onClick="{{ r.on }}" style="padding:8px 12px;border-radius:12px;border:none;background:#EFE7DA;color:#2A211B;font-size:13px;font-weight:700">{{ r.d }} →</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.phrases }}</span>
+        <sc-for list="{{ phrases }}" as="p" hint-placeholder-count="4"><div style="padding:12px 14px;border-radius:14px;background:#EFE7DA;display:flex;flex-direction:column;gap:2px"><span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.1">{{ p.it }}</span><span style="font-size:13px;color:#6B5D52">{{ p.en }}</span></div></sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ subTransfer }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <button onClick="{{ back }}" style="align-self:flex-start;width:40px;height:40px;border-radius:50%;border:none;background:#EFE7DA;color:#2A211B;font-size:18px">←</button>
+      <div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.trTitle }}</div><div style="font-size:14px;color:#6B5D52">→ Hotel Travertino · Via Cavour</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#EFE7DA;padding:4px;border-radius:14px">
+        <sc-for list="{{ airportOpts }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.on }}" style="padding:10px;border-radius:11px;border:none;background:{{ a.bg }};color:#2A211B;font-size:14px;font-weight:700;box-shadow:{{ a.sh }}">{{ a.label }}</button></sc-for>
+      </div>
+      <sc-for list="{{ transferOpts }}" as="o" hint-placeholder-count="3">
+        <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:6px;align-items:center"><span style="font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:{{ o.soft }};color:{{ o.c }}">{{ o.mode }}</span><sc-if value="{{ o.hasBest }}"><span style="font-size:12px;font-weight:700;color:#3B5A37">{{ o.best }}</span></sc-if></div><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1">{{ o.price }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:17px;font-weight:700">{{ o.name }}</span><span style="font-size:13px;color:#6B5D52">{{ o.meta }}</span></div>
+          <sc-if value="{{ o.buy }}"><button onClick="{{ o.onBuy }}" style="height:44px;border-radius:12px;border:none;background:#B5502F;color:#fff;font-size:15px;font-weight:700">{{ t.buy }} · {{ o.price }}</button></sc-if>
+          <sc-if value="{{ o.noBuy }}"><div style="font-size:13px;color:#6B5D52;line-height:1.4">{{ t.taxiNote }}</div></sc-if>
+        </div>
+      </sc-for>
+      <div style="display:flex;gap:12px;padding:14px 16px;border-radius:18px;background:#E1E8D6;font-size:14px;line-height:1.4"><div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:700">{{ t.lastLeg }}</span><span style="color:#3B4A38">{{ t.checkin }}</span></div></div>
+      <div style="background:#F7DCD7;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8F1D17">{{ t.safetyTip }}</span><span style="font-size:15px;line-height:1.45;text-wrap:pretty">{{ t.trTip }}</span></div>
+      <div style="font-size:12px;color:#6B5D52">{{ t.priceNote }}</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ subTicket }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <button onClick="{{ back }}" style="align-self:flex-start;width:40px;height:40px;border-radius:50%;border:none;background:#EFE7DA;color:#2A211B;font-size:18px">←</button>
+      <div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.ticketT }}</div>
+      <div style="border-radius:22px;overflow:hidden;background:#fff;border:1px solid #E6DBCB">
+        <div style="background:#B5502F;color:#FBF3EA;padding:18px;display:flex;flex-direction:column;gap:4px"><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1">{{ ticket.name }}</span><span style="font-size:14px;font-weight:600">{{ ticket.route }}</span></div>
+        <div style="padding:22px;display:flex;flex-direction:column;align-items:center;gap:18px;border-bottom:2px dashed #E6DBCB">
+          <div style="display:grid;grid-template-columns:repeat(25,7px);grid-auto-rows:7px;padding:10px;background:#fff;border:1px solid #EDE4D3;border-radius:10px">
+            <sc-for list="{{ qr }}" as="q" hint-placeholder-count="0"><div style="background:{{ q.c }}"></div></sc-for>
+          </div>
+          <span style="font-size:13px;color:#6B5D52;text-align:center">{{ t.ticketValid }}</span>
+        </div>
+        <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6B5D52;font-weight:600">{{ t.passenger }}</span><span style="font-size:15px;font-weight:700">Emma Smith</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6B5D52;font-weight:600">{{ t.fare }}</span><span style="font-size:15px;font-weight:700">{{ ticket.price }}</span></div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#3B5A37">✓ {{ t.ticketSaved }}</div>
+      <button onClick="{{ ticketDone }}" style="height:56px;border:none;border-radius:18px;background:#2A211B;color:#FAF6EF;font-size:17px;font-weight:700">{{ t.done }}</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ subMuseum }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <button onClick="{{ back }}" style="align-self:flex-start;width:40px;height:40px;border-radius:50%;border:none;background:#EFE7DA;color:#2A211B;font-size:18px">←</button>
+      <div style="height:176px;border-radius:20px;background:repeating-linear-gradient(135deg,#E6DBCB 0 10px,#EFE7DA 10px 20px);display:grid;place-items:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#6B5D52;background:#FAF6EF;padding:5px 9px;border-radius:6px">foto · {{ mus.name }}</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ mus.name }}</div><span style="font-size:14px;color:#3B5A37;font-weight:700">● {{ mus.status }} · {{ mus.hours }}</span></div>
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:4px 16px">
+        <sc-for list="{{ mus.rows }}" as="r" hint-placeholder-count="3"><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #EDE4D3;font-size:15px"><span style="color:#6B5D52">{{ r.k }}</span><span style="font-weight:700">{{ r.v }}</span></div></sc-for>
+      </div>
+      <sc-if value="{{ mus.hasNote }}"><div style="background:#F4E6C6;border-radius:16px;padding:14px;font-size:14px;line-height:1.45;text-wrap:pretty">{{ mus.note }}</div></sc-if>
+      <sc-if value="{{ mus.hasStory }}">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8E3C22">{{ storyLabel }}</span><div style="font-size:16px;line-height:1.5;text-wrap:pretty">{{ mus.story }}</div></div>
+      </sc-if>
+      <sc-if value="{{ showGuideNoteMus }}"><div style="background:#E1E8D6;border-radius:16px;padding:14px;font-size:14px;line-height:1.45;color:#3B4A38">{{ t.guideTellsD }}</div></sc-if>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button onClick="{{ book }}" style="height:50px;border-radius:14px;border:none;background:#B5502F;color:#fff;font-size:15px;font-weight:700">{{ t.book }}</button>
+        <button onClick="{{ addPlan }}" style="height:50px;border-radius:14px;border:1.5px solid #2A211B;background:transparent;color:#2A211B;font-size:15px;font-weight:700">{{ t.addToPlan }}</button>
+      </div>
+      <div style="font-size:12px;color:#6B5D52">{{ t.priceNote }}</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ subEditor }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <button onClick="{{ back }}" style="align-self:flex-start;width:40px;height:40px;border-radius:50%;border:none;background:#EFE7DA;color:#2A211B;font-size:18px">←</button>
+      <div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.edTitle }}</div><div style="font-size:14px;color:#6B5D52">{{ t.groupName }} · 14 {{ t.people }}</div></div>
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px">
+        <sc-for list="{{ edTourChips }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.on }}" style="flex:none;padding:8px 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};font-size:14px;font-weight:600">{{ c.label }}</button></sc-for>
+      </div>
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:4px 12px">
+        <sc-for list="{{ edSteps }}" as="s" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EDE4D3">
+            <button onClick="{{ s.onTime }}" style="flex:none;width:58px;height:34px;border-radius:10px;border:1px solid #E6DBCB;background:#FAF6EF;color:#2A211B;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">{{ s.time }}</button>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:700;line-height:1.2">{{ s.name }}</span>
+              <sc-if value="{{ s.hasMode }}"><button onClick="{{ s.onMode }}" style="align-self:flex-start;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;border:none;background:{{ s.soft }};color:{{ s.c }}">{{ s.mode }} ⇄</button></sc-if>
+            </div>
+            <sc-if value="{{ s.canDel }}"><button onClick="{{ s.onDel }}" style="flex:none;width:32px;height:32px;border-radius:50%;border:none;background:#EFE7DA;color:#6B5D52;font-size:16px">×</button></sc-if>
+          </div>
+        </sc-for>
+        <button onClick="{{ addStop }}" style="width:100%;height:48px;border:none;background:transparent;color:#B5502F;font-size:15px;font-weight:700">+ {{ t.addStop }}</button>
+      </div>
+      <div style="font-size:12px;color:#6B5D52;margin-top:-8px">{{ t.edHint }}</div>
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.meet }}</span>
+        <span style="font-size:16px;font-weight:700">{{ t.meetPlace }}</span>
+      </div>
+      <div style="background:#fff;border:1px solid #E6DBCB;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6B5D52">{{ t.radius }}</span><span style="font-family:'Instrument Serif',serif;font-size:28px;line-height:1">{{ radiusLabel }}</span></div>
+        <input type="range" min="50" max="500" step="25" value="{{ radius }}" onChange="{{ onRadius }}" style="width:100%">
+        <span style="font-size:13px;color:#6B5D52">{{ t.radiusD }}</span>
+      </div>
+      <button onClick="{{ publish }}" style="height:56px;border:none;border-radius:18px;background:#B5502F;color:#fff;font-size:17px;font-weight:700">{{ t.publish }}</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ subLost }}">
+    <div style="padding:6px 20px 30px;display:flex;flex-direction:column;gap:16px">
+      <button onClick="{{ back }}" style="align-self:flex-start;width:40px;height:40px;border-radius:50%;border:none;background:#EFE7DA;color:#2A211B;font-size:18px">←</button>
+      <div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ t.lostTitle }}</div>
+      <sc-for list="{{ lostSteps }}" as="s" hint-placeholder-count="3">
+        <div style="display:flex;gap:14px;padding:16px;border-radius:20px;background:#fff;border:1px solid #E6DBCB">
+          <div style="flex:none;width:32px;height:32px;border-radius:50%;background:#2A211B;color:#FAF6EF;display:grid;place-items:center;font-size:14px;font-weight:700">{{ s.n }}</div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:700">{{ s.t }}</span><span style="font-size:14px;color:#6B5D52;line-height:1.4;text-wrap:pretty">{{ s.d }}</span></div>
+        </div>
+      </sc-for>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button onClick="{{ call112 }}" style="height:52px;border-radius:14px;border:none;background:#B3261E;color:#fff;font-size:15px;font-weight:700">{{ t.callPolice }}</button>
+        <button onClick="{{ shareCopy }}" style="height:52px;border-radius:14px;border:1.5px solid #2A211B;background:transparent;color:#2A211B;font-size:15px;font-weight:700">{{ t.share }}</button>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+  <div style="flex:none;height:86px;padding:10px 8px 28px;background:#FAF6EF;border-top:1px solid #E6DBCB;display:grid;grid-template-columns:repeat(5,1fr)">
+    <sc-for list="{{ tabs }}" as="b" hint-placeholder-count="5">
+      <button onClick="{{ b.on }}" style="border:none;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:0">
+        <div style="width:22px;height:3px;border-radius:2px;background:{{ b.ind }}"></div>
+        <span style="font-size:12px;font-weight:700;color:{{ b.color }}">{{ b.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ hasAlert }}">
+  <div style="position:absolute;inset:0;background:rgba(30,24,20,.55);display:flex;flex-direction:column;justify-content:flex-end;z-index:20">
+    <div style="background:#FAF6EF;border-radius:30px 30px 0 0;padding:24px 22px 42px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:{{ al.tone }}"></div><span style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:{{ al.tone }}">{{ t.alertLabel }}</span></div>
+      <div style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1.02;text-wrap:balance">{{ al.title }}</div>
+      <div style="font-size:16px;line-height:1.45;color:#4A3E35;text-wrap:pretty">{{ al.desc }}</div>
+      <sc-if value="{{ al.hasBig }}"><div style="font-family:'Instrument Serif',serif;font-size:66px;line-height:1;color:{{ al.tone }}">{{ al.big }}</div></sc-if>
+      <sc-if value="{{ al.hasTips }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ al.tips }}" as="p" hint-placeholder-count="3"><div style="display:flex;gap:10px;padding:12px;border-radius:14px;background:#F7DCD7;font-size:14px;line-height:1.4"><span style="font-weight:700;color:#8F1D17">{{ p.n }}</span><span>{{ p.x }}</span></div></sc-for>
+        </div>
+      </sc-if>
+      <button onClick="{{ al.onPrimary }}" style="margin-top:4px;height:56px;border:none;border-radius:18px;background:{{ al.tone }};color:#fff;font-size:17px;font-weight:700">{{ al.primary }}</button>
+      <sc-if value="{{ al.hasSecondary }}"><button onClick="{{ al.onSecondary }}" style="height:52px;border-radius:18px;border:1.5px solid #2A211B;background:transparent;color:#2A211B;font-size:16px;font-weight:700">{{ al.secondary }}</button></sc-if>
+      <sc-if value="{{ al.hasTertiary }}"><button onClick="{{ al.onTertiary }}" style="height:40px;border:none;background:transparent;color:#6B5D52;font-size:15px;font-weight:600">{{ al.tertiary }}</button></sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}">
+  <div style="position:absolute;left:20px;right:20px;bottom:104px;display:flex;justify-content:center;z-index:30;pointer-events:none"><div style="background:#2A211B;color:#FAF6EF;padding:12px 18px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center">{{ toast }}</div></div>
+  </sc-if>
+
+  <div style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:{{ homeInd }};z-index:40"></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;solo&quot;,&quot;member&quot;,&quot;leader&quot;],&quot;default&quot;:&quot;member&quot;,&quot;tsType&quot;:&quot;'solo'|'member'|'leader'&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;en&quot;,&quot;pl&quot;,&quot;es&quot;,&quot;fr&quot;,&quot;ro&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'en'|'pl'|'es'|'fr'|'ro'&quot;},&quot;startAt&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;onboarding&quot;,&quot;app&quot;],&quot;default&quot;:&quot;onboarding&quot;,&quot;tsType&quot;:&quot;'onboarding'|'app'&quot;},&quot;showPanel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const TR = {
+it: {
+tagline:"Viaggia in Italia, al sicuro.", welcomeBody:"I tuoi documenti protetti, il programma del giorno, il gruppo sempre vicino.", chooseLang:"Lingua", start:"Inizia",
+step1:"Passo 1 di 2", step2:"Passo 2 di 2", roleTitle:"Come viaggi?",
+roleSolo:"Da solo", roleSoloD:"Programmi personali, racconti dei luoghi, percorsi minuto per minuto.",
+roleMember:"In un gruppo", roleMemberD:"Segui il programma del capogruppo. Ti avvisiamo se ti allontani.",
+roleLeader:"Capogruppo", roleLeaderD:"Crea il programma, vedi dove sono tutti, ricevi gli avvisi.",
+groupCode:"Codice gruppo", groupFound:"✓ Parrocchia San Luca · capogruppo Marco", continue:"Continua",
+scanTitle:"Scansiona il passaporto", scanBody:"Una copia cifrata resta sul telefono, anche offline. Se lo perdi, hai sempre una prova.",
+scanHint:"Inquadra la pagina con la foto", scanBtn:"Scansiona", scanning:"Lettura in corso…", scanReady:"Pronto", skip:"Più tardi",
+savedTitle:"Documento protetto", savedBody:"Cifrato sul dispositivo · Disponibile offline",
+fName:"Nome", fNum:"Numero", fExp:"Scadenza", fNat:"Nazionalità", addMore:"Aggiungi altri documenti", addMoreD:"Carta d'imbarco, assicurazione, voucher hotel",
+tToday:"Oggi", tMap:"Mappa", tDocs:"Documenti", tPlaces:"Musei", tSos:"SOS",
+dateLine:"VEN 25 SETTEMBRE · 24°", dayOf:"Roma · Giorno 2 di 4",
+day1:"Arrivo · Giorno 1", arrivalT:"Aeroporto → Hotel", arrivalD:"Treno, bus o taxi: tempi e prezzi",
+planToday:"Programma di oggi", openMap:"Apri mappa", fromHotel:"Partenza da Hotel Travertino, Via Cavour", editPlan:"Modifica programma",
+groupName:"Parrocchia San Luca", people:"persone", now:"Ora", minute:"Minuto per minuto", leave:"Parti da", arrive:"Arrivo a",
+tipTitle:"Consiglio di Custode", moreTip:"Altro consiglio →", walk:"A piedi",
+layerRoute:"Percorso", layerRisk:"Borseggi", layerGroup:"Gruppo",
+youAreAt:"Sei qui", riskNear:"Zona borseggi vicina: attenzione", around:"Intorno a te",
+storySolo:"Il racconto del luogo", storyLeader:"Spunti per la tua spiegazione",
+guideTells:"Qui racconta la tua guida", guideTellsD:"Nel gruppo niente racconti automatici: ascolta Marco. Custode ti avvisa solo se ti allontani.",
+nextLeg:"Prossimo spostamento", backToGroup:"Torna dal gruppo",
+docsTitle:"Portafoglio sicuro", lockedD:"I tuoi documenti sono cifrati. Solo tu puoi aprirli, anche senza internet.",
+unlock:"Sblocca con Face ID", unlocking:"Verifica…", encOff:"Cifrato · Offline", passportUK:"Passaporto · Regno Unito",
+backupNote:"Copia di sicurezza: mostrala a polizia o ambasciata se perdi l'originale.", offline:"Offline",
+scanNew:"Scansiona nuovo documento", lost:"Ho perso un documento", lostD:"Ti guidiamo: denuncia, ambasciata, copia pronta.",
+lostTitle:"Documento perso",
+lost1:"Fai la denuncia", lost1D:"Polizia o Carabinieri. Il più vicino: Commissariato Trevi, 650 m. Porta questa copia.",
+lost2:"Contatta la tua ambasciata", lost2D:"Per il passaporto d'emergenza servono la denuncia e una foto. Ambasciata britannica: Via XX Settembre.",
+lost3:"Mostra la copia di sicurezza", lost3D:"Vale come prova d'identità in hotel e ai controlli, in attesa del nuovo documento.",
+callPolice:"Chiama 112", share:"Condividi copia",
+placesTitle:"Musei e monumenti", placesD:"Roma · prezzi e orari di oggi", all:"Tutti",
+firstSunday:"Prima domenica del mese: musei statali gratuiti. Code lunghe, arriva all'apertura.",
+openUntil:"Aperto fino alle", full:"Intero", reduced:"Ridotto", booking:"Prenotazione / extra", hours:"Orari",
+book:"Prenota", addToPlan:"Al programma", priceNote:"Prezzi indicativi 2026: verifica sempre sul sito ufficiale.",
+sosTitle:"Emergenza", num112:"112 è il numero unico europeo: polizia, ambulanza, vigili del fuoco. Risponde anche in inglese.",
+sosHold:"Tocca per chiamare", sosIn:"Chiamata tra", sosCalling:"In chiamata…", cancel:"Annulla",
+sharePos:"Condividi la mia posizione", sharePosD:"Con il capogruppo e un contatto di fiducia",
+nearPolice:"Polizia", nearHosp:"Ospedale", nearEmb:"Ambasciata", phrases:"Frasi utili",
+trTitle:"Dall'aeroporto all'hotel", buy:"Acquista", taxiNote:"Tariffa fissa per il centro storico, bagagli inclusi. Solo taxi bianchi in fila ufficiale.",
+lastLeg:"Da Termini all'hotel: 9 min a piedi", checkin:"Check-in dalle 14:00 · deposito bagagli gratuito", safetyTip:"Sicurezza",
+trTip:"Prendi solo taxi bianchi con scritta TAXI e numero di licenza sulla portiera. Ignora chi ti offre un passaggio agli arrivi.",
+ticketT:"Il tuo biglietto", ticketValid:"Valido per 1 corsa · convalida prima di salire", ticketSaved:"Salvato in Documenti, disponibile offline",
+passenger:"Passeggero", fare:"Tariffa", done:"Fatto",
+edTitle:"Programma del gruppo", addStop:"Aggiungi tappa", edHint:"Tocca l'orario per spostarlo di 15 min, il mezzo per cambiarlo.",
+meet:"Punto d'incontro", meetPlace:"Piazza Pio XII, lato colonnato · 12:15", radius:"Zona del gruppo", radiusD:"Avviso a chi si allontana oltre questa distanza dalla guida.",
+publish:"Invia al gruppo",
+alertLabel:"Avviso sicurezza",
+zoneT:"Ti sei allontanato dal gruppo", zoneD:"Il gruppo è davanti ai Musei Vaticani. Sei a questa distanza:",
+zoneGo:"Portami dal gruppo", zoneCall:"Chiama Marco", zoneOk:"Sto bene, avvisa il capogruppo",
+zoneLT:"Giulia R. è fuori zona", zoneLD:"È vicino a Via della Conciliazione. Le abbiamo già inviato la strada per tornare.",
+zoneLSee:"Vedi sulla mappa", zoneLCall:"Chiama Giulia", dismiss:"Chiudi",
+offT:"Sei fuori percorso", offD:"Ti riportiamo verso la prossima tappa. A piedi:", offGo:"Riprendi il percorso",
+theftT:"Zona ad alto rischio borseggi", theftD:"Stazione Termini e bus 64. Qui i furti sono frequenti, soprattutto nella folla.",
+theft1:"Zaino davanti, borsa chiusa e a tracolla.", theft2:"Telefono e portafoglio nelle tasche interne, mai in quelle dietro.", theft3:"Diffida di chi ti aiuta con biglietti o valigie senza che tu lo chieda.",
+theftOk:"Ho capito",
+toastCall:"Chiamata in corso (demo)", toastLeader:"Capogruppo avvisato: stai bene", toastBack:"Sei di nuovo con il gruppo", toastBook:"Apertura del sito ufficiale…",
+toastAdded:"Aggiunto al programma", toastRoute:"Percorso avviato", toastShareOn:"Posizione condivisa per 2 ore", toastShareOff:"Condivisione interrotta",
+toastCopy:"Copia cifrata condivisa", toastScan:"Fotocamera pronta", toastSent:"Programma inviato a 14 persone", toastLeaderPos:"Giulia ha ricevuto la strada per tornare"
+},
+en: {
+tagline:"Travel Italy, safely.", welcomeBody:"Your documents protected, your daily plan, your group always close.", chooseLang:"Language", start:"Get started",
+step1:"Step 1 of 2", step2:"Step 2 of 2", roleTitle:"How are you travelling?",
+roleSolo:"On my own", roleSoloD:"Personal plans, stories of places, minute-by-minute routes.",
+roleMember:"With a group", roleMemberD:"Follow your leader's plan. We alert you if you drift away.",
+roleLeader:"Group leader", roleLeaderD:"Build the plan, see where everyone is, get the alerts.",
+groupCode:"Group code", groupFound:"✓ St Luke's Parish · leader Marco", continue:"Continue",
+scanTitle:"Scan your passport", scanBody:"An encrypted copy stays on your phone, even offline. If you lose it, you still have proof.",
+scanHint:"Frame the photo page", scanBtn:"Scan", scanning:"Reading…", scanReady:"Ready", skip:"Later",
+savedTitle:"Document protected", savedBody:"Encrypted on device · Available offline",
+fName:"Name", fNum:"Number", fExp:"Expiry", fNat:"Nationality", addMore:"Add more documents", addMoreD:"Boarding pass, insurance, hotel voucher",
+tToday:"Today", tMap:"Map", tDocs:"Documents", tPlaces:"Museums", tSos:"SOS",
+dateLine:"FRI 25 SEPTEMBER · 24°", dayOf:"Rome · Day 2 of 4",
+day1:"Arrival · Day 1", arrivalT:"Airport → Hotel", arrivalD:"Train, bus or taxi: times and prices",
+planToday:"Today's plan", openMap:"Open map", fromHotel:"Departure from Hotel Travertino, Via Cavour", editPlan:"Edit plan",
+groupName:"St Luke's Parish", people:"people", now:"Now", minute:"Minute by minute", leave:"Leave", arrive:"Arrive at",
+tipTitle:"Custode tip", moreTip:"Another tip →", walk:"Walk",
+layerRoute:"Route", layerRisk:"Pickpockets", layerGroup:"Group",
+youAreAt:"You are here", riskNear:"Pickpocket area nearby: stay alert", around:"Around you",
+storySolo:"The story of this place", storyLeader:"Notes for your talk",
+guideTells:"Your guide tells the story here", guideTellsD:"In a group there are no automatic stories: listen to Marco. Custode only alerts you if you drift away.",
+nextLeg:"Next leg", backToGroup:"Back to the group",
+docsTitle:"Secure wallet", lockedD:"Your documents are encrypted. Only you can open them, even without internet.",
+unlock:"Unlock with Face ID", unlocking:"Checking…", encOff:"Encrypted · Offline", passportUK:"Passport · United Kingdom",
+backupNote:"Backup copy: show it to police or your embassy if you lose the original.", offline:"Offline",
+scanNew:"Scan new document", lost:"I lost a document", lostD:"We guide you: report, embassy, ready copy.",
+lostTitle:"Lost document",
+lost1:"File a police report", lost1D:"Police or Carabinieri. Nearest: Commissariato Trevi, 650 m. Bring this copy.",
+lost2:"Contact your embassy", lost2D:"An emergency passport needs the report and a photo. British Embassy: Via XX Settembre.",
+lost3:"Show your backup copy", lost3D:"Works as proof of identity at hotels and checks until your new document arrives.",
+callPolice:"Call 112", share:"Share copy",
+placesTitle:"Museums & monuments", placesD:"Rome · today's prices and hours", all:"All",
+firstSunday:"First Sunday of the month: state museums are free. Long queues, arrive at opening.",
+openUntil:"Open until", full:"Full", reduced:"Reduced", booking:"Booking / extras", hours:"Hours",
+book:"Book", addToPlan:"Add to plan", priceNote:"Indicative 2026 prices: always check the official site.",
+sosTitle:"Emergency", num112:"112 is the EU single number: police, ambulance, fire. Operators speak English.",
+sosHold:"Tap to call", sosIn:"Calling in", sosCalling:"Calling…", cancel:"Cancel",
+sharePos:"Share my location", sharePosD:"With your group leader and a trusted contact",
+nearPolice:"Police", nearHosp:"Hospital", nearEmb:"Embassy", phrases:"Useful phrases",
+trTitle:"Airport to hotel", buy:"Buy", taxiNote:"Flat fare to the historic centre, luggage included. Only white taxis from the official rank.",
+lastLeg:"Termini to hotel: 9 min walk", checkin:"Check-in from 14:00 · free luggage storage", safetyTip:"Safety",
+trTip:"Only take white taxis with a TAXI sign and licence number on the door. Ignore anyone offering rides in arrivals.",
+ticketT:"Your ticket", ticketValid:"Valid for 1 ride · validate before boarding", ticketSaved:"Saved in Documents, available offline",
+passenger:"Passenger", fare:"Fare", done:"Done",
+edTitle:"Group plan", addStop:"Add stop", edHint:"Tap a time to shift it by 15 min, tap the transport to change it.",
+meet:"Meeting point", meetPlace:"Piazza Pio XII, colonnade side · 12:15", radius:"Group zone", radiusD:"Anyone further than this from the guide gets an alert.",
+publish:"Send to group",
+alertLabel:"Safety alert",
+zoneT:"You've drifted from your group", zoneD:"The group is outside the Vatican Museums. You are this far away:",
+zoneGo:"Take me to the group", zoneCall:"Call Marco", zoneOk:"I'm fine, tell the leader",
+zoneLT:"Giulia R. is out of the zone", zoneLD:"She's near Via della Conciliazione. We've already sent her directions back.",
+zoneLSee:"See on map", zoneLCall:"Call Giulia", dismiss:"Close",
+offT:"You're off route", offD:"We'll guide you back to your next stop. Walking:", offGo:"Resume route",
+theftT:"High pickpocket risk area", theftD:"Termini station and bus 64. Thefts are common here, especially in crowds.",
+theft1:"Backpack on your front, bag zipped and cross-body.", theft2:"Phone and wallet in inside pockets, never back pockets.", theft3:"Be wary of anyone helping with tickets or bags unasked.",
+theftOk:"Got it",
+toastCall:"Calling (demo)", toastLeader:"Leader notified: you're fine", toastBack:"You're back with the group", toastBook:"Opening the official site…",
+toastAdded:"Added to plan", toastRoute:"Route started", toastShareOn:"Location shared for 2 hours", toastShareOff:"Sharing stopped",
+toastCopy:"Encrypted copy shared", toastScan:"Camera ready", toastSent:"Plan sent to 14 people", toastLeaderPos:"Giulia received directions back"
+}};
+const LANGS = ["it","en","pl","es","fr","ro"];
+const X = {"Travel Italy, safely.":{"pl":"Podróżuj po Włoszech bezpiecznie.","es":"Viaja por Italia con seguridad.","fr":"Voyagez en Italie, en sécurité.","ro":"Călătorește prin Italia în siguranță."},"Your documents protected, your daily plan, your group always close.":{"pl":"Twoje dokumenty chronione, plan dnia, grupa zawsze blisko.","es":"Tus documentos protegidos, tu plan del día, tu grupo siempre cerca.","fr":"Vos documents protégés, votre programme du jour, votre groupe toujours proche.","ro":"Documentele protejate, programul zilei, grupul mereu aproape."},"Language":{"pl":"Język","es":"Idioma","fr":"Langue","ro":"Limbă"},"Get started":{"pl":"Zaczynamy","es":"Empezar","fr":"Commencer","ro":"Începe"},"Step 1 of 2":{"pl":"Krok 1 z 2","es":"Paso 1 de 2","fr":"Étape 1 sur 2","ro":"Pasul 1 din 2"},"Step 2 of 2":{"pl":"Krok 2 z 2","es":"Paso 2 de 2","fr":"Étape 2 sur 2","ro":"Pasul 2 din 2"},"How are you travelling?":{"pl":"Jak podróżujesz?","es":"¿Cómo viajas?","fr":"Comment voyagez-vous ?","ro":"Cum călătorești?"},"On my own":{"pl":"Sam","es":"Por mi cuenta","fr":"Seul","ro":"Singur"},"Personal plans, stories of places, minute-by-minute routes.":{"pl":"Własne plany, historie miejsc, trasy minuta po minucie.","es":"Planes personales, historias de los lugares, rutas minuto a minuto.","fr":"Programmes personnels, histoire des lieux, itinéraires minute par minute.","ro":"Planuri personale, poveștile locurilor, trasee minut cu minut."},"With a group":{"pl":"Z grupą","es":"Con un grupo","fr":"En groupe","ro":"Cu un grup"},"Follow your leader's plan. We alert you if you drift away.":{"pl":"Podążaj za planem lidera. Ostrzeżemy Cię, gdy się oddalisz.","es":"Sigue el plan de tu responsable. Te avisamos si te alejas.","fr":"Suivez le programme de votre accompagnateur. On vous prévient si vous vous éloignez.","ro":"Urmezi programul liderului. Te anunțăm dacă te îndepărtezi."},"Group leader":{"pl":"Lider grupy","es":"Responsable del grupo","fr":"Accompagnateur","ro":"Lider de grup"},"Build the plan, see where everyone is, get the alerts.":{"pl":"Twórz plan, zobacz, gdzie są wszyscy, otrzymuj alerty.","es":"Crea el plan, ve dónde está cada uno, recibe las alertas.","fr":"Créez le programme, voyez où est chacun, recevez les alertes.","ro":"Creezi programul, vezi unde e fiecare, primești alertele."},"Group code":{"pl":"Kod grupy","es":"Código del grupo","fr":"Code du groupe","ro":"Codul grupului"},"✓ St Luke's Parish · leader Marco":{"pl":"✓ Parafia św. Łukasza · lider Marco","es":"✓ Parroquia de San Lucas · responsable Marco","fr":"✓ Paroisse Saint-Luc · accompagnateur Marco","ro":"✓ Parohia Sfântul Luca · lider Marco"},"Continue":{"pl":"Dalej","es":"Continuar","fr":"Continuer","ro":"Continuă"},"Scan your passport":{"pl":"Zeskanuj paszport","es":"Escanea tu pasaporte","fr":"Scannez votre passeport","ro":"Scanează pașaportul"},"An encrypted copy stays on your phone, even offline. If you lose it, you still have proof.":{"pl":"Zaszyfrowana kopia zostaje w telefonie, nawet offline. Jeśli go zgubisz, masz dowód.","es":"Una copia cifrada queda en tu teléfono, incluso sin conexión. Si lo pierdes, siempre tendrás una prueba.","fr":"Une copie chiffrée reste sur votre téléphone, même hors ligne. Si vous le perdez, vous avez toujours une preuve.","ro":"O copie criptată rămâne pe telefon, chiar și offline. Dacă îl pierzi, ai mereu o dovadă."},"Frame the photo page":{"pl":"Ustaw stronę ze zdjęciem w kadrze","es":"Encuadra la página con la foto","fr":"Cadrez la page avec la photo","ro":"Încadrează pagina cu fotografia"},"Scan":{"pl":"Skanuj","es":"Escanear","fr":"Scanner","ro":"Scanează"},"Reading…":{"pl":"Odczyt…","es":"Leyendo…","fr":"Lecture en cours…","ro":"Se citește…"},"Ready":{"pl":"Gotowe","es":"Listo","fr":"Prêt","ro":"Gata"},"Later":{"pl":"Później","es":"Más tarde","fr":"Plus tard","ro":"Mai târziu"},"Document protected":{"pl":"Dokument chroniony","es":"Documento protegido","fr":"Document protégé","ro":"Document protejat"},"Encrypted on device · Available offline":{"pl":"Zaszyfrowany w telefonie · Dostępny offline","es":"Cifrado en el dispositivo · Disponible sin conexión","fr":"Chiffré sur l'appareil · Disponible hors ligne","ro":"Criptat pe dispozitiv · Disponibil offline"},"Name":{"pl":"Imię i nazwisko","es":"Nombre","fr":"Nom","ro":"Nume"},"Number":{"pl":"Numer","es":"Número","fr":"Numéro","ro":"Număr"},"Expiry":{"pl":"Ważny do","es":"Caducidad","fr":"Expiration","ro":"Expiră"},"Nationality":{"pl":"Obywatelstwo","es":"Nacionalidad","fr":"Nationalité","ro":"Cetățenie"},"Add more documents":{"pl":"Dodaj inne dokumenty","es":"Añadir más documentos","fr":"Ajouter d'autres documents","ro":"Adaugă alte documente"},"Boarding pass, insurance, hotel voucher":{"pl":"Karta pokładowa, ubezpieczenie, voucher hotelowy","es":"Tarjeta de embarque, seguro, bono de hotel","fr":"Carte d'embarquement, assurance, bon d'hôtel","ro":"Carte de îmbarcare, asigurare, voucher de hotel"},"Today":{"pl":"Dziś","es":"Hoy","fr":"Aujourd'hui","ro":"Azi"},"Map":{"pl":"Mapa","es":"Mapa","fr":"Carte","ro":"Hartă"},"Documents":{"pl":"Dokumenty","es":"Documentos","fr":"Documents","ro":"Documente"},"Museums":{"pl":"Muzea","es":"Museos","fr":"Musées","ro":"Muzee"},"SOS":{"pl":"SOS","es":"SOS","fr":"SOS","ro":"SOS"},"FRI 25 SEPTEMBER · 24°":{"pl":"PT 25 WRZEŚNIA · 24°","es":"VIE 25 SEPTIEMBRE · 24°","fr":"VEN 25 SEPTEMBRE · 24°","ro":"VIN 25 SEPTEMBRIE · 24°"},"Rome · Day 2 of 4":{"pl":"Rzym · Dzień 2 z 4","es":"Roma · Día 2 de 4","fr":"Rome · Jour 2 sur 4","ro":"Roma · Ziua 2 din 4"},"Arrival · Day 1":{"pl":"Przyjazd · Dzień 1","es":"Llegada · Día 1","fr":"Arrivée · Jour 1","ro":"Sosire · Ziua 1"},"Airport → Hotel":{"pl":"Lotnisko → Hotel","es":"Aeropuerto → Hotel","fr":"Aéroport → Hôtel","ro":"Aeroport → Hotel"},"Train, bus or taxi: times and prices":{"pl":"Pociąg, autobus lub taksówka: godziny i ceny","es":"Tren, autobús o taxi: horarios y precios","fr":"Train, bus ou taxi : horaires et prix","ro":"Tren, autobuz sau taxi: ore și prețuri"},"Today's plan":{"pl":"Plan na dziś","es":"Plan de hoy","fr":"Programme du jour","ro":"Programul de azi"},"Open map":{"pl":"Otwórz mapę","es":"Abrir mapa","fr":"Ouvrir la carte","ro":"Deschide harta"},"Departure from Hotel Travertino, Via Cavour":{"pl":"Wyjście z Hotelu Travertino, Via Cavour","es":"Salida del Hotel Travertino, Via Cavour","fr":"Départ de l'Hôtel Travertino, Via Cavour","ro":"Plecare de la Hotel Travertino, Via Cavour"},"Edit plan":{"pl":"Edytuj plan","es":"Editar plan","fr":"Modifier le programme","ro":"Editează programul"},"St Luke's Parish":{"pl":"Parafia św. Łukasza","es":"Parroquia de San Lucas","fr":"Paroisse Saint-Luc","ro":"Parohia Sfântul Luca"},"people":{"pl":"osób","es":"personas","fr":"personnes","ro":"persoane"},"Now":{"pl":"Teraz","es":"Ahora","fr":"Maintenant","ro":"Acum"},"Minute by minute":{"pl":"Minuta po minucie","es":"Minuto a minuto","fr":"Minute par minute","ro":"Minut cu minut"},"Leave":{"pl":"Wyjdź","es":"Sal","fr":"Départ","ro":"Pleacă"},"Arrive at":{"pl":"Dotrzyj do","es":"Llega a","fr":"Arrivée à","ro":"Ajungi la"},"Custode tip":{"pl":"Porada Custode","es":"Consejo de Custode","fr":"Conseil Custode","ro":"Sfatul Custode"},"Another tip →":{"pl":"Kolejna porada →","es":"Otro consejo →","fr":"Un autre conseil →","ro":"Alt sfat →"},"Walk":{"pl":"Pieszo","es":"A pie","fr":"À pied","ro":"Pe jos"},"Route":{"pl":"Trasa","es":"Ruta","fr":"Itinéraire","ro":"Traseu"},"Pickpockets":{"pl":"Kieszonkowcy","es":"Carteristas","fr":"Pickpockets","ro":"Hoți de buzunare"},"Group":{"pl":"Grupa","es":"Grupo","fr":"Groupe","ro":"Grup"},"You are here":{"pl":"Jesteś tutaj","es":"Estás aquí","fr":"Vous êtes ici","ro":"Ești aici"},"Pickpocket area nearby: stay alert":{"pl":"W pobliżu strefa kieszonkowców: zachowaj czujność","es":"Zona de carteristas cerca: mantente atento","fr":"Zone de pickpockets à proximité : restez vigilant","ro":"Zonă cu hoți de buzunare în apropiere: fii atent"},"Around you":{"pl":"Wokół Ciebie","es":"A tu alrededor","fr":"Autour de vous","ro":"În jurul tău"},"The story of this place":{"pl":"Historia tego miejsca","es":"La historia de este lugar","fr":"L'histoire de ce lieu","ro":"Povestea acestui loc"},"Notes for your talk":{"pl":"Notatki do Twojej opowieści","es":"Notas para tu explicación","fr":"Notes pour votre récit","ro":"Notițe pentru prezentarea ta"},"Your guide tells the story here":{"pl":"Tutaj historię opowiada przewodnik","es":"Aquí la historia la cuenta tu guía","fr":"Ici, c'est votre guide qui raconte","ro":"Aici povestea o spune ghidul"},"In a group there are no automatic stories: listen to Marco. Custode only alerts you if you drift away.":{"pl":"W grupie nie ma automatycznych opowieści: słuchaj Marca. Custode ostrzeże Cię tylko, gdy się oddalisz.","es":"En grupo no hay historias automáticas: escucha a Marco. Custode solo te avisa si te alejas.","fr":"En groupe, pas de récits automatiques : écoutez Marco. Custode vous prévient seulement si vous vous éloignez.","ro":"În grup nu există povești automate: ascultă-l pe Marco. Custode te anunță doar dacă te îndepărtezi."},"Next leg":{"pl":"Następny odcinek","es":"Siguiente tramo","fr":"Prochaine étape","ro":"Următoarea etapă"},"Back to the group":{"pl":"Wróć do grupy","es":"Volver al grupo","fr":"Retour au groupe","ro":"Înapoi la grup"},"Secure wallet":{"pl":"Bezpieczny portfel","es":"Cartera segura","fr":"Portefeuille sécurisé","ro":"Portofel securizat"},"Your documents are encrypted. Only you can open them, even without internet.":{"pl":"Twoje dokumenty są zaszyfrowane. Tylko Ty możesz je otworzyć, nawet bez internetu.","es":"Tus documentos están cifrados. Solo tú puedes abrirlos, incluso sin internet.","fr":"Vos documents sont chiffrés. Vous seul pouvez les ouvrir, même sans internet.","ro":"Documentele tale sunt criptate. Doar tu le poți deschide, chiar și fără internet."},"Unlock with Face ID":{"pl":"Odblokuj przez Face ID","es":"Desbloquear con Face ID","fr":"Déverrouiller avec Face ID","ro":"Deblochează cu Face ID"},"Checking…":{"pl":"Sprawdzanie…","es":"Verificando…","fr":"Vérification…","ro":"Se verifică…"},"Encrypted · Offline":{"pl":"Zaszyfrowane · Offline","es":"Cifrado · Sin conexión","fr":"Chiffré · Hors ligne","ro":"Criptat · Offline"},"Passport · United Kingdom":{"pl":"Paszport · Wielka Brytania","es":"Pasaporte · Reino Unido","fr":"Passeport · Royaume-Uni","ro":"Pașaport · Regatul Unit"},"Backup copy: show it to police or your embassy if you lose the original.":{"pl":"Kopia zapasowa: pokaż ją policji lub ambasadzie, jeśli zgubisz oryginał.","es":"Copia de seguridad: muéstrala a la policía o a tu embajada si pierdes el original.","fr":"Copie de secours : montrez-la à la police ou à votre ambassade si vous perdez l'original.","ro":"Copie de rezervă: arat-o poliției sau ambasadei dacă pierzi originalul."},"Offline":{"pl":"Offline","es":"Sin conexión","fr":"Hors ligne","ro":"Offline"},"Scan new document":{"pl":"Zeskanuj nowy dokument","es":"Escanear nuevo documento","fr":"Scanner un nouveau document","ro":"Scanează un document nou"},"I lost a document":{"pl":"Zgubiłem dokument","es":"He perdido un documento","fr":"J'ai perdu un document","ro":"Am pierdut un document"},"We guide you: report, embassy, ready copy.":{"pl":"Poprowadzimy Cię: zgłoszenie, ambasada, gotowa kopia.","es":"Te guiamos: denuncia, embajada, copia lista.","fr":"On vous guide : déclaration, ambassade, copie prête.","ro":"Te ghidăm: plângere, ambasadă, copie gata."},"Lost document":{"pl":"Zgubiony dokument","es":"Documento perdido","fr":"Document perdu","ro":"Document pierdut"},"File a police report":{"pl":"Zgłoś na policji","es":"Pon una denuncia","fr":"Faites une déclaration","ro":"Depune o plângere la poliție"},"Police or Carabinieri. Nearest: Commissariato Trevi, 650 m. Bring this copy.":{"pl":"Policja lub Carabinieri. Najbliżej: Commissariato Trevi, 650 m. Weź tę kopię.","es":"Policía o Carabinieri. El más cercano: Commissariato Trevi, 650 m. Lleva esta copia.","fr":"Police ou Carabiniers. Le plus proche : Commissariato Trevi, 650 m. Apportez cette copie.","ro":"Poliție sau Carabinieri. Cel mai aproape: Commissariato Trevi, 650 m. Ia această copie."},"Contact your embassy":{"pl":"Skontaktuj się z ambasadą","es":"Contacta con tu embajada","fr":"Contactez votre ambassade","ro":"Contactează ambasada"},"An emergency passport needs the report and a photo. British Embassy: Via XX Settembre.":{"pl":"Paszport tymczasowy wymaga zgłoszenia i zdjęcia. Ambasada brytyjska: Via XX Settembre.","es":"Un pasaporte de emergencia requiere la denuncia y una foto. Embajada británica: Via XX Settembre.","fr":"Un passeport d'urgence nécessite la déclaration et une photo. Ambassade britannique : Via XX Settembre.","ro":"Un pașaport de urgență cere plângerea și o fotografie. Ambasada britanică: Via XX Settembre."},"Show your backup copy":{"pl":"Pokaż kopię zapasową","es":"Muestra tu copia de seguridad","fr":"Montrez votre copie de secours","ro":"Arată copia de rezervă"},"Works as proof of identity at hotels and checks until your new document arrives.":{"pl":"Służy jako dowód tożsamości w hotelach i przy kontrolach, aż dotrze nowy dokument.","es":"Sirve como prueba de identidad en hoteles y controles hasta que llegue el nuevo documento.","fr":"Elle sert de preuve d'identité à l'hôtel et lors des contrôles jusqu'à l'arrivée du nouveau document.","ro":"Servește ca dovadă de identitate la hoteluri și la controale până sosește noul document."},"Call 112":{"pl":"Zadzwoń pod 112","es":"Llamar al 112","fr":"Appeler le 112","ro":"Sună la 112"},"Share copy":{"pl":"Udostępnij kopię","es":"Compartir copia","fr":"Partager la copie","ro":"Partajează copia"},"Museums & monuments":{"pl":"Muzea i zabytki","es":"Museos y monumentos","fr":"Musées et monuments","ro":"Muzee și monumente"},"Rome · today's prices and hours":{"pl":"Rzym · dzisiejsze ceny i godziny","es":"Roma · precios y horarios de hoy","fr":"Rome · prix et horaires du jour","ro":"Roma · prețurile și programul de azi"},"All":{"pl":"Wszystkie","es":"Todos","fr":"Tous","ro":"Toate"},"First Sunday of the month: state museums are free. Long queues, arrive at opening.":{"pl":"Pierwsza niedziela miesiąca: muzea państwowe za darmo. Długie kolejki, przyjdź na otwarcie.","es":"Primer domingo de mes: los museos estatales son gratis. Colas largas, llega a la apertura.","fr":"Premier dimanche du mois : musées d'État gratuits. Longues files, arrivez à l'ouverture.","ro":"Prima duminică a lunii: muzeele de stat sunt gratuite. Cozi lungi, vino la deschidere."},"Open until":{"pl":"Otwarte do","es":"Abierto hasta","fr":"Ouvert jusqu'à","ro":"Deschis până la"},"Full":{"pl":"Normalny","es":"Entera","fr":"Plein tarif","ro":"Întreg"},"Reduced":{"pl":"Ulgowy","es":"Reducida","fr":"Réduit","ro":"Redus"},"Booking / extras":{"pl":"Rezerwacja / dopłaty","es":"Reserva / extras","fr":"Réservation / suppléments","ro":"Rezervare / extra"},"Hours":{"pl":"Godziny","es":"Horario","fr":"Horaires","ro":"Program"},"Book":{"pl":"Zarezerwuj","es":"Reservar","fr":"Réserver","ro":"Rezervă"},"Add to plan":{"pl":"Dodaj do planu","es":"Añadir al plan","fr":"Ajouter au programme","ro":"Adaugă în program"},"Indicative 2026 prices: always check the official site.":{"pl":"Ceny orientacyjne 2026: zawsze sprawdź oficjalną stronę.","es":"Precios orientativos 2026: consulta siempre la web oficial.","fr":"Prix indicatifs 2026 : vérifiez toujours le site officiel.","ro":"Prețuri orientative 2026: verifică mereu site-ul oficial."},"Emergency":{"pl":"Nagły wypadek","es":"Emergencia","fr":"Urgence","ro":"Urgență"},"112 is the EU single number: police, ambulance, fire. Operators speak English.":{"pl":"112 to jednolity numer alarmowy UE: policja, pogotowie, straż. Operatorzy mówią po angielsku.","es":"El 112 es el número único de la UE: policía, ambulancia, bomberos. Los operadores hablan inglés.","fr":"Le 112 est le numéro unique de l'UE : police, ambulance, pompiers. Les opérateurs parlent anglais.","ro":"112 e numărul unic european: poliție, ambulanță, pompieri. Operatorii vorbesc engleză."},"Tap to call":{"pl":"Dotknij, aby zadzwonić","es":"Toca para llamar","fr":"Touchez pour appeler","ro":"Atinge pentru a suna"},"Calling in":{"pl":"Połączenie za","es":"Llamando en","fr":"Appel dans","ro":"Apel în"},"Calling…":{"pl":"Dzwonię…","es":"Llamando…","fr":"Appel en cours…","ro":"Se apelează…"},"Cancel":{"pl":"Anuluj","es":"Cancelar","fr":"Annuler","ro":"Anulează"},"Share my location":{"pl":"Udostępnij moją lokalizację","es":"Compartir mi ubicación","fr":"Partager ma position","ro":"Partajează-mi locația"},"With your group leader and a trusted contact":{"pl":"Liderowi grupy i zaufanej osobie","es":"Con tu responsable de grupo y un contacto de confianza","fr":"Avec votre accompagnateur et un contact de confiance","ro":"Cu liderul grupului și o persoană de încredere"},"Police":{"pl":"Policja","es":"Policía","fr":"Police","ro":"Poliție"},"Hospital":{"pl":"Szpital","es":"Hospital","fr":"Hôpital","ro":"Spital"},"Embassy":{"pl":"Ambasada","es":"Embajada","fr":"Ambassade","ro":"Ambasadă"},"Useful phrases":{"pl":"Przydatne zwroty","es":"Frases útiles","fr":"Phrases utiles","ro":"Expresii utile"},"Airport to hotel":{"pl":"Z lotniska do hotelu","es":"Del aeropuerto al hotel","fr":"De l'aéroport à l'hôtel","ro":"De la aeroport la hotel"},"Buy":{"pl":"Kup","es":"Comprar","fr":"Acheter","ro":"Cumpără"},"Flat fare to the historic centre, luggage included. Only white taxis from the official rank.":{"pl":"Stała cena do centrum historycznego, z bagażem. Tylko białe taksówki z oficjalnego postoju.","es":"Tarifa fija al centro histórico, equipaje incluido. Solo taxis blancos en la parada oficial.","fr":"Forfait vers le centre historique, bagages compris. Uniquement les taxis blancs à la station officielle.","ro":"Tarif fix până în centrul istoric, cu bagaje. Doar taxiuri albe de la stația oficială."},"Termini to hotel: 9 min walk":{"pl":"Termini do hotelu: 9 min pieszo","es":"De Termini al hotel: 9 min a pie","fr":"De Termini à l'hôtel : 9 min à pied","ro":"De la Termini la hotel: 9 min pe jos"},"Check-in from 14:00 · free luggage storage":{"pl":"Zameldowanie od 14:00 · bezpłatna przechowalnia bagażu","es":"Check-in desde las 14:00 · consigna gratuita","fr":"Check-in dès 14:00 · bagagerie gratuite","ro":"Check-in de la 14:00 · depozitare gratuită a bagajelor"},"Safety":{"pl":"Bezpieczeństwo","es":"Seguridad","fr":"Sécurité","ro":"Siguranță"},"Only take white taxis with a TAXI sign and licence number on the door. Ignore anyone offering rides in arrivals.":{"pl":"Wsiadaj tylko do białych taksówek z napisem TAXI i numerem licencji na drzwiach. Ignoruj osoby oferujące przejazd w hali przylotów.","es":"Sube solo a taxis blancos con letrero TAXI y número de licencia en la puerta. Ignora a quien te ofrezca transporte en llegadas.","fr":"Ne prenez que des taxis blancs avec l'enseigne TAXI et le numéro de licence sur la portière. Ignorez ceux qui proposent une course aux arrivées.","ro":"Ia doar taxiuri albe cu semnul TAXI și numărul de licență pe portieră. Ignoră pe cei care oferă transport la sosiri."},"Your ticket":{"pl":"Twój bilet","es":"Tu billete","fr":"Votre billet","ro":"Biletul tău"},"Valid for 1 ride · validate before boarding":{"pl":"Ważny na 1 przejazd · skasuj przed wejściem","es":"Válido para 1 viaje · valídalo antes de subir","fr":"Valable pour 1 trajet · à valider avant de monter","ro":"Valabil pentru 1 călătorie · validează înainte de urcare"},"Saved in Documents, available offline":{"pl":"Zapisany w Dokumentach, dostępny offline","es":"Guardado en Documentos, disponible sin conexión","fr":"Enregistré dans Documents, disponible hors ligne","ro":"Salvat în Documente, disponibil offline"},"Passenger":{"pl":"Pasażer","es":"Pasajero","fr":"Passager","ro":"Pasager"},"Fare":{"pl":"Taryfa","es":"Tarifa","fr":"Tarif","ro":"Tarif"},"Done":{"pl":"Gotowe","es":"Hecho","fr":"Terminé","ro":"Gata"},"Group plan":{"pl":"Plan grupy","es":"Plan del grupo","fr":"Programme du groupe","ro":"Programul grupului"},"Add stop":{"pl":"Dodaj przystanek","es":"Añadir parada","fr":"Ajouter une étape","ro":"Adaugă oprire"},"Tap a time to shift it by 15 min, tap the transport to change it.":{"pl":"Dotknij godziny, by przesunąć o 15 min; dotknij środka transportu, by go zmienić.","es":"Toca una hora para moverla 15 min; toca el transporte para cambiarlo.","fr":"Touchez une heure pour la décaler de 15 min, touchez le transport pour le changer.","ro":"Atinge o oră pentru a o muta cu 15 min, atinge transportul pentru a-l schimba."},"Meeting point":{"pl":"Punkt zbiórki","es":"Punto de encuentro","fr":"Point de rendez-vous","ro":"Punct de întâlnire"},"Piazza Pio XII, colonnade side · 12:15":{"pl":"Piazza Pio XII, od strony kolumnady · 12:15","es":"Piazza Pio XII, lado de la columnata · 12:15","fr":"Piazza Pio XII, côté colonnade · 12:15","ro":"Piazza Pio XII, pe partea colonadei · 12:15"},"Group zone":{"pl":"Strefa grupy","es":"Zona del grupo","fr":"Zone du groupe","ro":"Zona grupului"},"Anyone further than this from the guide gets an alert.":{"pl":"Każdy, kto oddali się dalej od przewodnika, dostaje alert.","es":"Quien se aleje más de esto del guía recibe una alerta.","fr":"Toute personne plus éloignée du guide reçoit une alerte.","ro":"Oricine e mai departe de ghid primește o alertă."},"Send to group":{"pl":"Wyślij do grupy","es":"Enviar al grupo","fr":"Envoyer au groupe","ro":"Trimite grupului"},"Safety alert":{"pl":"Alert bezpieczeństwa","es":"Alerta de seguridad","fr":"Alerte de sécurité","ro":"Alertă de siguranță"},"You've drifted from your group":{"pl":"Oddaliłeś się od grupy","es":"Te has alejado de tu grupo","fr":"Vous vous êtes éloigné du groupe","ro":"Te-ai îndepărtat de grup"},"The group is outside the Vatican Museums. You are this far away:":{"pl":"Grupa jest przed Muzeami Watykańskimi. Jesteś w odległości:","es":"El grupo está fuera de los Museos Vaticanos. Estás a esta distancia:","fr":"Le groupe est devant les Musées du Vatican. Vous êtes à cette distance :","ro":"Grupul e în fața Muzeelor Vaticanului. Ești la distanța aceasta:"},"Take me to the group":{"pl":"Prowadź mnie do grupy","es":"Llévame al grupo","fr":"Emmenez-moi au groupe","ro":"Du-mă la grup"},"Call Marco":{"pl":"Zadzwoń do Marca","es":"Llamar a Marco","fr":"Appeler Marco","ro":"Sună-l pe Marco"},"I'm fine, tell the leader":{"pl":"Wszystko OK, powiadom lidera","es":"Estoy bien, avisa al responsable","fr":"Tout va bien, prévenir l'accompagnateur","ro":"Sunt bine, anunță liderul"},"Giulia R. is out of the zone":{"pl":"Giulia R. jest poza strefą","es":"Giulia R. está fuera de la zona","fr":"Giulia R. est hors de la zone","ro":"Giulia R. e în afara zonei"},"She's near Via della Conciliazione. We've already sent her directions back.":{"pl":"Jest przy Via della Conciliazione. Wysłaliśmy jej już drogę powrotną.","es":"Está cerca de Via della Conciliazione. Ya le hemos enviado el camino de vuelta.","fr":"Elle est près de la Via della Conciliazione. On lui a déjà envoyé l'itinéraire de retour.","ro":"E lângă Via della Conciliazione. I-am trimis deja drumul de întoarcere."},"See on map":{"pl":"Pokaż na mapie","es":"Ver en el mapa","fr":"Voir sur la carte","ro":"Vezi pe hartă"},"Call Giulia":{"pl":"Zadzwoń do Giulii","es":"Llamar a Giulia","fr":"Appeler Giulia","ro":"Sun-o pe Giulia"},"Close":{"pl":"Zamknij","es":"Cerrar","fr":"Fermer","ro":"Închide"},"You're off route":{"pl":"Zszedłeś z trasy","es":"Te has salido de la ruta","fr":"Vous avez quitté l'itinéraire","ro":"Ai ieșit de pe traseu"},"We'll guide you back to your next stop. Walking:":{"pl":"Poprowadzimy Cię z powrotem do następnego punktu. Pieszo:","es":"Te guiamos de vuelta a tu próxima parada. A pie:","fr":"On vous ramène à votre prochaine étape. À pied :","ro":"Te ghidăm înapoi la următoarea oprire. Pe jos:"},"Resume route":{"pl":"Wznów trasę","es":"Retomar la ruta","fr":"Reprendre l'itinéraire","ro":"Reia traseul"},"High pickpocket risk area":{"pl":"Strefa wysokiego ryzyka kieszonkowców","es":"Zona de alto riesgo de carteristas","fr":"Zone à fort risque de pickpockets","ro":"Zonă cu risc mare de hoți de buzunare"},"Termini station and bus 64. Thefts are common here, especially in crowds.":{"pl":"Dworzec Termini i autobus 64. Kradzieże są tu częste, zwłaszcza w tłumie.","es":"Estación Termini y autobús 64. Los robos son frecuentes aquí, sobre todo entre la multitud.","fr":"Gare Termini et bus 64. Les vols sont fréquents ici, surtout dans la foule.","ro":"Gara Termini și autobuzul 64. Furturile sunt frecvente aici, mai ales în aglomerație."},"Backpack on your front, bag zipped and cross-body.":{"pl":"Plecak z przodu, torba zamknięta i na skos.","es":"Mochila por delante, bolso cerrado y cruzado.","fr":"Sac à dos devant, sac fermé et porté en bandoulière.","ro":"Rucsacul în față, geanta închisă și purtată pe diagonală."},"Phone and wallet in inside pockets, never back pockets.":{"pl":"Telefon i portfel w wewnętrznych kieszeniach, nigdy w tylnych.","es":"Teléfono y cartera en bolsillos interiores, nunca en los traseros.","fr":"Téléphone et portefeuille dans les poches intérieures, jamais à l'arrière.","ro":"Telefonul și portofelul în buzunare interioare, niciodată în cele din spate."},"Be wary of anyone helping with tickets or bags unasked.":{"pl":"Uważaj na osoby, które bez pytania pomagają z biletami lub bagażem.","es":"Desconfía de quien te ayude con billetes o maletas sin pedírselo.","fr":"Méfiez-vous de ceux qui aident avec les billets ou les bagages sans qu'on leur demande.","ro":"Atenție la cei care te ajută nechemați cu bilete sau bagaje."},"Got it":{"pl":"Rozumiem","es":"Entendido","fr":"Compris","ro":"Am înțeles"},"Calling (demo)":{"pl":"Dzwonię (demo)","es":"Llamando (demo)","fr":"Appel (démo)","ro":"Se apelează (demo)"},"Leader notified: you're fine":{"pl":"Lider powiadomiony: wszystko OK","es":"Responsable avisado: estás bien","fr":"Accompagnateur prévenu : tout va bien","ro":"Lider anunțat: ești bine"},"You're back with the group":{"pl":"Jesteś z powrotem z grupą","es":"Estás de nuevo con el grupo","fr":"Vous êtes de retour avec le groupe","ro":"Ești din nou cu grupul"},"Opening the official site…":{"pl":"Otwieram oficjalną stronę…","es":"Abriendo la web oficial…","fr":"Ouverture du site officiel…","ro":"Se deschide site-ul oficial…"},"Added to plan":{"pl":"Dodano do planu","es":"Añadido al plan","fr":"Ajouté au programme","ro":"Adăugat în program"},"Route started":{"pl":"Trasa uruchomiona","es":"Ruta iniciada","fr":"Itinéraire lancé","ro":"Traseu pornit"},"Location shared for 2 hours":{"pl":"Lokalizacja udostępniona na 2 godziny","es":"Ubicación compartida durante 2 horas","fr":"Position partagée pendant 2 heures","ro":"Locație partajată timp de 2 ore"},"Sharing stopped":{"pl":"Udostępnianie zatrzymane","es":"Has dejado de compartir","fr":"Partage arrêté","ro":"Partajare oprită"},"Encrypted copy shared":{"pl":"Zaszyfrowana kopia udostępniona","es":"Copia cifrada compartida","fr":"Copie chiffrée partagée","ro":"Copie criptată partajată"},"Camera ready":{"pl":"Aparat gotowy","es":"Cámara lista","fr":"Appareil photo prêt","ro":"Camera e gata"},"Plan sent to 14 people":{"pl":"Plan wysłany do 14 osób","es":"Plan enviado a 14 personas","fr":"Programme envoyé à 14 personnes","ro":"Program trimis la 14 persoane"},"Giulia received directions back":{"pl":"Giulia otrzymała drogę powrotną","es":"Giulia recibió el camino de vuelta","fr":"Giulia a reçu l'itinéraire de retour","ro":"Giulia a primit drumul de întoarcere"},"Free":{"pl":"Za darmo","es":"Gratis","fr":"Gratuit","ro":"Gratuit"},"Vatican Museums":{"pl":"Muzea Watykańskie","es":"Museos Vaticanos","fr":"Musées du Vatican","ro":"Muzeele Vaticanului"},"St Peter's Basilica":{"pl":"Bazylika św. Piotra","es":"Basílica de San Pedro","fr":"Basilique Saint-Pierre","ro":"Bazilica Sfântul Petru"},"Lunch in Borgo Pio":{"pl":"Obiad w Borgo Pio","es":"Almuerzo en Borgo Pio","fr":"Déjeuner à Borgo Pio","ro":"Prânz în Borgo Pio"},"Trevi Fountain":{"pl":"Fontanna di Trevi","es":"Fontana de Trevi","fr":"Fontaine de Trevi","ro":"Fântâna Trevi"},"Spanish Steps":{"pl":"Schody Hiszpańskie","es":"Plaza de España","fr":"Place d'Espagne","ro":"Treptele Spaniole"},"Capitoline Museums":{"pl":"Muzea Kapitolińskie","es":"Museos Capitolinos","fr":"Musées du Capitole","ro":"Muzeele Capitoline"},"Roman Forum":{"pl":"Forum Romanum","es":"Foro Romano","fr":"Forum romain","ro":"Forumul Roman"},"Colosseum":{"pl":"Koloseum","es":"Coliseo","fr":"Colisée","ro":"Colosseum"},"Circus Maximus":{"pl":"Circus Maximus","es":"Circo Máximo","fr":"Cirque Maxime","ro":"Circus Maximus"},"Mouth of Truth":{"pl":"Usta Prawdy","es":"Boca de la Verdad","fr":"Bouche de la Vérité","ro":"Gura Adevărului"},"Testaccio Market":{"pl":"Targ Testaccio","es":"Mercado de Testaccio","fr":"Marché de Testaccio","ro":"Piața Testaccio"},"St John Lateran":{"pl":"Bazylika św. Jana na Lateranie","es":"San Juan de Letrán","fr":"Saint-Jean-de-Latran","ro":"San Giovanni in Laterano"},"Termini Station":{"pl":"Dworzec Termini","es":"Estación Termini","fr":"Gare Termini","ro":"Gara Termini"},"Catacombs of St Callixtus":{"pl":"Katakumby św. Kaliksta","es":"Catacumbas de San Calixto","fr":"Catacombes de Saint-Calixte","ro":"Catacombele Sfântului Calist"},"Founded in 1506 with a single statue, the Laocoön, just unearthed in a vineyard near Santa Maria Maggiore. Today the galleries run for about 7 km and end in the Sistine Chapel.":{"pl":"Założone w 1506 r. z jednym posągiem, Grupą Laokoona, odkopaną w winnicy koło Santa Maria Maggiore. Dziś galerie mają ok. 7 km i kończą się w Kaplicy Sykstyńskiej.","es":"Fundados en 1506 con una sola estatua, el Laocoonte, recién desenterrado en una viña cerca de Santa María la Mayor. Hoy las galerías recorren unos 7 km y terminan en la Capilla Sixtina.","fr":"Fondés en 1506 avec une seule statue, le Laocoon, tout juste exhumé dans une vigne près de Sainte-Marie-Majeure. Aujourd'hui les galeries s'étendent sur environ 7 km et finissent à la chapelle Sixtine.","ro":"Fondate în 1506 cu o singură statuie, Laocoon, tocmai dezgropată într-o vie lângă Santa Maria Maggiore. Azi galeriile se întind pe circa 7 km și se termină în Capela Sixtină."},"Bernini designed the colonnade as two arms embracing the faithful. There are 284 columns: stand on one of the porphyry discs and each row lines up as one.":{"pl":"Bernini zaprojektował kolumnadę jak dwa ramiona obejmujące wiernych. Jest 284 kolumn: stań na jednym z porfirowych krążków, a każdy rząd ustawi się w jedną linię.","es":"Bernini diseñó la columnata como dos brazos que abrazan a los fieles. Hay 284 columnas: ponte sobre uno de los discos de pórfido y cada fila se alinea como una sola.","fr":"Le Bernin a conçu la colonnade comme deux bras qui embrassent les fidèles. Il y a 284 colonnes : placez-vous sur l'un des disques de porphyre et chaque rangée s'aligne en une seule.","ro":"Bernini a conceput colonada ca două brațe care îi îmbrățișează pe credincioși. Sunt 284 de coloane: stai pe unul dintre discurile de porfir și fiecare rând se aliniază ca una singură."},"It began as Emperor Hadrian's tomb and became the popes' fortress. The Passetto, a corridor along the walls, links it to the Vatican: Clement VII fled through it in 1527.":{"pl":"Powstał jako grobowiec cesarza Hadriana, a stał się twierdzą papieży. Passetto, korytarz w murach, łączy go z Watykanem: Klemens VII uciekł nim w 1527 r.","es":"Nació como tumba del emperador Adriano y se convirtió en fortaleza de los papas. El Passetto, un pasillo sobre la muralla, lo une al Vaticano: Clemente VII huyó por él en 1527.","fr":"D'abord tombeau de l'empereur Hadrien, il devint la forteresse des papes. Le Passetto, un couloir le long des murs, le relie au Vatican : Clément VII s'y enfuit en 1527.","ro":"A fost la început mormântul împăratului Hadrian și a devenit fortăreața papilor. Passetto, un coridor de-a lungul zidurilor, îl leagă de Vatican: Clement al VII-lea a fugit pe aici în 1527."},"The dome is almost 1,900 years old and still the largest unreinforced concrete dome in the world. When it rains, water falls through the oculus and drains through 22 holes in the floor.":{"pl":"Kopuła ma prawie 1900 lat i wciąż jest największą na świecie kopułą z niezbrojonego betonu. Gdy pada, woda wpada przez oculus i spływa 22 otworami w posadzce.","es":"La cúpula tiene casi 1900 años y sigue siendo la mayor del mundo de hormigón sin armar. Cuando llueve, el agua cae por el óculo y se va por 22 agujeros del suelo.","fr":"La coupole a presque 1 900 ans et reste la plus grande au monde en béton non armé. Quand il pleut, l'eau tombe par l'oculus et s'évacue par 22 trous dans le sol.","ro":"Cupola are aproape 1.900 de ani și e încă cea mai mare cupolă din beton nearmat din lume. Când plouă, apa cade prin oculus și se scurge prin 22 de găuri din podea."},"Opened in AD 80 with 100 days of games. It held about 50,000 spectators, who entered through 80 numbered arches, like sections of a modern stadium.":{"pl":"Otwarte w 80 r. n.e. stoma dniami igrzysk. Mieściło ok. 50 000 widzów, którzy wchodzili przez 80 numerowanych arkad, jak do sektorów współczesnego stadionu.","es":"Inaugurado en el año 80 con 100 días de juegos. Albergaba unos 50 000 espectadores, que entraban por 80 arcos numerados, como los sectores de un estadio moderno.","fr":"Inauguré en 80 apr. J.-C. avec 100 jours de jeux. Il accueillait environ 50 000 spectateurs, qui entraient par 80 arcades numérotées, comme les tribunes d'un stade moderne.","ro":"Inaugurat în anul 80 d.Hr. cu 100 de zile de jocuri. Încăpeau circa 50.000 de spectatori, care intrau prin 80 de arcade numerotate, ca sectoarele unui stadion modern."},"Tradition: toss a coin with your right hand over your left shoulder and you'll return to Rome. Over a million euros are collected every year and given to charity.":{"pl":"Tradycja: rzuć monetę prawą ręką przez lewe ramię, a wrócisz do Rzymu. Co roku zbiera się ponad milion euro, które trafia na cele charytatywne.","es":"Tradición: lanza una moneda con la mano derecha por encima del hombro izquierdo y volverás a Roma. Cada año se recoge más de un millón de euros que va a beneficencia.","fr":"Tradition : lancez une pièce de la main droite par-dessus l'épaule gauche et vous reviendrez à Rome. Plus d'un million d'euros sont collectés chaque année et reversés aux œuvres caritatives.","ro":"Tradiție: aruncă o monedă cu mâna dreaptă peste umărul stâng și te vei întoarce la Roma. Peste un milion de euro se strâng anual și se donează în scopuri caritabile."},"The square's long shape is the outline of Domitian's stadium, which stood here 1,900 years ago. The surrounding houses still rest on its stands.":{"pl":"Wydłużony kształt placu to obrys stadionu Domicjana, który stał tu 1900 lat temu. Okoliczne domy wciąż opierają się na jego trybunach.","es":"La forma alargada de la plaza es el contorno del estadio de Domiciano, que estaba aquí hace 1900 años. Las casas de alrededor aún se apoyan en sus gradas.","fr":"La forme allongée de la place reprend le stade de Domitien, qui se trouvait ici il y a 1 900 ans. Les maisons autour reposent encore sur ses gradins.","ro":"Forma alungită a pieței e conturul stadionului lui Domițian, care se afla aici acum 1.900 de ani. Casele din jur se sprijină încă pe tribunele lui."},"The villa of Cardinal Scipione Borghese, a great collector: here a young Bernini, barely in his twenties, carved Apollo and Daphne and The Rape of Proserpina.":{"pl":"Willa kardynała Scipione Borghese, wielkiego kolekcjonera: tu młody Bernini, ledwie dwudziestoletni, wyrzeźbił Apollina i Dafne oraz Porwanie Prozerpiny.","es":"La villa del cardenal Scipione Borghese, gran coleccionista: aquí un joven Bernini, con apenas veinte años, esculpió Apolo y Dafne y El rapto de Proserpina.","fr":"La villa du cardinal Scipione Borghese, grand collectionneur : ici un jeune Bernin, à peine vingt ans, sculpta Apollon et Daphné et L'Enlèvement de Proserpine.","ro":"Vila cardinalului Scipione Borghese, mare colecționar: aici un Bernini tânăr, de abia douăzeci de ani, a sculptat Apollo și Dafne și Răpirea Proserpinei."},"The 135 steps were funded by a French diplomat in the 1700s. The boat-shaped fountain at the bottom is by Pietro Bernini, father of the more famous Gian Lorenzo.":{"pl":"135 stopni ufundował francuski dyplomata w XVIII w. Fontanna w kształcie łodzi u dołu to dzieło Pietra Berniniego, ojca słynniejszego Gian Lorenza.","es":"Los 135 escalones los financió un diplomático francés en el siglo XVIII. La fuente con forma de barca, abajo, es de Pietro Bernini, padre del famoso Gian Lorenzo.","fr":"Les 135 marches ont été financées par un diplomate français au XVIIIe siècle. La fontaine en forme de barque, en bas, est de Pietro Bernini, père du célèbre Gian Lorenzo.","ro":"Cele 135 de trepte au fost finanțate de un diplomat francez în secolul al XVIII-lea. Fântâna în formă de barcă de la bază e a lui Pietro Bernini, tatăl celebrului Gian Lorenzo."},"For centuries it was the heart of Roman public life: courts, temples, markets. By the Middle Ages it was so buried that people called it Campo Vaccino, the cow field.":{"pl":"Przez wieki było sercem życia publicznego Rzymu: sądy, świątynie, targi. W średniowieczu było tak zasypane, że nazywano je Campo Vaccino, krowim polem.","es":"Durante siglos fue el corazón de la vida pública romana: tribunales, templos, mercados. En la Edad Media estaba tan enterrado que lo llamaban Campo Vaccino, el campo de las vacas.","fr":"Pendant des siècles, ce fut le cœur de la vie publique romaine : tribunaux, temples, marchés. Au Moyen Âge, il était si enseveli qu'on l'appelait Campo Vaccino, le champ aux vaches.","ro":"Timp de secole a fost inima vieții publice romane: tribunale, temple, piețe. În Evul Mediu era atât de îngropat încât i se spunea Campo Vaccino, câmpul vacilor."},"The only major square in Rome without a church. Giordano Bruno's statue marks where he was burned in 1600; today a market fills it every morning.":{"pl":"Jedyny duży plac w Rzymie bez kościoła. Pomnik Giordana Bruna wskazuje miejsce, gdzie spłonął w 1600 r.; dziś co rano jest tu targ.","es":"La única gran plaza de Roma sin iglesia. La estatua de Giordano Bruno marca donde fue quemado en 1600; hoy cada mañana la llena un mercado.","fr":"La seule grande place de Rome sans église. La statue de Giordano Bruno marque l'endroit où il fut brûlé en 1600 ; aujourd'hui un marché l'anime chaque matin.","ro":"Singura piață mare din Roma fără biserică. Statuia lui Giordano Bruno marchează locul unde a fost ars în 1600; azi o piață o umple în fiecare dimineață."},"Literally 'beyond the Tiber': a district of craftsmen and sailors, home to Santa Maria in Trastevere, one of Rome's first churches dedicated to the Virgin.":{"pl":"Dosłownie „za Tybrem”: dzielnica rzemieślników i żeglarzy, z Santa Maria in Trastevere, jednym z pierwszych kościołów Rzymu poświęconych Matce Bożej.","es":"Literalmente «más allá del Tíber»: barrio de artesanos y marineros, con Santa Maria in Trastevere, una de las primeras iglesias de Roma dedicadas a la Virgen.","fr":"Littéralement « au-delà du Tibre » : quartier d'artisans et de marins, avec Santa Maria in Trastevere, l'une des premières églises de Rome dédiées à la Vierge.","ro":"Literal „dincolo de Tibru”: cartier de meșteșugari și marinari, cu Santa Maria in Trastevere, una dintre primele biserici din Roma închinate Fecioarei."},"Metro":{"pl":"Metro","es":"Metro","fr":"Métro","ro":"Metrou"},"Bus":{"pl":"Autobus","es":"Autobús","fr":"Bus","ro":"Autobuz"},"Tram":{"pl":"Tramwaj","es":"Tranvía","fr":"Tram","ro":"Tramvai"},"Train":{"pl":"Pociąg","es":"Tren","fr":"Train","ro":"Tren"},"Taxi":{"pl":"Taksówka","es":"Taxi","fr":"Taxi","ro":"Taxi"},"3 h":{"pl":"3 godz.","es":"3 h","fr":"3 h","ro":"3 h"},"Shoulders and knees covered, or no entry.":{"pl":"Zakryte ramiona i kolana, inaczej brak wstępu.","es":"Hombros y rodillas cubiertos, o no entras.","fr":"Épaules et genoux couverts, sinon pas d'entrée.","ro":"Umeri și genunchi acoperiți, altfel nu intri."},"Leave the hotel, turn right on Via Cavour":{"pl":"Wyjdź z hotelu, skręć w prawo w Via Cavour","es":"Sal del hotel y gira a la derecha por Via Cavour","fr":"Sortez de l'hôtel, tournez à droite sur Via Cavour","ro":"Ieși din hotel, fă dreapta pe Via Cavour"},"Metro B at Cavour, 1 stop towards Rebibbia":{"pl":"Metro B na Cavour, 1 przystanek w stronę Rebibbia","es":"Metro B en Cavour, 1 parada dirección Rebibbia","fr":"Métro B à Cavour, 1 arrêt direction Rebibbia","ro":"Metrou B la Cavour, 1 stație spre Rebibbia"},"Change at Termini: line A towards Battistini":{"pl":"Przesiadka na Termini: linia A w stronę Battistini","es":"Cambia en Termini: línea A dirección Battistini","fr":"Changement à Termini : ligne A direction Battistini","ro":"Schimbă la Termini: linia A spre Battistini"},"Get off at Ottaviano, Via Ottaviano exit":{"pl":"Wysiądź na Ottaviano, wyjście Via Ottaviano","es":"Baja en Ottaviano, salida Via Ottaviano","fr":"Descendez à Ottaviano, sortie Via Ottaviano","ro":"Coboară la Ottaviano, ieșirea Via Ottaviano"},"10 min walk to the Museums entrance":{"pl":"10 min pieszo do wejścia do Muzeów","es":"10 min a pie hasta la entrada de los Museos","fr":"10 min à pied jusqu'à l'entrée des Musées","ro":"10 min pe jos până la intrarea Muzeelor"},"Viale Vaticano → St Peter's Square":{"pl":"Viale Vaticano → Plac św. Piotra","es":"Viale Vaticano → Plaza de San Pedro","fr":"Viale Vaticano → Place Saint-Pierre","ro":"Viale Vaticano → Piața Sfântul Petru"},"1 h 15":{"pl":"1 godz. 15","es":"1 h 15","fr":"1 h 15","ro":"1 h 15"},"Security checks: avoid large backpacks.":{"pl":"Kontrole bezpieczeństwa: unikaj dużych plecaków.","es":"Controles de seguridad: evita mochilas grandes.","fr":"Contrôles de sécurité : évitez les grands sacs à dos.","ro":"Controale de securitate: evită rucsacii mari."},"1 h":{"pl":"1 godz.","es":"1 h","fr":"1 h","ro":"1 h"},"1 h 30":{"pl":"1 godz. 30","es":"1 h 30","fr":"1 h 30","ro":"1 h 30"},"Bus 40 · Castello → Nazionale":{"pl":"Autobus 40 · Castello → Nazionale","es":"Autobús 40 · Castello → Nazionale","fr":"Bus 40 · Castello → Nazionale","ro":"Autobuzul 40 · Castello → Nazionale"},"Validate your ticket as soon as you board.":{"pl":"Skasuj bilet zaraz po wejściu.","es":"Valida el billete nada más subir.","fr":"Validez votre billet dès la montée.","ro":"Validează biletul imediat ce urci."},"Bus 910 · Termini → Pinciana":{"pl":"Autobus 910 · Termini → Pinciana","es":"Autobús 910 · Termini → Pinciana","fr":"Bus 910 · Termini → Pinciana","ro":"Autobuzul 910 · Termini → Pinciana"},"2 h":{"pl":"2 godz.","es":"2 h","fr":"2 h","ro":"2 h"},"Booking required, 2-hour slots.":{"pl":"Rezerwacja obowiązkowa, wejścia co 2 godziny.","es":"Reserva obligatoria, turnos de 2 horas.","fr":"Réservation obligatoire, créneaux de 2 heures.","ro":"Rezervare obligatorie, intervale de 2 ore."},"Villa Borghese and the Pincio terrace":{"pl":"Villa Borghese i taras Pincio","es":"Villa Borghese y la terraza del Pincio","fr":"Villa Borghèse et la terrasse du Pincio","ro":"Villa Borghese și terasa Pincio"},"Don't sit on the Steps: it's banned and fined.":{"pl":"Nie siadaj na Schodach: to zabronione i grozi mandatem.","es":"No te sientes en la escalinata: está prohibido y se multa.","fr":"Ne vous asseyez pas sur les marches : c'est interdit et verbalisé.","ro":"Nu sta pe trepte: e interzis și se amendează."},"Bus 70 · Senato → Nazionale":{"pl":"Autobus 70 · Senato → Nazionale","es":"Autobús 70 · Senato → Nazionale","fr":"Bus 70 · Senato → Nazionale","ro":"Autobuzul 70 · Senato → Nazionale"},"Come early: packed after 10. Watch for pickpockets.":{"pl":"Przyjdź wcześnie: po 10 jest tłum. Uważaj na kieszonkowców.","es":"Llega temprano: a partir de las 10 está lleno. Cuidado con los carteristas.","fr":"Venez tôt : bondé après 10 h. Attention aux pickpockets.","ro":"Vino devreme: după ora 10 e plin. Atenție la hoții de buzunare."},"Skip photo-menu restaurants on the square: go one street back.":{"pl":"Omijaj restauracje ze zdjęciami w menu na placu: idź jedną ulicę dalej.","es":"Evita los restaurantes con menú de fotos en la plaza: ve una calle más atrás.","fr":"Évitez les restaurants à menu-photo sur la place : allez une rue plus loin.","ro":"Evită restaurantele cu meniu cu poze din piață: mergi o stradă mai încolo."},"Tram 8 + Bus 40":{"pl":"Tramwaj 8 + Autobus 40","es":"Tranvía 8 + Autobús 40","fr":"Tram 8 + Bus 40","ro":"Tramvaiul 8 + Autobuzul 40"},"Metro B · Cavour → Colosseo":{"pl":"Metro B · Cavour → Colosseo","es":"Metro B · Cavour → Colosseo","fr":"Métro B · Cavour → Colosseo","ro":"Metrou B · Cavour → Colosseo"},"Named ticket: keep your passport ready in Documents.":{"pl":"Bilet imienny: miej paszport pod ręką w Dokumentach.","es":"Entrada nominativa: ten tu pasaporte a mano en Documentos.","fr":"Billet nominatif : gardez votre passeport prêt dans Documents.","ro":"Bilet nominal: ține pașaportul pregătit în Documente."},"Included":{"pl":"W cenie","es":"Incluido","fr":"Inclus","ro":"Inclus"},"Short queue in the morning, long in the afternoon.":{"pl":"Rano krótka kolejka, po południu długa.","es":"Cola corta por la mañana, larga por la tarde.","fr":"File courte le matin, longue l'après-midi.","ro":"Coadă scurtă dimineața, lungă după-amiaza."},"Metro B · Circo Massimo → Cavour":{"pl":"Metro B · Circo Massimo → Cavour","es":"Metro B · Circo Massimo → Cavour","fr":"Métro B · Circo Massimo → Cavour","ro":"Metrou B · Circo Massimo → Cavour"},"Bus 64 · Nazionale → Largo Argentina":{"pl":"Autobus 64 · Nazionale → Largo Argentina","es":"Autobús 64 · Nazionale → Largo Argentina","fr":"Bus 64 · Nazionale → Largo Argentina","ro":"Autobuzul 64 · Nazionale → Largo Argentina"},"Bus 64: a pickpocket hotspot. Backpack on your front.":{"pl":"Autobus 64: raj kieszonkowców. Plecak z przodu.","es":"Autobús 64: zona caliente de carteristas. Mochila por delante.","fr":"Bus 64 : repaire de pickpockets. Sac à dos devant.","ro":"Autobuzul 64: zonă fierbinte pentru hoți. Rucsacul în față."},"Gelato: pick covered tubs and natural colours.":{"pl":"Lody: wybieraj zakryte pojemniki i naturalne kolory.","es":"Helado: elige cubetas tapadas y colores naturales.","fr":"Glace : choisissez les bacs couverts et les couleurs naturelles.","ro":"Înghețată: alege cuve acoperite și culori naturale."},"Any cover charge must be printed on the menu.":{"pl":"Opłata za nakrycie musi być podana w menu.","es":"Cualquier cubierto debe figurar en la carta.","fr":"Tout couvert doit être indiqué sur le menu.","ro":"Orice taxă de serviciu trebuie scrisă în meniu."},"Tram 8 + walk":{"pl":"Tramwaj 8 + pieszo","es":"Tranvía 8 + a pie","fr":"Tram 8 + à pied","ro":"Tramvaiul 8 + pe jos"},"Metro B · Piramide → Cavour":{"pl":"Metro B · Piramide → Cavour","es":"Metro B · Piramide → Cavour","fr":"Métro B · Piramide → Cavour","ro":"Metrou B · Piramide → Cavour"},"Pilgrimage":{"pl":"Pielgrzymka","es":"Peregrinación","fr":"Pèlerinage","ro":"Pelerinaj"},"Art":{"pl":"Sztuka","es":"Arte","fr":"Art","ro":"Artă"},"Culture":{"pl":"Kultura","es":"Cultura","fr":"Culture","ro":"Cultură"},"Ancient history":{"pl":"Historia starożytna","es":"Historia antigua","fr":"Histoire antique","ro":"Istorie antică"},"Food":{"pl":"Kuchnia","es":"Gastronomía","fr":"Gastronomie","ro":"Gastronomie"},"+€5 online":{"pl":"+5 € online","es":"+5 € online","fr":"+5 € en ligne","ro":"+5 € online"},"Mon–Sat 8:00–19:00":{"pl":"Pon–Sob 8:00–19:00","es":"Lun–Sáb 8:00–19:00","fr":"Lun–Sam 8:00–19:00","ro":"Lun–Sâm 8:00–19:00"},"Last entry 17:00. Closed Sundays except the last of the month (free). Shoulders and knees covered.":{"pl":"Ostatnie wejście 17:00. W niedziele zamknięte, oprócz ostatniej w miesiącu (za darmo). Zakryte ramiona i kolana.","es":"Última entrada 17:00. Cerrado los domingos salvo el último del mes (gratis). Hombros y rodillas cubiertos.","fr":"Dernière entrée 17:00. Fermé le dimanche sauf le dernier du mois (gratuit). Épaules et genoux couverts.","ro":"Ultima intrare la 17:00. Închis duminica, în afară de ultima din lună (gratuit). Umeri și genunchi acoperiți."},"Dome from €10":{"pl":"Kopuła od 10 €","es":"Cúpula desde 10 €","fr":"Coupole dès 10 €","ro":"Cupola de la 10 €"},"Security checks at the entrance: no large backpacks.":{"pl":"Kontrole bezpieczeństwa przy wejściu: bez dużych plecaków.","es":"Controles de seguridad en la entrada: nada de mochilas grandes.","fr":"Contrôles de sécurité à l'entrée : pas de grands sacs à dos.","ro":"Controale de securitate la intrare: fără rucsaci mari."},"+€2 online":{"pl":"+2 € online","es":"+2 € online","fr":"+2 € en ligne","ro":"+2 € online"},"Named ticket: bring ID. Includes Roman Forum and Palatine.":{"pl":"Bilet imienny: weź dokument. Obejmuje Forum Romanum i Palatyn.","es":"Entrada nominativa: lleva documento. Incluye Foro Romano y Palatino.","fr":"Billet nominatif : prenez une pièce d'identité. Inclut le Forum romain et le Palatin.","ro":"Bilet nominal: ia un act de identitate. Include Forumul Roman și Palatinul."},"+€2 required":{"pl":"+2 € obowiązkowo","es":"+2 € obligatorio","fr":"+2 € obligatoire","ro":"+2 € obligatoriu"},"Tue–Sun 9:00–19:00":{"pl":"Wt–Nd 9:00–19:00","es":"Mar–Dom 9:00–19:00","fr":"Mar–Dim 9:00–19:00","ro":"Mar–Dum 9:00–19:00"},"Booking required, entry every 2 hours.":{"pl":"Rezerwacja obowiązkowa, wejścia co 2 godziny.","es":"Reserva obligatoria, entradas cada 2 horas.","fr":"Réservation obligatoire, entrées toutes les 2 heures.","ro":"Rezervare obligatorie, intrări la fiecare 2 ore."},"Tue–Sun 9:00–19:30":{"pl":"Wt–Nd 9:00–19:30","es":"Mar–Dom 9:00–19:30","fr":"Mar–Dim 9:00–19:30","ro":"Mar–Dum 9:00–19:30"},"Closed Wednesdays. Guided visits only, about 40 min.":{"pl":"W środy zamknięte. Tylko zwiedzanie z przewodnikiem, ok. 40 min.","es":"Cerrado los miércoles. Solo visitas guiadas, unos 40 min.","fr":"Fermé le mercredi. Visites guidées uniquement, environ 40 min.","ro":"Închis miercurea. Doar vizite ghidate, circa 40 min."},"Free entry":{"pl":"Wstęp wolny","es":"Entrada gratuita","fr":"Entrée libre","ro":"Intrare gratuită"},"Mon–Sat 7:00–15:30":{"pl":"Pon–Sob 7:00–15:30","es":"Lun–Sáb 7:00–15:30","fr":"Lun–Sam 7:00–15:30","ro":"Lun–Sâm 7:00–15:30"},"Market 7:00–14:00":{"pl":"Targ 7:00–14:00","es":"Mercado 7:00–14:00","fr":"Marché 7:00–14:00","ro":"Piața 7:00–14:00"},"every 15 min":{"pl":"co 15 min","es":"cada 15 min","fr":"toutes les 15 min","ro":"la fiecare 15 min"},"Fastest":{"pl":"Najszybciej","es":"El más rápido","fr":"Le plus rapide","ro":"Cel mai rapid"},"Shuttle bus":{"pl":"Autobus wahadłowy","es":"Autobús lanzadera","fr":"Navette","ro":"Autobuz navetă"},"every 30 min":{"pl":"co 30 min","es":"cada 30 min","fr":"toutes les 30 min","ro":"la fiecare 30 min"},"Cheapest":{"pl":"Najtaniej","es":"El más barato","fr":"Le moins cher","ro":"Cel mai ieftin"},"Taxi, flat fare":{"pl":"Taksówka, stała cena","es":"Taxi, tarifa fija","fr":"Taxi, forfait","ro":"Taxi, tarif fix"},"Historic centre":{"pl":"Centrum historyczne","es":"Centro histórico","fr":"Centre historique","ro":"Centrul istoric"},"up to 4 people":{"pl":"do 4 osób","es":"hasta 4 personas","fr":"jusqu'à 4 personnes","ro":"până la 4 persoane"},"Easiest":{"pl":"Najwygodniej","es":"El más fácil","fr":"Le plus simple","ro":"Cel mai simplu"},"every 20 min":{"pl":"co 20 min","es":"cada 20 min","fr":"toutes les 20 min","ro":"la fiecare 20 min"},"Vatican and basilicas: cover shoulders and knees or you won't get in. Keep a light scarf in your bag.":{"pl":"Watykan i bazyliki: zakryj ramiona i kolana, inaczej nie wejdziesz. Trzymaj lekką chustę w torbie.","es":"Vaticano y basílicas: cubre hombros y rodillas o no entrarás. Lleva un pañuelo ligero en el bolso.","fr":"Vatican et basiliques : couvrez épaules et genoux, sinon vous n'entrerez pas. Gardez un foulard léger dans votre sac.","ro":"Vatican și bazilici: acoperă umerii și genunchii, altfel nu intri. Ține o eșarfă ușoară în geantă."},"Drink free from the \"nasoni\", Rome's street fountains: the water is safe. Block the spout and it jets up.":{"pl":"Pij za darmo z „nasoni”, ulicznych fontann Rzymu: woda jest bezpieczna. Zatkaj wylot, a woda tryśnie w górę.","es":"Bebe gratis en los «nasoni», las fuentes callejeras de Roma: el agua es segura. Tapa el caño y sale hacia arriba.","fr":"Buvez gratuitement aux « nasoni », les fontaines de rue de Rome : l'eau est potable. Bouchez le bec et elle jaillit vers le haut.","ro":"Bea gratuit de la „nasoni”, fântânile de stradă ale Romei: apa e sigură. Astupă gura și apa țâșnește în sus."},"The BIT ticket (€1.50) lasts 100 minutes on buses and trams but only one metro ride. Always validate it.":{"pl":"Bilet BIT (1,50 €) jest ważny 100 minut w autobusach i tramwajach, ale tylko na jeden przejazd metrem. Zawsze go skasuj.","es":"El billete BIT (1,50 €) dura 100 minutos en autobús y tranvía, pero solo un viaje en metro. Valídalo siempre.","fr":"Le ticket BIT (1,50 €) dure 100 minutes en bus et tram mais un seul trajet en métro. Validez-le toujours.","ro":"Biletul BIT (1,50 €) e valabil 100 de minute în autobuze și tramvaie, dar o singură călătorie cu metroul. Validează-l mereu."},"Refuse \"free\" bracelets, roses and photos with fake centurions: they ask for money right after.":{"pl":"Odmawiaj „darmowych” bransoletek, róż i zdjęć z fałszywymi centurionami: zaraz potem żądają pieniędzy.","es":"Rechaza pulseras, rosas y fotos «gratis» con falsos centuriones: piden dinero justo después.","fr":"Refusez bracelets, roses et photos « gratuits » avec de faux centurions : ils demandent de l'argent juste après.","ro":"Refuză brățările, trandafirii și pozele „gratuite” cu centurioni falși: imediat după cer bani."},"Coffee at the bar counter costs less than at a table. Check the posted price list before sitting.":{"pl":"Kawa przy barze kosztuje mniej niż przy stoliku. Sprawdź cennik, zanim usiądziesz.","es":"El café en la barra cuesta menos que en mesa. Mira la lista de precios antes de sentarte.","fr":"Le café au comptoir coûte moins cher qu'en salle. Vérifiez les prix affichés avant de vous asseoir.","ro":"Cafeaua la tejghea costă mai puțin decât la masă. Verifică lista de prețuri afișată înainte să te așezi."},"You":{"pl":"Ty","es":"Tú","fr":"Vous","ro":"Tu"},"Pharmacy":{"pl":"Apteka","es":"Farmacia","fr":"Pharmacie","ro":"Farmacie"},"Public toilets":{"pl":"Toalety publiczne","es":"Baños públicos","fr":"Toilettes publiques","ro":"Toalete publice"},"Head back towards Viale Vaticano":{"pl":"Wróć w stronę Viale Vaticano","es":"Vuelve hacia Viale Vaticano","fr":"Revenez vers Viale Vaticano","ro":"Întoarce-te spre Viale Vaticano"},"Marco is waiting at the entrance":{"pl":"Marco czeka przy wejściu","es":"Marco te espera en la entrada","fr":"Marco vous attend à l'entrée","ro":"Marco te așteaptă la intrare"},"Calm area":{"pl":"Spokojna okolica","es":"Zona tranquila","fr":"Zone calme","ro":"Zonă liniștită"},"No alerts around you":{"pl":"Brak alertów wokół Ciebie","es":"Sin alertas a tu alrededor","fr":"Aucune alerte autour de vous","ro":"Nicio alertă în jurul tău"},"Outside the group zone":{"pl":"Poza strefą grupy","es":"Fuera de la zona del grupo","fr":"Hors de la zone du groupe","ro":"În afara zonei grupului"},"Group is 240 m away · tap for directions":{"pl":"Grupa jest 240 m dalej · dotknij, by wyznaczyć trasę","es":"El grupo está a 240 m · toca para ver la ruta","fr":"Le groupe est à 240 m · touchez pour l'itinéraire","ro":"Grupul e la 240 m · atinge pentru indicații"},"You're with the group":{"pl":"Jesteś z grupą","es":"Estás con el grupo","fr":"Vous êtes avec le groupe","ro":"Ești cu grupul"},"Marco, your guide, is 40 m away":{"pl":"Marco, Twój przewodnik, jest 40 m dalej","es":"Marco, tu guía, está a 40 m","fr":"Marco, votre guide, est à 40 m","ro":"Marco, ghidul tău, e la 40 m"},"13 of 14 in the zone":{"pl":"13 z 14 w strefie","es":"13 de 14 en la zona","fr":"13 sur 14 dans la zone","ro":"13 din 14 în zonă"},"Giulia R. is 320 m from the group":{"pl":"Giulia R. jest 320 m od grupy","es":"Giulia R. está a 320 m del grupo","fr":"Giulia R. est à 320 m du groupe","ro":"Giulia R. e la 320 m de grup"},"Your plan · ":{"pl":"Twój plan · ","es":"Tu plan · ","fr":"Votre programme · ","ro":"Programul tău · "},"Plan by Marco, group leader · ":{"pl":"Plan Marca, lidera grupy · ","es":"Plan de Marco, responsable del grupo · ","fr":"Programme de Marco, accompagnateur · ","ro":"Programul lui Marco, liderul grupului · "},"Boarding pass":{"pl":"Karta pokładowa","es":"Tarjeta de embarque","fr":"Carte d'embarquement","ro":"Carte de îmbarcare"},"Hotel voucher":{"pl":"Voucher hotelowy","es":"Bono de hotel","fr":"Bon d'hôtel","ro":"Voucher de hotel"},"Travel insurance":{"pl":"Ubezpieczenie podróżne","es":"Seguro de viaje","fr":"Assurance voyage","ro":"Asigurare de călătorie"},"Policy no. 88213 · 24h assistance":{"pl":"Polisa nr 88213 · pomoc 24h","es":"Póliza n.º 88213 · asistencia 24 h","fr":"Police n° 88213 · assistance 24 h/24","ro":"Polița nr. 88213 · asistență 24 h"},"United Kingdom":{"pl":"Wielka Brytania","es":"Reino Unido","fr":"Royaume-Uni","ro":"Regatul Unit"},"Good morning, ":{"pl":"Dzień dobry, ","es":"Buenos días, ","fr":"Bonjour, ","ro":"Bună dimineața, "},"British Embassy":{"pl":"Ambasada brytyjska","es":"Embajada británica","fr":"Ambassade britannique","ro":"Ambasada britanică"}};
+const L = (o, l) => o == null ? '' : (typeof o === 'string' ? o : (o[l] != null ? o[l] : ((X[o.en] && X[o.en][l]) || o.en)));
+for (const g of ["pl","es","fr","ro"]) { TR[g] = {}; for (const k in TR.en) { const v = TR.en[k]; TR[g][k] = (X[v] && X[v][g]) || v; } }
+const FREE = {it:'Gratuito', en:'Free'};
+const P = {
+hotel:{n:'Hotel Travertino',x:300,y:225}, vaticani:{n:{it:'Musei Vaticani',en:'Vatican Museums'},x:40,y:120},
+pietro:{n:{it:'Basilica di San Pietro',en:"St Peter's Basilica"},x:58,y:178}, borgo:{n:{it:'Pranzo a Borgo Pio',en:'Lunch in Borgo Pio'},x:78,y:146},
+castel:{n:"Castel Sant'Angelo",x:112,y:152}, navona:{n:'Piazza Navona',x:163,y:196}, pantheon:{n:'Pantheon',x:196,y:204},
+trevi:{n:{it:'Fontana di Trevi',en:'Trevi Fountain'},x:234,y:166}, spagna:{n:{it:'Piazza di Spagna',en:'Spanish Steps'},x:242,y:112},
+popolo:{n:'Piazza del Popolo',x:178,y:44}, borghese:{n:'Galleria Borghese',x:285,y:42},
+capitolini:{n:{it:'Musei Capitolini',en:'Capitoline Museums'},x:212,y:262}, foro:{n:{it:'Foro Romano',en:'Roman Forum'},x:252,y:274},
+colosseo:{n:{it:'Colosseo',en:'Colosseum'},x:294,y:294}, circo:{n:{it:'Circo Massimo',en:'Circus Maximus'},x:240,y:338},
+bocca:{n:{it:'Bocca della Verità',en:'Mouth of Truth'},x:198,y:322}, campo:{n:"Campo de' Fiori",x:156,y:238},
+trastevere:{n:'Trastevere',x:88,y:322}, testaccio:{n:{it:'Mercato di Testaccio',en:'Testaccio Market'},x:206,y:408},
+laterano:{n:{it:'San Giovanni in Laterano',en:'St John Lateran'},x:345,y:335}, termini:{n:{it:'Stazione Termini',en:'Termini Station'},x:338,y:176},
+callisto:{n:{it:'Catacombe di San Callisto',en:'Catacombs of St Callixtus'},x:-200,y:-200}
+};
+const STORY = {
+vaticani:{it:"Nati nel 1506 con una sola statua, il Laocoonte, appena ritrovata in una vigna vicino a Santa Maria Maggiore. Oggi le sale si estendono per circa 7 km e finiscono nella Cappella Sistina.",en:"Founded in 1506 with a single statue, the Laocoön, just unearthed in a vineyard near Santa Maria Maggiore. Today the galleries run for about 7 km and end in the Sistine Chapel."},
+pietro:{it:"Bernini disegnò il colonnato come due braccia che accolgono i fedeli. Sono 284 colonne: dai due dischi di porfido nella piazza, ogni fila sembra una colonna sola.",en:"Bernini designed the colonnade as two arms embracing the faithful. There are 284 columns: stand on one of the porphyry discs and each row lines up as one."},
+castel:{it:"Nacque come tomba dell'imperatore Adriano, poi diventò fortezza dei papi. Il Passetto, un corridoio sopra le mura, lo collega al Vaticano: nel 1527 Clemente VII lo usò per fuggire.",en:"It began as Emperor Hadrian's tomb and became the popes' fortress. The Passetto, a corridor along the walls, links it to the Vatican: Clement VII fled through it in 1527."},
+pantheon:{it:"La cupola ha quasi 1900 anni ed è ancora la più grande al mondo in calcestruzzo non armato. Quando piove, l'acqua entra dall'oculo ed esce da 22 fori nel pavimento.",en:"The dome is almost 1,900 years old and still the largest unreinforced concrete dome in the world. When it rains, water falls through the oculus and drains through 22 holes in the floor."},
+colosseo:{it:"Inaugurato nell'80 d.C. con 100 giorni di giochi. Ospitava circa 50.000 spettatori, che entravano da 80 archi numerati come i settori di uno stadio moderno.",en:"Opened in AD 80 with 100 days of games. It held about 50,000 spectators, who entered through 80 numbered arches, like sections of a modern stadium."},
+trevi:{it:"Tradizione: una moneta con la mano destra, sopra la spalla sinistra, e tornerai a Roma. Ogni anno si raccolgono oltre un milione di euro, donati in beneficenza.",en:"Tradition: toss a coin with your right hand over your left shoulder and you'll return to Rome. Over a million euros are collected every year and given to charity."},
+navona:{it:"La forma allungata della piazza è quella dello stadio di Domiziano, che era qui 1900 anni fa. Le case intorno poggiano ancora sulle sue gradinate.",en:"The square's long shape is the outline of Domitian's stadium, which stood here 1,900 years ago. The surrounding houses still rest on its stands."},
+borghese:{it:"La villa del cardinale Scipione Borghese, grande collezionista: qui Bernini, poco più che ventenne, scolpì Apollo e Dafne e il Ratto di Proserpina.",en:"The villa of Cardinal Scipione Borghese, a great collector: here a young Bernini, barely in his twenties, carved Apollo and Daphne and The Rape of Proserpina."},
+spagna:{it:"La scalinata di 135 gradini fu pagata da un diplomatico francese nel Settecento. La barcaccia ai suoi piedi è di Pietro Bernini, padre del più famoso Gian Lorenzo.",en:"The 135 steps were funded by a French diplomat in the 1700s. The boat-shaped fountain at the bottom is by Pietro Bernini, father of the more famous Gian Lorenzo."},
+foro:{it:"Per secoli fu il centro della vita pubblica di Roma: tribunali, templi, mercati. Nel Medioevo era così interrato che lo chiamavano Campo Vaccino, il campo delle mucche.",en:"For centuries it was the heart of Roman public life: courts, temples, markets. By the Middle Ages it was so buried that people called it Campo Vaccino, the cow field."},
+campo:{it:"Unica grande piazza di Roma senza una chiesa. La statua di Giordano Bruno ricorda che qui fu messo al rogo nel 1600; oggi ogni mattina c'è il mercato.",en:"The only major square in Rome without a church. Giordano Bruno's statue marks where he was burned in 1600; today a market fills it every morning."},
+trastevere:{it:"Letteralmente 'oltre il Tevere': quartiere di artigiani e marinai, con Santa Maria in Trastevere, una delle prime chiese di Roma dedicate alla Vergine.",en:"Literally 'beyond the Tiber': a district of craftsmen and sailors, home to Santa Maria in Trastevere, one of Rome's first churches dedicated to the Virgin."}
+};
+const MODES = {
+walk:{c:'#B5502F',soft:'#F3DED2',dash:'2 7',w:3.5,it:'A piedi',en:'Walk'},
+metro:{c:'#2A211B',soft:'#E6DBCB',dash:'none',w:4,it:'Metro',en:'Metro'},
+bus:{c:'#8A5E0E',soft:'#F4E6C6',dash:'none',w:4,it:'Bus',en:'Bus'},
+tram:{c:'#3B5A37',soft:'#E1E8D6',dash:'none',w:4,it:'Tram',en:'Tram'},
+train:{c:'#8E3C22',soft:'#F3DED2',dash:'none',w:4,it:'Treno',en:'Train'},
+taxi:{c:'#8A5E0E',soft:'#F4E6C6',dash:'none',w:4,it:'Taxi',en:'Taxi'}
+};
+const S = (t,p,mode,min,leg,dur,price,tip,detail) => ({t,p,mode,min,leg,dur,price,tip,detail});
+const B = (it,en) => ({it,en: en || it});
+const PLANS = {
+pell:[S('08:30','hotel'),
+ S('09:15','vaticani','metro',35,B('Cavour → Termini → Ottaviano'),B('3 h'),'€20 + €5',B('Spalle e ginocchia coperte, o non entri.','Shoulders and knees covered, or no entry.'),
+  [['08:30',B("Esci dall'hotel, a destra su Via Cavour","Leave the hotel, turn right on Via Cavour")],['08:36',B('Metro B a Cavour, 1 fermata verso Rebibbia','Metro B at Cavour, 1 stop towards Rebibbia')],['08:40',B('A Termini cambia: linea A verso Battistini','Change at Termini: line A towards Battistini')],['08:58',B('Scendi a Ottaviano, uscita Via Ottaviano','Get off at Ottaviano, Via Ottaviano exit')],['09:05',B("10 min a piedi fino all'ingresso dei Musei",'10 min walk to the Museums entrance')]]),
+ S('12:30','pietro','walk',10,B('Viale Vaticano → Piazza San Pietro',"Viale Vaticano → St Peter's Square"),B('1 h 15'),FREE,B('Controlli di sicurezza: evita zaini grandi.','Security checks: avoid large backpacks.')),
+ S('14:00','borgo','walk',6,B('Via di Porta Angelica'),B('1 h'),'€15–20'),
+ S('15:30','castel','walk',8,B('Via della Conciliazione'),B('1 h 30'),'€16'),
+ S('17:30','hotel','bus',25,B('Bus 40 · Castello → Nazionale'),null,'€1,50',B('Convalida il biglietto appena sali.','Validate your ticket as soon as you board.'))],
+arte:[S('09:00','hotel'),
+ S('09:30','borghese','bus',25,B('Bus 910 · Termini → Pinciana'),B('2 h'),'€15 + €2',B('Prenotazione obbligatoria, fasce di 2 ore.','Booking required, 2-hour slots.')),
+ S('12:00','popolo','walk',20,B('Villa Borghese e terrazza del Pincio','Villa Borghese and the Pincio terrace'),B('45 min'),FREE),
+ S('13:00','spagna','walk',12,B('Via del Babuino'),B('1 h'),FREE,B('Non sederti sulla scalinata: è vietato e si rischia la multa.','Don\'t sit on the Steps: it\'s banned and fined.')),
+ S('15:00','pantheon','walk',15,B('Via dei Condotti → Via del Corso'),B('45 min'),'€5'),
+ S('16:30','navona','walk',5,B('Via Giustiniani'),B('1 h'),FREE),
+ S('18:00','hotel','bus',25,B('Bus 70 · Senato → Nazionale'),null,'€1,50')],
+cult:[S('09:00','hotel'),
+ S('09:20','trevi','walk',15,B('Via Nazionale → Via della Dataria'),B('30 min'),FREE,B('Arriva presto: dopo le 10 è piena. Occhio ai borseggi.','Come early: packed after 10. Watch for pickpockets.')),
+ S('10:15','spagna','walk',8,B('Via del Tritone → Via Due Macelli'),B('45 min'),FREE),
+ S('11:30','pantheon','walk',12,B('Via del Corso'),B('45 min'),'€5'),
+ S('13:00','navona','walk',5,B('Via Giustiniani'),B('1 h 30'),FREE,B('Evita i ristoranti con foto nel menù sulla piazza: spostati di una via.','Skip photo-menu restaurants on the square: go one street back.')),
+ S('15:00','campo','walk',7,B('Corso Vittorio Emanuele'),B('1 h'),FREE),
+ S('17:00','trastevere','walk',15,B('Ponte Sisto'),B('2 h'),FREE),
+ S('19:30','hotel','tram',30,B('Tram 8 + Bus 40'),null,'€1,50')],
+storia:[S('08:30','hotel'),
+ S('08:45','colosseo','metro',10,B('Metro B · Cavour → Colosseo'),B('2 h'),'€18',B('Biglietto nominativo: tieni pronto il passaporto in Documenti.','Named ticket: keep your passport ready in Documents.')),
+ S('11:00','foro','walk',5,B('Via Sacra'),B('2 h'),B('Incluso','Included')),
+ S('14:00','capitolini','walk',10,B('Via dei Fori Imperiali'),B('2 h'),'€16'),
+ S('16:15','bocca','walk',10,B('Via Petroselli'),B('20 min'),FREE,B('Coda breve al mattino, lunga al pomeriggio.','Short queue in the morning, long in the afternoon.')),
+ S('16:45','circo','walk',5,B('Via dei Cerchi'),B('30 min'),FREE),
+ S('17:45','hotel','metro',15,B('Metro B · Circo Massimo → Cavour'),null,'€1,50')],
+gastro:[S('09:30','hotel'),
+ S('10:00','campo','bus',20,B('Bus 64 · Nazionale → Largo Argentina'),B('1 h'),FREE,B('Bus 64: tra i più colpiti dai borseggi. Zaino davanti.','Bus 64: a pickpocket hotspot. Backpack on your front.')),
+ S('11:30','navona','walk',6,B('Via della Cuccagna'),B('45 min'),FREE,B('Gelato: scegli vaschette coperte e colori naturali.','Gelato: pick covered tubs and natural colours.')),
+ S('13:00','trastevere','walk',15,B('Ponte Sisto'),B('2 h'),'€25–35',B('Il coperto deve essere scritto nel menù.','Any cover charge must be printed on the menu.')),
+ S('16:00','testaccio','tram',20,B('Tram 8 + a piedi','Tram 8 + walk'),B('1 h 30'),FREE),
+ S('18:00','hotel','metro',20,B('Metro B · Piramide → Cavour'),null,'€1,50')]
+};
+const TOURS = [['pell',B('Pellegrinaggio','Pilgrimage')],['arte',B('Arte','Art')],['cult',B('Culturale','Culture')],['storia',B('Storia antica','Ancient history')],['gastro',B('Gastronomia','Food')]];
+const MUS = [
+{p:'vaticani',tags:['pell','arte'],full:'€20',red:'€8',book:B('+€5 online'),h:B('Lun–Sab 8:00–19:00','Mon–Sat 8:00–19:00'),until:'19:00',note:B("Ultimo ingresso 17:00. Chiuso la domenica, tranne l'ultima del mese (gratis). Spalle e ginocchia coperte.","Last entry 17:00. Closed Sundays except the last of the month (free). Shoulders and knees covered.")},
+{p:'pietro',tags:['pell','arte','cult'],full:FREE,red:null,book:B('Cupola da €10','Dome from €10'),h:B('7:00–19:00'),until:'19:00',note:B('Controlli di sicurezza all\'ingresso: niente zaini grandi.','Security checks at the entrance: no large backpacks.')},
+{p:'colosseo',tags:['storia','cult'],full:'€18',red:'€2',book:B('+€2 online'),h:B('8:30–19:00'),until:'19:00',note:B('Biglietto nominativo: porta il documento. Include Foro Romano e Palatino.','Named ticket: bring ID. Includes Roman Forum and Palatine.')},
+{p:'pantheon',tags:['storia','cult','pell'],full:'€5',red:'€3',book:null,h:B('9:00–19:00'),until:'19:00'},
+{p:'borghese',tags:['arte'],full:'€15',red:'€2',book:B('+€2 obbligatoria','+€2 required'),h:B('Mar–Dom 9:00–19:00','Tue–Sun 9:00–19:00'),until:'19:00',note:B('Prenotazione obbligatoria, ingressi ogni 2 ore.','Booking required, entry every 2 hours.')},
+{p:'castel',tags:['storia','cult'],full:'€16',red:'€2',book:null,h:B('Mar–Dom 9:00–19:30','Tue–Sun 9:00–19:30'),until:'19:30'},
+{p:'capitolini',tags:['arte','storia'],full:'€16',red:'€12',book:null,h:B('9:30–19:30'),until:'19:30'},
+{p:'callisto',tags:['pell','storia'],full:'€10',red:'€7',book:null,h:B('9:00–12:00 · 14:00–17:00'),until:'12:00',note:B('Chiuso il mercoledì. Visita solo con guida, circa 40 min.','Closed Wednesdays. Guided visits only, about 40 min.')},
+{p:'laterano',tags:['pell'],full:FREE,red:null,book:null,h:B('7:00–18:30'),until:'18:30'},
+{p:'testaccio',tags:['gastro'],full:B('Ingresso libero','Free entry'),red:null,book:null,h:B('Lun–Sab 7:00–15:30','Mon–Sat 7:00–15:30'),until:'15:30'},
+{p:'campo',tags:['gastro','cult'],full:B('Ingresso libero','Free entry'),red:null,book:null,h:B('Mercato 7:00–14:00','Market 7:00–14:00'),until:'14:00'}
+];
+const TRANSFER = {
+FCO:[{mode:'train',n:'Leonardo Express',to:'Roma Termini',dur:'32 min',freq:B('ogni 15 min','every 15 min'),price:'€14',buy:true,best:B('Più veloce','Fastest')},
+ {mode:'bus',n:B('Bus navetta','Shuttle bus'),to:'Roma Termini',dur:'55 min',freq:B('ogni 30 min','every 30 min'),price:'€7',buy:true,best:B('Più economico','Cheapest')},
+ {mode:'train',n:'Treno regionale FL1',to:'Trastevere · Tiburtina',dur:'35 min',freq:B('ogni 15 min','every 15 min'),price:'€8',buy:true},
+ {mode:'taxi',n:B('Taxi, tariffa fissa','Taxi, flat fare'),to:B('Centro storico','Historic centre'),dur:'45 min',freq:B('fino a 4 persone','up to 4 people'),price:'€55',buy:false}],
+CIA:[{mode:'bus',n:B('Bus navetta','Shuttle bus'),to:'Roma Termini',dur:'40 min',freq:B('ogni 30 min','every 30 min'),price:'€6',buy:true,best:B('Più comodo','Easiest')},
+ {mode:'bus',n:'Bus 520 + Metro A',to:'Cinecittà → Termini',dur:'1 h',freq:B('ogni 20 min','every 20 min'),price:'€1,50',buy:true,best:B('Più economico','Cheapest')},
+ {mode:'taxi',n:B('Taxi, tariffa fissa','Taxi, flat fare'),to:B('Centro storico','Historic centre'),dur:'35 min',freq:B('fino a 4 persone','up to 4 people'),price:'€40',buy:false}]
+};
+const TIPS = [
+B('Per Vaticano e basiliche: spalle e ginocchia coperte, o non entri. Tieni una sciarpa leggera nello zaino.','Vatican and basilicas: cover shoulders and knees or you won\'t get in. Keep a light scarf in your bag.'),
+B('Bevi gratis dai "nasoni", le fontanelle di Roma: l\'acqua è potabile. Tappa il foro sotto e l\'acqua esce dall\'alto.','Drink free from the "nasoni", Rome\'s street fountains: the water is safe. Block the spout and it jets up.'),
+B('Il biglietto BIT (€1,50) vale 100 minuti su bus e tram, ma in metro una sola corsa. Convalidalo sempre.','The BIT ticket (€1.50) lasts 100 minutes on buses and trams but only one metro ride. Always validate it.'),
+B('Rifiuta braccialetti "regalo", rose e foto con finti centurioni: subito dopo chiedono soldi.','Refuse "free" bracelets, roses and photos with fake centurions: they ask for money right after.'),
+B('Al bar il caffè al banco costa meno che al tavolo. Guarda il listino esposto prima di sederti.','Coffee at the bar counter costs less than at a table. Check the posted price list before sitting.')
+];
+const RISK = [{x:338,y:176,r:28},{x:294,y:294,r:22},{x:234,y:166,r:16},{x:58,y:178,r:20}];
+const MOVE = ['vaticani','pietro','castel','navona','pantheon','trevi','colosseo'];
+const addMin = (t, m) => { const [h, mm] = t.split(':').map(Number); const x = h * 60 + mm + m; return String(Math.floor(x / 60) % 24).padStart(2, '0') + ':' + String(((x % 60) + 60) % 60).padStart(2, '0'); };
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) * 11;
+const fmtD = d => d < 1000 ? (Math.round(d / 10) * 10) + ' m' : (d / 1000).toFixed(1).replace('.', ',') + ' km';
+const QR = (() => { const n = 25, out = []; let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const finder = (r, c, R, C) => { const y = r - R, x = c - C; if (y < 0 || x < 0 || y > 6 || x > 6) return null; return (y === 0 || y === 6 || x === 0 || x === 6 || (y >= 2 && y <= 4 && x >= 2 && x <= 4)); };
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) { let v = finder(r, c, 0, 0); if (v === null) v = finder(r, c, 0, 18); if (v === null) v = finder(r, c, 18, 0);
+    if (v === null) v = (r === 7 || c === 7 || r === 17 && c < 8 || c === 17 && r < 8) ? false : rnd() > 0.52; out.push({c: v ? '#2A211B' : '#fff'}); }
+  return out; })();
+
+class Component extends DCLogic {
+  state = {
+    screen: (this.props.startAt ?? 'onboarding') === 'app' ? 'app' : 'welcome',
+    lang: this.props.lang ?? 'it', role: this.props.role ?? 'member', groupCode: 'ROMA-4821',
+    tab: 'today', sub: null, tour: 'pell', open: 1, scan: 0, scanning: false,
+    unlocked: false, unlocking: false, alert: null, out: false, mePlace: null,
+    playing: false, prog: 0, filter: 'all', museum: null, airport: 'FCO', ticket: null,
+    tipIdx: 0, layers: {route: true, risk: true, group: true}, groupTour: 'pell',
+    groupPlan: PLANS.pell.map(s => ({...s})), radius: 150, toast: null, sos: null, share: false
+  };
+  scrollRef = React.createRef();
+  timers = [];
+  componentDidUpdate(pp) {
+    const p = this.props, u = {};
+    if (pp.role !== p.role && p.role) u.role = p.role;
+    if (pp.lang !== p.lang && p.lang) u.lang = p.lang;
+    if (pp.startAt !== p.startAt && p.startAt) u.screen = p.startAt === 'app' ? 'app' : 'welcome';
+    if (Object.keys(u).length) this.setState(u);
+  }
+  componentWillUnmount() { this.timers.forEach(t => { clearInterval(t); clearTimeout(t); }); }
+  later(fn, ms) { const id = setTimeout(fn, ms); this.timers.push(id); return id; }
+  every(fn, ms) { const id = setInterval(fn, ms); this.timers.push(id); return id; }
+  toast(k) { const msg = TR[this.state.lang][k] || k; this.setState({toast: msg}); clearTimeout(this.toastT); this.toastT = this.later(() => this.setState({toast: null}), 2300); }
+  top() { this.later(() => { if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0; }, 0); }
+  go(tab, sub = null, extra = {}) { this.setState({screen: 'app', tab, sub, ...extra}); this.top(); }
+  plan() { return this.state.role === 'solo' ? PLANS[this.state.tour] : this.state.groupPlan; }
+  startScan = () => {
+    if (this.state.scanning) return;
+    this.setState({scanning: true, scan: 0});
+    const id = this.every(() => {
+      const n = Math.min(100, this.state.scan + 2.5);
+      this.setState({scan: n});
+      if (n >= 100) { clearInterval(id); this.later(() => this.setState({screen: 'scanned', scanning: false}), 350); }
+    }, 55);
+  };
+  togglePlay = () => {
+    if (this.state.playing) { clearInterval(this.playT); this.setState({playing: false}); return; }
+    this.setState({playing: true, prog: this.state.prog >= 100 ? 0 : this.state.prog});
+    this.playT = this.every(() => { const n = this.state.prog + 1.25; if (n >= 100) { clearInterval(this.playT); this.setState({prog: 100, playing: false}); } else this.setState({prog: n}); }, 100);
+  };
+  stopPlay() { clearInterval(this.playT); this.setState({playing: false, prog: 0}); }
+  simZone = () => {
+    const r = this.state.role;
+    this.setState({screen: 'app', alert: r === 'solo' ? 'off' : r === 'leader' ? 'zoneL' : 'zone', out: r === 'member'});
+  };
+  simTheft = () => this.setState({screen: 'app', alert: 'theft', mePlace: 'pietro'});
+  simMove = () => {
+    this.stopPlay();
+    const cur = this.state.mePlace ?? this.plan()[1].p; const i = MOVE.indexOf(cur);
+    this.go('map', null, {mePlace: MOVE[(i + 1) % MOVE.length], out: false});
+  };
+  restart = () => this.setState({screen: 'welcome', scan: 0, scanning: false, alert: null, sub: null, tab: 'today', unlocked: false, out: false, mePlace: null});
+  sosPress = () => {
+    if (this.state.sos !== null) return;
+    this.setState({sos: 3});
+    this.sosT = this.every(() => { const n = this.state.sos - 1; if (n <= 0) { clearInterval(this.sosT); this.setState({sos: 0}); } else this.setState({sos: n}); }, 1000);
+  };
+  sosCancel = () => { clearInterval(this.sosT); this.setState({sos: null}); };
+  editPlan(fn) { const gp = this.state.groupPlan.map(s => ({...s})); fn(gp); this.setState({groupPlan: gp}); }
+
+  renderVals() {
+    const st = this.state, lang = st.lang, t = TR[lang], role = st.role;
+    const isSolo = role === 'solo', isMember = role === 'member', isLeader = role === 'leader';
+    const plan = this.plan(), now = 1;
+    const nm = k => L(P[k].n, lang);
+    const onPaper = st.screen !== 'welcome';
+    const langOpt = dark => LANGS.map(l => ({label: l.toUpperCase(), on: () => this.setState({lang: l}),
+      bg: st.lang === l ? (dark ? '#FBF3EA' : '#2A211B') : 'transparent', color: st.lang === l ? (dark ? '#8E3C22' : '#FAF6EF') : (dark ? '#FBF3EA' : '#2A211B')}));
+    const chip = (on) => ({bg: on ? '#2A211B' : '#fff', color: on ? '#FAF6EF' : '#2A211B', border: on ? '#2A211B' : '#E6DBCB'});
+
+    const steps = plan.map((s, i) => {
+      const md = s.mode ? MODES[s.mode] : null, prev = plan[i - 1], done = i < now, isNow = i === now;
+      let detail = [];
+      if (s.detail) detail = s.detail.map(([tm, x]) => ({tm, x: L(x, lang)}));
+      else if (prev && md) detail = [{tm: addMin(s.t, -s.min), x: t.leave + ' ' + nm(prev.p)}, {tm: '', x: L(md, lang) + ' · ' + L(s.leg, lang) + ' · ' + s.min + ' min'}, {tm: s.t, x: t.arrive + ' ' + nm(s.p)}];
+      const meta = [L(s.dur, lang), L(s.price, lang)].filter(Boolean).join(' · ');
+      return {time: s.t, name: nm(s.p), meta, hasMeta: !!meta, hasLeg: !!md,
+        legLabel: md ? L(md, lang) + ' · ' + s.min + ' min' : '', legText: L(s.leg, lang), legC: md ? md.c : '', legSoft: md ? md.soft : '',
+        tip: L(s.tip, lang), hasTip: !!s.tip, isNow, detail, open: st.open === i && detail.length > 0,
+        onTap: () => this.setState({open: st.open === i ? -1 : i}),
+        timeC: isNow ? '#B5502F' : done ? '#6B5D52' : '#2A211B',
+        dotBg: isNow ? '#B5502F' : done ? '#4E6B4A' : '#FAF6EF', dotBorder: isNow ? '#B5502F' : done ? '#4E6B4A' : '#B9AB9A',
+        cardBg: isNow ? '#fff' : done ? '#F4EEE4' : '#fff', cardBorder: isNow ? '#B5502F' : '#E6DBCB'};
+    });
+
+    const g = P[plan[now].p];
+    const baseMe = st.mePlace ? P[st.mePlace] : g;
+    const me = isMember && st.out ? {x: g.x + 58, y: g.y + 44} : {x: baseMe.x + 13, y: baseMe.y + 15};
+    const mePlaceKey = st.mePlace ?? plan[now].p;
+    const zoneR = st.radius / 5, k = Math.max(0.3, Math.min(1, (zoneR - 5) / 25));
+    const zc = st.mePlace && !isSolo ? P[st.mePlace] : g;
+    const offs = [[-10,-6],[8,-12],[14,6],[-4,12],[-16,4],[6,16],[18,-4],[-12,-16],[2,-8],[-8,20],[16,14],[20,-14]];
+    const groupDots = offs.map(([x, y]) => ({x: zc.x + x * k, y: zc.y + y * k}));
+    const hasStray = !isSolo && ((isLeader) || (isMember && st.out));
+    const stray = isLeader ? {x: zc.x + 60, y: zc.y + 46, label: 'Giulia R.'} : {x: me.x, y: me.y, label: L(B('Tu', 'You'), lang)};
+    stray.left = (stray.x + 8) + 'px'; stray.top = (stray.y + 6) + 'px';
+    const nearRisk = RISK.some(z => Math.hypot(z.x - me.x, z.y - me.y) < z.r + 14);
+    const meC = isMember && st.out ? '#B3261E' : '#2F6FDB';
+    const meDot = React.createElement('div', {style: {position: 'absolute', left: me.x - 10, top: me.y - 10, width: 20, height: 20, pointerEvents: 'none'}},
+      React.createElement('div', {style: {position: 'absolute', inset: 0, borderRadius: '50%', background: meC, animation: 'cpulse 2s ease-out infinite'}}),
+      React.createElement('div', {style: {position: 'absolute', inset: 2, borderRadius: '50%', background: meC, border: '3px solid #fff', boxShadow: '0 2px 6px rgba(0,0,0,.3)'}}));
+
+    const segs = plan.slice(1).map((s, j) => { const a = P[plan[j].p], b = P[s.p], md = MODES[s.mode];
+      return {x1: a.x, y1: a.y, x2: b.x, y2: b.y, c: md.c, w: md.w + 'px', dash: md.dash, op: j + 1 <= now ? 0.4 : 1}; });
+    const seen = {}; const markers = [];
+    plan.forEach((s, i) => { if (seen[s.p]) return; seen[s.p] = 1; const p = P[s.p]; const isH = s.p === 'hotel'; const right = p.x > 250;
+      const sz = i === now ? 24 : 20;
+      markers.push({x: p.x, y: p.y, label: isH ? 'H' : String(i), name: isH ? 'Hotel' : nm(s.p), size: sz + 'px', z: i === now ? 3 : 2,
+        left: (right ? p.x + sz / 2 : p.x - sz / 2) + 'px', top: (p.y - sz / 2) + 'px', dir: right ? 'row-reverse' : 'row', tf: right ? 'translateX(-100%)' : 'none',
+        fill: i === now ? '#B5502F' : i < now || isH ? '#2A211B' : '#fff', stroke: i === now ? '#fff' : '#2A211B', tc: i === now || i < now || isH ? '#fff' : '#2A211B'}); });
+
+    const around = Object.keys(P).filter(x => !['hotel', 'borgo', 'callisto', mePlaceKey].includes(x))
+      .map(x => ({n: nm(x), d0: dist(P[x], me)})).sort((a, b) => a.d0 - b.d0).slice(0, 3).map(a => ({n: a.n, d: fmtD(a.d0)}));
+    around.splice(1, 0, {n: L(B('Farmacia', 'Pharmacy'), lang), d: '120 m'});
+    around.push({n: L(B('Bagni pubblici', 'Public toilets'), lang), d: '260 m'});
+
+    let nextLeg = null;
+    if (isMember && st.out) nextLeg = {title: t.backToGroup, label: t.walk + ' · 3 min', c: MODES.walk.c, soft: MODES.walk.soft, to: nm(plan[now].p),
+      detail: [{tm: '10:40', x: L(B('Torna indietro verso Viale Vaticano', 'Head back towards Viale Vaticano'), lang)}, {tm: '10:43', x: L(B('Marco ti aspetta all\'ingresso', 'Marco is waiting at the entrance'), lang)}]};
+    else if (steps[now + 1]) { const s = steps[now + 1]; nextLeg = {title: t.nextLeg, label: s.legLabel, c: s.legC, soft: s.legSoft, to: s.name, detail: s.detail}; }
+
+    const story = STORY[mePlaceKey];
+    const showStory = !isMember && !!story;
+    const storyLabel = isLeader ? t.storyLeader : t.storySolo;
+
+    const safety = isSolo ? (nearRisk ? {bg: '#F4E6C6', dot: '#C38A1E', title: t.riskNear, desc: nm(mePlaceKey)} : {bg: '#E1E8D6', dot: '#4E6B4A', title: L(B('Zona tranquilla', 'Calm area'), lang), desc: L(B('Nessun avviso intorno a te', 'No alerts around you'), lang)})
+      : isMember ? (st.out ? {bg: '#F7DCD7', dot: '#B3261E', title: L(B('Fuori dalla zona del gruppo', 'Outside the group zone'), lang), desc: L(B('Il gruppo è a 240 m · tocca per la strada', 'Group is 240 m away · tap for directions'), lang)}
+        : {bg: '#E1E8D6', dot: '#4E6B4A', title: L(B('Sei con il gruppo', 'You\'re with the group'), lang), desc: L(B('Marco, la tua guida, è a 40 m', 'Marco, your guide, is 40 m away'), lang)})
+      : {bg: '#F4E6C6', dot: '#C38A1E', title: L(B('13 di 14 nella zona', '13 of 14 in the zone'), lang), desc: L(B('Giulia R. è a 320 m dal gruppo', 'Giulia R. is 320 m from the group'), lang)};
+
+    const tourChips = TOURS.map(([kk, lb]) => ({label: L(lb, lang), on: () => { this.stopPlay(); this.setState({tour: kk, open: 1, mePlace: null}); }, ...chip(st.tour === kk)}));
+    const edTourChips = TOURS.map(([kk, lb]) => ({label: L(lb, lang), on: () => this.setState({groupTour: kk, groupPlan: PLANS[kk].map(s => ({...s}))}), ...chip(st.groupTour === kk)}));
+    const gTourName = L(TOURS.find(x => x[0] === st.groupTour)[1], lang);
+    const planBy = (isLeader ? (L(B('Il tuo programma · ', 'Your plan · '), lang)) : (L(B('Programma di Marco, capogruppo · ', 'Plan by Marco, group leader · '), lang))) + gTourName;
+
+    const tabDefs = [['today', t.tToday], ['map', t.tMap], ['docs', t.tDocs], ['places', t.tPlaces], ['sos', t.tSos]];
+    const tabs = tabDefs.map(([kk, lb]) => { const on = st.tab === kk; const sos = kk === 'sos';
+      return {label: lb, on: () => this.go(kk), ind: on ? (sos ? '#B3261E' : '#B5502F') : 'transparent', color: sos ? '#B3261E' : on ? '#2A211B' : '#7A6B5F'}; });
+
+    const docs = [];
+    if (st.ticket) docs.push({k: 'BT', n: st.ticket.name, s: st.ticket.route});
+    docs.push({k: 'CI', n: L(B("Carta d'imbarco", 'Boarding pass'), lang), s: 'AZ 609 · JFK → FCO'},
+      {k: 'HV', n: L(B('Voucher hotel', 'Hotel voucher'), lang), s: 'Hotel Travertino · 24–28/09'},
+      {k: 'AS', n: L(B('Assicurazione viaggio', 'Travel insurance'), lang), s: L(B('Polizza n. 88213 · assistenza 24h', 'Policy no. 88213 · 24h assistance'), lang)});
+
+    const tagName = kk => L(TOURS.find(x => x[0] === kk)[1], lang);
+    const museums = MUS.filter(m => st.filter === 'all' || m.tags.includes(st.filter)).map(m => ({
+      name: nm(m.p), price: L(m.full, lang), tags: m.tags.map(tagName).join(' · '), status: t.openUntil + ' ' + m.until, hours: L(m.h, lang),
+      on: () => { this.go(st.tab, 'museum', {museum: m.p}); }}));
+    const filterChips = [['all', t.all], ...TOURS.map(([kk, lb]) => [kk, L(lb, lang)])].map(([kk, lb]) => ({label: lb, on: () => this.setState({filter: kk}), ...chip(st.filter === kk)}));
+    const mm = MUS.find(m => m.p === st.museum) || MUS[0];
+    const mus = {name: nm(mm.p), status: t.openUntil + ' ' + mm.until, hours: L(mm.h, lang),
+      rows: [[t.full, mm.full], [t.reduced, mm.red], [t.booking, mm.book]].filter(r => r[1]).map(([kk, v]) => ({k: kk, v: L(v, lang)})),
+      note: L(mm.note, lang), hasNote: !!mm.note, story: L(STORY[mm.p], lang), hasStory: !isMember && !!STORY[mm.p]};
+
+    const opts = TRANSFER[st.airport].map(o => { const md = MODES[o.mode]; return {mode: L(md, lang), c: md.c, soft: md.soft, name: L(o.n, lang), price: o.price,
+      meta: L(o.to, lang) + ' · ' + o.dur + ' · ' + L(o.freq, lang), buy: o.buy, noBuy: !o.buy, best: L(o.best, lang), hasBest: !!o.best,
+      onBuy: () => this.go(st.tab, 'ticket', {ticket: {name: L(o.n, lang), route: (st.airport === 'FCO' ? 'Fiumicino' : 'Ciampino') + ' → ' + L(o.to, lang), price: o.price}})}; });
+    const airportOpts = [['FCO', 'Fiumicino · FCO'], ['CIA', 'Ciampino · CIA']].map(([kk, lb]) => ({label: lb, on: () => this.setState({airport: kk}), bg: st.airport === kk ? '#fff' : 'transparent', sh: st.airport === kk ? '0 1px 4px rgba(42,33,27,.12)' : 'none'}));
+
+    const modeCycle = ['walk', 'metro', 'bus', 'tram'];
+    const edSteps = st.groupPlan.map((s, i) => { const md = s.mode ? MODES[s.mode] : null; const last = i === st.groupPlan.length - 1;
+      return {time: s.t, name: nm(s.p), hasMode: !!md, mode: md ? L(md, lang) + ' · ' + s.min + ' min' : '', c: md ? md.c : '', soft: md ? md.soft : '', canDel: i > 0 && !last,
+        onTime: () => this.editPlan(gp => { gp[i].t = addMin(gp[i].t, 15); }),
+        onMode: () => this.editPlan(gp => { gp[i].mode = modeCycle[(modeCycle.indexOf(gp[i].mode) + 1) % modeCycle.length]; }),
+        onDel: () => this.editPlan(gp => { gp.splice(i, 1); })}; });
+
+    const alerts = {
+      zone: {tone: '#B3261E', title: t.zoneT, desc: t.zoneD, big: '240 m', primary: t.zoneGo, onPrimary: () => { this.go('map', null, {alert: null, mePlace: null}); this.later(() => { this.setState({out: false}); this.toast('toastBack'); }, 4500); },
+        secondary: t.zoneCall, onSecondary: () => { this.setState({alert: null}); this.toast('toastCall'); }, tertiary: t.zoneOk, onTertiary: () => { this.setState({alert: null}); this.toast('toastLeader'); }},
+      zoneL: {tone: '#B3261E', title: t.zoneLT, desc: t.zoneLD, big: '320 m', primary: t.zoneLSee, onPrimary: () => this.go('map', null, {alert: null, mePlace: null}),
+        secondary: t.zoneLCall, onSecondary: () => { this.setState({alert: null}); this.toast('toastCall'); }, tertiary: t.dismiss, onTertiary: () => this.setState({alert: null})},
+      off: {tone: '#8A5E0E', title: t.offT, desc: t.offD, big: '6 min', primary: t.offGo, onPrimary: () => { this.go('map', null, {alert: null}); this.toast('toastRoute'); }, tertiary: t.dismiss, onTertiary: () => this.setState({alert: null})},
+      theft: {tone: '#B3261E', title: t.theftT, desc: t.theftD, tips: [t.theft1, t.theft2, t.theft3].map((x, i) => ({n: i + 1, x})), primary: t.theftOk, onPrimary: () => this.setState({alert: null})}
+    };
+    const a0 = alerts[st.alert] || alerts.theft;
+    const al = {...a0, hasBig: !!a0.big, hasTips: !!a0.tips, hasSecondary: !!a0.secondary, hasTertiary: !!a0.tertiary};
+
+    const sosActive = st.sos !== null;
+    const panelRoles = [['solo', 'Turista singolo'], ['member', 'Membro del gruppo'], ['leader', 'Capogruppo']].map(([kk, lb]) => ({label: lb, on: () => { this.stopPlay(); this.setState({role: kk, out: false, mePlace: null, alert: null}); }, bg: role === kk ? '#2A211B' : '#FAF6EF', color: role === kk ? '#FAF6EF' : '#2A211B'}));
+    const panelLangs = [['it', 'Italiano'], ['en', 'English'], ['fr', 'Français'], ['es', 'Español'], ['pl', 'Polski'], ['ro', 'Română']].map(([kk, lb]) => ({label: lb, on: () => this.setState({lang: kk}), bg: lang === kk ? '#2A211B' : '#FAF6EF', color: lang === kk ? '#FAF6EF' : '#2A211B'}));
+
+    return {
+      t, showPanel: this.props.showPanel ?? true, panelRoles, panelLangs, simZone: this.simZone, simTheft: this.simTheft, simMove: this.simMove, restart: this.restart,
+      sbColor: onPaper ? '#2A211B' : '#FBF3EA', sbBg: onPaper ? '#FAF6EF' : '#B5502F', homeInd: onPaper ? '#2A211B' : '#FBF3EA',
+      isWelcome: st.screen === 'welcome', isRole: st.screen === 'role', isScan: st.screen === 'scan', isScanned: st.screen === 'scanned', isApp: st.screen === 'app',
+      langOpts: langOpt(false), langOptsDark: langOpt(true),
+      goRole: () => this.setState({screen: 'role'}), goScan: () => this.setState({screen: 'scan', scan: 0}),
+      finishOnboarding: () => this.go('today', null, {scanning: false}),
+      roleCards: [['solo', t.roleSolo, t.roleSoloD], ['member', t.roleMember, t.roleMemberD], ['leader', t.roleLeader, t.roleLeaderD]].map(([kk, ti, de]) => ({title: ti, desc: de,
+        on: () => this.setState({role: kk}), border: role === kk ? '#B5502F' : '#E6DBCB', bg: role === kk ? '#FFF8F2' : '#fff', fill: role === kk ? '#B5502F' : 'transparent'})),
+      isMemberSel: isMember, groupCode: st.groupCode, onCode: e => this.setState({groupCode: e.target.value.toUpperCase()}),
+      scanLine: st.scanning ? React.createElement('div', {style: {position: 'absolute', left: '7%', right: '7%', height: 3, background: '#F0B48E', boxShadow: '0 0 18px 5px rgba(240,180,142,.55)', borderRadius: 2, animation: 'cscan 2.2s ease-in-out infinite'}}) : null,
+      scanStatus: st.scanning ? t.scanning : t.scanHint, scanPctLabel: Math.round(st.scan) + '%', scanPctCss: st.scan + '%', scanBtn: st.scanning ? t.scanning : t.scanBtn, startScan: this.startScan,
+      passportFields: [[t.fName, 'Emma Smith'], [t.fNat, L(B('Regno Unito', 'United Kingdom'), lang)], [t.fNum, '•••• 4821'], [t.fExp, '03/2031']].map(([kk, v]) => ({k: kk, v})),
+      scanNew: () => this.toast('toastScan'), scrollRef: this.scrollRef, tabs,
+      showToday: !st.sub && st.tab === 'today', showMap: !st.sub && st.tab === 'map', showDocs: !st.sub && st.tab === 'docs', showPlaces: !st.sub && st.tab === 'places', showSos: !st.sub && st.tab === 'sos',
+      subTransfer: st.sub === 'transfer', subTicket: st.sub === 'ticket', subMuseum: st.sub === 'museum', subEditor: st.sub === 'editor', subLost: st.sub === 'lost',
+      back: () => this.setState({sub: st.sub === 'ticket' ? 'transfer' : null}),
+      hello: (L(B('Buongiorno, ', 'Good morning, '), lang)) + (isLeader ? 'Marco' : 'Emma'),
+      safety, isLeader, isSolo, notSolo: !isSolo, planBy, tourChips, steps,
+      avatars: [['MB', '#4E6B4A'], ['GR', '#B3261E'], ['PT', '#4E6B4A'], ['AL', '#4E6B4A'], ['ST', '#4E6B4A'], ['LM', '#4E6B4A']].map(([i, ring]) => ({i, ring})),
+      openEditor: () => this.go('today', 'editor'), openTransfer: () => this.go('today', 'transfer'), goMap: () => this.go('map'),
+      tip: L(TIPS[st.tipIdx % TIPS.length], lang), nextTip: () => this.setState({tipIdx: st.tipIdx + 1}),
+      showRoute: st.layers.route, showRisk: st.layers.risk, showGroup: !isSolo && st.layers.group,
+      layerChips: [['route', t.layerRoute], ['risk', t.layerRisk], ...(isSolo ? [] : [['group', t.layerGroup]])].map(([kk, lb]) => ({label: lb,
+        on: () => this.setState({layers: {...st.layers, [kk]: !st.layers[kk]}}), bg: st.layers[kk] ? '#2A211B' : '#FAF6EF', color: st.layers[kk] ? '#FAF6EF' : '#2A211B'})),
+      riskZones: RISK, segs, markers, zone: {x: zc.x, y: zc.y, r: zoneR, gx: zc.x + 3, gy: zc.y - 3}, groupDots, hasStray, hasStrayShown: hasStray && !isSolo && st.layers.group, stray, meDot, nearRisk,
+      placeName: isMember && st.out ? (L(B('Via di Porta Angelica', 'Via di Porta Angelica'), lang)) : nm(mePlaceKey),
+      showStory: showStory && !(isMember && st.out), storyText: L(story, lang), storyLabel, showGuideNote: isMember, showGuideNoteMus: isMember,
+      playIcon: st.playing ? '❚❚' : '▶', progCss: st.prog + '%', togglePlay: this.togglePlay,
+      hasNextLeg: !!nextLeg, nextLeg: nextLeg || {detail: []}, around,
+      docsLocked: !st.unlocked, docsOpen: st.unlocked, unlockLabel: st.unlocking ? t.unlocking : t.unlock,
+      unlock: () => { this.setState({unlocking: true}); this.later(() => this.setState({unlocking: false, unlocked: true}), 900); },
+      docs, openLost: () => this.go('docs', 'lost'),
+      lostSteps: [[t.lost1, t.lost1D], [t.lost2, t.lost2D], [t.lost3, t.lost3D]].map(([a, b], i) => ({n: i + 1, t: a, d: b})),
+      call112: () => this.go('sos'), shareCopy: () => this.toast('toastCopy'),
+      filterChips, museums, mus, book: () => this.toast('toastBook'), addPlan: () => this.toast('toastAdded'),
+      airportOpts, transferOpts: opts, ticket: st.ticket || {name: '', route: '', price: ''}, qr: QR, ticketDone: () => this.go('docs', null, {unlocked: true}),
+      edTourChips, edSteps, radius: st.radius, radiusLabel: st.radius + ' m', onRadius: e => this.setState({radius: Number(e.target.value)}),
+      addStop: () => this.editPlan(gp => { const cand = ['pantheon', 'navona', 'trevi', 'spagna', 'campo', 'colosseo'].find(c => !gp.some(s => s.p === c)); if (!cand) return;
+        const prev = gp[gp.length - 2]; gp.splice(gp.length - 1, 0, {t: addMin(prev.t, 75), p: cand, mode: 'walk', min: 12, leg: B('—'), dur: B('1 h'), price: null}); }),
+      publish: () => { this.go('today'); this.toast('toastSent'); },
+      sosActive, sosBig: st.sos === null ? '112' : st.sos === 0 ? '112' : String(st.sos), sosSub: st.sos === null ? t.sosHold : st.sos === 0 ? t.sosCalling : t.sosIn,
+      sosPress: this.sosPress, sosCancel: this.sosCancel,
+      share: {bg: st.share ? '#4E6B4A' : '#D9CCB9', jc: st.share ? 'flex-end' : 'flex-start'},
+      toggleShare: () => { this.setState({share: !st.share}); this.toast(st.share ? 'toastShareOff' : 'toastShareOn'); },
+      sosRows: [[t.nearPolice, 'Commissariato Trevi', '650 m'], [t.nearHosp, 'Ospedale Santo Spirito', '1,1 km'], [t.nearEmb, L(B('Ambasciata britannica', 'British Embassy'), lang), '2,4 km']].map(([kk, n, d]) => ({k: kk, n, d, on: () => this.toast('toastRoute')})),
+      phrases: [['Aiuto!', 'Help!'], ['Ho perso il passaporto.', 'I lost my passport.'], ['Mi hanno derubato.', 'I have been robbed.'], ["Chiamate un'ambulanza.", 'Call an ambulance.']].map(([a, b]) => ({it: a, en: b})),
+      hasAlert: !!st.alert && st.screen === 'app', al, hasToast: !!st.toast, toast: st.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
