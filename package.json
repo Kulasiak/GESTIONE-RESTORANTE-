@@ -1,0 +1,11 @@
+{
+  "name": "gestione-restorante",
+  "private": true,
+  "description": "Gestionale ristorante (file statici) + Custode (custode/). Il gestionale non richiede compilazione: questo file serve solo alla pubblicazione su Cloudflare.",
+  "scripts": {
+    "build": "sh cloudflare-build.sh"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

@@ -2,6 +2,14 @@
 # Prepara la cartella pubblicata da Cloudflare (vedi wrangler.jsonc).
 set -e
 OUT=.cf-dist
+MARK=.cf-build-ok
+
+# Cloudflare puo lanciare la build due volte (comando della dashboard + wrangler): la seconda la salta
+if [ -f "$MARK" ] && [ -n "$(find "$MARK" -mmin -30)" ] && [ -f "$OUT/index.html" ]; then
+  echo "Build gia pronta, salto"
+  exit 0
+fi
+echo "Node $(node -v) · npm $(npm -v)"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
@@ -9,7 +17,7 @@ mkdir -p "$OUT"
 cp index.html manifest.webmanifest sw.js icon-192.png icon-512.png icon-maskable.png apple-touch-icon.png "$OUT"/
 
 # 2. Custode, pubblicato sotto /custode/
-(cd custode && npm ci --no-audit --no-fund && BASE=/custode/ npm run build)
+(cd custode && npm ci --no-audit --no-fund --include=dev && BASE=/custode/ npm run build)
 cp -R custode/dist "$OUT"/custode
 
 # 3. Intestazioni: service worker e pagine sempre aggiornati, permessi per fotocamera e GPS
@@ -29,4 +37,5 @@ cat > "$OUT"/_headers <<'H'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 H
+touch "$MARK"
 echo "Pronto: $(find "$OUT" -type f | wc -l) file in $OUT"

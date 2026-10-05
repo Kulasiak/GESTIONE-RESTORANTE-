@@ -6,3 +6,4 @@ dati.json.tmp
 stampanti.json
 .cf-dist/
 .wrangler/
+.cf-build-ok
