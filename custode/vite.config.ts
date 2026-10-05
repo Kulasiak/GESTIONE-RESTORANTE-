@@ -10,6 +10,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      // NO_PWA=1: build senza service worker (anteprime dove i service worker non sono permessi)
+      disable: process.env.NO_PWA === '1',
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'apple-touch-icon.png', 'push-sw.js'],
       manifest: {
