@@ -3,3 +3,5 @@ dist/
 dev-dist/
 .env.local
 *.log
+tsconfig.tsbuildinfo
+smoke-shots/

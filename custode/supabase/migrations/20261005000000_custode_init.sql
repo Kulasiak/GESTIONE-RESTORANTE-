@@ -9,6 +9,7 @@ create extension if not exists pgcrypto;
 create table public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   display_name text not null default '',
+  phone text,                      -- telefono (il capogruppo lo mostra ai membri)
   lang text not null default 'it' check (lang in ('it','en','fr','es','pl','ro')),
   role text not null default 'solo' check (role in ('solo','member','leader')),
   nationality text,                -- codice ISO3 dal passaporto (per l'ambasciata)

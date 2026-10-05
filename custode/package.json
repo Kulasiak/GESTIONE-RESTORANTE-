@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "gen:data": "node scripts/extract-design.mjs && node scripts/gen-seed.mjs"
+    "gen:data": "node scripts/extract-design.mjs && node scripts/gen-seed.mjs",
+    "locales": "node scripts/build-locales.mjs",
+    "test:db": "scripts/test-db.sh",
+    "smoke": "node scripts/smoke.mjs && node scripts/smoke-group.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",
@@ -26,6 +29,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
+    "playwright-core": "^1.63.0",
     "typescript": "^5.9.3",
     "vite": "^8.3.2",
     "vite-plugin-pwa": "^2.0.0",
