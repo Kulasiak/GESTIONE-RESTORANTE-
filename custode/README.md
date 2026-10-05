@@ -40,7 +40,7 @@ il gruppo condiviso è disattivato).
 
 1. Crea un progetto su supabase.com.
 2. **Authentication → Providers → Anonymous sign-ins: attiva** (il turista entra senza password).
-3. SQL editor: esegui `supabase/migrations/20261005000000_custode_init.sql` e poi `supabase/seed.sql`
+3. SQL editor: esegui in ordine i file di `supabase/migrations/` e poi `supabase/seed.sql`
    (oppure `supabase db push` con la CLI).
 4. Copia Project URL e anon key in `.env.local`.
 5. Per accedere da un altro telefono: **Authentication → Email Templates → Magic Link**, aggiungi il codice `{{ .Token }}` al testo della mail.
@@ -76,6 +76,37 @@ In alternativa,
 Vercel: nuovo progetto con **Root directory `custode`** (c'è già `vercel.json`) e le due variabili
 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`. Serve HTTPS per fotocamera, GPS e installazione.
 
+## Pacchetti di accesso (privati, gruppi, agenzie)
+
+Con Supabase collegato, per usare l'app serve un **codice di attivazione** (`CUST-XXXX-XXXX`).
+I giorni partono dalla prima attivazione; alla scadenza il server blocca posizione, avvisi e
+programma, e l'app mostra "Accesso scaduto". **Documenti e SOS restano sempre aperti** (e l'SOS al
+capogruppo passa anche a pacchetto scaduto).
+
+| Pacchetto | Chi lo usa | Cosa decide il codice |
+|---|---|---|
+| Privato | turista singolo | durata in giorni (1 persona) |
+| Gruppo | capogruppo, crea il gruppo con il codice | durata, numero massimo di partecipanti; quando il gruppo è pieno non entra più nessuno |
+| Agenzia | agenzia, dalla sua schermata | quanti gruppi, persone per gruppo, giorni per gruppo, validità del pacchetto; genera i codici per i capigruppo e vede chi li usa |
+
+I codici si creano dall'**SQL editor di Supabase** (non dall'app):
+
+```sql
+-- 10 codici privati da 7 giorni
+select * from admin_create_licenses('private', 7, 1, 10, note => 'Vendita sito');
+-- 5 codici gruppo: 7 giorni, fino a 30 partecipanti
+select * from admin_create_licenses('group', 7, 30, 5, note => 'Parrocchia San Luca');
+-- 1 pacchetto agenzia valido un anno: 20 gruppi da 40 persone, 7 giorni ciascuno
+select * from admin_create_licenses('agency', 365, 40, 1, group_slots => 20, group_days => 7, note => 'Agenzia Rossi');
+-- Situazione dei codici
+select code, kind, note, activated_at, expires_at from licenses order by created_at desc;
+```
+
+Rinnovo: il turista singolo inserisce un nuovo codice privato; il capogruppo un nuovo codice di
+gruppo (Impostazioni o schermata "Accesso scaduto") e il gruppo riparte con gli stessi membri.
+In modalità locale (senza Supabase) non ci sono pacchetti né blocchi. Il pagamento non è collegato:
+i codici si vendono a parte (o, più avanti, li genera Stripe dopo il pagamento).
+
 ## Testi e traduzioni
 
 - `src/i18n/locales/<lingua>.json`: file usati dall'app (uno per lingua).
@@ -90,7 +121,7 @@ Vercel: nuovo progetto con **Root directory `custode`** (c'è già `vercel.json`
 ```bash
 npm run typecheck   # TypeScript
 npm test            # MRZ (esempi ICAO), orari/domeniche, giorni del viaggio
-npm run test:db     # migrazioni + 14 controlli RLS su Postgres locale
+npm run test:db     # migrazioni + controlli RLS e pacchetti su Postgres locale
 npm run build && npx vite preview --port 4173 &
 npm run smoke       # percorso completo nel browser (turista, membro fuori zona, capogruppo)
 ```

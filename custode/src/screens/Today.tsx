@@ -8,6 +8,7 @@ import { distance, fmtDistance } from '../lib/geo';
 import { romeNow } from '../lib/hours';
 import { romeTemperature } from '../lib/nearby';
 import * as api from '../lib/api';
+import { AccessLine } from './Access';
 
 export function Today() {
   const { t, lang, profile, go, plan, setPlan, group, members, zone, pos, posError, inRisk, lastLeaderMsg, toast, days, day, setDay } = useApp();
@@ -77,6 +78,7 @@ export function Today() {
       <div className="col gap4">
         <h1 className="h1" style={{ fontSize: 38 }}>{greet}{profile.name ? ', ' + profile.name : ''}</h1>
         <div className="muted" style={{ fontSize: 15 }}>{t.rome}{dayIdx >= 0 ? ' · ' + fmt(t.dayOfN, { n: dayIdx + 1, m: days.length }) : ''}{group ? ' · ' + group.name : ''}</div>
+        <AccessLine />
       </div>
 
       <button className="row gap14" style={{ textAlign: 'left', padding: 16, borderRadius: 20, border: 'none', background: safety.bg }} onClick={() => go({ tab: 'map' })}>

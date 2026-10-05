@@ -28,16 +28,19 @@ export function Welcome() {
   );
 }
 
-type CodeState = { status: 'idle' | 'checking' | 'found' | 'notfound' | 'offline'; name?: string; leader?: string };
+type CodeState = { status: 'idle' | 'checking' | 'found' | 'notfound' | 'offline' | 'full' | 'expired'; name?: string; leader?: string; seats?: number };
 
 export function RoleSetup() {
-  const { t, profile, setProfile, go, toast, setGroup } = useApp();
+  const { t, profile, setProfile, go, setGroup, reloadAccess } = useApp();
   const [role, setRole] = useState<Role>(profile.role);
   const [name, setName] = useState(profile.name);
   const [code, setCode] = useState('');
   const [groupName, setGroupName] = useState('');
   const [codeState, setCodeState] = useState<CodeState>({ status: 'idle' });
   const [busy, setBusy] = useState(false);
+  const [lic, setLic] = useState('');
+  const [err, setErr] = useState('');
+  const needsLicense = hasBackend && role !== 'member';
 
   // Anteprima del gruppo mentre si digita il codice
   useEffect(() => {
@@ -46,30 +49,38 @@ export function RoleSetup() {
     setCodeState({ status: 'checking' });
     const id = setTimeout(() => {
       api.previewGroup(code)
-        .then((g) => setCodeState(g ? { status: 'found', name: g.name, leader: g.leader } : { status: 'notfound' }))
+        .then((g) => setCodeState(!g ? { status: 'notfound' } : g.expired ? { status: 'expired' } : g.seatsLeft <= 0 ? { status: 'full' } : { status: 'found', name: g.name, leader: g.leader, seats: g.seatsLeft }))
         .catch(() => setCodeState({ status: 'offline' }));
     }, 400);
     return () => clearTimeout(id);
   }, [code, role]);
 
-  const roles: [Role, string, string][] = [['solo', t.roleSolo, t.roleSoloD], ['member', t.roleMember, t.roleMemberD], ['leader', t.roleLeader, t.roleLeaderD]];
-  const canGo = name.trim().length > 0 && !busy && (role !== 'member' || !hasBackend || codeState.status === 'found');
+  const roles: [Role, string, string][] = [['solo', t.roleSolo, t.roleSoloD], ['member', t.roleMember, t.roleMemberD], ['leader', t.roleLeader, t.roleLeaderD],
+    ...(hasBackend ? [['agency', t.roleAgency, t.roleAgencyD] as [Role, string, string]] : [])];
+  const canGo = name.trim().length > 0 && !busy && (role !== 'member' || !hasBackend || codeState.status === 'found') && (!needsLicense || lic.replace(/\W/g, '').length >= 12);
 
   async function next() {
     setBusy(true);
+    setErr('');
     try {
       await setProfile({ role, name: name.trim(), groupId: null });
       if (hasBackend && role === 'leader') {
-        const g = await api.createGroup(groupName.trim() || name.trim());
+        const g = await api.createGroup(groupName.trim() || name.trim(), lic);
         setGroup({ ...g, leaderName: name.trim() });
         await setProfile({ groupId: g.id });
       } else if (hasBackend && role === 'member') {
         const gid = await api.joinGroup(code);
         await setProfile({ groupId: gid });
+      } else if (hasBackend) {
+        const kind = await api.activateLicense(lic);
+        if ((kind === 'agency') !== (role === 'agency')) { setErr(t.licWrongKind); return; }
       }
-      go({ screen: 'scan' });
-    } catch {
-      toast(navigator.onLine ? t.errGeneric : t.needsOnline);
+      await reloadAccess();
+      // L'agenzia non viaggia: niente passaporto, va dritta alla sua schermata
+      if (role === 'agency') { await setProfile({ onboarded: true }); go({ screen: 'app', tab: 'today' }); }
+      else go({ screen: 'scan' });
+    } catch (e) {
+      setErr(t[api.licenseError(e)]);
     } finally {
       setBusy(false);
     }
@@ -105,6 +116,9 @@ export function RoleSetup() {
             {codeState.status === 'found' && <span className="ok">{fmt(t.codeFound, { group: codeState.name ?? '', leader: codeState.leader ?? '' })}</span>}
             {codeState.status === 'notfound' && <span className="error">{t.codeNotFound}</span>}
             {codeState.status === 'offline' && <span className="error">{t.needsOnline}</span>}
+            {codeState.status === 'full' && <span className="error">{t.groupFull}</span>}
+            {codeState.status === 'expired' && <span className="error">{t.licExpired}</span>}
+            {codeState.status === 'found' && codeState.seats != null && <span className="small muted">{fmt(t.seatsLeft, { n: codeState.seats })}</span>}
           </label>
         )}
 
@@ -115,6 +129,15 @@ export function RoleSetup() {
             <span className="small muted">{t.groupCreateHint}</span>
           </label>
         )}
+
+        {needsLicense && (
+          <label className="field">
+            <span className="label">{role === 'leader' ? t.groupLicCode : role === 'agency' ? t.agencyLicCode : t.licCode}</span>
+            <input className="input code" value={lic} placeholder="CUST-XXXX-XXXX" onChange={(e) => { setLic(e.target.value.toUpperCase()); setErr(''); }} autoCapitalize="characters" autoComplete="off" maxLength={16} />
+            <span className="small muted">{t.licCodeD}</span>
+          </label>
+        )}
+        {err && <span className="error" role="alert">{err}</span>}
 
         {!hasBackend && role !== 'solo' && <div className="note gold">{t.localMode}</div>}
 

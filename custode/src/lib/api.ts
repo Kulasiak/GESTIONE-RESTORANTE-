@@ -5,7 +5,7 @@ import type { Lang } from '../i18n';
 import { PRESET_PLANS, type Mode, type Stop } from '../data/rome';
 import type { EncryptedDoc } from './vault';
 
-export type Role = 'solo' | 'member' | 'leader';
+export type Role = 'solo' | 'member' | 'leader' | 'agency';
 
 export type Profile = {
   userId: string | null;
@@ -125,19 +125,19 @@ const toGroup = (r: GroupRow, leaderName: string, leaderPhone: string | null = n
   trip: r.start_date && r.end_date ? { start: r.start_date, end: r.end_date } : null,
 });
 
-export async function previewGroup(code: string): Promise<{ name: string; leader: string } | null> {
+export async function previewGroup(code: string): Promise<{ name: string; leader: string; seatsLeft: number; expired: boolean } | null> {
   if (!supabase) throw new Error('offline');
   await ensureSession();
   const { data, error } = await supabase.rpc('preview_group', { group_code: code });
   if (error) throw error;
-  const row = (data as { group_name: string; leader_name: string }[])[0];
-  return row ? { name: row.group_name, leader: row.leader_name } : null;
+  const row = (data as { group_name: string; leader_name: string; seats_left: number; expires_at: string | null }[])[0];
+  return row ? { name: row.group_name, leader: row.leader_name, seatsLeft: row.seats_left, expired: !row.expires_at || Date.parse(row.expires_at) <= Date.now() } : null;
 }
 
-export async function createGroup(name: string): Promise<Group> {
+export async function createGroup(name: string, licenseCode: string): Promise<Group> {
   if (!supabase) throw new Error('offline');
   await ensureSession();
-  const { data, error } = await supabase.rpc('create_group', { group_name: name });
+  const { data, error } = await supabase.rpc('create_group', { group_name: name, license_code: licenseCode });
   if (error) throw error;
   const g = toGroup(data as GroupRow, '');
   cache.set(K.group, g);
@@ -386,3 +386,68 @@ export async function verifyLoginCode(email: string, token: string): Promise<Pro
   saveProfileLocal(profile);
   return profile;
 }
+
+// ───────── pacchetti di accesso (codici CUST-XXXX-XXXX) ─────────
+export type Access = {
+  kind: 'private' | 'group' | 'agency'; expiresAt: string | null; maxPeople: number; people: number; groupSlots: number; usedSlots: number; groupDays: number;
+};
+const ACCESS_KEY = 'custode.access';
+export const loadAccessLocal = () => cache.get<Access>(ACCESS_KEY);
+
+/** Errori del server tradotti in chiavi di testo dell'app. */
+export type LicenseError = 'licNotFound' | 'licUsed' | 'licExpired' | 'licWrongKind' | 'groupFull' | 'noSlots' | 'needsOnline' | 'errGeneric';
+export function licenseError(e: unknown): LicenseError {
+  const m = String((e as { message?: string })?.message ?? e);
+  if (!navigator.onLine || m === 'offline') return 'needsOnline';
+  if (m.includes('license not found') || m.includes('group not found')) return 'licNotFound';
+  if (m.includes('license used')) return 'licUsed';
+  if (m.includes('license expired')) return 'licExpired';
+  if (m.includes('is for a group') || m.includes('is not for a group')) return 'licWrongKind';
+  if (m.includes('group full')) return 'groupFull';
+  if (m.includes('no slots')) return 'noSlots';
+  return 'errGeneric';
+}
+
+export async function fetchAccess(): Promise<Access | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase.rpc('my_access');
+  if (error) return loadAccessLocal();
+  const r = (data as { kind: Access['kind']; expires_at: string | null; max_people: number; people: number; group_slots: number; used_slots: number; group_days: number }[])[0];
+  const a: Access | null = r ? { kind: r.kind, expiresAt: r.expires_at, maxPeople: r.max_people, people: r.people, groupSlots: r.group_slots, usedSlots: r.used_slots, groupDays: r.group_days } : null;
+  cache.set(ACCESS_KEY, a);
+  return a;
+}
+
+/** Attiva un codice privato o agenzia (il codice di gruppo si usa creando il gruppo). */
+export async function activateLicense(code: string): Promise<Access['kind']> {
+  if (!supabase) throw new Error('offline');
+  await ensureSession();
+  const { data, error } = await supabase.rpc('activate_license', { license_code: code });
+  if (error) throw error;
+  return (data as { kind: Access['kind'] }[])[0].kind;
+}
+
+export async function renewGroup(code: string) {
+  if (!supabase) throw new Error('offline');
+  const { error } = await supabase.rpc('renew_group', { license_code: code });
+  if (error) throw error;
+}
+
+export type AgencyCode = { code: string; note: string | null; groupName: string | null; leaderName: string; people: number; maxPeople: number; activatedAt: string | null; expiresAt: string | null };
+
+export async function agencyIssueCode(note: string): Promise<string> {
+  if (!supabase) throw new Error('offline');
+  const { data, error } = await supabase.rpc('agency_issue_code', { note });
+  if (error) throw error;
+  return data as string;
+}
+
+export async function agencyOverview(): Promise<AgencyCode[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc('agency_overview');
+  if (error) throw error;
+  return (data as { code: string; note: string | null; group_name: string | null; leader_name: string; people: number; max_people: number; activated_at: string | null; expires_at: string | null }[])
+    .map((r) => ({ code: r.code, note: r.note, groupName: r.group_name, leaderName: r.leader_name, people: r.people, maxPeople: r.max_people, activatedAt: r.activated_at, expiresAt: r.expires_at }));
+}
+
+export const isExpired = (a: Access | null) => !a || !a.expiresAt || Date.parse(a.expiresAt) <= Date.now();

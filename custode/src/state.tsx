@@ -32,6 +32,7 @@ type Ctx = {
   group: Group | null; setGroup: (g: Group | null) => void; members: Member[];
   plan: Plan | null; setPlan: (p: Plan | null) => void; reloadPlan: () => Promise<void>; reloadGroup: () => Promise<void>;
   trip: api.Trip | null; days: string[]; day: string; setDay: (d: string) => void;
+  access: api.Access | null; expired: boolean; reloadAccess: () => Promise<void>;
   zone: { center: LatLng; radius: number; distance: number | null; out: boolean; guide: Member | null } | null;
   inRisk: string | null; online: boolean; lastLeaderMsg: AlertRow | null;
 };
@@ -57,6 +58,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [plan, setPlanState] = useState<Plan | null>(() => api.loadPlanLocal(day));
   const [online, setOnline] = useState(navigator.onLine);
   const [lastLeaderMsg, setLastLeaderMsg] = useState<AlertRow | null>(null);
+  const [access, setAccess] = useState<api.Access | null>(() => api.loadAccessLocal());
+  const [accessChecked, setAccessChecked] = useState(() => api.loadAccessLocal() !== null);
+  const [, setTick] = useState(0);
   const t = DICTS[profile.lang];
   const toastTimer = useRef<number>(0);
 
@@ -155,6 +159,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     reloadPlan().catch(() => {});
   }, [profile.onboarded, profile.groupId, profile.role, reloadGroup, reloadPlan, online]);
 
+  // ── pacchetto di accesso (scadenza e posti), ricontrollato ogni minuto ──
+  const reloadAccess = useCallback(async () => {
+    if (!hasBackend) return;
+    const a = await api.fetchAccess();
+    setAccess(a);
+    setAccessChecked(true);
+  }, []);
+  useEffect(() => {
+    if (profile.onboarded) reloadAccess().catch(() => {});
+  }, [profile.onboarded, profile.groupId, profile.role, online, reloadAccess]);
+  useEffect(() => {
+    const id = window.setInterval(() => setTick((x) => x + 1), 60_000);
+    return () => clearInterval(id);
+  }, []);
+  // Senza server (modalita locale) non ci sono pacchetti; senza una verifica non si blocca nessuno
+  const expired = hasBackend && profile.onboarded && profile.role !== 'agency' && accessChecked && api.isExpired(access);
+
   // ── realtime del gruppo ──
   useEffect(() => {
     const gid = profile.groupId;
@@ -163,7 +184,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const off = api.subscribeGroup(gid, {
       onLocation: () => { clearTimeout(locTimer); locTimer = window.setTimeout(() => api.fetchMembers(gid).then(setMembers).catch(() => {}), 800); },
       onPlan: () => { reloadPlan().catch(() => {}); },
-      onGroup: () => { api.fetchGroup(gid).then((g) => g && setGroupState(g)).catch(() => {}); },
+      onGroup: () => { api.fetchGroup(gid).then((g) => g && setGroupState(g)).catch(() => {}); reloadAccess().catch(() => {}); },
       onAlert: (a) => {
         const me = profileRef.current;
         if (a.senderId === me.userId) return;
@@ -178,7 +199,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
     api.fetchRecentAlerts(gid).then((list) => setLastLeaderMsg(list.find((a) => a.kind === 'message') ?? null)).catch(() => {});
     return () => { off(); clearTimeout(locTimer); };
-  }, [profile.onboarded, profile.groupId, reloadPlan, toast]);
+  }, [profile.onboarded, profile.groupId, reloadPlan, toast, reloadAccess]);
   const membersRef = useRef(members);
   membersRef.current = members;
 
@@ -256,7 +277,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const value: Ctx = {
     t, lang: profile.lang, profile, setProfile, nav, go, back, toast, toastMsg, sheet, setSheet, pos, posError,
-    group, setGroup, members, plan, setPlan, reloadPlan, reloadGroup, zone, inRisk, online, lastLeaderMsg, trip, days, day, setDay,
+    group, setGroup, members, plan, setPlan, reloadPlan, reloadGroup, zone, inRisk, online, lastLeaderMsg, trip, days, day, setDay, access, expired, reloadAccess,
   };
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }

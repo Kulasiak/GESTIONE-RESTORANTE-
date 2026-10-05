@@ -5,6 +5,7 @@ import { LANGS, LANG_NAMES, fmt } from '../i18n';
 import { geocode } from '../lib/nearby';
 import { hasBackend, supabase } from '../lib/supabase';
 import * as api from '../lib/api';
+import { AccessLine, RenewForm } from './Access';
 import { disablePush, enablePush, pushAvailable, pushEnabled } from '../lib/push';
 import { biometricEnabled, biometricSupported, disableBiometric, enableBiometric } from '../lib/biometric';
 import { clear, createStore } from 'idb-keyval';
@@ -112,7 +113,7 @@ export function Settings() {
         </div>
       )}
 
-      {bioOk && (
+      {bioOk && profile.role !== 'agency' && (
         <div className="card col gap10">
           <span className="eyebrow">{t.docsTitle}</span>
           <div className="row gap12"><span className="grow b">{t.bioTitle}</span>
@@ -122,6 +123,15 @@ export function Settings() {
         </div>
       )}
 
+      {hasBackend && (profile.role === 'solo' || profile.role === 'leader') && (
+        <div className="card col gap10">
+          <span className="eyebrow">{t.licCode}</span>
+          <AccessLine />
+          <RenewForm />
+        </div>
+      )}
+
+      {profile.role !== 'agency' && <>
       <div className="card col gap10">
         <span className="eyebrow">{t.tripDates}</span>
         <div className="row gap8">
@@ -138,10 +148,11 @@ export function Settings() {
         <button className="btn dark sm" disabled={busy} onClick={saveHotel}>{busy ? '…' : t.hotelFind}</button>
         {profile.hotel && <span className="small muted">✓ {profile.hotel.name} · {profile.hotel.address}</span>}
       </div>
+      </>}
 
       <div className="card col gap10">
         <span className="eyebrow">{t.role}</span>
-        <span className="b">{profile.role === 'solo' ? t.rolesSolo : profile.role === 'leader' ? t.roleLeader : t.roleMember}{group ? ' · ' + group.name : ''}</span>
+        <span className="b">{profile.role === 'solo' ? t.rolesSolo : profile.role === 'leader' ? t.roleLeader : profile.role === 'agency' ? t.roleAgency : t.roleMember}{group ? ' · ' + group.name : ''}</span>
         {group && <span className="small muted mono">{t.groupCode}: {group.code}</span>}
         <span className="small muted">{hasBackend ? t.syncOn : t.localMode}</span>
         {group ? <button className="btn outline sm" onClick={leave}>{t.leaveGroup}</button> : <button className="btn outline sm" onClick={() => go({ screen: 'role' })}>{t.changeRole}</button>}
