@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
     const title = T[a.kind][lang].replace('{name}', name);
     const payload = JSON.stringify({
       title, body: a.message ?? (a.distance_m ? `${a.distance_m} m` : ''), tag: a.kind + ':' + a.sender_id,
-      urgent: a.kind === 'sos' || a.kind === 'out_of_zone', url: '/',
+      urgent: a.kind === 'sos' || a.kind === 'out_of_zone', url: '.',
     });
     try {
       await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 3600, urgency: a.kind === 'sos' ? 'high' : 'normal' });

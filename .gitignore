@@ -4,3 +4,5 @@ node_modules/
 dati.json
 dati.json.tmp
 stampanti.json
+.cf-dist/
+.wrangler/

@@ -2,7 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// BASE: percorso di pubblicazione ('/' di solito, '/custode/' quando sta accanto all'app ristorante)
+const base = process.env.BASE ?? '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -13,7 +17,8 @@ export default defineConfig({
         short_name: 'Custode',
         description: 'Viaggia sicuro a Roma: documenti cifrati, programma del giorno, gruppo sempre vicino.',
         lang: 'it',
-        start_url: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#FAF6EF',
@@ -27,7 +32,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,json,woff2}'],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
-        navigateFallback: '/index.html',
+        navigateFallback: base + 'index.html',
         importScripts: ['push-sw.js'],
         runtimeCaching: [
           {

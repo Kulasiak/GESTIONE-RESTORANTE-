@@ -65,6 +65,14 @@ i documenti li vede solo il proprietario. Gruppi creati e uniti solo tramite le 
 
 ### Pubblicazione
 
+**Cloudflare (già collegato al repo):** il Worker `gestione-restorante` usa `wrangler.jsonc` nella radice
+del repo. Pubblica il gestionale del ristorante su `/` e Custode su `/custode/`; lo script
+`cloudflare-build.sh` prepara la cartella. `server.js`, `dati.json` e `stampanti.json` non vengono
+pubblicati. Le variabili `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (e `VITE_VAPID_PUBLIC_KEY`)
+vanno messe in Cloudflare → Worker → Settings → **Build → Variables**, perché servono durante la build.
+
+In alternativa,
+
 Vercel: nuovo progetto con **Root directory `custode`** (c'è già `vercel.json`) e le due variabili
 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`. Serve HTTPS per fotocamera, GPS e installazione.
 

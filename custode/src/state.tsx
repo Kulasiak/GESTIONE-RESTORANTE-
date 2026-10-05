@@ -266,7 +266,7 @@ function notify(title: string, body: string) {
   try {
     if (document.visibilityState === 'visible' || !('Notification' in window) || Notification.permission !== 'granted') return;
     if (localStorage.getItem('custode.push') === '1') return; // arriva gia la notifica push dal server
-    navigator.serviceWorker?.ready.then((r) => r.showNotification(title, { body, icon: '/icon-192.png', tag: title })).catch(() => {});
+    navigator.serviceWorker?.ready.then((r) => r.showNotification(title, { body, icon: import.meta.env.BASE_URL + 'icon-192.png', tag: title })).catch(() => {});
     navigator.vibrate?.([200, 100, 200]);
   } catch { /* non supportato */ }
 }

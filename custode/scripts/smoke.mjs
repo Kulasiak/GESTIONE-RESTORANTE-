@@ -20,7 +20,7 @@ const dismiss = async (name) => {
   if (await d.isVisible().catch(() => false)) { await shot(name); await d.locator('.btn').first().click(); }
 };
 
-await page.goto('http://localhost:4173/');
+await page.goto(process.env.APP_URL ?? 'http://localhost:4173/');
 await shot('welcome');
 await click('Inizia');
 await shot('ruolo');

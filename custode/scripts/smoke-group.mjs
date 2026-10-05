@@ -32,7 +32,7 @@ async function run(role, name, pos) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   const shot = async (s) => { await page.waitForTimeout(700); await page.screenshot({ path: `${OUT}/g${++n}-${s}.png` }); };
-  await page.goto('http://localhost:4173/');
+  await page.goto(process.env.APP_URL ?? 'http://localhost:4173/');
   await page.waitForTimeout(1500);
   return { page, shot, errors, ctx };
 }
