@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { biometricEnabled, unlockWithBiometric } from '../lib/biometric';
 import { useApp } from '../state';
 import { createVault, unlock } from '../lib/vault';
 import { syncProfile } from '../lib/api';
@@ -34,6 +35,14 @@ export function PinUnlock({ onDone }: { onDone: () => void }) {
   const [pin, setPin] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(false);
+  const [bio, setBio] = useState(false);
+  useEffect(() => { biometricEnabled().then(setBio); }, []);
+  async function bioUnlock() {
+    setBusy(true);
+    const ok = await unlockWithBiometric();
+    setBusy(false);
+    if (ok) onDone();
+  }
   async function tryUnlock(p: string) {
     setBusy(true);
     const ok = await unlock(p);
@@ -49,6 +58,7 @@ export function PinUnlock({ onDone }: { onDone: () => void }) {
   };
   return (
     <div className="col gap14" style={{ alignItems: 'center', width: '100%' }}>
+      {bio && <button className="btn dark" style={{ width: '100%' }} disabled={busy} onClick={bioUnlock}>{busy ? t.unlocking : t.unlock}</button>}
       <div className="pindots" aria-live="polite">{Array.from({ length: Math.max(6, pin.length) }, (_, i) => <i key={i} className={i < pin.length ? 'on' : ''} />)}</div>
       {err && <span className="error">{t.pinWrong}</span>}
       <div className="pinpad">

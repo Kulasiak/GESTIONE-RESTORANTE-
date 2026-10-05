@@ -37,7 +37,7 @@ function MeetingMap({ point, radius, onPick }: { point: LatLng; radius: number; 
 }
 
 export default function Editor() {
-  const { t, lang, profile, plan, setPlan, group, setGroup, members, pos, toast, go } = useApp();
+  const { t, lang, profile, plan, setPlan, group, setGroup, members, pos, toast, go, days, day, setDay } = useApp();
   const [tour, setTour] = useState<string | null>(plan?.tour ?? TOURS[0].id);
   const [stops, setStops] = useState<Stop[]>(() => (plan?.stops.length ? plan.stops : PRESET_PLANS[TOURS[0].id]).map((s) => ({ ...s })));
   const [meeting, setMeeting] = useState(() => group?.meeting ?? { name: '', lat: ROME_CENTER.lat, lng: ROME_CENTER.lng, time: '' });
@@ -45,6 +45,16 @@ export default function Editor() {
   const [adding, setAdding] = useState(false);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
+
+  // Cambio giorno: carica il programma di quel giorno (o il primo itinerario pronto)
+  const loadedDay = useRef(day);
+  useEffect(() => {
+    if (loadedDay.current === day) return; // stesso giorno: non toccare le modifiche in corso
+    if (plan && plan.day !== day) return; // aspetta il programma del nuovo giorno
+    loadedDay.current = day;
+    setTour(plan?.tour ?? (plan ? null : TOURS[0].id));
+    setStops((plan?.stops.length ? plan.stops : PRESET_PLANS[TOURS[0].id]).map((s) => ({ ...s })));
+  }, [day, plan?.id, plan?.day]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const edit = (i: number, patch: Partial<Stop>) => { setStops((s) => s.map((x, k) => (k === i ? { ...x, ...patch } : x))); setTour(null); };
   const remove = (i: number) => { setStops((s) => s.filter((_, k) => k !== i)); setTour(null); };
@@ -75,7 +85,7 @@ export default function Editor() {
   async function publish() {
     setBusy(true);
     try {
-      const saved = await api.savePlan(profile, { id: plan?.id ?? null, tour, stops, publishedAt: plan?.publishedAt ?? null, day: api.today() }, true);
+      const saved = await api.savePlan(profile, { id: plan?.id ?? null, tour, stops, publishedAt: plan?.publishedAt ?? null, day }, true);
       setPlan(saved);
       if (group) {
         const g = { ...group, meeting: meeting.name || group.meeting ? meeting : null, radius };
@@ -109,6 +119,11 @@ export default function Editor() {
     <div className="page">
       <Back />
       <div className="col gap4"><h1 className="h2">{t.edTitle}</h1><div className="muted" style={{ fontSize: 14 }}>{group ? `${group.name} · ${members.length} ${t.people} · ${group.code}` : ''}</div></div>
+      {days.length > 1 && (
+        <div className="chips">
+          {days.map((d, i) => <button key={d} className={'chip' + (d === day ? ' on' : '')} onClick={() => setDay(d)}>{fmt(t.dayN, { n: i + 1 })}</button>)}
+        </div>
+      )}
       <div className="chips">
         {TOURS.map((x) => <button key={x.id} className={'chip' + (tour === x.id ? ' on' : '')} onClick={() => { setTour(x.id); setStops(PRESET_PLANS[x.id].map((s) => ({ ...s }))); }}>{L(x.label, lang)}</button>)}
       </div>
@@ -120,7 +135,7 @@ export default function Editor() {
           return (
             <div key={i} className="list-row" style={{ gap: 10, padding: '10px 0' }}>
               <input type="time" aria-label={t.meetTime} value={s.time} onChange={(e) => e.target.value && edit(i, { time: e.target.value })}
-                style={{ flex: 'none', width: 96, height: 38, borderRadius: 10, border: '1px solid var(--line)', background: 'var(--paper)', fontSize: 14, fontWeight: 700, textAlign: 'center', padding: 0 }} />
+                style={{ flex: 'none', width: 116, height: 38, borderRadius: 10, border: '1px solid var(--line)', background: 'var(--paper)', fontSize: 14, fontWeight: 700, textAlign: 'center', padding: 0 }} />
               <div className="col gap4 grow">
                 <span style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.2 }}>{stopName(s, lang, profile)}</span>
                 {md && (

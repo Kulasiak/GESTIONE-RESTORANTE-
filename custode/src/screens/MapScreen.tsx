@@ -242,6 +242,31 @@ export default function MapScreen() {
           </div>
         ) : null}
 
+        {isLeader && members.some((m) => m.role === 'member') && (
+          <div className="col" style={{ gap: 2 }}>
+            <span className="eyebrow" style={{ paddingBottom: 6 }}>{t.membersNow}</span>
+            {members.filter((m) => m.role === 'member').map((m) => {
+              const d = zone && m.lat != null && m.lng != null ? distance({ lat: m.lat, lng: m.lng }, zone.center) : null;
+              const outside = d != null && zone != null && d > zone.radius;
+              const stale = m.updatedAt ? Date.now() - Date.parse(m.updatedAt) > 10 * 60_000 : true;
+              return { m, d, outside, stale };
+            }).sort((a, b) => Number(b.outside) - Number(a.outside) || (b.d ?? -1) - (a.d ?? -1)).map(({ m, d, outside, stale }) => (
+              <div key={m.userId} className="row gap10" style={{ padding: '10px 0', borderBottom: '1px solid var(--line-2)' }}>
+                <div className="avatar" style={{ width: 32, height: 32, boxShadow: `0 0 0 2px ${d == null ? 'var(--line-3)' : outside ? 'var(--red)' : 'var(--green)'}` }}>{initials(m.name)}</div>
+                <div className="col grow" style={{ gap: 2 }}>
+                  <span className="b" style={{ fontSize: 15 }}>{m.name}</span>
+                  <span className="small" style={{ color: outside ? 'var(--red)' : 'var(--muted)' }}>
+                    {d == null ? t.noPosition : outside ? fmt(t.leaderStatD, { name: '', d: fmtDistance(d) }).trim() : t.inZone}
+                    {m.updatedAt && stale ? ' · ' + fmt(t.lastSeen, { t: new Date(m.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }) : ''}
+                  </span>
+                </div>
+                {m.phone && <a className="chip" style={{ background: 'var(--paper-2)', border: 'none', fontSize: 13, fontWeight: 700, textDecoration: 'none' }} href={'tel:' + m.phone} aria-label={fmt(t.callName, { name: m.name })}>☎</a>}
+                {m.lat != null && m.lng != null && <button className="chip" style={{ background: 'var(--paper-2)', border: 'none', fontSize: 13, fontWeight: 700 }} onClick={() => { map.current?.setView([m.lat!, m.lng!], 17); document.getElementById('scroller')?.scrollTo({ top: 0, behavior: 'smooth' }); }}>◎</button>}
+              </div>
+            ))}
+          </div>
+        )}
+
         {around.length > 0 && (
           <div className="col" style={{ gap: 2 }}>
             <span className="eyebrow" style={{ paddingBottom: 6 }}>{t.around}</span>

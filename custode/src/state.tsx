@@ -3,21 +3,23 @@ import { DICTS, detectLang, fmt, type Dict, type Lang } from './i18n';
 import * as api from './lib/api';
 import type { AlertRow, Group, Member, Plan, Profile } from './lib/api';
 import { distance, distanceToPolyline, type LatLng } from './lib/geo';
-import { RISK_LINES, RISK_ZONES } from './data/rome';
+import { RISK_LINES, RISK_ZONES, stopPoint } from './data/rome';
+import { nowIndex } from './lib/planview';
 import { hasBackend } from './lib/supabase';
 
 export type Tab = 'today' | 'map' | 'docs' | 'places' | 'sos';
 export type Sub = 'transfer' | 'museum' | 'editor' | 'lost' | 'settings' | 'addDoc' | 'doc' | null;
-export type Screen = 'welcome' | 'role' | 'scan' | 'app';
+export type Screen = 'welcome' | 'role' | 'scan' | 'login' | 'app';
 export type Nav = { screen: Screen; tab: Tab; sub: Sub; param?: string };
 
 export type Sheet =
   | { kind: 'zone'; distance: number }
   | { kind: 'theft'; zone: string }
   | { kind: 'memberOut'; name: string; distance: number | null; userId: string }
-  | { kind: 'memberSos'; name: string; lat: number | null; lng: number | null }
+  | { kind: 'memberSos'; name: string; lat: number | null; lng: number | null; userId?: string }
   | { kind: 'message'; text: string }
-  | { kind: 'planPublished' };
+  | { kind: 'planPublished' }
+  | { kind: 'off'; to: LatLng; name: string; distance: number };
 
 export type Position = LatLng & { accuracy: number; at: number };
 
@@ -29,6 +31,7 @@ type Ctx = {
   pos: Position | null; posError: boolean;
   group: Group | null; setGroup: (g: Group | null) => void; members: Member[];
   plan: Plan | null; setPlan: (p: Plan | null) => void; reloadPlan: () => Promise<void>; reloadGroup: () => Promise<void>;
+  trip: api.Trip | null; days: string[]; day: string; setDay: (d: string) => void;
   zone: { center: LatLng; radius: number; distance: number | null; out: boolean; guide: Member | null } | null;
   inRisk: string | null; online: boolean; lastLeaderMsg: AlertRow | null;
 };
@@ -39,6 +42,7 @@ export const useApp = () => useContext(AppCtx)!;
 const defaultProfile = (): Profile => ({ userId: null, lang: detectLang(), role: 'solo', name: '', onboarded: false, groupId: null });
 const LEADER_FRESH_MS = 10 * 60_000;
 const THEFT_SNOOZE_MS = 2 * 3600_000;
+const OFF_ROUTE_M = 400;
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [profile, setProfileState] = useState<Profile>(() => api.loadProfile() ?? defaultProfile());
@@ -49,7 +53,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [posError, setPosError] = useState(false);
   const [group, setGroupState] = useState<Group | null>(() => (profile.groupId ? api.loadGroupLocal() : null));
   const [members, setMembers] = useState<Member[]>(() => (profile.groupId ? api.loadMembersLocal() : []));
-  const [plan, setPlanState] = useState<Plan | null>(() => api.loadPlanLocal());
+  const [day, setDayState] = useState<string>(() => api.defaultDay(profile.groupId ? api.loadGroupLocal()?.trip : profile.trip));
+  const [plan, setPlanState] = useState<Plan | null>(() => api.loadPlanLocal(day));
   const [online, setOnline] = useState(navigator.onLine);
   const [lastLeaderMsg, setLastLeaderMsg] = useState<AlertRow | null>(null);
   const t = DICTS[profile.lang];
@@ -128,10 +133,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (g) setGroupState(g);
     setMembers(m);
   }, []);
+  const dayRef = useRef(day);
+  dayRef.current = day;
   const reloadPlan = useCallback(async () => {
-    const p = await api.fetchPlan(profileRef.current);
-    setPlanState(p);
+    const d = dayRef.current;
+    const p = await api.fetchPlan(profileRef.current, d);
+    if (dayRef.current === d) setPlanState(p);
   }, []);
+  const setDay = useCallback((d: string) => {
+    dayRef.current = d;
+    setDayState(d);
+    setPlanState(api.loadPlanLocal(d));
+    reloadPlan().catch(() => {});
+  }, [reloadPlan]);
+  const trip = (profile.groupId && profile.role !== 'solo' ? group?.trip : profile.trip) ?? null;
+  const days = useMemo(() => api.tripDays(trip), [trip?.start, trip?.end]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!profile.onboarded) return;
@@ -156,7 +172,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (a.kind === 'message') { setLastLeaderMsg(a); setSheet({ kind: 'message', text: a.message ?? '' }); notify(DICTS[me.lang].leaderMsg, a.message ?? ''); }
         else if (a.kind === 'plan_published') { setSheet({ kind: 'planPublished' }); }
         else if (me.role === 'leader' && a.kind === 'out_of_zone') { setSheet({ kind: 'memberOut', name: who, distance: a.distance, userId: a.senderId }); notify(fmt(DICTS[me.lang].memberOut, { name: who }), ''); }
-        else if (me.role === 'leader' && a.kind === 'sos') { setSheet({ kind: 'memberSos', name: who, lat: a.lat, lng: a.lng }); notify(fmt(DICTS[me.lang].memberSos, { name: who }), ''); }
+        else if (me.role === 'leader' && a.kind === 'sos') { setSheet({ kind: 'memberSos', name: who, lat: a.lat, lng: a.lng, userId: a.senderId }); notify(fmt(DICTS[me.lang].memberSos, { name: who }), ''); }
         else if (me.role === 'leader' && (a.kind === 'im_ok' || a.kind === 'back_in_zone')) toast(a.kind === 'im_ok' ? fmt(DICTS[me.lang].memberOk, { name: who }) : who + ' · ' + DICTS[me.lang].inZone);
       },
     });
@@ -221,9 +237,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
     api.pushLocation(profile.userId, profile.groupId, pos.lat, pos.lng, pos.accuracy, !!zone?.out).catch(() => {});
   }, [pos, profile.userId, profile.groupId, online, zone?.out]);
 
+  // ── turista singolo fuori percorso: lontano sia dalla tappa in corso sia dalla prossima ──
+  useEffect(() => {
+    if (!pos || profile.role !== 'solo' || !plan) return;
+    const i = nowIndex(plan);
+    if (i < 0 || i >= plan.stops.length - 1) return;
+    const a = stopPoint(plan.stops[i]);
+    const b = stopPoint(plan.stops[i + 1]);
+    if (!a || !b) return;
+    const dLine = distanceToPolyline(pos, [[a.lat, a.lng], [b.lat, b.lng]]);
+    if (dLine < OFF_ROUTE_M || distance(pos, a) < OFF_ROUTE_M || distance(pos, b) < OFF_ROUTE_M) return;
+    const key = 'custode.off.' + plan.day + '.' + i;
+    if (Date.now() - Number(localStorage.getItem(key) ?? 0) < 30 * 60_000) return;
+    localStorage.setItem(key, String(Date.now()));
+    const s = plan.stops[i + 1];
+    setSheet((cur) => cur ?? { kind: 'off', to: b, name: s.place ?? s.name ?? '', distance: distance(pos, b) });
+  }, [pos, plan, profile.role]);
+
   const value: Ctx = {
     t, lang: profile.lang, profile, setProfile, nav, go, back, toast, toastMsg, sheet, setSheet, pos, posError,
-    group, setGroup, members, plan, setPlan, reloadPlan, reloadGroup, zone, inRisk, online, lastLeaderMsg,
+    group, setGroup, members, plan, setPlan, reloadPlan, reloadGroup, zone, inRisk, online, lastLeaderMsg, trip, days, day, setDay,
   };
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }
@@ -232,6 +265,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 function notify(title: string, body: string) {
   try {
     if (document.visibilityState === 'visible' || !('Notification' in window) || Notification.permission !== 'granted') return;
+    if (localStorage.getItem('custode.push') === '1') return; // arriva gia la notifica push dal server
     navigator.serviceWorker?.ready.then((r) => r.showNotification(title, { body, icon: '/icon-192.png', tag: title })).catch(() => {});
     navigator.vibrate?.([200, 100, 200]);
   } catch { /* non supportato */ }

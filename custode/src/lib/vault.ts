@@ -125,3 +125,22 @@ export function installAutoLock(ms = 60_000) {
     if (document.visibilityState === 'hidden') timer = window.setTimeout(lock, ms);
   });
 }
+
+/**
+ * Ripristino su un nuovo telefono: prova il PIN sui documenti scaricati (cifrati).
+ * Se almeno uno si decifra, salva sale, verifica e documenti e apre la cassaforte.
+ */
+export async function restoreVault(pin: string, saltB64: string, docs: EncryptedDoc[]): Promise<boolean> {
+  if (!docs.length) return false;
+  const k = await deriveKey(pin, unb64(saltB64));
+  try {
+    await decryptWith(k, docs[0].iv, docs[0].ct);
+  } catch {
+    return false;
+  }
+  await set('salt', saltB64, metaStore);
+  await set('check', await encryptWith(k, VERIFY), metaStore);
+  for (const d of docs) await set(d.id, { ...d, synced: true }, store);
+  key = k;
+  return true;
+}

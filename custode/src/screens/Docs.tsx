@@ -4,12 +4,13 @@ import { useApp } from '../state';
 import { Back } from '../components/ui';
 import { PinCreate, PinUnlock } from '../components/Pin';
 import { Scan } from './Scan';
-import { deleteDoc, isUnlocked, listDocs, lock, saveDoc, vaultExists, type DocContent, type DocKind } from '../lib/vault';
+import { deleteDoc, isUnlocked, listDocs, lock, restoreVault, saveDoc, vaultExists, type DocContent, type DocKind, type EncryptedDoc } from '../lib/vault';
 import { maskNumber } from '../lib/mrz';
 import { syncDocs } from '../lib/docsync';
-import { deleteRemoteDoc } from '../lib/api';
+import { deleteRemoteDoc, fetchVaultSalt, pullDocs } from '../lib/api';
+import { hasBackend } from '../lib/supabase';
 import { loadImage, toJpeg } from '../lib/ocr';
-import type { Dict } from '../i18n';
+import { fmt, type Dict } from '../i18n';
 
 type Doc = DocContent & { id: string };
 const CODE: Record<DocKind, string> = { passport: 'PA', id: 'ID', boarding: 'CI', hotel: 'HV', insurance: 'AS', ticket: 'BT', other: '··' };
@@ -17,16 +18,25 @@ export const kindLabel = (k: DocKind, t: Dict) => ({ passport: t.kPassport, id: 
 
 /** Stato della cassaforte condiviso dalle schermate dei documenti. */
 function useVault() {
-  const [state, setState] = useState<'loading' | 'none' | 'locked' | 'open'>('loading');
+  const [state, setState] = useState<'loading' | 'none' | 'restore' | 'locked' | 'open'>('loading');
   const [docs, setDocs] = useState<Doc[]>([]);
+  const [remote, setRemote] = useState<{ salt: string; docs: EncryptedDoc[] } | null>(null);
+  const { profile } = useApp();
   const refresh = async () => {
-    if (!(await vaultExists())) return setState('none');
+    if (!(await vaultExists())) {
+      // Nuovo telefono: se l'account ha documenti cifrati sul server, si ripristinano con il vecchio PIN
+      if (hasBackend && navigator.onLine && profile.userId) {
+        const [salt, list] = await Promise.all([fetchVaultSalt(profile.userId).catch(() => null), pullDocs().catch(() => [])]);
+        if (salt && list.length) { setRemote({ salt, docs: list }); return setState('restore'); }
+      }
+      return setState('none');
+    }
     if (!isUnlocked()) return setState('locked');
     setDocs(await listDocs());
     setState('open');
   };
   useEffect(() => { refresh(); }, []);
-  return { state, docs, refresh };
+  return { state, docs, refresh, remote, skipRestore: () => { setRemote(null); setState('none'); } };
 }
 
 function Locked({ create, onOpen }: { create: boolean; onOpen: () => void }) {
@@ -46,11 +56,35 @@ function Locked({ create, onOpen }: { create: boolean; onOpen: () => void }) {
   );
 }
 
+function Restore({ salt, docs, onDone, onSkip }: { salt: string; docs: EncryptedDoc[]; onDone: () => void; onSkip: () => void }) {
+  const { t } = useApp();
+  const [pin, setPin] = useState('');
+  const [err, setErr] = useState(false);
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true);
+    const ok = await restoreVault(pin, salt, docs);
+    setBusy(false);
+    if (ok) onDone(); else { setErr(true); setPin(''); }
+  }
+  return (
+    <div className="col gap14" style={{ paddingTop: 40 }}>
+      <h1 className="h2">{t.restoreTitle}</h1>
+      <p className="body muted" style={{ margin: 0 }}>{fmt(t.restoreD, { n: docs.length })}</p>
+      <input className="input mono" type="password" inputMode="numeric" value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setErr(false); }} aria-label={t.pin} placeholder={t.pin} />
+      {err && <span className="error">{t.pinWrong}</span>}
+      <button className="btn dark" disabled={busy || pin.length < 6} onClick={go}>{busy ? t.unlocking : t.unlockPin}</button>
+      <button className="btn ghost" onClick={onSkip}>{t.startFresh}</button>
+    </div>
+  );
+}
+
 export function Docs() {
   const { t, go, profile } = useApp();
-  const { state, docs, refresh } = useVault();
+  const { state, docs, refresh, remote, skipRestore } = useVault();
   useEffect(() => { if (state === 'open') syncDocs(profile.userId).then(refresh).catch(() => {}); }, [state === 'open']); // eslint-disable-line react-hooks/exhaustive-deps
   if (state === 'loading') return null;
+  if (state === 'restore' && remote) return <div className="page"><Restore salt={remote.salt} docs={remote.docs} onDone={refresh} onSkip={skipRestore} /></div>;
   if (state !== 'open') return <div className="page"><Locked create={state === 'none'} onOpen={refresh} /></div>;
 
   const passport = docs.find((d) => d.kind === 'passport' || d.kind === 'id');
@@ -101,13 +135,14 @@ function openDataUrl(dataUrl: string) {
 
 export function DocDetail({ id }: { id: string }) {
   const { t, go, profile, toast } = useApp();
-  const { state, docs, refresh } = useVault();
+  const { state, docs, refresh, remote, skipRestore } = useVault();
   const [qr, setQr] = useState<string | null>(null);
   const doc = docs.find((d) => d.id === id);
   useEffect(() => {
     if (doc?.code) QRCode.toDataURL(doc.code, { margin: 1, width: 420, color: { dark: '#2A211B', light: '#ffffff' } }).then(setQr).catch(() => setQr(null));
   }, [doc?.code]);
   if (state === 'loading') return null;
+  if (state === 'restore' && remote) return <div className="page"><Back /><Restore salt={remote.salt} docs={remote.docs} onDone={refresh} onSkip={skipRestore} /></div>;
   if (state !== 'open') return <div className="page"><Back /><Locked create={state === 'none'} onOpen={refresh} /></div>;
   if (!doc) return <div className="page"><Back /></div>;
 
@@ -172,7 +207,7 @@ const KIND_CHOICES: DocKind[] = ['boarding', 'hotel', 'insurance', 'ticket', 'id
 /** param: 'scan' → scansione MRZ; 'ticket|nome|tratta|prezzo|url' → biglietto precompilato */
 export function AddDoc({ kind: param }: { kind?: string }) {
   const { t, go, profile, toast } = useApp();
-  const { state, refresh } = useVault();
+  const { state, refresh, remote, skipRestore } = useVault();
   const pre = param?.startsWith('ticket|') ? param.split('|') : null;
   const [kind, setKind] = useState<DocKind>(pre ? 'ticket' : 'boarding');
   const [title, setTitle] = useState(pre?.[1] ?? '');
@@ -182,6 +217,7 @@ export function AddDoc({ kind: param }: { kind?: string }) {
   const [busy, setBusy] = useState(false);
   if (param === 'scan') return <Scan />;
   if (state === 'loading') return null;
+  if (state === 'restore' && remote) return <div className="page"><Back /><Restore salt={remote.salt} docs={remote.docs} onDone={refresh} onSkip={skipRestore} /></div>;
   if (state !== 'open') return <div className="page"><Back /><Locked create={state === 'none'} onOpen={refresh} /></div>;
 
   async function pick(f?: File) {

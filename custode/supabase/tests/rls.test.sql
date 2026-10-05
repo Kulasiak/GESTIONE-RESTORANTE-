@@ -9,6 +9,7 @@ select code as gcode from create_group('Parrocchia San Luca') \gset
 insert into plans (owner_id, group_id, title) select auth.uid(), id, 'Oggi' from groups returning id as planid \gset
 insert into plan_stops (plan_id, position, time, place_id) values (:'planid', 0, '08:30', 'hotel');
 insert into documents (id, owner_id, kind, ciphertext, iv) values (gen_random_uuid(), auth.uid(), 'passport', 'xx', 'yy');
+insert into push_subscriptions (endpoint, user_id, p256dh, auth) values ('https://push.example/a', auth.uid(), 'k', 'a');
 -- Membro B entra col codice
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000b';
 insert into profiles (id, display_name, role) values (auth.uid(), 'Giulia', 'member');
@@ -42,6 +43,7 @@ update plan_stops set time = '23:00';
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
 select (select count(*) from groups) + (select count(*) from plans) + (select count(*) from plan_stops) + (select count(*) from live_locations)
   + (select count(*) from alerts) + (select count(*) from documents) + (select count(*) from profiles) = 0 as stranger_sees_nothing;
+select count(*) = 0 as stranger_no_push from push_subscriptions;
 select count(*) > 0 as places_public from places;
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000a';
 select time = '08:30' as stop_unchanged from plan_stops;

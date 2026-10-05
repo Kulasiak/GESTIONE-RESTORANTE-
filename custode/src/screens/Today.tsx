@@ -10,7 +10,10 @@ import { romeTemperature } from '../lib/nearby';
 import * as api from '../lib/api';
 
 export function Today() {
-  const { t, lang, profile, go, plan, setPlan, group, members, zone, pos, posError, inRisk, lastLeaderMsg, toast } = useApp();
+  const { t, lang, profile, go, plan, setPlan, group, members, zone, pos, posError, inRisk, lastLeaderMsg, toast, days, day, setDay } = useApp();
+  const dayIdx = days.indexOf(day);
+  const isToday = day === api.today();
+  const dayLabel = (d: string, opts: Intl.DateTimeFormatOptions) => new Date(d + 'T12:00:00Z').toLocaleDateString(LOCALE[lang], { ...opts, timeZone: 'UTC' });
   const [open, setOpen] = useState<number>(-2);
   const [tipIdx, setTipIdx] = useState(() => new Date().getDate() % TIPS.length);
   const [temp, setTemp] = useState<number | null>(null);
@@ -22,8 +25,8 @@ export function Today() {
 
   // Turista singolo senza programma: parte dal primo itinerario del design
   useEffect(() => {
-    if (isSolo && !plan) setPlan(api.presetPlan(TOURS[0].id));
-  }, [isSolo, plan, setPlan]);
+    if (isSolo && !plan) setPlan(api.presetPlan(TOURS[Math.max(0, dayIdx) % TOURS.length].id, day));
+  }, [isSolo, plan, setPlan, day, dayIdx]);
 
   const steps = useMemo(() => (plan ? buildSteps(plan, lang, t, profile) : []), [plan, lang, t, profile]);
   const nowIdx = steps.findIndex((s) => s.isNow);
@@ -56,7 +59,7 @@ export function Today() {
   const planBy = isLeader ? fmt(t.yourPlan, { tour: tourLabel(plan?.tour ?? null) }) : fmt(t.planByLeader, { name: group?.leaderName ?? '', tour: tourLabel(plan?.tour ?? null) });
 
   async function chooseTour(id: string) {
-    const p: api.Plan = { ...api.presetPlan(id), id: plan?.id ?? null, stops: PRESET_PLANS[id].map((s) => ({ ...s })) };
+    const p: api.Plan = { ...api.presetPlan(id, day), id: plan?.id ?? null, stops: PRESET_PLANS[id].map((s) => ({ ...s })) };
     setPlan(p);
     setOpen(-2);
     api.savePlan(profile, p).then(setPlan).catch(() => {});
@@ -73,7 +76,7 @@ export function Today() {
       </div>
       <div className="col gap4">
         <h1 className="h1" style={{ fontSize: 38 }}>{greet}{profile.name ? ', ' + profile.name : ''}</h1>
-        <div className="muted" style={{ fontSize: 15 }}>{t.rome}{group ? ' · ' + group.name : ''}</div>
+        <div className="muted" style={{ fontSize: 15 }}>{t.rome}{dayIdx >= 0 ? ' · ' + fmt(t.dayOfN, { n: dayIdx + 1, m: days.length }) : ''}{group ? ' · ' + group.name : ''}</div>
       </div>
 
       <button className="row gap14" style={{ textAlign: 'left', padding: 16, borderRadius: 20, border: 'none', background: safety.bg }} onClick={() => go({ tab: 'map' })}>
@@ -108,14 +111,25 @@ export function Today() {
         </div>
       )}
 
-      <button className="row gap14" style={{ textAlign: 'left', padding: 14, borderRadius: 20, border: '1px solid var(--line)', background: '#fff' }} onClick={() => go({ sub: 'transfer' })}>
+      {days.length > 1 && (
+        <div className="chips" role="tablist" aria-label={t.tripDates}>
+          {days.map((d, i) => (
+            <button key={d} role="tab" aria-selected={d === day} className={'chip' + (d === day ? ' on' : '')} onClick={() => setDay(d)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.15, padding: '6px 14px' }}>
+              <span>{fmt(t.dayN, { n: i + 1 })}</span>
+              <span style={{ fontSize: 11, fontWeight: 600, opacity: 0.75 }}>{dayLabel(d, { weekday: 'short', day: 'numeric' })}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {(dayIdx <= 0) && <button className="row gap14" style={{ textAlign: 'left', padding: 14, borderRadius: 20, border: '1px solid var(--line)', background: '#fff' }} onClick={() => go({ sub: 'transfer' })}>
         <div className="mono" style={{ flex: 'none', width: 52, height: 52, borderRadius: 14, background: 'var(--ink)', color: 'var(--paper)', display: 'grid', placeItems: 'center', fontSize: 13, fontWeight: 700 }}>FCO</div>
         <div className="col gap4 grow"><span className="eyebrow" style={{ letterSpacing: '.1em' }}>{t.day1}</span><span style={{ fontSize: 16, fontWeight: 700 }}>{t.arrivalT}</span><span className="small muted">{t.arrivalD}</span></div>
         <span style={{ fontSize: 18 }} aria-hidden>→</span>
-      </button>
+      </button>}
 
       <div className="col gap10" style={{ paddingTop: 6 }}>
-        <div className="row between" style={{ alignItems: 'baseline' }}><h2 className="h3">{t.planToday}</h2><button className="link" onClick={() => go({ tab: 'map' })}>{t.openMap}</button></div>
+        <div className="row between" style={{ alignItems: 'baseline' }}><h2 className="h3">{isToday ? t.planToday : fmt(t.planOf, { date: dayLabel(day, { weekday: 'long', day: 'numeric', month: 'long' }) })}</h2><button className="link" onClick={() => go({ tab: 'map' })}>{t.openMap}</button></div>
         {isSolo ? (
           <div className="chips">
             {TOURS.map((x) => <button key={x.id} className={'chip' + (plan?.tour === x.id ? ' on' : '')} onClick={() => chooseTour(x.id)}>{L(x.label, lang)}</button>)}

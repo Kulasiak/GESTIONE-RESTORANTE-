@@ -17,17 +17,43 @@ export type Profile = {
   nationality?: string;
   hotel?: { name: string; address: string; lat: number; lng: number } | null;
   groupId?: string | null;
+  trip?: Trip | null;
 };
 
 export type Group = {
   id: string; name: string; code: string; leaderId: string; leaderName: string; leaderPhone?: string | null;
   meeting: { name: string; lat: number; lng: number; time: string } | null; radius: number;
+  trip: Trip | null;
 };
+
+export type Trip = { start: string; end: string };
+
+/** Giorni del viaggio (YYYY-MM-DD), al massimo 21. */
+export function tripDays(trip: Trip | null | undefined): string[] {
+  if (!trip?.start || !trip.end || trip.end < trip.start) return [];
+  const out: string[] = [];
+  const d = new Date(trip.start + 'T12:00:00Z');
+  while (out.length < 21) {
+    const s = d.toISOString().slice(0, 10);
+    if (s > trip.end) break;
+    out.push(s);
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return out;
+}
+
+/** Giorno da mostrare all'apertura: oggi se dentro il viaggio, altrimenti il primo giorno. */
+export function defaultDay(trip: Trip | null | undefined): string {
+  const days = tripDays(trip);
+  const t = today();
+  if (!days.length || days.includes(t)) return t;
+  return t < days[0] ? days[0] : t;
+}
 
 export type Plan = { id: string | null; tour: string | null; stops: Stop[]; publishedAt: string | null; day: string };
 
 export type Member = {
-  userId: string; name: string; role: 'leader' | 'member';
+  userId: string; name: string; role: 'leader' | 'member'; phone?: string | null;
   lat: number | null; lng: number | null; updatedAt: string | null; outOfZone: boolean;
 };
 
@@ -38,7 +64,7 @@ export type AlertRow = {
 };
 
 // ───────── cache locale ─────────
-const K = { profile: 'custode.profile', group: 'custode.group', plan: 'custode.plan', members: 'custode.members' };
+const K = { profile: 'custode.profile', group: 'custode.group', plan: 'custode.plan', plans: 'custode.plans', members: 'custode.members' };
 export const cache = {
   get<T>(k: string): T | null {
     try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : null; } catch { return null; }
@@ -53,8 +79,21 @@ export const today = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'E
 export const loadProfile = () => cache.get<Profile>(K.profile);
 export const saveProfileLocal = (p: Profile) => cache.set(K.profile, p);
 export const loadGroupLocal = () => cache.get<Group>(K.group);
-export const loadPlanLocal = () => cache.get<Plan>(K.plan);
-export const savePlanLocal = (p: Plan | null) => cache.set(K.plan, p);
+/** Programmi salvati sul telefono, uno per giorno. */
+const plansLocal = (): Record<string, Plan> => {
+  const all = cache.get<Record<string, Plan>>(K.plans) ?? {};
+  const old = cache.get<Plan>(K.plan); // formato precedente: un solo programma
+  if (old && !all[old.day]) { all[old.day] = old; cache.set(K.plans, all); cache.set(K.plan, null); }
+  return all;
+};
+export const loadPlanLocal = (day: string = today()) => plansLocal()[day] ?? null;
+export const savePlanLocal = (p: Plan | null, day?: string) => {
+  const all = plansLocal();
+  const d = p?.day ?? day;
+  if (!d) return;
+  if (p) all[d] = p; else delete all[d];
+  cache.set(K.plans, all);
+};
 export const loadMembersLocal = () => cache.get<Member[]>(K.members) ?? [];
 
 export function clearLocal() {
@@ -71,17 +110,19 @@ export async function syncProfile(p: Profile, vaultSalt?: string | null): Promis
   await supabase.from('profiles').upsert({
     id: userId, display_name: p.name, phone: p.phone || null, lang: p.lang, role: p.role, nationality: p.nationality ?? null,
     hotel_name: p.hotel?.name ?? null, hotel_address: p.hotel?.address ?? null, hotel_lat: p.hotel?.lat ?? null, hotel_lng: p.hotel?.lng ?? null,
+    trip_start: p.trip?.start ?? null, trip_end: p.trip?.end ?? null,
     ...(vaultSalt ? { vault_salt: vaultSalt } : {}),
   });
   return next;
 }
 
 // ───────── gruppi ─────────
-type GroupRow = { id: string; name: string; code: string; leader_id: string; meeting_name: string | null; meeting_lat: number | null; meeting_lng: number | null; meeting_time: string | null; radius_m: number };
+type GroupRow = { id: string; name: string; code: string; leader_id: string; meeting_name: string | null; meeting_lat: number | null; meeting_lng: number | null; meeting_time: string | null; radius_m: number; start_date: string | null; end_date: string | null };
 const toGroup = (r: GroupRow, leaderName: string, leaderPhone: string | null = null): Group => ({
   id: r.id, name: r.name, code: r.code, leaderId: r.leader_id, leaderName, leaderPhone,
   meeting: r.meeting_lat != null && r.meeting_lng != null ? { name: r.meeting_name ?? '', lat: r.meeting_lat, lng: r.meeting_lng, time: r.meeting_time ?? '' } : null,
   radius: r.radius_m,
+  trip: r.start_date && r.end_date ? { start: r.start_date, end: r.end_date } : null,
 });
 
 export async function previewGroup(code: string): Promise<{ name: string; leader: string } | null> {
@@ -126,7 +167,7 @@ export async function updateGroup(g: Group) {
   if (!supabase) return;
   const { error } = await supabase.from('groups').update({
     meeting_name: g.meeting?.name ?? null, meeting_lat: g.meeting?.lat ?? null, meeting_lng: g.meeting?.lng ?? null,
-    meeting_time: g.meeting?.time ?? null, radius_m: g.radius,
+    meeting_time: g.meeting?.time ?? null, radius_m: g.radius, start_date: g.trip?.start ?? null, end_date: g.trip?.end ?? null,
   }).eq('id', g.id);
   if (error) throw error;
 }
@@ -147,11 +188,11 @@ export async function fetchMembers(groupId: string): Promise<Member[]> {
   ]);
   if (!rows) return loadMembersLocal();
   const ids = rows.map((r) => r.user_id);
-  const { data: profs } = await supabase.from('profiles').select('id, display_name').in('id', ids);
+  const { data: profs } = await supabase.from('profiles').select('id, display_name, phone').in('id', ids);
   const members: Member[] = rows.map((r) => {
     const l = locs?.find((x) => x.user_id === r.user_id);
     return {
-      userId: r.user_id, role: r.role, name: profs?.find((p) => p.id === r.user_id)?.display_name || '—',
+      userId: r.user_id, role: r.role, name: profs?.find((p) => p.id === r.user_id)?.display_name || '—', phone: profs?.find((p) => p.id === r.user_id)?.phone ?? null,
       lat: l?.lat ?? null, lng: l?.lng ?? null, updatedAt: l?.updated_at ?? null, outOfZone: l?.out_of_zone ?? false,
     };
   });
@@ -186,20 +227,20 @@ function fromRows(rows: StopRow[], tour: string | null): Stop[] {
 const legText = (s: Stop) => (s.leg == null ? null : typeof s.leg === 'string' ? s.leg : s.leg.it ?? s.leg.en ?? null);
 const tipText = (s: Stop) => (s.tip == null ? null : typeof s.tip === 'string' ? s.tip : null); // i consigli tradotti restano nei preset
 
-export function presetPlan(tour: string): Plan {
-  return { id: null, tour, stops: PRESET_PLANS[tour].map((s) => ({ ...s })), publishedAt: null, day: today() };
+export function presetPlan(tour: string, day: string = today()): Plan {
+  return { id: null, tour, stops: PRESET_PLANS[tour].map((s) => ({ ...s })), publishedAt: null, day };
 }
 
 /**
- * Programma di oggi.
+ * Programma di un giorno del viaggio.
  * - solo: il proprio programma personale
  * - leader: la bozza o il programma pubblicato del gruppo
- * - member: l'ultimo programma pubblicato dal capogruppo
+ * - member: il programma pubblicato dal capogruppo
  */
-export async function fetchPlan(profile: Profile): Promise<Plan | null> {
-  const local = loadPlanLocal();
+export async function fetchPlan(profile: Profile, day: string = today()): Promise<Plan | null> {
+  const local = loadPlanLocal(day);
   if (!supabase || !profile.userId) return local;
-  let q = supabase.from('plans').select('id, tour, day, published_at').order('day', { ascending: false }).order('updated_at', { ascending: false }).limit(1);
+  let q = supabase.from('plans').select('id, tour, day, published_at').eq('day', day).order('updated_at', { ascending: false }).limit(1);
   if (profile.role === 'solo' || !profile.groupId) q = q.is('group_id', null).eq('owner_id', profile.userId);
   else q = q.eq('group_id', profile.groupId);
   if (profile.role === 'member') q = q.not('published_at', 'is', null);
@@ -214,7 +255,7 @@ export async function fetchPlan(profile: Profile): Promise<Plan | null> {
 
 /** Salva il programma (e per il capogruppo, se publish, lo pubblica al gruppo). */
 export async function savePlan(profile: Profile, plan: Plan, publish = false): Promise<Plan> {
-  let next: Plan = { ...plan, day: today(), publishedAt: publish ? new Date().toISOString() : plan.publishedAt };
+  let next: Plan = { ...plan, publishedAt: publish ? new Date().toISOString() : plan.publishedAt };
   savePlanLocal(next);
   if (!supabase || !profile.userId) return next;
   const groupId = profile.role === 'leader' ? profile.groupId ?? null : null;
@@ -303,4 +344,45 @@ export async function fetchVaultSalt(userId: string | null): Promise<string | nu
   if (!supabase || !userId) return null;
   const { data } = await supabase.from('profiles').select('vault_salt').eq('id', userId).maybeSingle();
   return data?.vault_salt ?? null;
+}
+
+// ───────── account (email) per ritrovare i dati su un altro telefono ─────────
+export async function currentEmail(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.auth.getUser();
+  return data.user?.email ?? data.user?.new_email ?? null;
+}
+
+/** Collega un'email all'utente anonimo (arriva una mail di conferma). */
+export async function linkEmail(email: string) {
+  if (!supabase) throw new Error('offline');
+  await ensureSession();
+  const { error } = await supabase.auth.updateUser({ email });
+  if (error) throw error;
+}
+
+export async function sendLoginCode(email: string) {
+  if (!supabase) throw new Error('offline');
+  const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
+  if (error) throw error;
+}
+
+/** Verifica il codice ricevuto via email e ricostruisce il profilo dal server. */
+export async function verifyLoginCode(email: string, token: string): Promise<Profile> {
+  if (!supabase) throw new Error('offline');
+  const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
+  if (error || !data.user) throw error ?? new Error('login');
+  const uid = data.user.id;
+  const [{ data: p }, { data: gm }] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', uid).maybeSingle(),
+    supabase.from('group_members').select('group_id').eq('user_id', uid).order('joined_at', { ascending: false }).limit(1),
+  ]);
+  const profile: Profile = {
+    userId: uid, lang: p?.lang ?? 'it', role: p?.role ?? 'solo', name: p?.display_name ?? '', phone: p?.phone ?? undefined,
+    nationality: p?.nationality ?? undefined, onboarded: true, groupId: gm?.[0]?.group_id ?? null,
+    trip: p?.trip_start && p?.trip_end ? { start: p.trip_start, end: p.trip_end } : null,
+    hotel: p?.hotel_lat != null ? { name: p.hotel_name ?? 'Hotel', address: p.hotel_address ?? '', lat: p.hotel_lat, lng: p.hotel_lng } : null,
+  };
+  saveProfileLocal(profile);
+  return profile;
 }

@@ -18,6 +18,8 @@ create table public.profiles (
   hotel_lat double precision,
   hotel_lng double precision,
   vault_salt text,                 -- sale PBKDF2 della cassaforte (non segreto)
+  trip_start date,                 -- date del viaggio (turista singolo)
+  trip_end date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -33,6 +35,8 @@ create table public.groups (
   meeting_lng double precision,
   meeting_time text,               -- HH:MM
   radius_m integer not null default 150 check (radius_m between 25 and 2000),
+  start_date date,                 -- date del viaggio del gruppo
+  end_date date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

@@ -3,12 +3,13 @@ import { chromium } from 'playwright-core';
 const OUT = process.argv[2] ?? 'smoke-shots';
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
 const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+const shift = (d, n) => { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
 const group = { id: 'g1', name: 'Parrocchia San Luca', code: 'ROMA-4821', leaderId: 'L', leaderName: 'Marco', leaderPhone: '+39 333 000 0000',
-  meeting: { name: 'Piazza Pio XII', lat: 41.9022, lng: 12.4570, time: '12:15' }, radius: 150 };
+  meeting: { name: 'Piazza Pio XII', lat: 41.9022, lng: 12.4570, time: '12:15' }, radius: 150, trip: { start: shift(today, -1), end: shift(today, 2) } };
 const now = new Date().toISOString();
 const members = [
   { userId: 'L', name: 'Marco', role: 'leader', lat: 41.9022, lng: 12.4572, updatedAt: now, outOfZone: false },
-  { userId: 'M', name: 'Giulia Rossi', role: 'member', lat: 41.9040, lng: 12.4610, updatedAt: now, outOfZone: true },
+  { userId: 'M', name: 'Giulia Rossi', phone: '+39 333 111 2222', role: 'member', lat: 41.9040, lng: 12.4610, updatedAt: now, outOfZone: true },
   { userId: 'P', name: 'Paolo T', role: 'member', lat: 41.9023, lng: 12.4568, updatedAt: now, outOfZone: false },
   { userId: 'A', name: 'Anna L', role: 'member', lat: 41.9020, lng: 12.4575, updatedAt: now, outOfZone: false },
 ];
@@ -25,7 +26,7 @@ async function run(role, name, pos) {
     localStorage.setItem('custode.profile', JSON.stringify(p));
     localStorage.setItem('custode.group', JSON.stringify(g));
     localStorage.setItem('custode.members', JSON.stringify(m));
-    localStorage.setItem('custode.plan', JSON.stringify(pl));
+    localStorage.setItem('custode.plans', JSON.stringify({ [pl.day]: pl }));
   }, [{ userId: role === 'leader' ? 'L' : 'X', lang: 'it', role, name, onboarded: true, groupId: 'g1' }, group, members, plan]);
   const page = await ctx.newPage();
   const errors = [];
@@ -54,6 +55,13 @@ async function run(role, name, pos) {
   await shot('capo-avviso-borseggi');
   await page.getByRole('button', { name: 'Ho capito' }).click();
   await shot('capo-oggi');
+  await page.getByRole('button', { name: 'Mappa' }).last().click();
+  await page.waitForTimeout(1500);
+  await page.locator('#scroller').evaluate((e) => e.scrollTo(0, 450));
+  await shot('capo-mappa-membri');
+  await page.getByRole('button', { name: 'Oggi' }).last().click();
+  await page.getByRole('tab', { name: /Giorno 3/ }).click();
+  await shot('capo-giorno-3');
   await page.getByRole('button', { name: 'Modifica programma' }).first().click();
   await page.waitForTimeout(1000);
   await shot('capo-editor');

@@ -1,6 +1,6 @@
 import { useApp } from '../state';
 import { fmt } from '../i18n';
-import { fmtDistance, mapsDirections } from '../lib/geo';
+import { fmtDistance, mapsDirections, walkMinutes } from '../lib/geo';
 import * as api from '../lib/api';
 import { L, type Lang } from '../i18n';
 import { PLACES } from '../data/rome';
@@ -12,8 +12,9 @@ type View = { tone: string; title: string; desc?: string; big?: string; tips?: s
   primary: { label: string; on: () => void; href?: string }; secondary?: { label: string; on: () => void; href?: string }; tertiary?: { label: string; on: () => void } };
 
 export function AlertSheet() {
-  const { t, lang, sheet, setSheet, go, zone, group, profile, toast, nav } = useApp();
+  const { t, lang, sheet, setSheet, go, zone, group, profile, toast, nav, members } = useApp();
   if (!sheet || nav.screen !== 'app') return null;
+  const phoneOf = (id: string) => members.find((m) => m.userId === id)?.phone ?? null;
   const close = () => setSheet(null);
   let v: View;
   switch (sheet.kind) {
@@ -37,13 +38,21 @@ export function AlertSheet() {
         tone: 'var(--red)', title: fmt(t.memberOut, { name: sheet.name }), desc: sheet.distance != null ? fmt(t.memberOutD, { d: fmtDistance(sheet.distance) }) : undefined,
         big: sheet.distance != null ? fmtDistance(sheet.distance) : undefined,
         primary: { label: t.zoneLSee, on: () => { close(); go({ tab: 'map' }); } }, tertiary: { label: t.dismiss, on: close },
+        secondary: phoneOf(sheet.userId) ? { label: fmt(t.callName, { name: sheet.name.split(' ')[0] }), href: 'tel:' + phoneOf(sheet.userId), on: close } : undefined,
       };
       break;
     case 'memberSos':
       v = {
         tone: 'var(--red)', title: fmt(t.memberSos, { name: sheet.name }),
         primary: sheet.lat != null && sheet.lng != null ? { label: t.directions, href: mapsDirections({ lat: sheet.lat, lng: sheet.lng }), on: close } : { label: t.zoneLSee, on: () => { close(); go({ tab: 'map' }); } },
-        secondary: { label: t.callPolice, href: 'tel:112', on: close }, tertiary: { label: t.dismiss, on: close },
+        secondary: sheet.userId && phoneOf(sheet.userId) ? { label: fmt(t.callName, { name: sheet.name.split(' ')[0] }), href: 'tel:' + phoneOf(sheet.userId), on: close } : { label: t.callPolice, href: 'tel:112', on: close },
+        tertiary: { label: t.dismiss, on: close },
+      };
+      break;
+    case 'off':
+      v = {
+        tone: '#8A5E0E', title: t.offT, desc: t.offD + ' ' + (PLACES[sheet.name] ? L(PLACES[sheet.name].name, lang) : sheet.name), big: walkMinutes(sheet.distance) + ' min',
+        primary: { label: t.offGo, href: mapsDirections(sheet.to), on: () => { close(); toast(t.toastRoute); } }, tertiary: { label: t.dismiss, on: close },
       };
       break;
     case 'message':

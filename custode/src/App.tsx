@@ -3,6 +3,7 @@ import { useApp } from './state';
 import { TabBar, Toast } from './components/ui';
 import { AlertSheet } from './components/AlertSheet';
 import { Welcome, RoleSetup } from './screens/Onboarding';
+import { Login } from './screens/Login';
 import { Scan } from './screens/Scan';
 import { Today } from './screens/Today';
 import { Docs, DocDetail, AddDoc } from './screens/Docs';
@@ -21,6 +22,7 @@ export default function App() {
   let body: React.ReactNode;
   if (nav.screen === 'welcome') body = <Welcome />;
   else if (nav.screen === 'role') body = <RoleSetup />;
+  else if (nav.screen === 'login') body = <Login />;
   else if (nav.screen === 'scan') body = <Scan onboarding />;
   else {
     const sub = nav.sub;

@@ -22,6 +22,7 @@ export function Welcome() {
           <LangSwitch dark />
         </div>
         <button className="btn" style={{ background: '#FBF3EA', color: 'var(--terra-dark)' }} onClick={() => go({ screen: 'role' })}>{t.start}</button>
+        {hasBackend && <button className="btn ghost" style={{ color: '#FBF3EA', height: 36 }} onClick={() => go({ screen: 'login' })}>{t.haveAccount}</button>}
       </div>
     </div>
   );

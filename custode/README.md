@@ -19,7 +19,10 @@ Lingue: italiano, inglese, francese, spagnolo, polacco, rumeno.
 | 6 | Luoghi e musei | Prezzi, orari, **aperto/chiuso calcolato sull'ora di Roma** (fasce, giorni di chiusura, ultima domenica ai Vaticani), prima domenica del mese gratuita e prossima data, scheda museo con prenotazione sul sito ufficiale e "Al programma". |
 | 7 | Trasporti | Fiumicino/Ciampino → hotel con opzioni a confronto; acquisto sul sito ufficiale (Trenitalia, Terravision, ATAC) e poi "Ho comprato: salva il biglietto" con codice → QR e/o PDF nella cassaforte, disponibile offline. |
 | 8 | SOS | Tasto 112 con conto alla rovescia e annulla (avvisa anche il capogruppo con la posizione), condivisione posizione per 2 ore (link a un contatto + visibile al gruppo), polizia e ospedale più vicini, ambasciata, numeri utili, 12 frasi utili in italiano con traduzione e pronuncia. |
-| 9 | Capogruppo | Modifica programma (itinerari pronti, orari, mezzi, aggiungi/sposta/elimina tappe), punto d'incontro sulla mappa e raggio della zona, "Invia al gruppo" (pubblica e notifica), avvisi scritti ai membri. Riceve in tempo reale chi esce dalla zona, chi sta bene, gli SOS. |
+| — | Viaggio su più giorni | Date del viaggio (capogruppo per il gruppo, turista singolo per sé), "Giorno 2 di 4", un programma per ogni giorno con selettore. |
+| — | Account e nuovo telefono | Email collegata all'account anonimo; su un altro telefono "Ho già un account" → codice via email → i documenti cifrati si ripristinano con lo stesso PIN. |
+| — | Impronta / Face ID | Sblocco della cassaforte con passkey (WebAuthn PRF): il PIN viene cifrato con un segreto che esiste solo nel telefono. Il PIN resta come riserva. |
+| 9 | Capogruppo | Modifica programma (itinerari pronti, orari, mezzi, aggiungi/sposta/elimina tappe), punto d'incontro sulla mappa e raggio della zona, "Invia al gruppo" (pubblica e notifica), avvisi scritti ai membri. Riceve in tempo reale chi esce dalla zona, chi sta bene, gli SOS; vede sulla mappa dove sono i membri e li chiama. Il turista singolo riceve "Sei fuori percorso" se si allontana dal tragitto. |
 
 ## Avvio
 
@@ -40,6 +43,18 @@ il gruppo condiviso è disattivato).
 3. SQL editor: esegui `supabase/migrations/20261005000000_custode_init.sql` e poi `supabase/seed.sql`
    (oppure `supabase db push` con la CLI).
 4. Copia Project URL e anon key in `.env.local`.
+5. Per accedere da un altro telefono: **Authentication → Email Templates → Magic Link**, aggiungi il codice `{{ .Token }}` al testo della mail.
+
+### Notifiche ad app chiusa (facoltativo)
+
+1. Genera le chiavi VAPID: `npx web-push generate-vapid-keys`.
+2. Esegui anche `supabase/migrations/20261006000000_push.sql`.
+3. Pubblica la funzione: `supabase functions deploy push --no-verify-jwt` e imposta i segreti
+   `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` (es. `mailto:tu@esempio.it`), `WEBHOOK_SECRET`.
+4. **Database → Webhooks**: nuovo webhook su `public.alerts`, evento INSERT, verso la funzione `push`,
+   con header `x-webhook-secret` uguale a `WEBHOOK_SECRET`.
+5. In `.env.local` metti `VITE_VAPID_PUBLIC_KEY`. Nelle impostazioni dell'app compare "Avvisi anche ad app chiusa".
+   Su iPhone le notifiche push funzionano solo con l'app aggiunta alla schermata Home (iOS 16.4+).
 
 Tabelle: `profiles` (utenti), `groups`, `group_members`, `plans` + `plan_stops` (programmi e tappe),
 `live_locations` (posizioni live), `documents` (solo testo cifrato), `places` (luoghi/musei),
@@ -66,8 +81,8 @@ Vercel: nuovo progetto con **Root directory `custode`** (c'è già `vercel.json`
 
 ```bash
 npm run typecheck   # TypeScript
-npm test            # MRZ (esempi ICAO), orari/domeniche
-npm run test:db     # migrazione + 13 controlli RLS su Postgres locale
+npm test            # MRZ (esempi ICAO), orari/domeniche, giorni del viaggio
+npm run test:db     # migrazioni + 14 controlli RLS su Postgres locale
 npm run build && npx vite preview --port 4173 &
 npm run smoke       # percorso completo nel browser (turista, membro fuori zona, capogruppo)
 ```
