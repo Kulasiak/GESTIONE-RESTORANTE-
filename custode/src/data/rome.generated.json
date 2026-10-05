@@ -1,0 +1,1971 @@
+{
+ "places": {
+  "hotel": {
+   "name": "Hotel Travertino",
+   "story": null
+  },
+  "vaticani": {
+   "name": {
+    "it": "Musei Vaticani",
+    "en": "Vatican Museums",
+    "pl": "Muzea Watykańskie",
+    "es": "Museos Vaticanos",
+    "fr": "Musées du Vatican",
+    "ro": "Muzeele Vaticanului"
+   },
+   "story": {
+    "it": "Nati nel 1506 con una sola statua, il Laocoonte, appena ritrovata in una vigna vicino a Santa Maria Maggiore. Oggi le sale si estendono per circa 7 km e finiscono nella Cappella Sistina.",
+    "en": "Founded in 1506 with a single statue, the Laocoön, just unearthed in a vineyard near Santa Maria Maggiore. Today the galleries run for about 7 km and end in the Sistine Chapel.",
+    "pl": "Założone w 1506 r. z jednym posągiem, Grupą Laokoona, odkopaną w winnicy koło Santa Maria Maggiore. Dziś galerie mają ok. 7 km i kończą się w Kaplicy Sykstyńskiej.",
+    "es": "Fundados en 1506 con una sola estatua, el Laocoonte, recién desenterrado en una viña cerca de Santa María la Mayor. Hoy las galerías recorren unos 7 km y terminan en la Capilla Sixtina.",
+    "fr": "Fondés en 1506 avec une seule statue, le Laocoon, tout juste exhumé dans une vigne près de Sainte-Marie-Majeure. Aujourd'hui les galeries s'étendent sur environ 7 km et finissent à la chapelle Sixtine.",
+    "ro": "Fondate în 1506 cu o singură statuie, Laocoon, tocmai dezgropată într-o vie lângă Santa Maria Maggiore. Azi galeriile se întind pe circa 7 km și se termină în Capela Sixtină."
+   }
+  },
+  "pietro": {
+   "name": {
+    "it": "Basilica di San Pietro",
+    "en": "St Peter's Basilica",
+    "pl": "Bazylika św. Piotra",
+    "es": "Basílica de San Pedro",
+    "fr": "Basilique Saint-Pierre",
+    "ro": "Bazilica Sfântul Petru"
+   },
+   "story": {
+    "it": "Bernini disegnò il colonnato come due braccia che accolgono i fedeli. Sono 284 colonne: dai due dischi di porfido nella piazza, ogni fila sembra una colonna sola.",
+    "en": "Bernini designed the colonnade as two arms embracing the faithful. There are 284 columns: stand on one of the porphyry discs and each row lines up as one.",
+    "pl": "Bernini zaprojektował kolumnadę jak dwa ramiona obejmujące wiernych. Jest 284 kolumn: stań na jednym z porfirowych krążków, a każdy rząd ustawi się w jedną linię.",
+    "es": "Bernini diseñó la columnata como dos brazos que abrazan a los fieles. Hay 284 columnas: ponte sobre uno de los discos de pórfido y cada fila se alinea como una sola.",
+    "fr": "Le Bernin a conçu la colonnade comme deux bras qui embrassent les fidèles. Il y a 284 colonnes : placez-vous sur l'un des disques de porphyre et chaque rangée s'aligne en une seule.",
+    "ro": "Bernini a conceput colonada ca două brațe care îi îmbrățișează pe credincioși. Sunt 284 de coloane: stai pe unul dintre discurile de porfir și fiecare rând se aliniază ca una singură."
+   }
+  },
+  "borgo": {
+   "name": {
+    "it": "Pranzo a Borgo Pio",
+    "en": "Lunch in Borgo Pio",
+    "pl": "Obiad w Borgo Pio",
+    "es": "Almuerzo en Borgo Pio",
+    "fr": "Déjeuner à Borgo Pio",
+    "ro": "Prânz în Borgo Pio"
+   },
+   "story": null
+  },
+  "castel": {
+   "name": "Castel Sant'Angelo",
+   "story": {
+    "it": "Nacque come tomba dell'imperatore Adriano, poi diventò fortezza dei papi. Il Passetto, un corridoio sopra le mura, lo collega al Vaticano: nel 1527 Clemente VII lo usò per fuggire.",
+    "en": "It began as Emperor Hadrian's tomb and became the popes' fortress. The Passetto, a corridor along the walls, links it to the Vatican: Clement VII fled through it in 1527.",
+    "pl": "Powstał jako grobowiec cesarza Hadriana, a stał się twierdzą papieży. Passetto, korytarz w murach, łączy go z Watykanem: Klemens VII uciekł nim w 1527 r.",
+    "es": "Nació como tumba del emperador Adriano y se convirtió en fortaleza de los papas. El Passetto, un pasillo sobre la muralla, lo une al Vaticano: Clemente VII huyó por él en 1527.",
+    "fr": "D'abord tombeau de l'empereur Hadrien, il devint la forteresse des papes. Le Passetto, un couloir le long des murs, le relie au Vatican : Clément VII s'y enfuit en 1527.",
+    "ro": "A fost la început mormântul împăratului Hadrian și a devenit fortăreața papilor. Passetto, un coridor de-a lungul zidurilor, îl leagă de Vatican: Clement al VII-lea a fugit pe aici în 1527."
+   }
+  },
+  "navona": {
+   "name": "Piazza Navona",
+   "story": {
+    "it": "La forma allungata della piazza è quella dello stadio di Domiziano, che era qui 1900 anni fa. Le case intorno poggiano ancora sulle sue gradinate.",
+    "en": "The square's long shape is the outline of Domitian's stadium, which stood here 1,900 years ago. The surrounding houses still rest on its stands.",
+    "pl": "Wydłużony kształt placu to obrys stadionu Domicjana, który stał tu 1900 lat temu. Okoliczne domy wciąż opierają się na jego trybunach.",
+    "es": "La forma alargada de la plaza es el contorno del estadio de Domiciano, que estaba aquí hace 1900 años. Las casas de alrededor aún se apoyan en sus gradas.",
+    "fr": "La forme allongée de la place reprend le stade de Domitien, qui se trouvait ici il y a 1 900 ans. Les maisons autour reposent encore sur ses gradins.",
+    "ro": "Forma alungită a pieței e conturul stadionului lui Domițian, care se afla aici acum 1.900 de ani. Casele din jur se sprijină încă pe tribunele lui."
+   }
+  },
+  "pantheon": {
+   "name": "Pantheon",
+   "story": {
+    "it": "La cupola ha quasi 1900 anni ed è ancora la più grande al mondo in calcestruzzo non armato. Quando piove, l'acqua entra dall'oculo ed esce da 22 fori nel pavimento.",
+    "en": "The dome is almost 1,900 years old and still the largest unreinforced concrete dome in the world. When it rains, water falls through the oculus and drains through 22 holes in the floor.",
+    "pl": "Kopuła ma prawie 1900 lat i wciąż jest największą na świecie kopułą z niezbrojonego betonu. Gdy pada, woda wpada przez oculus i spływa 22 otworami w posadzce.",
+    "es": "La cúpula tiene casi 1900 años y sigue siendo la mayor del mundo de hormigón sin armar. Cuando llueve, el agua cae por el óculo y se va por 22 agujeros del suelo.",
+    "fr": "La coupole a presque 1 900 ans et reste la plus grande au monde en béton non armé. Quand il pleut, l'eau tombe par l'oculus et s'évacue par 22 trous dans le sol.",
+    "ro": "Cupola are aproape 1.900 de ani și e încă cea mai mare cupolă din beton nearmat din lume. Când plouă, apa cade prin oculus și se scurge prin 22 de găuri din podea."
+   }
+  },
+  "trevi": {
+   "name": {
+    "it": "Fontana di Trevi",
+    "en": "Trevi Fountain",
+    "pl": "Fontanna di Trevi",
+    "es": "Fontana de Trevi",
+    "fr": "Fontaine de Trevi",
+    "ro": "Fântâna Trevi"
+   },
+   "story": {
+    "it": "Tradizione: una moneta con la mano destra, sopra la spalla sinistra, e tornerai a Roma. Ogni anno si raccolgono oltre un milione di euro, donati in beneficenza.",
+    "en": "Tradition: toss a coin with your right hand over your left shoulder and you'll return to Rome. Over a million euros are collected every year and given to charity.",
+    "pl": "Tradycja: rzuć monetę prawą ręką przez lewe ramię, a wrócisz do Rzymu. Co roku zbiera się ponad milion euro, które trafia na cele charytatywne.",
+    "es": "Tradición: lanza una moneda con la mano derecha por encima del hombro izquierdo y volverás a Roma. Cada año se recoge más de un millón de euros que va a beneficencia.",
+    "fr": "Tradition : lancez une pièce de la main droite par-dessus l'épaule gauche et vous reviendrez à Rome. Plus d'un million d'euros sont collectés chaque année et reversés aux œuvres caritatives.",
+    "ro": "Tradiție: aruncă o monedă cu mâna dreaptă peste umărul stâng și te vei întoarce la Roma. Peste un milion de euro se strâng anual și se donează în scopuri caritabile."
+   }
+  },
+  "spagna": {
+   "name": {
+    "it": "Piazza di Spagna",
+    "en": "Spanish Steps",
+    "pl": "Schody Hiszpańskie",
+    "es": "Plaza de España",
+    "fr": "Place d'Espagne",
+    "ro": "Treptele Spaniole"
+   },
+   "story": {
+    "it": "La scalinata di 135 gradini fu pagata da un diplomatico francese nel Settecento. La barcaccia ai suoi piedi è di Pietro Bernini, padre del più famoso Gian Lorenzo.",
+    "en": "The 135 steps were funded by a French diplomat in the 1700s. The boat-shaped fountain at the bottom is by Pietro Bernini, father of the more famous Gian Lorenzo.",
+    "pl": "135 stopni ufundował francuski dyplomata w XVIII w. Fontanna w kształcie łodzi u dołu to dzieło Pietra Berniniego, ojca słynniejszego Gian Lorenza.",
+    "es": "Los 135 escalones los financió un diplomático francés en el siglo XVIII. La fuente con forma de barca, abajo, es de Pietro Bernini, padre del famoso Gian Lorenzo.",
+    "fr": "Les 135 marches ont été financées par un diplomate français au XVIIIe siècle. La fontaine en forme de barque, en bas, est de Pietro Bernini, père du célèbre Gian Lorenzo.",
+    "ro": "Cele 135 de trepte au fost finanțate de un diplomat francez în secolul al XVIII-lea. Fântâna în formă de barcă de la bază e a lui Pietro Bernini, tatăl celebrului Gian Lorenzo."
+   }
+  },
+  "popolo": {
+   "name": "Piazza del Popolo",
+   "story": null
+  },
+  "borghese": {
+   "name": "Galleria Borghese",
+   "story": {
+    "it": "La villa del cardinale Scipione Borghese, grande collezionista: qui Bernini, poco più che ventenne, scolpì Apollo e Dafne e il Ratto di Proserpina.",
+    "en": "The villa of Cardinal Scipione Borghese, a great collector: here a young Bernini, barely in his twenties, carved Apollo and Daphne and The Rape of Proserpina.",
+    "pl": "Willa kardynała Scipione Borghese, wielkiego kolekcjonera: tu młody Bernini, ledwie dwudziestoletni, wyrzeźbił Apollina i Dafne oraz Porwanie Prozerpiny.",
+    "es": "La villa del cardenal Scipione Borghese, gran coleccionista: aquí un joven Bernini, con apenas veinte años, esculpió Apolo y Dafne y El rapto de Proserpina.",
+    "fr": "La villa du cardinal Scipione Borghese, grand collectionneur : ici un jeune Bernin, à peine vingt ans, sculpta Apollon et Daphné et L'Enlèvement de Proserpine.",
+    "ro": "Vila cardinalului Scipione Borghese, mare colecționar: aici un Bernini tânăr, de abia douăzeci de ani, a sculptat Apollo și Dafne și Răpirea Proserpinei."
+   }
+  },
+  "capitolini": {
+   "name": {
+    "it": "Musei Capitolini",
+    "en": "Capitoline Museums",
+    "pl": "Muzea Kapitolińskie",
+    "es": "Museos Capitolinos",
+    "fr": "Musées du Capitole",
+    "ro": "Muzeele Capitoline"
+   },
+   "story": null
+  },
+  "foro": {
+   "name": {
+    "it": "Foro Romano",
+    "en": "Roman Forum",
+    "pl": "Forum Romanum",
+    "es": "Foro Romano",
+    "fr": "Forum romain",
+    "ro": "Forumul Roman"
+   },
+   "story": {
+    "it": "Per secoli fu il centro della vita pubblica di Roma: tribunali, templi, mercati. Nel Medioevo era così interrato che lo chiamavano Campo Vaccino, il campo delle mucche.",
+    "en": "For centuries it was the heart of Roman public life: courts, temples, markets. By the Middle Ages it was so buried that people called it Campo Vaccino, the cow field.",
+    "pl": "Przez wieki było sercem życia publicznego Rzymu: sądy, świątynie, targi. W średniowieczu było tak zasypane, że nazywano je Campo Vaccino, krowim polem.",
+    "es": "Durante siglos fue el corazón de la vida pública romana: tribunales, templos, mercados. En la Edad Media estaba tan enterrado que lo llamaban Campo Vaccino, el campo de las vacas.",
+    "fr": "Pendant des siècles, ce fut le cœur de la vie publique romaine : tribunaux, temples, marchés. Au Moyen Âge, il était si enseveli qu'on l'appelait Campo Vaccino, le champ aux vaches.",
+    "ro": "Timp de secole a fost inima vieții publice romane: tribunale, temple, piețe. În Evul Mediu era atât de îngropat încât i se spunea Campo Vaccino, câmpul vacilor."
+   }
+  },
+  "colosseo": {
+   "name": {
+    "it": "Colosseo",
+    "en": "Colosseum",
+    "pl": "Koloseum",
+    "es": "Coliseo",
+    "fr": "Colisée",
+    "ro": "Colosseum"
+   },
+   "story": {
+    "it": "Inaugurato nell'80 d.C. con 100 giorni di giochi. Ospitava circa 50.000 spettatori, che entravano da 80 archi numerati come i settori di uno stadio moderno.",
+    "en": "Opened in AD 80 with 100 days of games. It held about 50,000 spectators, who entered through 80 numbered arches, like sections of a modern stadium.",
+    "pl": "Otwarte w 80 r. n.e. stoma dniami igrzysk. Mieściło ok. 50 000 widzów, którzy wchodzili przez 80 numerowanych arkad, jak do sektorów współczesnego stadionu.",
+    "es": "Inaugurado en el año 80 con 100 días de juegos. Albergaba unos 50 000 espectadores, que entraban por 80 arcos numerados, como los sectores de un estadio moderno.",
+    "fr": "Inauguré en 80 apr. J.-C. avec 100 jours de jeux. Il accueillait environ 50 000 spectateurs, qui entraient par 80 arcades numérotées, comme les tribunes d'un stade moderne.",
+    "ro": "Inaugurat în anul 80 d.Hr. cu 100 de zile de jocuri. Încăpeau circa 50.000 de spectatori, care intrau prin 80 de arcade numerotate, ca sectoarele unui stadion modern."
+   }
+  },
+  "circo": {
+   "name": {
+    "it": "Circo Massimo",
+    "en": "Circus Maximus",
+    "pl": "Circus Maximus",
+    "es": "Circo Máximo",
+    "fr": "Cirque Maxime",
+    "ro": "Circus Maximus"
+   },
+   "story": null
+  },
+  "bocca": {
+   "name": {
+    "it": "Bocca della Verità",
+    "en": "Mouth of Truth",
+    "pl": "Usta Prawdy",
+    "es": "Boca de la Verdad",
+    "fr": "Bouche de la Vérité",
+    "ro": "Gura Adevărului"
+   },
+   "story": null
+  },
+  "campo": {
+   "name": "Campo de' Fiori",
+   "story": {
+    "it": "Unica grande piazza di Roma senza una chiesa. La statua di Giordano Bruno ricorda che qui fu messo al rogo nel 1600; oggi ogni mattina c'è il mercato.",
+    "en": "The only major square in Rome without a church. Giordano Bruno's statue marks where he was burned in 1600; today a market fills it every morning.",
+    "pl": "Jedyny duży plac w Rzymie bez kościoła. Pomnik Giordana Bruna wskazuje miejsce, gdzie spłonął w 1600 r.; dziś co rano jest tu targ.",
+    "es": "La única gran plaza de Roma sin iglesia. La estatua de Giordano Bruno marca donde fue quemado en 1600; hoy cada mañana la llena un mercado.",
+    "fr": "La seule grande place de Rome sans église. La statue de Giordano Bruno marque l'endroit où il fut brûlé en 1600 ; aujourd'hui un marché l'anime chaque matin.",
+    "ro": "Singura piață mare din Roma fără biserică. Statuia lui Giordano Bruno marchează locul unde a fost ars în 1600; azi o piață o umple în fiecare dimineață."
+   }
+  },
+  "trastevere": {
+   "name": "Trastevere",
+   "story": {
+    "it": "Letteralmente 'oltre il Tevere': quartiere di artigiani e marinai, con Santa Maria in Trastevere, una delle prime chiese di Roma dedicate alla Vergine.",
+    "en": "Literally 'beyond the Tiber': a district of craftsmen and sailors, home to Santa Maria in Trastevere, one of Rome's first churches dedicated to the Virgin.",
+    "pl": "Dosłownie „za Tybrem”: dzielnica rzemieślników i żeglarzy, z Santa Maria in Trastevere, jednym z pierwszych kościołów Rzymu poświęconych Matce Bożej.",
+    "es": "Literalmente «más allá del Tíber»: barrio de artesanos y marineros, con Santa Maria in Trastevere, una de las primeras iglesias de Roma dedicadas a la Virgen.",
+    "fr": "Littéralement « au-delà du Tibre » : quartier d'artisans et de marins, avec Santa Maria in Trastevere, l'une des premières églises de Rome dédiées à la Vierge.",
+    "ro": "Literal „dincolo de Tibru”: cartier de meșteșugari și marinari, cu Santa Maria in Trastevere, una dintre primele biserici din Roma închinate Fecioarei."
+   }
+  },
+  "testaccio": {
+   "name": {
+    "it": "Mercato di Testaccio",
+    "en": "Testaccio Market",
+    "pl": "Targ Testaccio",
+    "es": "Mercado de Testaccio",
+    "fr": "Marché de Testaccio",
+    "ro": "Piața Testaccio"
+   },
+   "story": null
+  },
+  "laterano": {
+   "name": {
+    "it": "San Giovanni in Laterano",
+    "en": "St John Lateran",
+    "pl": "Bazylika św. Jana na Lateranie",
+    "es": "San Juan de Letrán",
+    "fr": "Saint-Jean-de-Latran",
+    "ro": "San Giovanni in Laterano"
+   },
+   "story": null
+  },
+  "termini": {
+   "name": {
+    "it": "Stazione Termini",
+    "en": "Termini Station",
+    "pl": "Dworzec Termini",
+    "es": "Estación Termini",
+    "fr": "Gare Termini",
+    "ro": "Gara Termini"
+   },
+   "story": null
+  },
+  "callisto": {
+   "name": {
+    "it": "Catacombe di San Callisto",
+    "en": "Catacombs of St Callixtus",
+    "pl": "Katakumby św. Kaliksta",
+    "es": "Catacumbas de San Calixto",
+    "fr": "Catacombes de Saint-Calixte",
+    "ro": "Catacombele Sfântului Calist"
+   },
+   "story": null
+  }
+ },
+ "modes": {
+  "walk": {
+   "color": "#B5502F",
+   "soft": "#F3DED2",
+   "label": {
+    "it": "A piedi",
+    "en": "Walk",
+    "pl": "Pieszo",
+    "es": "A pie",
+    "fr": "À pied",
+    "ro": "Pe jos"
+   }
+  },
+  "metro": {
+   "color": "#2A211B",
+   "soft": "#E6DBCB",
+   "label": {
+    "it": "Metro",
+    "en": "Metro",
+    "pl": "Metro",
+    "es": "Metro",
+    "fr": "Métro",
+    "ro": "Metrou"
+   }
+  },
+  "bus": {
+   "color": "#8A5E0E",
+   "soft": "#F4E6C6",
+   "label": {
+    "it": "Bus",
+    "en": "Bus",
+    "pl": "Autobus",
+    "es": "Autobús",
+    "fr": "Bus",
+    "ro": "Autobuz"
+   }
+  },
+  "tram": {
+   "color": "#3B5A37",
+   "soft": "#E1E8D6",
+   "label": {
+    "it": "Tram",
+    "en": "Tram",
+    "pl": "Tramwaj",
+    "es": "Tranvía",
+    "fr": "Tram",
+    "ro": "Tramvai"
+   }
+  },
+  "train": {
+   "color": "#8E3C22",
+   "soft": "#F3DED2",
+   "label": {
+    "it": "Treno",
+    "en": "Train",
+    "pl": "Pociąg",
+    "es": "Tren",
+    "fr": "Train",
+    "ro": "Tren"
+   }
+  },
+  "taxi": {
+   "color": "#8A5E0E",
+   "soft": "#F4E6C6",
+   "label": {
+    "it": "Taxi",
+    "en": "Taxi",
+    "pl": "Taksówka",
+    "es": "Taxi",
+    "fr": "Taxi",
+    "ro": "Taxi"
+   }
+  }
+ },
+ "plans": {
+  "pell": [
+   {
+    "time": "08:30",
+    "place": "hotel",
+    "mode": null,
+    "minutes": null,
+    "leg": null,
+    "duration": null,
+    "price": null,
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "09:15",
+    "place": "vaticani",
+    "mode": "metro",
+    "minutes": 35,
+    "leg": {
+     "it": "Cavour → Termini → Ottaviano",
+     "en": "Cavour → Termini → Ottaviano",
+     "pl": "Cavour → Termini → Ottaviano",
+     "es": "Cavour → Termini → Ottaviano",
+     "fr": "Cavour → Termini → Ottaviano",
+     "ro": "Cavour → Termini → Ottaviano"
+    },
+    "duration": {
+     "it": "3 h",
+     "en": "3 h",
+     "pl": "3 godz.",
+     "es": "3 h",
+     "fr": "3 h",
+     "ro": "3 h"
+    },
+    "price": "€20 + €5",
+    "tip": {
+     "it": "Spalle e ginocchia coperte, o non entri.",
+     "en": "Shoulders and knees covered, or no entry.",
+     "pl": "Zakryte ramiona i kolana, inaczej brak wstępu.",
+     "es": "Hombros y rodillas cubiertos, o no entras.",
+     "fr": "Épaules et genoux couverts, sinon pas d'entrée.",
+     "ro": "Umeri și genunchi acoperiți, altfel nu intri."
+    },
+    "detail": [
+     {
+      "time": "08:30",
+      "text": {
+       "it": "Esci dall'hotel, a destra su Via Cavour",
+       "en": "Leave the hotel, turn right on Via Cavour",
+       "pl": "Wyjdź z hotelu, skręć w prawo w Via Cavour",
+       "es": "Sal del hotel y gira a la derecha por Via Cavour",
+       "fr": "Sortez de l'hôtel, tournez à droite sur Via Cavour",
+       "ro": "Ieși din hotel, fă dreapta pe Via Cavour"
+      }
+     },
+     {
+      "time": "08:36",
+      "text": {
+       "it": "Metro B a Cavour, 1 fermata verso Rebibbia",
+       "en": "Metro B at Cavour, 1 stop towards Rebibbia",
+       "pl": "Metro B na Cavour, 1 przystanek w stronę Rebibbia",
+       "es": "Metro B en Cavour, 1 parada dirección Rebibbia",
+       "fr": "Métro B à Cavour, 1 arrêt direction Rebibbia",
+       "ro": "Metrou B la Cavour, 1 stație spre Rebibbia"
+      }
+     },
+     {
+      "time": "08:40",
+      "text": {
+       "it": "A Termini cambia: linea A verso Battistini",
+       "en": "Change at Termini: line A towards Battistini",
+       "pl": "Przesiadka na Termini: linia A w stronę Battistini",
+       "es": "Cambia en Termini: línea A dirección Battistini",
+       "fr": "Changement à Termini : ligne A direction Battistini",
+       "ro": "Schimbă la Termini: linia A spre Battistini"
+      }
+     },
+     {
+      "time": "08:58",
+      "text": {
+       "it": "Scendi a Ottaviano, uscita Via Ottaviano",
+       "en": "Get off at Ottaviano, Via Ottaviano exit",
+       "pl": "Wysiądź na Ottaviano, wyjście Via Ottaviano",
+       "es": "Baja en Ottaviano, salida Via Ottaviano",
+       "fr": "Descendez à Ottaviano, sortie Via Ottaviano",
+       "ro": "Coboară la Ottaviano, ieșirea Via Ottaviano"
+      }
+     },
+     {
+      "time": "09:05",
+      "text": {
+       "it": "10 min a piedi fino all'ingresso dei Musei",
+       "en": "10 min walk to the Museums entrance",
+       "pl": "10 min pieszo do wejścia do Muzeów",
+       "es": "10 min a pie hasta la entrada de los Museos",
+       "fr": "10 min à pied jusqu'à l'entrée des Musées",
+       "ro": "10 min pe jos până la intrarea Muzeelor"
+      }
+     }
+    ]
+   },
+   {
+    "time": "12:30",
+    "place": "pietro",
+    "mode": "walk",
+    "minutes": 10,
+    "leg": {
+     "it": "Viale Vaticano → Piazza San Pietro",
+     "en": "Viale Vaticano → St Peter's Square",
+     "pl": "Viale Vaticano → Plac św. Piotra",
+     "es": "Viale Vaticano → Plaza de San Pedro",
+     "fr": "Viale Vaticano → Place Saint-Pierre",
+     "ro": "Viale Vaticano → Piața Sfântul Petru"
+    },
+    "duration": {
+     "it": "1 h 15",
+     "en": "1 h 15",
+     "pl": "1 godz. 15",
+     "es": "1 h 15",
+     "fr": "1 h 15",
+     "ro": "1 h 15"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Controlli di sicurezza: evita zaini grandi.",
+     "en": "Security checks: avoid large backpacks.",
+     "pl": "Kontrole bezpieczeństwa: unikaj dużych plecaków.",
+     "es": "Controles de seguridad: evita mochilas grandes.",
+     "fr": "Contrôles de sécurité : évitez les grands sacs à dos.",
+     "ro": "Controale de securitate: evită rucsacii mari."
+    },
+    "detail": null
+   },
+   {
+    "time": "14:00",
+    "place": "borgo",
+    "mode": "walk",
+    "minutes": 6,
+    "leg": {
+     "it": "Via di Porta Angelica",
+     "en": "Via di Porta Angelica",
+     "pl": "Via di Porta Angelica",
+     "es": "Via di Porta Angelica",
+     "fr": "Via di Porta Angelica",
+     "ro": "Via di Porta Angelica"
+    },
+    "duration": {
+     "it": "1 h",
+     "en": "1 h",
+     "pl": "1 godz.",
+     "es": "1 h",
+     "fr": "1 h",
+     "ro": "1 h"
+    },
+    "price": "€15–20",
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "15:30",
+    "place": "castel",
+    "mode": "walk",
+    "minutes": 8,
+    "leg": {
+     "it": "Via della Conciliazione",
+     "en": "Via della Conciliazione",
+     "pl": "Via della Conciliazione",
+     "es": "Via della Conciliazione",
+     "fr": "Via della Conciliazione",
+     "ro": "Via della Conciliazione"
+    },
+    "duration": {
+     "it": "1 h 30",
+     "en": "1 h 30",
+     "pl": "1 godz. 30",
+     "es": "1 h 30",
+     "fr": "1 h 30",
+     "ro": "1 h 30"
+    },
+    "price": "€16",
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "17:30",
+    "place": "hotel",
+    "mode": "bus",
+    "minutes": 25,
+    "leg": {
+     "it": "Bus 40 · Castello → Nazionale",
+     "en": "Bus 40 · Castello → Nazionale",
+     "pl": "Autobus 40 · Castello → Nazionale",
+     "es": "Autobús 40 · Castello → Nazionale",
+     "fr": "Bus 40 · Castello → Nazionale",
+     "ro": "Autobuzul 40 · Castello → Nazionale"
+    },
+    "duration": null,
+    "price": "€1,50",
+    "tip": {
+     "it": "Convalida il biglietto appena sali.",
+     "en": "Validate your ticket as soon as you board.",
+     "pl": "Skasuj bilet zaraz po wejściu.",
+     "es": "Valida el billete nada más subir.",
+     "fr": "Validez votre billet dès la montée.",
+     "ro": "Validează biletul imediat ce urci."
+    },
+    "detail": null
+   }
+  ],
+  "arte": [
+   {
+    "time": "09:00",
+    "place": "hotel",
+    "mode": null,
+    "minutes": null,
+    "leg": null,
+    "duration": null,
+    "price": null,
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "09:30",
+    "place": "borghese",
+    "mode": "bus",
+    "minutes": 25,
+    "leg": {
+     "it": "Bus 910 · Termini → Pinciana",
+     "en": "Bus 910 · Termini → Pinciana",
+     "pl": "Autobus 910 · Termini → Pinciana",
+     "es": "Autobús 910 · Termini → Pinciana",
+     "fr": "Bus 910 · Termini → Pinciana",
+     "ro": "Autobuzul 910 · Termini → Pinciana"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": "€15 + €2",
+    "tip": {
+     "it": "Prenotazione obbligatoria, fasce di 2 ore.",
+     "en": "Booking required, 2-hour slots.",
+     "pl": "Rezerwacja obowiązkowa, wejścia co 2 godziny.",
+     "es": "Reserva obligatoria, turnos de 2 horas.",
+     "fr": "Réservation obligatoire, créneaux de 2 heures.",
+     "ro": "Rezervare obligatorie, intervale de 2 ore."
+    },
+    "detail": null
+   },
+   {
+    "time": "12:00",
+    "place": "popolo",
+    "mode": "walk",
+    "minutes": 20,
+    "leg": {
+     "it": "Villa Borghese e terrazza del Pincio",
+     "en": "Villa Borghese and the Pincio terrace",
+     "pl": "Villa Borghese i taras Pincio",
+     "es": "Villa Borghese y la terraza del Pincio",
+     "fr": "Villa Borghèse et la terrasse du Pincio",
+     "ro": "Villa Borghese și terasa Pincio"
+    },
+    "duration": {
+     "it": "45 min",
+     "en": "45 min",
+     "pl": "45 min",
+     "es": "45 min",
+     "fr": "45 min",
+     "ro": "45 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "13:00",
+    "place": "spagna",
+    "mode": "walk",
+    "minutes": 12,
+    "leg": {
+     "it": "Via del Babuino",
+     "en": "Via del Babuino",
+     "pl": "Via del Babuino",
+     "es": "Via del Babuino",
+     "fr": "Via del Babuino",
+     "ro": "Via del Babuino"
+    },
+    "duration": {
+     "it": "1 h",
+     "en": "1 h",
+     "pl": "1 godz.",
+     "es": "1 h",
+     "fr": "1 h",
+     "ro": "1 h"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Non sederti sulla scalinata: è vietato e si rischia la multa.",
+     "en": "Don't sit on the Steps: it's banned and fined.",
+     "pl": "Nie siadaj na Schodach: to zabronione i grozi mandatem.",
+     "es": "No te sientes en la escalinata: está prohibido y se multa.",
+     "fr": "Ne vous asseyez pas sur les marches : c'est interdit et verbalisé.",
+     "ro": "Nu sta pe trepte: e interzis și se amendează."
+    },
+    "detail": null
+   },
+   {
+    "time": "15:00",
+    "place": "pantheon",
+    "mode": "walk",
+    "minutes": 15,
+    "leg": {
+     "it": "Via dei Condotti → Via del Corso",
+     "en": "Via dei Condotti → Via del Corso",
+     "pl": "Via dei Condotti → Via del Corso",
+     "es": "Via dei Condotti → Via del Corso",
+     "fr": "Via dei Condotti → Via del Corso",
+     "ro": "Via dei Condotti → Via del Corso"
+    },
+    "duration": {
+     "it": "45 min",
+     "en": "45 min",
+     "pl": "45 min",
+     "es": "45 min",
+     "fr": "45 min",
+     "ro": "45 min"
+    },
+    "price": "€5",
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "16:30",
+    "place": "navona",
+    "mode": "walk",
+    "minutes": 5,
+    "leg": {
+     "it": "Via Giustiniani",
+     "en": "Via Giustiniani",
+     "pl": "Via Giustiniani",
+     "es": "Via Giustiniani",
+     "fr": "Via Giustiniani",
+     "ro": "Via Giustiniani"
+    },
+    "duration": {
+     "it": "1 h",
+     "en": "1 h",
+     "pl": "1 godz.",
+     "es": "1 h",
+     "fr": "1 h",
+     "ro": "1 h"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "18:00",
+    "place": "hotel",
+    "mode": "bus",
+    "minutes": 25,
+    "leg": {
+     "it": "Bus 70 · Senato → Nazionale",
+     "en": "Bus 70 · Senato → Nazionale",
+     "pl": "Autobus 70 · Senato → Nazionale",
+     "es": "Autobús 70 · Senato → Nazionale",
+     "fr": "Bus 70 · Senato → Nazionale",
+     "ro": "Autobuzul 70 · Senato → Nazionale"
+    },
+    "duration": null,
+    "price": "€1,50",
+    "tip": null,
+    "detail": null
+   }
+  ],
+  "cult": [
+   {
+    "time": "09:00",
+    "place": "hotel",
+    "mode": null,
+    "minutes": null,
+    "leg": null,
+    "duration": null,
+    "price": null,
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "09:20",
+    "place": "trevi",
+    "mode": "walk",
+    "minutes": 15,
+    "leg": {
+     "it": "Via Nazionale → Via della Dataria",
+     "en": "Via Nazionale → Via della Dataria",
+     "pl": "Via Nazionale → Via della Dataria",
+     "es": "Via Nazionale → Via della Dataria",
+     "fr": "Via Nazionale → Via della Dataria",
+     "ro": "Via Nazionale → Via della Dataria"
+    },
+    "duration": {
+     "it": "30 min",
+     "en": "30 min",
+     "pl": "30 min",
+     "es": "30 min",
+     "fr": "30 min",
+     "ro": "30 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Arriva presto: dopo le 10 è piena. Occhio ai borseggi.",
+     "en": "Come early: packed after 10. Watch for pickpockets.",
+     "pl": "Przyjdź wcześnie: po 10 jest tłum. Uważaj na kieszonkowców.",
+     "es": "Llega temprano: a partir de las 10 está lleno. Cuidado con los carteristas.",
+     "fr": "Venez tôt : bondé après 10 h. Attention aux pickpockets.",
+     "ro": "Vino devreme: după ora 10 e plin. Atenție la hoții de buzunare."
+    },
+    "detail": null
+   },
+   {
+    "time": "10:15",
+    "place": "spagna",
+    "mode": "walk",
+    "minutes": 8,
+    "leg": {
+     "it": "Via del Tritone → Via Due Macelli",
+     "en": "Via del Tritone → Via Due Macelli",
+     "pl": "Via del Tritone → Via Due Macelli",
+     "es": "Via del Tritone → Via Due Macelli",
+     "fr": "Via del Tritone → Via Due Macelli",
+     "ro": "Via del Tritone → Via Due Macelli"
+    },
+    "duration": {
+     "it": "45 min",
+     "en": "45 min",
+     "pl": "45 min",
+     "es": "45 min",
+     "fr": "45 min",
+     "ro": "45 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "11:30",
+    "place": "pantheon",
+    "mode": "walk",
+    "minutes": 12,
+    "leg": {
+     "it": "Via del Corso",
+     "en": "Via del Corso",
+     "pl": "Via del Corso",
+     "es": "Via del Corso",
+     "fr": "Via del Corso",
+     "ro": "Via del Corso"
+    },
+    "duration": {
+     "it": "45 min",
+     "en": "45 min",
+     "pl": "45 min",
+     "es": "45 min",
+     "fr": "45 min",
+     "ro": "45 min"
+    },
+    "price": "€5",
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "13:00",
+    "place": "navona",
+    "mode": "walk",
+    "minutes": 5,
+    "leg": {
+     "it": "Via Giustiniani",
+     "en": "Via Giustiniani",
+     "pl": "Via Giustiniani",
+     "es": "Via Giustiniani",
+     "fr": "Via Giustiniani",
+     "ro": "Via Giustiniani"
+    },
+    "duration": {
+     "it": "1 h 30",
+     "en": "1 h 30",
+     "pl": "1 godz. 30",
+     "es": "1 h 30",
+     "fr": "1 h 30",
+     "ro": "1 h 30"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Evita i ristoranti con foto nel menù sulla piazza: spostati di una via.",
+     "en": "Skip photo-menu restaurants on the square: go one street back.",
+     "pl": "Omijaj restauracje ze zdjęciami w menu na placu: idź jedną ulicę dalej.",
+     "es": "Evita los restaurantes con menú de fotos en la plaza: ve una calle más atrás.",
+     "fr": "Évitez les restaurants à menu-photo sur la place : allez une rue plus loin.",
+     "ro": "Evită restaurantele cu meniu cu poze din piață: mergi o stradă mai încolo."
+    },
+    "detail": null
+   },
+   {
+    "time": "15:00",
+    "place": "campo",
+    "mode": "walk",
+    "minutes": 7,
+    "leg": {
+     "it": "Corso Vittorio Emanuele",
+     "en": "Corso Vittorio Emanuele",
+     "pl": "Corso Vittorio Emanuele",
+     "es": "Corso Vittorio Emanuele",
+     "fr": "Corso Vittorio Emanuele",
+     "ro": "Corso Vittorio Emanuele"
+    },
+    "duration": {
+     "it": "1 h",
+     "en": "1 h",
+     "pl": "1 godz.",
+     "es": "1 h",
+     "fr": "1 h",
+     "ro": "1 h"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "17:00",
+    "place": "trastevere",
+    "mode": "walk",
+    "minutes": 15,
+    "leg": {
+     "it": "Ponte Sisto",
+     "en": "Ponte Sisto",
+     "pl": "Ponte Sisto",
+     "es": "Ponte Sisto",
+     "fr": "Ponte Sisto",
+     "ro": "Ponte Sisto"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "19:30",
+    "place": "hotel",
+    "mode": "tram",
+    "minutes": 30,
+    "leg": {
+     "it": "Tram 8 + Bus 40",
+     "en": "Tram 8 + Bus 40",
+     "pl": "Tramwaj 8 + Autobus 40",
+     "es": "Tranvía 8 + Autobús 40",
+     "fr": "Tram 8 + Bus 40",
+     "ro": "Tramvaiul 8 + Autobuzul 40"
+    },
+    "duration": null,
+    "price": "€1,50",
+    "tip": null,
+    "detail": null
+   }
+  ],
+  "storia": [
+   {
+    "time": "08:30",
+    "place": "hotel",
+    "mode": null,
+    "minutes": null,
+    "leg": null,
+    "duration": null,
+    "price": null,
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "08:45",
+    "place": "colosseo",
+    "mode": "metro",
+    "minutes": 10,
+    "leg": {
+     "it": "Metro B · Cavour → Colosseo",
+     "en": "Metro B · Cavour → Colosseo",
+     "pl": "Metro B · Cavour → Colosseo",
+     "es": "Metro B · Cavour → Colosseo",
+     "fr": "Métro B · Cavour → Colosseo",
+     "ro": "Metrou B · Cavour → Colosseo"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": "€18",
+    "tip": {
+     "it": "Biglietto nominativo: tieni pronto il passaporto in Documenti.",
+     "en": "Named ticket: keep your passport ready in Documents.",
+     "pl": "Bilet imienny: miej paszport pod ręką w Dokumentach.",
+     "es": "Entrada nominativa: ten tu pasaporte a mano en Documentos.",
+     "fr": "Billet nominatif : gardez votre passeport prêt dans Documents.",
+     "ro": "Bilet nominal: ține pașaportul pregătit în Documente."
+    },
+    "detail": null
+   },
+   {
+    "time": "11:00",
+    "place": "foro",
+    "mode": "walk",
+    "minutes": 5,
+    "leg": {
+     "it": "Via Sacra",
+     "en": "Via Sacra",
+     "pl": "Via Sacra",
+     "es": "Via Sacra",
+     "fr": "Via Sacra",
+     "ro": "Via Sacra"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": {
+     "it": "Incluso",
+     "en": "Included",
+     "pl": "W cenie",
+     "es": "Incluido",
+     "fr": "Inclus",
+     "ro": "Inclus"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "14:00",
+    "place": "capitolini",
+    "mode": "walk",
+    "minutes": 10,
+    "leg": {
+     "it": "Via dei Fori Imperiali",
+     "en": "Via dei Fori Imperiali",
+     "pl": "Via dei Fori Imperiali",
+     "es": "Via dei Fori Imperiali",
+     "fr": "Via dei Fori Imperiali",
+     "ro": "Via dei Fori Imperiali"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": "€16",
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "16:15",
+    "place": "bocca",
+    "mode": "walk",
+    "minutes": 10,
+    "leg": {
+     "it": "Via Petroselli",
+     "en": "Via Petroselli",
+     "pl": "Via Petroselli",
+     "es": "Via Petroselli",
+     "fr": "Via Petroselli",
+     "ro": "Via Petroselli"
+    },
+    "duration": {
+     "it": "20 min",
+     "en": "20 min",
+     "pl": "20 min",
+     "es": "20 min",
+     "fr": "20 min",
+     "ro": "20 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Coda breve al mattino, lunga al pomeriggio.",
+     "en": "Short queue in the morning, long in the afternoon.",
+     "pl": "Rano krótka kolejka, po południu długa.",
+     "es": "Cola corta por la mañana, larga por la tarde.",
+     "fr": "File courte le matin, longue l'après-midi.",
+     "ro": "Coadă scurtă dimineața, lungă după-amiaza."
+    },
+    "detail": null
+   },
+   {
+    "time": "16:45",
+    "place": "circo",
+    "mode": "walk",
+    "minutes": 5,
+    "leg": {
+     "it": "Via dei Cerchi",
+     "en": "Via dei Cerchi",
+     "pl": "Via dei Cerchi",
+     "es": "Via dei Cerchi",
+     "fr": "Via dei Cerchi",
+     "ro": "Via dei Cerchi"
+    },
+    "duration": {
+     "it": "30 min",
+     "en": "30 min",
+     "pl": "30 min",
+     "es": "30 min",
+     "fr": "30 min",
+     "ro": "30 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "17:45",
+    "place": "hotel",
+    "mode": "metro",
+    "minutes": 15,
+    "leg": {
+     "it": "Metro B · Circo Massimo → Cavour",
+     "en": "Metro B · Circo Massimo → Cavour",
+     "pl": "Metro B · Circo Massimo → Cavour",
+     "es": "Metro B · Circo Massimo → Cavour",
+     "fr": "Métro B · Circo Massimo → Cavour",
+     "ro": "Metrou B · Circo Massimo → Cavour"
+    },
+    "duration": null,
+    "price": "€1,50",
+    "tip": null,
+    "detail": null
+   }
+  ],
+  "gastro": [
+   {
+    "time": "09:30",
+    "place": "hotel",
+    "mode": null,
+    "minutes": null,
+    "leg": null,
+    "duration": null,
+    "price": null,
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "10:00",
+    "place": "campo",
+    "mode": "bus",
+    "minutes": 20,
+    "leg": {
+     "it": "Bus 64 · Nazionale → Largo Argentina",
+     "en": "Bus 64 · Nazionale → Largo Argentina",
+     "pl": "Autobus 64 · Nazionale → Largo Argentina",
+     "es": "Autobús 64 · Nazionale → Largo Argentina",
+     "fr": "Bus 64 · Nazionale → Largo Argentina",
+     "ro": "Autobuzul 64 · Nazionale → Largo Argentina"
+    },
+    "duration": {
+     "it": "1 h",
+     "en": "1 h",
+     "pl": "1 godz.",
+     "es": "1 h",
+     "fr": "1 h",
+     "ro": "1 h"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Bus 64: tra i più colpiti dai borseggi. Zaino davanti.",
+     "en": "Bus 64: a pickpocket hotspot. Backpack on your front.",
+     "pl": "Autobus 64: raj kieszonkowców. Plecak z przodu.",
+     "es": "Autobús 64: zona caliente de carteristas. Mochila por delante.",
+     "fr": "Bus 64 : repaire de pickpockets. Sac à dos devant.",
+     "ro": "Autobuzul 64: zonă fierbinte pentru hoți. Rucsacul în față."
+    },
+    "detail": null
+   },
+   {
+    "time": "11:30",
+    "place": "navona",
+    "mode": "walk",
+    "minutes": 6,
+    "leg": {
+     "it": "Via della Cuccagna",
+     "en": "Via della Cuccagna",
+     "pl": "Via della Cuccagna",
+     "es": "Via della Cuccagna",
+     "fr": "Via della Cuccagna",
+     "ro": "Via della Cuccagna"
+    },
+    "duration": {
+     "it": "45 min",
+     "en": "45 min",
+     "pl": "45 min",
+     "es": "45 min",
+     "fr": "45 min",
+     "ro": "45 min"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": {
+     "it": "Gelato: scegli vaschette coperte e colori naturali.",
+     "en": "Gelato: pick covered tubs and natural colours.",
+     "pl": "Lody: wybieraj zakryte pojemniki i naturalne kolory.",
+     "es": "Helado: elige cubetas tapadas y colores naturales.",
+     "fr": "Glace : choisissez les bacs couverts et les couleurs naturelles.",
+     "ro": "Înghețată: alege cuve acoperite și culori naturale."
+    },
+    "detail": null
+   },
+   {
+    "time": "13:00",
+    "place": "trastevere",
+    "mode": "walk",
+    "minutes": 15,
+    "leg": {
+     "it": "Ponte Sisto",
+     "en": "Ponte Sisto",
+     "pl": "Ponte Sisto",
+     "es": "Ponte Sisto",
+     "fr": "Ponte Sisto",
+     "ro": "Ponte Sisto"
+    },
+    "duration": {
+     "it": "2 h",
+     "en": "2 h",
+     "pl": "2 godz.",
+     "es": "2 h",
+     "fr": "2 h",
+     "ro": "2 h"
+    },
+    "price": "€25–35",
+    "tip": {
+     "it": "Il coperto deve essere scritto nel menù.",
+     "en": "Any cover charge must be printed on the menu.",
+     "pl": "Opłata za nakrycie musi być podana w menu.",
+     "es": "Cualquier cubierto debe figurar en la carta.",
+     "fr": "Tout couvert doit être indiqué sur le menu.",
+     "ro": "Orice taxă de serviciu trebuie scrisă în meniu."
+    },
+    "detail": null
+   },
+   {
+    "time": "16:00",
+    "place": "testaccio",
+    "mode": "tram",
+    "minutes": 20,
+    "leg": {
+     "it": "Tram 8 + a piedi",
+     "en": "Tram 8 + walk",
+     "pl": "Tramwaj 8 + pieszo",
+     "es": "Tranvía 8 + a pie",
+     "fr": "Tram 8 + à pied",
+     "ro": "Tramvaiul 8 + pe jos"
+    },
+    "duration": {
+     "it": "1 h 30",
+     "en": "1 h 30",
+     "pl": "1 godz. 30",
+     "es": "1 h 30",
+     "fr": "1 h 30",
+     "ro": "1 h 30"
+    },
+    "price": {
+     "it": "Gratuito",
+     "en": "Free",
+     "pl": "Za darmo",
+     "es": "Gratis",
+     "fr": "Gratuit",
+     "ro": "Gratuit"
+    },
+    "tip": null,
+    "detail": null
+   },
+   {
+    "time": "18:00",
+    "place": "hotel",
+    "mode": "metro",
+    "minutes": 20,
+    "leg": {
+     "it": "Metro B · Piramide → Cavour",
+     "en": "Metro B · Piramide → Cavour",
+     "pl": "Metro B · Piramide → Cavour",
+     "es": "Metro B · Piramide → Cavour",
+     "fr": "Métro B · Piramide → Cavour",
+     "ro": "Metrou B · Piramide → Cavour"
+    },
+    "duration": null,
+    "price": "€1,50",
+    "tip": null,
+    "detail": null
+   }
+  ]
+ },
+ "tours": [
+  {
+   "id": "pell",
+   "label": {
+    "it": "Pellegrinaggio",
+    "en": "Pilgrimage",
+    "pl": "Pielgrzymka",
+    "es": "Peregrinación",
+    "fr": "Pèlerinage",
+    "ro": "Pelerinaj"
+   }
+  },
+  {
+   "id": "arte",
+   "label": {
+    "it": "Arte",
+    "en": "Art",
+    "pl": "Sztuka",
+    "es": "Arte",
+    "fr": "Art",
+    "ro": "Artă"
+   }
+  },
+  {
+   "id": "cult",
+   "label": {
+    "it": "Culturale",
+    "en": "Culture",
+    "pl": "Kultura",
+    "es": "Cultura",
+    "fr": "Culture",
+    "ro": "Cultură"
+   }
+  },
+  {
+   "id": "storia",
+   "label": {
+    "it": "Storia antica",
+    "en": "Ancient history",
+    "pl": "Historia starożytna",
+    "es": "Historia antigua",
+    "fr": "Histoire antique",
+    "ro": "Istorie antică"
+   }
+  },
+  {
+   "id": "gastro",
+   "label": {
+    "it": "Gastronomia",
+    "en": "Food",
+    "pl": "Kuchnia",
+    "es": "Gastronomía",
+    "fr": "Gastronomie",
+    "ro": "Gastronomie"
+   }
+  }
+ ],
+ "museums": [
+  {
+   "place": "vaticani",
+   "tags": [
+    "pell",
+    "arte"
+   ],
+   "full": "€20",
+   "reduced": "€8",
+   "booking": {
+    "it": "+€5 online",
+    "en": "+€5 online",
+    "pl": "+5 € online",
+    "es": "+5 € online",
+    "fr": "+5 € en ligne",
+    "ro": "+5 € online"
+   },
+   "hoursLabel": {
+    "it": "Lun–Sab 8:00–19:00",
+    "en": "Mon–Sat 8:00–19:00",
+    "pl": "Pon–Sob 8:00–19:00",
+    "es": "Lun–Sáb 8:00–19:00",
+    "fr": "Lun–Sam 8:00–19:00",
+    "ro": "Lun–Sâm 8:00–19:00"
+   },
+   "note": {
+    "it": "Ultimo ingresso 17:00. Chiuso la domenica, tranne l'ultima del mese (gratis). Spalle e ginocchia coperte.",
+    "en": "Last entry 17:00. Closed Sundays except the last of the month (free). Shoulders and knees covered.",
+    "pl": "Ostatnie wejście 17:00. W niedziele zamknięte, oprócz ostatniej w miesiącu (za darmo). Zakryte ramiona i kolana.",
+    "es": "Última entrada 17:00. Cerrado los domingos salvo el último del mes (gratis). Hombros y rodillas cubiertos.",
+    "fr": "Dernière entrée 17:00. Fermé le dimanche sauf le dernier du mois (gratuit). Épaules et genoux couverts.",
+    "ro": "Ultima intrare la 17:00. Închis duminica, în afară de ultima din lună (gratuit). Umeri și genunchi acoperiți."
+   }
+  },
+  {
+   "place": "pietro",
+   "tags": [
+    "pell",
+    "arte",
+    "cult"
+   ],
+   "full": {
+    "it": "Gratuito",
+    "en": "Free",
+    "pl": "Za darmo",
+    "es": "Gratis",
+    "fr": "Gratuit",
+    "ro": "Gratuit"
+   },
+   "reduced": null,
+   "booking": {
+    "it": "Cupola da €10",
+    "en": "Dome from €10",
+    "pl": "Kopuła od 10 €",
+    "es": "Cúpula desde 10 €",
+    "fr": "Coupole dès 10 €",
+    "ro": "Cupola de la 10 €"
+   },
+   "hoursLabel": {
+    "it": "7:00–19:00",
+    "en": "7:00–19:00",
+    "pl": "7:00–19:00",
+    "es": "7:00–19:00",
+    "fr": "7:00–19:00",
+    "ro": "7:00–19:00"
+   },
+   "note": {
+    "it": "Controlli di sicurezza all'ingresso: niente zaini grandi.",
+    "en": "Security checks at the entrance: no large backpacks.",
+    "pl": "Kontrole bezpieczeństwa przy wejściu: bez dużych plecaków.",
+    "es": "Controles de seguridad en la entrada: nada de mochilas grandes.",
+    "fr": "Contrôles de sécurité à l'entrée : pas de grands sacs à dos.",
+    "ro": "Controale de securitate la intrare: fără rucsaci mari."
+   }
+  },
+  {
+   "place": "colosseo",
+   "tags": [
+    "storia",
+    "cult"
+   ],
+   "full": "€18",
+   "reduced": "€2",
+   "booking": {
+    "it": "+€2 online",
+    "en": "+€2 online",
+    "pl": "+2 € online",
+    "es": "+2 € online",
+    "fr": "+2 € en ligne",
+    "ro": "+2 € online"
+   },
+   "hoursLabel": {
+    "it": "8:30–19:00",
+    "en": "8:30–19:00",
+    "pl": "8:30–19:00",
+    "es": "8:30–19:00",
+    "fr": "8:30–19:00",
+    "ro": "8:30–19:00"
+   },
+   "note": {
+    "it": "Biglietto nominativo: porta il documento. Include Foro Romano e Palatino.",
+    "en": "Named ticket: bring ID. Includes Roman Forum and Palatine.",
+    "pl": "Bilet imienny: weź dokument. Obejmuje Forum Romanum i Palatyn.",
+    "es": "Entrada nominativa: lleva documento. Incluye Foro Romano y Palatino.",
+    "fr": "Billet nominatif : prenez une pièce d'identité. Inclut le Forum romain et le Palatin.",
+    "ro": "Bilet nominal: ia un act de identitate. Include Forumul Roman și Palatinul."
+   }
+  },
+  {
+   "place": "pantheon",
+   "tags": [
+    "storia",
+    "cult",
+    "pell"
+   ],
+   "full": "€5",
+   "reduced": "€3",
+   "booking": null,
+   "hoursLabel": {
+    "it": "9:00–19:00",
+    "en": "9:00–19:00",
+    "pl": "9:00–19:00",
+    "es": "9:00–19:00",
+    "fr": "9:00–19:00",
+    "ro": "9:00–19:00"
+   },
+   "note": null
+  },
+  {
+   "place": "borghese",
+   "tags": [
+    "arte"
+   ],
+   "full": "€15",
+   "reduced": "€2",
+   "booking": {
+    "it": "+€2 obbligatoria",
+    "en": "+€2 required",
+    "pl": "+2 € obowiązkowo",
+    "es": "+2 € obligatorio",
+    "fr": "+2 € obligatoire",
+    "ro": "+2 € obligatoriu"
+   },
+   "hoursLabel": {
+    "it": "Mar–Dom 9:00–19:00",
+    "en": "Tue–Sun 9:00–19:00",
+    "pl": "Wt–Nd 9:00–19:00",
+    "es": "Mar–Dom 9:00–19:00",
+    "fr": "Mar–Dim 9:00–19:00",
+    "ro": "Mar–Dum 9:00–19:00"
+   },
+   "note": {
+    "it": "Prenotazione obbligatoria, ingressi ogni 2 ore.",
+    "en": "Booking required, entry every 2 hours.",
+    "pl": "Rezerwacja obowiązkowa, wejścia co 2 godziny.",
+    "es": "Reserva obligatoria, entradas cada 2 horas.",
+    "fr": "Réservation obligatoire, entrées toutes les 2 heures.",
+    "ro": "Rezervare obligatorie, intrări la fiecare 2 ore."
+   }
+  },
+  {
+   "place": "castel",
+   "tags": [
+    "storia",
+    "cult"
+   ],
+   "full": "€16",
+   "reduced": "€2",
+   "booking": null,
+   "hoursLabel": {
+    "it": "Mar–Dom 9:00–19:30",
+    "en": "Tue–Sun 9:00–19:30",
+    "pl": "Wt–Nd 9:00–19:30",
+    "es": "Mar–Dom 9:00–19:30",
+    "fr": "Mar–Dim 9:00–19:30",
+    "ro": "Mar–Dum 9:00–19:30"
+   },
+   "note": null
+  },
+  {
+   "place": "capitolini",
+   "tags": [
+    "arte",
+    "storia"
+   ],
+   "full": "€16",
+   "reduced": "€12",
+   "booking": null,
+   "hoursLabel": {
+    "it": "9:30–19:30",
+    "en": "9:30–19:30",
+    "pl": "9:30–19:30",
+    "es": "9:30–19:30",
+    "fr": "9:30–19:30",
+    "ro": "9:30–19:30"
+   },
+   "note": null
+  },
+  {
+   "place": "callisto",
+   "tags": [
+    "pell",
+    "storia"
+   ],
+   "full": "€10",
+   "reduced": "€7",
+   "booking": null,
+   "hoursLabel": {
+    "it": "9:00–12:00 · 14:00–17:00",
+    "en": "9:00–12:00 · 14:00–17:00",
+    "pl": "9:00–12:00 · 14:00–17:00",
+    "es": "9:00–12:00 · 14:00–17:00",
+    "fr": "9:00–12:00 · 14:00–17:00",
+    "ro": "9:00–12:00 · 14:00–17:00"
+   },
+   "note": {
+    "it": "Chiuso il mercoledì. Visita solo con guida, circa 40 min.",
+    "en": "Closed Wednesdays. Guided visits only, about 40 min.",
+    "pl": "W środy zamknięte. Tylko zwiedzanie z przewodnikiem, ok. 40 min.",
+    "es": "Cerrado los miércoles. Solo visitas guiadas, unos 40 min.",
+    "fr": "Fermé le mercredi. Visites guidées uniquement, environ 40 min.",
+    "ro": "Închis miercurea. Doar vizite ghidate, circa 40 min."
+   }
+  },
+  {
+   "place": "laterano",
+   "tags": [
+    "pell"
+   ],
+   "full": {
+    "it": "Gratuito",
+    "en": "Free",
+    "pl": "Za darmo",
+    "es": "Gratis",
+    "fr": "Gratuit",
+    "ro": "Gratuit"
+   },
+   "reduced": null,
+   "booking": null,
+   "hoursLabel": {
+    "it": "7:00–18:30",
+    "en": "7:00–18:30",
+    "pl": "7:00–18:30",
+    "es": "7:00–18:30",
+    "fr": "7:00–18:30",
+    "ro": "7:00–18:30"
+   },
+   "note": null
+  },
+  {
+   "place": "testaccio",
+   "tags": [
+    "gastro"
+   ],
+   "full": {
+    "it": "Ingresso libero",
+    "en": "Free entry",
+    "pl": "Wstęp wolny",
+    "es": "Entrada gratuita",
+    "fr": "Entrée libre",
+    "ro": "Intrare gratuită"
+   },
+   "reduced": null,
+   "booking": null,
+   "hoursLabel": {
+    "it": "Lun–Sab 7:00–15:30",
+    "en": "Mon–Sat 7:00–15:30",
+    "pl": "Pon–Sob 7:00–15:30",
+    "es": "Lun–Sáb 7:00–15:30",
+    "fr": "Lun–Sam 7:00–15:30",
+    "ro": "Lun–Sâm 7:00–15:30"
+   },
+   "note": null
+  },
+  {
+   "place": "campo",
+   "tags": [
+    "gastro",
+    "cult"
+   ],
+   "full": {
+    "it": "Ingresso libero",
+    "en": "Free entry",
+    "pl": "Wstęp wolny",
+    "es": "Entrada gratuita",
+    "fr": "Entrée libre",
+    "ro": "Intrare gratuită"
+   },
+   "reduced": null,
+   "booking": null,
+   "hoursLabel": {
+    "it": "Mercato 7:00–14:00",
+    "en": "Market 7:00–14:00",
+    "pl": "Targ 7:00–14:00",
+    "es": "Mercado 7:00–14:00",
+    "fr": "Marché 7:00–14:00",
+    "ro": "Piața 7:00–14:00"
+   },
+   "note": null
+  }
+ ],
+ "transfer": {
+  "FCO": [
+   {
+    "mode": "train",
+    "name": "Leonardo Express",
+    "to": "Roma Termini",
+    "duration": "32 min",
+    "frequency": {
+     "it": "ogni 15 min",
+     "en": "every 15 min",
+     "pl": "co 15 min",
+     "es": "cada 15 min",
+     "fr": "toutes les 15 min",
+     "ro": "la fiecare 15 min"
+    },
+    "price": "€14",
+    "buy": true,
+    "best": {
+     "it": "Più veloce",
+     "en": "Fastest",
+     "pl": "Najszybciej",
+     "es": "El más rápido",
+     "fr": "Le plus rapide",
+     "ro": "Cel mai rapid"
+    }
+   },
+   {
+    "mode": "bus",
+    "name": {
+     "it": "Bus navetta",
+     "en": "Shuttle bus",
+     "pl": "Autobus wahadłowy",
+     "es": "Autobús lanzadera",
+     "fr": "Navette",
+     "ro": "Autobuz navetă"
+    },
+    "to": "Roma Termini",
+    "duration": "55 min",
+    "frequency": {
+     "it": "ogni 30 min",
+     "en": "every 30 min",
+     "pl": "co 30 min",
+     "es": "cada 30 min",
+     "fr": "toutes les 30 min",
+     "ro": "la fiecare 30 min"
+    },
+    "price": "€7",
+    "buy": true,
+    "best": {
+     "it": "Più economico",
+     "en": "Cheapest",
+     "pl": "Najtaniej",
+     "es": "El más barato",
+     "fr": "Le moins cher",
+     "ro": "Cel mai ieftin"
+    }
+   },
+   {
+    "mode": "train",
+    "name": "Treno regionale FL1",
+    "to": "Trastevere · Tiburtina",
+    "duration": "35 min",
+    "frequency": {
+     "it": "ogni 15 min",
+     "en": "every 15 min",
+     "pl": "co 15 min",
+     "es": "cada 15 min",
+     "fr": "toutes les 15 min",
+     "ro": "la fiecare 15 min"
+    },
+    "price": "€8",
+    "buy": true,
+    "best": null
+   },
+   {
+    "mode": "taxi",
+    "name": {
+     "it": "Taxi, tariffa fissa",
+     "en": "Taxi, flat fare",
+     "pl": "Taksówka, stała cena",
+     "es": "Taxi, tarifa fija",
+     "fr": "Taxi, forfait",
+     "ro": "Taxi, tarif fix"
+    },
+    "to": {
+     "it": "Centro storico",
+     "en": "Historic centre",
+     "pl": "Centrum historyczne",
+     "es": "Centro histórico",
+     "fr": "Centre historique",
+     "ro": "Centrul istoric"
+    },
+    "duration": "45 min",
+    "frequency": {
+     "it": "fino a 4 persone",
+     "en": "up to 4 people",
+     "pl": "do 4 osób",
+     "es": "hasta 4 personas",
+     "fr": "jusqu'à 4 personnes",
+     "ro": "până la 4 persoane"
+    },
+    "price": "€55",
+    "buy": false,
+    "best": null
+   }
+  ],
+  "CIA": [
+   {
+    "mode": "bus",
+    "name": {
+     "it": "Bus navetta",
+     "en": "Shuttle bus",
+     "pl": "Autobus wahadłowy",
+     "es": "Autobús lanzadera",
+     "fr": "Navette",
+     "ro": "Autobuz navetă"
+    },
+    "to": "Roma Termini",
+    "duration": "40 min",
+    "frequency": {
+     "it": "ogni 30 min",
+     "en": "every 30 min",
+     "pl": "co 30 min",
+     "es": "cada 30 min",
+     "fr": "toutes les 30 min",
+     "ro": "la fiecare 30 min"
+    },
+    "price": "€6",
+    "buy": true,
+    "best": {
+     "it": "Più comodo",
+     "en": "Easiest",
+     "pl": "Najwygodniej",
+     "es": "El más fácil",
+     "fr": "Le plus simple",
+     "ro": "Cel mai simplu"
+    }
+   },
+   {
+    "mode": "bus",
+    "name": "Bus 520 + Metro A",
+    "to": "Cinecittà → Termini",
+    "duration": "1 h",
+    "frequency": {
+     "it": "ogni 20 min",
+     "en": "every 20 min",
+     "pl": "co 20 min",
+     "es": "cada 20 min",
+     "fr": "toutes les 20 min",
+     "ro": "la fiecare 20 min"
+    },
+    "price": "€1,50",
+    "buy": true,
+    "best": {
+     "it": "Più economico",
+     "en": "Cheapest",
+     "pl": "Najtaniej",
+     "es": "El más barato",
+     "fr": "Le moins cher",
+     "ro": "Cel mai ieftin"
+    }
+   },
+   {
+    "mode": "taxi",
+    "name": {
+     "it": "Taxi, tariffa fissa",
+     "en": "Taxi, flat fare",
+     "pl": "Taksówka, stała cena",
+     "es": "Taxi, tarifa fija",
+     "fr": "Taxi, forfait",
+     "ro": "Taxi, tarif fix"
+    },
+    "to": {
+     "it": "Centro storico",
+     "en": "Historic centre",
+     "pl": "Centrum historyczne",
+     "es": "Centro histórico",
+     "fr": "Centre historique",
+     "ro": "Centrul istoric"
+    },
+    "duration": "35 min",
+    "frequency": {
+     "it": "fino a 4 persone",
+     "en": "up to 4 people",
+     "pl": "do 4 osób",
+     "es": "hasta 4 personas",
+     "fr": "jusqu'à 4 personnes",
+     "ro": "până la 4 persoane"
+    },
+    "price": "€40",
+    "buy": false,
+    "best": null
+   }
+  ]
+ },
+ "tips": [
+  {
+   "it": "Per Vaticano e basiliche: spalle e ginocchia coperte, o non entri. Tieni una sciarpa leggera nello zaino.",
+   "en": "Vatican and basilicas: cover shoulders and knees or you won't get in. Keep a light scarf in your bag.",
+   "pl": "Watykan i bazyliki: zakryj ramiona i kolana, inaczej nie wejdziesz. Trzymaj lekką chustę w torbie.",
+   "es": "Vaticano y basílicas: cubre hombros y rodillas o no entrarás. Lleva un pañuelo ligero en el bolso.",
+   "fr": "Vatican et basiliques : couvrez épaules et genoux, sinon vous n'entrerez pas. Gardez un foulard léger dans votre sac.",
+   "ro": "Vatican și bazilici: acoperă umerii și genunchii, altfel nu intri. Ține o eșarfă ușoară în geantă."
+  },
+  {
+   "it": "Bevi gratis dai \"nasoni\", le fontanelle di Roma: l'acqua è potabile. Tappa il foro sotto e l'acqua esce dall'alto.",
+   "en": "Drink free from the \"nasoni\", Rome's street fountains: the water is safe. Block the spout and it jets up.",
+   "pl": "Pij za darmo z „nasoni”, ulicznych fontann Rzymu: woda jest bezpieczna. Zatkaj wylot, a woda tryśnie w górę.",
+   "es": "Bebe gratis en los «nasoni», las fuentes callejeras de Roma: el agua es segura. Tapa el caño y sale hacia arriba.",
+   "fr": "Buvez gratuitement aux « nasoni », les fontaines de rue de Rome : l'eau est potable. Bouchez le bec et elle jaillit vers le haut.",
+   "ro": "Bea gratuit de la „nasoni”, fântânile de stradă ale Romei: apa e sigură. Astupă gura și apa țâșnește în sus."
+  },
+  {
+   "it": "Il biglietto BIT (€1,50) vale 100 minuti su bus e tram, ma in metro una sola corsa. Convalidalo sempre.",
+   "en": "The BIT ticket (€1.50) lasts 100 minutes on buses and trams but only one metro ride. Always validate it.",
+   "pl": "Bilet BIT (1,50 €) jest ważny 100 minut w autobusach i tramwajach, ale tylko na jeden przejazd metrem. Zawsze go skasuj.",
+   "es": "El billete BIT (1,50 €) dura 100 minutos en autobús y tranvía, pero solo un viaje en metro. Valídalo siempre.",
+   "fr": "Le ticket BIT (1,50 €) dure 100 minutes en bus et tram mais un seul trajet en métro. Validez-le toujours.",
+   "ro": "Biletul BIT (1,50 €) e valabil 100 de minute în autobuze și tramvaie, dar o singură călătorie cu metroul. Validează-l mereu."
+  },
+  {
+   "it": "Rifiuta braccialetti \"regalo\", rose e foto con finti centurioni: subito dopo chiedono soldi.",
+   "en": "Refuse \"free\" bracelets, roses and photos with fake centurions: they ask for money right after.",
+   "pl": "Odmawiaj „darmowych” bransoletek, róż i zdjęć z fałszywymi centurionami: zaraz potem żądają pieniędzy.",
+   "es": "Rechaza pulseras, rosas y fotos «gratis» con falsos centuriones: piden dinero justo después.",
+   "fr": "Refusez bracelets, roses et photos « gratuits » avec de faux centurions : ils demandent de l'argent juste après.",
+   "ro": "Refuză brățările, trandafirii și pozele „gratuite” cu centurioni falși: imediat după cer bani."
+  },
+  {
+   "it": "Al bar il caffè al banco costa meno che al tavolo. Guarda il listino esposto prima di sederti.",
+   "en": "Coffee at the bar counter costs less than at a table. Check the posted price list before sitting.",
+   "pl": "Kawa przy barze kosztuje mniej niż przy stoliku. Sprawdź cennik, zanim usiądziesz.",
+   "es": "El café en la barra cuesta menos que en mesa. Mira la lista de precios antes de sentarte.",
+   "fr": "Le café au comptoir coûte moins cher qu'en salle. Vérifiez les prix affichés avant de vous asseoir.",
+   "ro": "Cafeaua la tejghea costă mai puțin decât la masă. Verifică lista de prețuri afișată înainte să te așezi."
+  }
+ ],
+ "extra": {
+  "Free": {
+   "it": "Gratuito",
+   "en": "Free",
+   "pl": "Za darmo",
+   "es": "Gratis",
+   "fr": "Gratuit",
+   "ro": "Gratuit"
+  },
+  "Farmacia": {
+   "it": "Farmacia",
+   "en": "Pharmacy",
+   "pl": "Apteka",
+   "es": "Farmacia",
+   "fr": "Pharmacie",
+   "ro": "Farmacie"
+  },
+  "Bagni pubblici": {
+   "it": "Bagni pubblici",
+   "en": "Public toilets",
+   "pl": "Toalety publiczne",
+   "es": "Baños públicos",
+   "fr": "Toilettes publiques",
+   "ro": "Toalete publice"
+  }
+ }
+}

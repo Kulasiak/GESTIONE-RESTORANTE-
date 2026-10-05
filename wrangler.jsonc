@@ -1,0 +1,12 @@
+// Cloudflare Workers: pubblica il gestionale del ristorante su "/" e Custode su "/custode/".
+// server.js (server di sala), dati.json e stampanti.json NON vengono pubblicati: restano nel locale.
+{
+  "name": "gestione-restorante",
+  "compatibility_date": "2026-10-01",
+  "build": { "command": "sh cloudflare-build.sh" },
+  "assets": {
+    "directory": "./.cf-dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

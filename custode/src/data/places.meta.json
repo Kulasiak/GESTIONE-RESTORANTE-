@@ -1,0 +1,50 @@
+{
+  "_note": "Coordinate reali. Orari e prezzi indicativi 2026: verificare sempre con le fonti ufficiali. hours: per giorno della settimana (0=domenica) una lista di fasce [apertura, chiusura]. firstSunday: 'free' = gratis la prima domenica (musei statali), 'residents' = gratis solo per residenti a Roma.",
+  "places": {
+    "hotel":      { "lat": 41.8963, "lng": 12.4935, "kind": "hotel" },
+    "vaticani":   { "lat": 41.9065, "lng": 12.4536, "kind": "museum", "url": "https://www.museivaticani.va",
+                    "hours": { "1": [["08:00","19:00"]], "2": [["08:00","19:00"]], "3": [["08:00","19:00"]], "4": [["08:00","19:00"]], "5": [["08:00","19:00"]], "6": [["08:00","19:00"]] },
+                    "lastSundayOfMonth": [["09:00","14:00"]], "lastEntry": "17:00" },
+    "pietro":     { "lat": 41.9022, "lng": 12.4539, "kind": "church", "url": "https://www.basilicasanpietro.va", "daily": [["07:00","19:00"]] },
+    "borgo":      { "lat": 41.9045, "lng": 12.4610, "kind": "food" },
+    "castel":     { "lat": 41.9031, "lng": 12.4663, "kind": "museum", "url": "https://www.museiitaliani.it", "firstSunday": "free",
+                    "hours": { "0": [["09:00","19:30"]], "2": [["09:00","19:30"]], "3": [["09:00","19:30"]], "4": [["09:00","19:30"]], "5": [["09:00","19:30"]], "6": [["09:00","19:30"]] } },
+    "navona":     { "lat": 41.8992, "lng": 12.4731, "kind": "square", "always": true },
+    "pantheon":   { "lat": 41.8986, "lng": 12.4769, "kind": "monument", "url": "https://www.museiitaliani.it", "firstSunday": "free", "daily": [["09:00","19:00"]] },
+    "trevi":      { "lat": 41.9009, "lng": 12.4833, "kind": "monument", "always": true },
+    "spagna":     { "lat": 41.9060, "lng": 12.4823, "kind": "square", "always": true },
+    "popolo":     { "lat": 41.9107, "lng": 12.4763, "kind": "square", "always": true },
+    "borghese":   { "lat": 41.9142, "lng": 12.4921, "kind": "museum", "url": "https://galleriaborghese.beniculturali.it", "firstSunday": "free",
+                    "hours": { "0": [["09:00","19:00"]], "2": [["09:00","19:00"]], "3": [["09:00","19:00"]], "4": [["09:00","19:00"]], "5": [["09:00","19:00"]], "6": [["09:00","19:00"]] } },
+    "capitolini": { "lat": 41.8930, "lng": 12.4827, "kind": "museum", "url": "https://www.museicapitolini.org", "firstSunday": "residents", "daily": [["09:30","19:30"]] },
+    "foro":       { "lat": 41.8925, "lng": 12.4853, "kind": "monument", "url": "https://colosseo.it", "firstSunday": "free", "daily": [["08:30","19:00"]] },
+    "colosseo":   { "lat": 41.8902, "lng": 12.4922, "kind": "monument", "url": "https://colosseo.it", "firstSunday": "free", "daily": [["08:30","19:00"]] },
+    "circo":      { "lat": 41.8861, "lng": 12.4851, "kind": "monument", "always": true },
+    "bocca":      { "lat": 41.8881, "lng": 12.4815, "kind": "church", "daily": [["09:30","17:50"]] },
+    "campo":      { "lat": 41.8956, "lng": 12.4722, "kind": "market",
+                    "hours": { "1": [["07:00","14:00"]], "2": [["07:00","14:00"]], "3": [["07:00","14:00"]], "4": [["07:00","14:00"]], "5": [["07:00","14:00"]], "6": [["07:00","14:00"]] } },
+    "trastevere": { "lat": 41.8894, "lng": 12.4700, "kind": "district", "always": true },
+    "testaccio":  { "lat": 41.8771, "lng": 12.4741, "kind": "market",
+                    "hours": { "1": [["07:00","15:30"]], "2": [["07:00","15:30"]], "3": [["07:00","15:30"]], "4": [["07:00","15:30"]], "5": [["07:00","15:30"]], "6": [["07:00","15:30"]] } },
+    "laterano":   { "lat": 41.8859, "lng": 12.5057, "kind": "church", "url": "https://www.vatican.va", "daily": [["07:00","18:30"]] },
+    "termini":    { "lat": 41.9010, "lng": 12.5018, "kind": "station", "always": true },
+    "callisto":   { "lat": 41.8590, "lng": 12.5106, "kind": "museum", "url": "https://www.catacombe.roma.it",
+                    "hours": { "0": [["09:00","12:00"],["14:00","17:00"]], "1": [["09:00","12:00"],["14:00","17:00"]], "2": [["09:00","12:00"],["14:00","17:00"]], "4": [["09:00","12:00"],["14:00","17:00"]], "5": [["09:00","12:00"],["14:00","17:00"]], "6": [["09:00","12:00"],["14:00","17:00"]] } }
+  },
+  "riskZones": [
+    { "id": "termini",  "lat": 41.9010, "lng": 12.5018, "r": 320 },
+    { "id": "colosseo", "lat": 41.8905, "lng": 12.4918, "r": 260 },
+    { "id": "trevi",    "lat": 41.9009, "lng": 12.4833, "r": 140 },
+    { "id": "pietro",   "lat": 41.9024, "lng": 12.4570, "r": 260 },
+    { "id": "spagna",   "lat": 41.9058, "lng": 12.4823, "r": 150 }
+  ],
+  "riskLines": [
+    { "id": "bus64", "width": 70, "points": [[41.9010,12.5018],[41.9003,12.4937],[41.8962,12.4828],[41.8954,12.4766],[41.8981,12.4690],[41.9001,12.4630],[41.9013,12.4590]] }
+  ],
+  "transferUrls": {
+    "Leonardo Express": "https://www.trenitalia.com",
+    "Treno regionale FL1": "https://www.trenitalia.com",
+    "shuttle": "https://www.terravision.eu",
+    "Bus 520 + Metro A": "https://www.atac.roma.it"
+  }
+}
